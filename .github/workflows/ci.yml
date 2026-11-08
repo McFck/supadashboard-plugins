@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      # The submodule is private while SupaDashboard is; SUPADASHBOARD_READ is a read-only token for it alone.
+      - name: Check out SupaDashboard
+        shell: bash
+        env:
+          TOKEN: ${{ secrets.SUPADASHBOARD_READ }}
+        run: |
+          git config --global url."https://x-access-token:${TOKEN}@github.com/McFck/SupaDashboard".insteadOf https://github.com/McFck/SupaDashboard
+          git submodule update --init
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - uses: Swatinem/rust-cache@v2
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm check
+      - run: pnpm test
+      - run: pnpm format:check
+      - run: cargo test --workspace
+      - run: pnpm build

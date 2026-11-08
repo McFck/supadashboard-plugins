@@ -1,0 +1,3 @@
+[workspace]
+members = ["plugins/*/native"]
+resolver = "3"

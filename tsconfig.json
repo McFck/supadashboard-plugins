@@ -1,0 +1,20 @@
+{
+  "extends": "@tsconfig/svelte/tsconfig.json",
+  "compilerOptions": {
+    "target": "es2023",
+    "module": "esnext",
+    "types": ["svelte", "vite/client"],
+    "allowArbitraryExtensions": true,
+    "resolveJsonModule": true,
+    "noEmit": true,
+    "moduleDetection": "force",
+    "noUnusedLocals": true,
+    "paths": {
+      "@supadashboard/kit": ["./supadashboard/app/src/plugin-kit.ts"],
+      "@supadashboard/app/*": ["./supadashboard/app/src/*"],
+      "$lib": ["./supadashboard/app/src/lib"],
+      "$lib/*": ["./supadashboard/app/src/lib/*"]
+    }
+  },
+  "include": ["plugins/*/ui/src/**/*.ts", "plugins/*/ui/src/**/*.svelte"]
+}

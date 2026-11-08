@@ -1,0 +1,3 @@
+[submodule "supadashboard"]
+	path = supadashboard
+	url = https://github.com/McFck/SupaDashboard.git

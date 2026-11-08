@@ -1,0 +1,9 @@
+{
+  "id": "haptics",
+  "version": "1.1.0",
+  "protocol": 1,
+  "exe": "haptics.exe",
+  "windows": ["main", "panel"],
+  "methods": ["configure", "pulse"],
+  "api": 1
+}

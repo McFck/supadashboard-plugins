@@ -1,0 +1,10 @@
+{
+  "id": "discord",
+  "version": "1.0.0",
+  "protocol": 1,
+  "exe": "supadashboard-discord.exe",
+  "windows": ["main", "panel"],
+  "methods": ["subscribe", "unsubscribe", "authorize", "logout", "voice"],
+  "migrate": ["discord.json"],
+  "api": 1
+}

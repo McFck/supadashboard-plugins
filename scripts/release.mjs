@@ -1,10 +1,11 @@
-// Signs and publishes the staged plugin folders in dist/ (from scripts/build.mjs).
-//   node scripts/release.mjs                    signs every dist/<id> (unsigned without PLUGIN_SIGNING_KEY)
-//   node scripts/release.mjs --local-catalogue  writes dist/catalogue/: catalogue.json for the staged plugins and
+// Packs and publishes the staged plugin folders in dist/ (from scripts/build.mjs).
+//   node scripts/release.mjs                    packs every dist/<id> into dist/<id>-<version>.sdplugin, signed
+//                                               when PLUGIN_SIGNING_KEY is set
+//   node scripts/release.mjs --local-catalogue  writes dist/catalogue/: catalogue.json for the packed plugins and
 //                                               their files under their release asset names
-//   node scripts/release.mjs --publish          CI: releases every plugin version without a tag, then rebuilds
-//                                               the signed catalogue from the latest release of every plugin
-// Release assets are flat (`<id>-<file>`, `ui/` becomes `ui-`); the app matches local files by that name.
+//   node scripts/release.mjs --publish          CI: releases every plugin version without a tag, then rebuilds the
+//                                               signed catalogue-v2 from the latest release of every plugin
+// A release holds one asset, `<id>-<version>.sdplugin`; the older tag `catalogue` stays frozen for old app versions.
 import { execFileSync } from 'node:child_process';
 import crypto from 'node:crypto';
 import fs from 'node:fs';
@@ -21,67 +22,59 @@ const json = (file) => JSON.parse(fs.readFileSync(file, 'utf8'));
 const tag = (id, version) => `${id}-v${version}`;
 const gh = (...args) => execFileSync('gh', [...args, '-R', REPO], { encoding: 'utf8' });
 
-function assetName(id, file) {
-  return `${id}-${file.replace(/^ui\//, 'ui-')}`;
+/** Entries of a ustar archive by name (the layout plugin-tools/release.mjs writes). */
+function untar(bytes) {
+  const files = new Map();
+  for (let at = 0; bytes[at] !== 0;) {
+    const name = bytes.toString('utf8', at, at + 100).replace(/\0.*$/s, '');
+    const size = parseInt(bytes.toString('ascii', at + 124, at + 135), 8);
+    files.set(name, bytes.subarray(at + 512, at + 512 + size));
+    at += 512 + Math.ceil(size / 512) * 512;
+  }
+  return files;
 }
 
-function filePath(id, asset) {
-  const name = asset.slice(id.length + 1);
-  return name.startsWith('ui-') ? `ui/${name.slice(3)}` : name;
-}
-
-/** Plugin files by path, as release.mjs allows them: bare names and ui/<name>. */
-function stagedFiles(folder) {
-  return fs.readdirSync(folder, { recursive: true, withFileTypes: true }).flatMap((entry) => {
-    if (!entry.isFile()) {
-      return [];
-    }
-    const file = path
-      .relative(folder, path.join(entry.parentPath, entry.name))
-      .replaceAll('\\', '/');
-    if (file.startsWith('ui-')) {
-      throw new Error(`${file}: a bare file name starting with ui- would clash with ui/ assets`);
-    }
-    return [{ path: file, bytes: fs.readFileSync(path.join(folder, file)) }];
-  });
-}
-
-function entry(id, version, published, files) {
+function entry(id, published, file) {
+  const bytes = fs.readFileSync(file);
+  const { version, api, permissions } = JSON.parse(
+    untar(bytes).get('plugin.json').toString('utf8'),
+  );
   const plugin = path.join(root, 'plugins', id);
-  const sorted = [...files].sort((a, b) => a.path.localeCompare(b.path));
   return {
     id,
     ...json(path.join(plugin, 'market.json')),
     version,
-    api: json(path.join(plugin, 'plugin.json')).api,
+    api,
     published,
-    size: sorted.reduce((sum, file) => sum + file.bytes.length, 0),
+    size: bytes.length,
     source: `https://github.com/${REPO}/tree/main/plugins/${id}`,
     guide: fs.readFileSync(path.join(plugin, 'guide.md'), 'utf8'),
-    files: sorted.map((file) => ({
-      path: file.path,
-      url: `https://github.com/${REPO}/releases/download/${tag(id, version)}/${assetName(id, file.path)}`,
-      sha256: crypto.createHash('sha256').update(file.bytes).digest('hex'),
-      size: file.bytes.length,
-    })),
+    permissions: permissions ?? {},
+    url: `https://github.com/${REPO}/releases/download/${tag(id, version)}/${path.basename(file)}`,
+    sha256: crypto.createHash('sha256').update(bytes).digest('hex'),
   };
 }
 
 /** Writes catalogue.json into `folder` and signs it when the key is set. */
 function writeCatalogue(folder, plugins) {
   const file = path.join(folder, 'catalogue.json');
-  const catalogue = { format: 1, published: new Date().toISOString(), plugins };
-  fs.writeFileSync(file, JSON.stringify(catalogue));
+  fs.writeFileSync(
+    file,
+    JSON.stringify({ format: 2, published: new Date().toISOString(), plugins }),
+  );
   if (process.env.PLUGIN_SIGNING_KEY) {
     execFileSync('node', [tools, '--catalogue', file], { stdio: 'inherit' });
   }
   return file;
 }
 
-function sign() {
-  for (const id of ids()) {
-    execFileSync('node', [tools, path.join(dist, id)], { stdio: 'inherit' });
-  }
+/** Packs dist/<id> and returns the .sdplugin path. */
+function pack(id) {
+  const folder = path.join(dist, id);
+  const { version } = json(path.join(folder, 'plugin.json'));
+  const out = path.join(dist, `${id}-${version}.sdplugin`);
+  execFileSync('node', [tools, folder, out], { stdio: 'inherit' });
+  return out;
 }
 
 function localCatalogue() {
@@ -89,12 +82,9 @@ function localCatalogue() {
   fs.rmSync(out, { recursive: true, force: true });
   fs.mkdirSync(out);
   const plugins = ids().map((id) => {
-    const files = stagedFiles(path.join(dist, id));
-    for (const file of files) {
-      fs.writeFileSync(path.join(out, assetName(id, file.path)), file.bytes);
-    }
-    const { version } = json(path.join(dist, id, 'plugin.json'));
-    return entry(id, version, new Date().toISOString(), files);
+    const file = pack(id);
+    fs.copyFileSync(file, path.join(out, path.basename(file)));
+    return entry(id, new Date().toISOString(), file);
   });
   console.log(writeCatalogue(out, plugins));
 }
@@ -109,28 +99,23 @@ function tagged(name) {
   }
 }
 
-function releaseMissing(work) {
+function releaseMissing() {
   for (const id of ids()) {
-    const folder = path.join(dist, id);
-    const { version } = json(path.join(folder, 'plugin.json'));
+    const file = pack(id);
+    const { version } = json(path.join(dist, id, 'plugin.json'));
     if (tagged(tag(id, version))) {
       continue;
     }
-    if (!fs.existsSync(path.join(folder, 'release.sig'))) {
+    if (!untar(fs.readFileSync(file)).has('release.sig')) {
       throw new Error(`${id}: refusing to publish an unsigned release`);
     }
-    const assets = stagedFiles(folder).map((file) => {
-      const asset = path.join(work, assetName(id, file.path));
-      fs.writeFileSync(asset, file.bytes);
-      return asset;
-    });
     const { title } = json(path.join(root, 'plugins', id, 'market.json'));
     const target = process.env.GITHUB_SHA ? ['--target', process.env.GITHUB_SHA] : [];
     gh(
       'release',
       'create',
       tag(id, version),
-      ...assets,
+      file,
       '--title',
       `${title} ${version}`,
       '--notes',
@@ -142,7 +127,7 @@ function releaseMissing(work) {
   }
 }
 
-/** The newest release of a plugin: its version and files, downloaded and hashed. */
+/** The newest release of a plugin as a catalogue entry, its .sdplugin downloaded and hashed. */
 function latest(id, releases, work) {
   const release = releases
     .filter((r) => r.tagName.startsWith(`${id}-v`))
@@ -152,11 +137,8 @@ function latest(id, releases, work) {
   }
   const folder = path.join(work, release.tagName);
   gh('release', 'download', release.tagName, '-D', folder);
-  const files = fs.readdirSync(folder).map((asset) => ({
-    path: filePath(id, asset),
-    bytes: fs.readFileSync(path.join(folder, asset)),
-  }));
-  return [entry(id, release.tagName.slice(id.length + 2), release.publishedAt, files)];
+  const [asset] = fs.readdirSync(folder);
+  return [entry(id, release.publishedAt, path.join(folder, asset))];
 }
 
 function publish() {
@@ -164,7 +146,7 @@ function publish() {
     throw new Error('PLUGIN_SIGNING_KEY is required to publish');
   }
   const work = fs.mkdtempSync(path.join(os.tmpdir(), 'plugins-'));
-  releaseMissing(work);
+  releaseMissing();
   const releases = execFileSync(
     'gh',
     [
@@ -183,10 +165,19 @@ function publish() {
     work,
     ids().flatMap((id) => latest(id, releases, work)),
   );
-  if (!tagged('catalogue')) {
-    gh('release', 'create', 'catalogue', '--title', 'Catalogue', '--notes', '', '--latest=false');
+  if (!tagged('catalogue-v2')) {
+    gh(
+      'release',
+      'create',
+      'catalogue-v2',
+      '--title',
+      'Catalogue',
+      '--notes',
+      '',
+      '--latest=false',
+    );
   }
-  gh('release', 'upload', 'catalogue', file, path.join(work, 'catalogue.sig'), '--clobber');
+  gh('release', 'upload', 'catalogue-v2', file, path.join(work, 'catalogue.sig'), '--clobber');
   console.log('catalogue published');
 }
 
@@ -196,7 +187,7 @@ if (mode === '--publish') {
 } else if (mode === '--local-catalogue') {
   localCatalogue();
 } else if (!mode) {
-  sign();
+  ids().forEach(pack);
 } else {
   throw new Error('Usage: node scripts/release.mjs [--local-catalogue | --publish]');
 }

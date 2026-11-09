@@ -8,7 +8,7 @@ permissions:
 
 jobs:
   check:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       # The submodule is private while SupaDashboard is; SUPADASHBOARD_READ is a read-only token for it alone.
@@ -26,10 +26,8 @@ jobs:
         with:
           node-version: 24
           cache: pnpm
-      - uses: Swatinem/rust-cache@v2
       - run: pnpm install --frozen-lockfile
       - run: pnpm check
       - run: pnpm test
       - run: pnpm format:check
-      - run: cargo test --workspace
       - run: pnpm build

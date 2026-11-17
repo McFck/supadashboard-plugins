@@ -1,6 +1,7 @@
 import { isTauri } from '@tauri-apps/api/core';
-import { currentRuntime, type Plugin, onPluginEvent } from '@supadashboard/kit';
-import { configureHaptics, pulse, PULSE_KINDS, type PulseKind } from './haptics';
+import { currentRuntime, providePlugin, whileOwner, type Plugin } from '@supadashboard/kit';
+import { pulse, PULSE_KINDS, type PulseKind } from './haptics';
+import { HapticsService } from './service';
 import HapticsSection from './components/HapticsSection.svelte';
 import { DEFAULTS, loadSettings, toConfig, watchSettings, type HapticsSettings } from './settings';
 import guide from '../../guide.md?raw';
@@ -45,19 +46,31 @@ const hapticsPlugin: Plugin = {
       return;
     }
     let current: HapticsSettings = DEFAULTS;
-    // The native side keeps the last configuration, so both windows applying the same one is harmless.
-    loadSettings()
-      .then((saved) => {
-        current = saved;
-        return saved.enabled ? configureHaptics(toConfig(saved)) : undefined;
-      })
-      .catch((error) => console.warn('haptics', error));
-    onPluginEvent('haptics', 'restarted', () => {
-      if (current.enabled) {
-        configureHaptics(toConfig(current)).catch((error) => console.warn('haptics', error));
-      }
-    }).catch((error) => console.warn('haptics', error));
-    watchSettings((saved) => (current = saved)).catch((error) => console.warn('haptics', error));
+    // The service runs in the dashboard owner only; the panel reaches it through callPlugin.
+    whileOwner(() => {
+      const service = new HapticsService();
+      const unprovide = providePlugin('haptics', {
+        configure: service.configure,
+        pulse: service.pulse,
+      });
+      let stopped = false;
+      let unwatch: (() => void) | undefined;
+      loadSettings()
+        .then((saved) => {
+          current = saved;
+          return saved.enabled ? service.configure(toConfig(saved)) : undefined;
+        })
+        .catch((error) => console.warn('haptics', error));
+      watchSettings((saved) => (current = saved))
+        .then((stop) => (stopped ? stop() : (unwatch = stop)))
+        .catch((error) => console.warn('haptics', error));
+      return () => {
+        stopped = true;
+        unwatch?.();
+        unprovide();
+        service.destroy();
+      };
+    });
     api.onTrigger((trigger) => {
       if (
         trigger === 'press' &&

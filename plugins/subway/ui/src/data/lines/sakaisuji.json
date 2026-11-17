@@ -1,0 +1,24 @@
+{
+  "id": "sakaisuji",
+  "title": "Sakaisuji",
+  "code": "K",
+  "iconId": "osaka-metro/k",
+  "carCount": 8,
+  "loop": false,
+  "displayLanguages": ["ja-kana"],
+  "directions": [
+    {
+      "id": "southbound",
+      "delta": 1,
+      "title": "Southbound",
+      "target": "K20"
+    },
+    {
+      "id": "northbound",
+      "delta": -1,
+      "title": "Northbound",
+      "target": "K11"
+    }
+  ],
+  "stations": ["K11", "K12", "K13", "K14", "K15", "K16", "K17", "K18", "K19", "K20"]
+}

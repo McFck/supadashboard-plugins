@@ -1,0 +1,1233 @@
+{
+  "_": "Credits and source/licence metadata for kept pack audio only. Clip paths are relative to assets/. Original recordings and reviews are in the sibling project directory SupaDashboard-archive (../../SupaDashboard-archive/ relative to assets/).",
+  "shared": [
+    {
+      "id": "user-elevenlabs-door-mechanics",
+      "use": "door",
+      "title": "ElevenLabs_Soft-_mechanical_sliding_of_commuter_train_doors_opening_with_a_gentle_pneumatic_hiss.mp3",
+      "provider": "User-supplied attachment",
+      "provenance": "user-provided",
+      "original_archive": "raw/shared/door/user-supplied/ElevenLabs_Soft-_mechanical_sliding_of_commuter_train_doors_opening_with_a_gentle_pneumatic_hiss.mp3",
+      "original_sha256": "c010fba24a7b6d1c88bb967ce080bb1b20efdbd0692c66983a2f9db6e920ffce",
+      "original_bytes": 48944,
+      "attribution": "User-supplied effect; filename identifies ElevenLabs",
+      "license_note": "Supplied by the project owner; free to use.",
+      "clips": [
+        "shared/door/door-mechanics.opus"
+      ]
+    }
+  ],
+  "yamanote": [
+    {
+      "id": "-B4N_RyPOAs",
+      "use": "pack-supplement",
+      "note": "Yurakucho Yamanote platform-3 approach; source title plus timed ASR establish track and direction. Station PA voice, separate from in-car announcer; needs ear check.",
+      "url": "https://www.youtube.com/watch?v=-B4N_RyPOAs",
+      "title": "【ATOS型放送　山手線・京浜東北線　有楽町駅】放送集",
+      "creator": "Metropolitan area information",
+      "creator_url": "https://www.youtube.com/channel/UCKPTtSzrSxYL5DXWK4S4AWw",
+      "license": "Free to use; credit the creator",
+      "clips": [
+        "lines/yamanote/clips/announce/platform_approach_en_yurakucho_round5.opus",
+        "lines/yamanote/clips/announce/platform_approach_ja_yurakucho_round5.opus"
+      ]
+    },
+    {
+      "id": "6CAfZNDpVhI",
+      "use": "melody-ebisu",
+      "note": "Ebisu platform 2 (inner loop) The Third Man F, PCM recorder, 1.1 chorus, clean",
+      "url": "https://www.youtube.com/watch?v=6CAfZNDpVhI",
+      "title": "恵比寿駅2番線 発車メロディー「第三の男 F」",
+      "creator": "KN2090",
+      "creator_url": "https://www.youtube.com/channel/UCwzF-nCdt8QWQaxRCbMrmvQ",
+      "license": "Free to use; credit the creator",
+      "clips": [
+        "lines/yamanote/clips/melody/the-third-man_6CAfZNDpVhI_1.opus"
+      ]
+    },
+    {
+      "id": "8da-BhDXdDo",
+      "use": "voice",
+      "note": "outer loop Tokyo -> Ikebukuro, E235 ROM, 2020-03",
+      "direction": "outer",
+      "url": "https://www.youtube.com/watch?v=8da-BhDXdDo",
+      "title": "【高輪ゲ/原宿新ホーム対応】山手線外回り 車内放送 [E235系ROM] 東京→池袋 (ナンバリング対応)",
+      "creator": "μ' Wing",
+      "creator_url": "https://www.youtube.com/channel/UCQoLi_AxTZd8_os33re8a_A",
+      "license": "Free to use; credit the creator",
+      "clips": [
+        "lines/yamanote/clips/voice/JY13-ikebukuro_next_ja_outer_01_complete.opus",
+        "lines/yamanote/clips/voice/JY13-ikebukuro_transfer_ja_outer_01_complete_round5.opus",
+        "lines/yamanote/clips/voice/JY14-mejiro_next_ja_outer_01.opus",
+        "lines/yamanote/clips/voice/JY15-takadanobaba_next_en_outer_01.opus",
+        "lines/yamanote/clips/voice/JY15-takadanobaba_transfer_en_outer_01.opus",
+        "lines/yamanote/clips/voice/JY16-shin-okubo_bound_en_outer_01.opus",
+        "lines/yamanote/clips/voice/JY16-shin-okubo_next_en_outer_01.opus",
+        "lines/yamanote/clips/voice/JY18-yoyogi_next_ja_outer_01.opus",
+        "lines/yamanote/clips/voice/JY19-harajuku_bound_en_outer_01.opus",
+        "lines/yamanote/clips/voice/JY20-shibuya_next_ja_outer_01.opus",
+        "lines/yamanote/clips/voice/JY21-ebisu_transfer_ja_outer_01.opus",
+        "lines/yamanote/clips/voice/JY22-meguro_transfer_ja_outer_01.opus",
+        "lines/yamanote/clips/voice/JY24-osaki_transfer_en_outer_complete_round5.opus",
+        "lines/yamanote/clips/voice/JY24-osaki_transfer_ja_outer_01.opus",
+        "lines/yamanote/clips/voice/JY27-tamachi_transfer_en_outer_01.opus",
+        "lines/yamanote/clips/voice/JY27-tamachi_transfer_ja_outer_01.opus",
+        "lines/yamanote/clips/voice/JY29-shimbashi_transfer_ja_outer_01.opus",
+        "lines/yamanote/clips/voice/JY30-yurakucho_next_ja_outer_01.opus",
+        "lines/yamanote/clips/voice/JY30-yurakucho_transfer_ja_outer_01_complete.opus",
+        "lines/yamanote/clips/voice/general_bound_ja_outer_01.opus",
+        "lines/yamanote/clips/voice/general_manners_ja_outer_01.opus",
+        "lines/yamanote/clips/voice/general_phrase_ja_outer_conductor_01.opus"
+      ]
+    },
+    {
+      "id": "C-jDkBUBEGE",
+      "use": "door",
+      "note": "E235 door chime, high quality",
+      "url": "https://www.youtube.com/watch?v=C-jDkBUBEGE",
+      "title": "【高音質】E235系 ドアチャイム音",
+      "creator": "Sweater",
+      "creator_url": "https://www.youtube.com/channel/UCKuwQookxVKeRrMiSMCPnuw",
+      "license": "Free to use; credit the creator",
+      "clips": [
+        "lines/yamanote/clips/door/door-chime.opus"
+      ]
+    },
+    {
+      "id": "FPDhyNJfAPE",
+      "use": "emergency",
+      "note": "Yamanote E235 emergency stop (level crossing button), automatic announcement",
+      "direction": "incident",
+      "url": "https://www.youtube.com/watch?v=FPDhyNJfAPE",
+      "title": "【急停車‼️￼】JR山手線E235系、駒込～田端間￼踏切非常停止ボタン扱いによる緊急停車　自動放送あり",
+      "creator": "関東のりものチャンネル",
+      "creator_url": "https://www.youtube.com/channel/UCF9vX3KzLqbBSGlMVP6BXvw",
+      "license": "Free to use; credit the creator",
+      "clips": [
+        "lines/yamanote/clips/voice/general_emergency_ja_incident_01.opus",
+        "lines/yamanote/clips/voice/general_emergency_ja_incident_18.opus"
+      ]
+    },
+    {
+      "id": "KHr2n4neEy8",
+      "use": "voice",
+      "note": "inner loop automatic announcements, 2020-03",
+      "direction": "inner",
+      "url": "https://www.youtube.com/watch?v=KHr2n4neEy8",
+      "title": "【自動放送】山手線 内回り車内放送【高輪ｹﾞｰﾄｳｪｲ開業後】  / [Train Announcement] JR Yamanote Line with Takanawa Gateway sta.",
+      "creator": "Musashino Ch. / むさしのチャンネル",
+      "creator_url": "https://www.youtube.com/channel/UCUUgi-8OPfhFN0aXHXbdTAw",
+      "license": "Free to use; credit the creator",
+      "clips": [
+        "lines/yamanote/clips/voice/JY01-tokyo_next_en_inner_01.opus",
+        "lines/yamanote/clips/voice/JY01-tokyo_next_ja_inner_01_complete.opus",
+        "lines/yamanote/clips/voice/JY01-tokyo_transfer_en_inner_01.opus",
+        "lines/yamanote/clips/voice/JY01-tokyo_transfer_ja_inner_01_complete.opus",
+        "lines/yamanote/clips/voice/JY02-kanda_bound_en_inner_01_round4_round5.opus",
+        "lines/yamanote/clips/voice/JY02-kanda_next_en_inner_01.opus",
+        "lines/yamanote/clips/voice/JY02-kanda_transfer_en_inner_01.opus",
+        "lines/yamanote/clips/voice/JY02-kanda_transfer_ja_inner_01.opus",
+        "lines/yamanote/clips/voice/JY03-akihabara_next_en_inner_01.opus",
+        "lines/yamanote/clips/voice/JY03-akihabara_transfer_en_inner_01.opus",
+        "lines/yamanote/clips/voice/JY04-okachimachi_next_en_inner_01.opus",
+        "lines/yamanote/clips/voice/JY04-okachimachi_transfer_en_inner_01.opus",
+        "lines/yamanote/clips/voice/JY04-okachimachi_transfer_ja_inner_01.opus",
+        "lines/yamanote/clips/voice/JY05-ueno_bound_ja_inner_01.opus",
+        "lines/yamanote/clips/voice/JY05-ueno_next_en_inner_01.opus",
+        "lines/yamanote/clips/voice/JY05-ueno_next_ja_inner_01_complete.opus",
+        "lines/yamanote/clips/voice/JY05-ueno_transfer_en_inner_01.opus",
+        "lines/yamanote/clips/voice/JY05-ueno_transfer_ja_inner_01_complete.opus",
+        "lines/yamanote/clips/voice/JY06-uguisudani_bound_en_inner_01.opus",
+        "lines/yamanote/clips/voice/JY06-uguisudani_next_en_inner_01.opus",
+        "lines/yamanote/clips/voice/JY07-nippori_next_en_inner_01.opus",
+        "lines/yamanote/clips/voice/JY07-nippori_transfer_en_inner_01.opus",
+        "lines/yamanote/clips/voice/JY07-nippori_transfer_ja_inner_01.opus",
+        "lines/yamanote/clips/voice/JY08-nishi-nippori_next_en_inner_01.opus",
+        "lines/yamanote/clips/voice/JY08-nishi-nippori_next_ja_inner_01_complete.opus",
+        "lines/yamanote/clips/voice/JY08-nishi-nippori_transfer_en_inner_01.opus",
+        "lines/yamanote/clips/voice/JY08-nishi-nippori_transfer_ja_inner_01.opus",
+        "lines/yamanote/clips/voice/JY09-tabata_next_en_inner_01.opus",
+        "lines/yamanote/clips/voice/JY10-komagome_next_en_inner_01.opus",
+        "lines/yamanote/clips/voice/JY10-komagome_transfer_ja_inner_01.opus",
+        "lines/yamanote/clips/voice/JY11-sugamo_next_en_inner_01.opus",
+        "lines/yamanote/clips/voice/JY12-otsuka_next_en_inner_01.opus",
+        "lines/yamanote/clips/voice/JY12-otsuka_next_ja_inner_01_complete.opus",
+        "lines/yamanote/clips/voice/JY13-ikebukuro_bound_ja_inner_01.opus",
+        "lines/yamanote/clips/voice/JY13-ikebukuro_next_en_inner_01.opus",
+        "lines/yamanote/clips/voice/JY13-ikebukuro_transfer_ja_inner_02.opus",
+        "lines/yamanote/clips/voice/JY14-mejiro_next_en_inner_01.opus",
+        "lines/yamanote/clips/voice/JY16-shin-okubo_next_ja_inner_01.opus",
+        "lines/yamanote/clips/voice/JY17-shinjuku_bound_ja_inner_01.opus",
+        "lines/yamanote/clips/voice/JY17-shinjuku_next_ja_inner_01.opus",
+        "lines/yamanote/clips/voice/JY17-shinjuku_transfer_en_inner_complete_round5.opus",
+        "lines/yamanote/clips/voice/JY17-shinjuku_transfer_ja_inner_01_complete.opus",
+        "lines/yamanote/clips/voice/JY18-yoyogi_bound_en_inner_01.opus",
+        "lines/yamanote/clips/voice/JY18-yoyogi_exit-side_en_inner_01.opus",
+        "lines/yamanote/clips/voice/JY18-yoyogi_next_en_inner_01.opus",
+        "lines/yamanote/clips/voice/JY18-yoyogi_transfer_en_inner_01.opus",
+        "lines/yamanote/clips/voice/JY18-yoyogi_transfer_ja_inner_01.opus",
+        "lines/yamanote/clips/voice/JY19-harajuku_next_en_inner_01.opus",
+        "lines/yamanote/clips/voice/JY19-harajuku_next_ja_inner_01.opus",
+        "lines/yamanote/clips/voice/JY19-harajuku_transfer_ja_inner_01.opus",
+        "lines/yamanote/clips/voice/JY20-shibuya_bound_ja_inner_01.opus",
+        "lines/yamanote/clips/voice/JY20-shibuya_next_en_inner_01.opus",
+        "lines/yamanote/clips/voice/JY20-shibuya_next_ja_inner_01.opus",
+        "lines/yamanote/clips/voice/JY20-shibuya_transfer_en_inner_01.opus",
+        "lines/yamanote/clips/voice/JY20-shibuya_transfer_ja_inner_01_complete.opus",
+        "lines/yamanote/clips/voice/JY21-ebisu_bound_en_inner_01.opus",
+        "lines/yamanote/clips/voice/JY21-ebisu_next_ja_inner_01.opus",
+        "lines/yamanote/clips/voice/JY21-ebisu_transfer_en_inner_01.opus",
+        "lines/yamanote/clips/voice/JY21-ebisu_transfer_ja_inner_01.opus",
+        "lines/yamanote/clips/voice/JY22-meguro_next_en_inner_01.opus",
+        "lines/yamanote/clips/voice/JY22-meguro_next_ja_inner_01.opus",
+        "lines/yamanote/clips/voice/JY23-gotanda_exit-side_en_inner_01.opus",
+        "lines/yamanote/clips/voice/JY23-gotanda_next_en_inner_01.opus",
+        "lines/yamanote/clips/voice/JY24-osaki_next_en_inner_01.opus",
+        "lines/yamanote/clips/voice/JY24-osaki_next_ja_inner_01.opus",
+        "lines/yamanote/clips/voice/JY24-osaki_transfer_en_inner_01_complete.opus",
+        "lines/yamanote/clips/voice/JY24-osaki_transfer_ja_inner_01.opus",
+        "lines/yamanote/clips/voice/JY25-shinagawa_next_en_inner_01.opus",
+        "lines/yamanote/clips/voice/JY25-shinagawa_next_ja_inner_01.opus",
+        "lines/yamanote/clips/voice/JY25-shinagawa_transfer_en_inner_01_complete.opus",
+        "lines/yamanote/clips/voice/JY25-shinagawa_transfer_ja_inner_01_complete.opus",
+        "lines/yamanote/clips/voice/JY26-takanawa-gateway_next_en_inner_01.opus",
+        "lines/yamanote/clips/voice/JY26-takanawa-gateway_next_ja_inner_01_complete.opus",
+        "lines/yamanote/clips/voice/JY27-tamachi_next_ja_inner_01_complete.opus",
+        "lines/yamanote/clips/voice/JY28-hamamatsucho_next_en_inner_01.opus",
+        "lines/yamanote/clips/voice/JY28-hamamatsucho_next_ja_inner_01.opus",
+        "lines/yamanote/clips/voice/JY28-hamamatsucho_transfer_en_inner_01.opus",
+        "lines/yamanote/clips/voice/JY29-shimbashi_next_ja_inner_01.opus",
+        "lines/yamanote/clips/voice/JY30-yurakucho_transfer_en_inner_01.opus",
+        "lines/yamanote/clips/voice/general_bound_ja_inner_01.opus",
+        "lines/yamanote/clips/voice/general_manners_en_inner_01.opus",
+        "lines/yamanote/clips/voice/general_manners_ja_inner_01.opus",
+        "lines/yamanote/clips/voice/general_phrase_ja_inner_11.opus"
+      ]
+    },
+    {
+      "id": "NuruXsBhjGo",
+      "use": "emergency",
+      "note": "Yamanote substation failure announcements",
+      "direction": "incident",
+      "url": "https://www.youtube.com/watch?v=NuruXsBhjGo",
+      "title": "JR山手線変電所故障による放送・様子",
+      "creator": "Train&Bus Mania Channel",
+      "creator_url": "https://www.youtube.com/channel/UCAsYmbFiEO8UOcOl12bEDNw",
+      "license": "Free to use; credit the creator",
+      "clips": [
+        "lines/yamanote/clips/voice/general_emergency_ja_incident_22.opus"
+      ]
+    },
+    {
+      "id": "Q-JU4dkq8h4",
+      "use": "platform-door",
+      "note": "Yamanote platform door chimes, all kinds 2022",
+      "url": "https://www.youtube.com/watch?v=Q-JU4dkq8h4",
+      "title": "【高音質】 JR東日本 山手線 ホームドア チャイム音 全集 【2022年】",
+      "creator": "masshiro",
+      "creator_url": "https://www.youtube.com/channel/UCRCbffzlciodHdoHg5sfiMg",
+      "license": "Free to use; credit the creator",
+      "clips": [
+        "lines/yamanote/clips/platform-door/platform-door-close.opus",
+        "lines/yamanote/clips/platform-door/platform-door-open.opus"
+      ]
+    },
+    {
+      "id": "Rn6XIW1NyZg",
+      "use": "emergency",
+      "note": "E235-0 emergency stop announcement (full)",
+      "direction": "incident",
+      "url": "https://www.youtube.com/watch?v=Rn6XIW1NyZg",
+      "title": "JR山手線E235系0番台　急停車放送（フル）",
+      "creator": "虫虫探険隊『公式』チャンネル【鉄道等乗り物・交通系】",
+      "creator_url": "https://www.youtube.com/channel/UCIsE9vW55BUiXXuszewhvcQ",
+      "license": "Free to use; credit the creator",
+      "clips": [
+        "lines/yamanote/clips/voice/general_emergency_en_incident_03.opus"
+      ]
+    },
+    {
+      "id": "Yv6r1xlMLi0",
+      "use": "voice",
+      "note": "outer loop Osaki -> Osaki, backup",
+      "direction": "outer",
+      "url": "https://www.youtube.com/watch?v=Yv6r1xlMLi0",
+      "title": "【車内放送】JR山手線　外回り環状｜大崎➤大崎",
+      "creator": "NOT IN SERVICE",
+      "creator_url": "https://www.youtube.com/channel/UCj0XsPtDr_whqobEjEQyflA",
+      "license": "Free to use; credit the creator",
+      "clips": [
+        "lines/yamanote/clips/voice/JY05-ueno_transfer_en_outer_01.opus",
+        "lines/yamanote/clips/voice/JY05-ueno_transfer_ja_outer_01_complete.opus",
+        "lines/yamanote/clips/voice/JY07-nippori_next_ja_outer_01_complete.opus",
+        "lines/yamanote/clips/voice/JY17-shinjuku_bound_ja_outer_02.opus",
+        "lines/yamanote/clips/voice/JY23-gotanda_transfer_ja_outer_01.opus"
+      ]
+    },
+    {
+      "id": "cZbqw0xNaR4",
+      "use": "voice",
+      "note": "outer loop full Tokyo -> Tokyo, Kantetsu (fills Otsuka -> Tokyo, arrivals)",
+      "direction": "outer",
+      "url": "https://www.youtube.com/watch?v=cZbqw0xNaR4",
+      "title": "山手線外回り　東京→品川→渋谷→新宿→池袋→上野→東京　車内放送",
+      "creator": "かんてつ_Kantetsu",
+      "creator_url": "https://www.youtube.com/channel/UC5u92FcW0k8x8WZiVZu3z3w",
+      "license": "Free to use; credit the creator",
+      "clips": [
+        "lines/yamanote/clips/voice/JY01-tokyo_transfer_en_outer_01.opus",
+        "lines/yamanote/clips/voice/JY01-tokyo_transfer_ja_outer_01_complete.opus",
+        "lines/yamanote/clips/voice/JY02-kanda_next_ja_outer_02.opus",
+        "lines/yamanote/clips/voice/JY03-akihabara_next_ja_outer_02_complete.opus",
+        "lines/yamanote/clips/voice/JY03-akihabara_transfer_ja_outer_01_complete.opus",
+        "lines/yamanote/clips/voice/JY04-okachimachi_bound_en_outer_01.opus",
+        "lines/yamanote/clips/voice/JY04-okachimachi_next_ja_outer_01_complete.opus",
+        "lines/yamanote/clips/voice/JY05-ueno_bound_ja_outer_01.opus",
+        "lines/yamanote/clips/voice/JY06-uguisudani_next_ja_outer_01_complete.opus",
+        "lines/yamanote/clips/voice/JY09-tabata_next_ja_outer_02.opus",
+        "lines/yamanote/clips/voice/JY09-tabata_transfer_en_outer_01.opus",
+        "lines/yamanote/clips/voice/JY09-tabata_transfer_ja_outer_01.opus",
+        "lines/yamanote/clips/voice/JY10-komagome_next_ja_outer_02.opus",
+        "lines/yamanote/clips/voice/JY10-komagome_transfer_en_outer_01.opus",
+        "lines/yamanote/clips/voice/JY11-sugamo_next_ja_outer_02_complete.opus",
+        "lines/yamanote/clips/voice/JY11-sugamo_transfer_en_outer_01.opus",
+        "lines/yamanote/clips/voice/JY11-sugamo_transfer_ja_outer_01.opus",
+        "lines/yamanote/clips/voice/JY12-otsuka_bound_en_outer_01.opus",
+        "lines/yamanote/clips/voice/JY12-otsuka_transfer_en_outer_01.opus",
+        "lines/yamanote/clips/voice/JY12-otsuka_transfer_ja_outer_01.opus",
+        "lines/yamanote/clips/voice/JY15-takadanobaba_next_ja_outer_01.opus",
+        "lines/yamanote/clips/voice/JY15-takadanobaba_transfer_ja_outer_01.opus",
+        "lines/yamanote/clips/voice/JY17-shinjuku_next_en_outer_01.opus",
+        "lines/yamanote/clips/voice/JY17-shinjuku_transfer_en_outer_01_round5.opus",
+        "lines/yamanote/clips/voice/JY17-shinjuku_transfer_ja_outer_01.opus",
+        "lines/yamanote/clips/voice/JY18-yoyogi_transfer_en_outer_01_complete.opus",
+        "lines/yamanote/clips/voice/JY18-yoyogi_transfer_ja_outer_01_complete.opus",
+        "lines/yamanote/clips/voice/JY19-harajuku_next_ja_outer_02.opus",
+        "lines/yamanote/clips/voice/JY19-harajuku_transfer_en_outer_01.opus",
+        "lines/yamanote/clips/voice/JY20-shibuya_bound_ja_outer_01.opus",
+        "lines/yamanote/clips/voice/JY21-ebisu_next_en_outer_01.opus",
+        "lines/yamanote/clips/voice/JY21-ebisu_transfer_en_outer_01.opus",
+        "lines/yamanote/clips/voice/JY22-meguro_transfer_en_outer_01.opus",
+        "lines/yamanote/clips/voice/JY23-gotanda_next_ja_outer_02_complete.opus",
+        "lines/yamanote/clips/voice/JY23-gotanda_transfer_en_outer_01.opus",
+        "lines/yamanote/clips/voice/JY24-osaki_bound_en_outer_01.opus",
+        "lines/yamanote/clips/voice/JY24-osaki_next_ja_outer_01_complete.opus",
+        "lines/yamanote/clips/voice/JY25-shinagawa_bound_ja_outer_01.opus",
+        "lines/yamanote/clips/voice/JY25-shinagawa_next_ja_outer_01.opus",
+        "lines/yamanote/clips/voice/JY25-shinagawa_transfer_en_outer_01.opus",
+        "lines/yamanote/clips/voice/JY25-shinagawa_transfer_ja_outer_01_complete.opus",
+        "lines/yamanote/clips/voice/JY27-tamachi_next_en_outer_01.opus",
+        "lines/yamanote/clips/voice/JY28-hamamatsucho_transfer_ja_outer_01_complete.opus",
+        "lines/yamanote/clips/voice/JY29-shimbashi_next_en_outer_02.opus",
+        "lines/yamanote/clips/voice/JY29-shimbashi_transfer_en_outer_01.opus",
+        "lines/yamanote/clips/voice/JY30-yurakucho_bound_en_outer_01.opus",
+        "lines/yamanote/clips/voice/JY30-yurakucho_next_en_outer_02.opus",
+        "lines/yamanote/clips/voice/general_phrase_en_outer_15.opus",
+        "lines/yamanote/clips/voice/general_phrase_en_outer_18.opus"
+      ]
+    },
+    {
+      "id": "hLdgY5k-DD0",
+      "use": "pack-supplement",
+      "note": "Platform 1 and E identified by uploader title; chorus isolated using spectrogram, no obvious speech overlap. Needs listening confirmation.; August 2026 compilation map; see reviews/pack-research.md.",
+      "url": "https://www.youtube.com/watch?v=hLdgY5k-DD0",
+      "title": "恵比寿1番線発車メロディ第3の男ver E",
+      "creator": "アニマルチャンネル",
+      "creator_url": "https://www.youtube.com/channel/UCd5rAyk05aFV96OqtuJwiLQ",
+      "license": "Free to use; credit the creator",
+      "clips": [
+        "lines/yamanote/clips/melody/the-third-man_hLdgY5k-DD0_E.opus"
+      ]
+    },
+    {
+      "id": "oJIOhZMuOMw",
+      "use": "melody-atom",
+      "note": "Takadanobaba Astro Boy, no overlap (無被り), 2 plays",
+      "url": "https://www.youtube.com/watch?v=oJIOhZMuOMw",
+      "title": "【ご当地/無被り2凸】山手線・高田馬場駅　発車メロディ「鉄腕アトム」",
+      "creator": "水城放送研究室",
+      "creator_url": "https://www.youtube.com/channel/UChUtFgH5KKbzdop-uElNAnQ",
+      "license": "Free to use; credit the creator",
+      "clips": [
+        "lines/yamanote/clips/melody/tetsuwan-atom_oJIOhZMuOMw_1.opus"
+      ]
+    },
+    {
+      "id": "pjvm999Sln4",
+      "use": "melody",
+      "note": "Yamanote departure melodies as of 2026-08-01",
+      "url": "https://www.youtube.com/watch?v=pjvm999Sln4",
+      "title": "JR山手線 発車メロディー集 【2026年8月1日現在】 JR Yamanote Line Station Departing Melody.",
+      "creator": "桜音乗鉄 / さくらおとのりてつ",
+      "creator_url": "https://www.youtube.com/channel/UC9jExWhVrZruJumMH3OIA0g",
+      "license": "Free to use; credit the creator",
+      "clips": [
+        "lines/yamanote/clips/melody/bic-camera-1.opus",
+        "lines/yamanote/clips/melody/glorious-gateway-1.opus",
+        "lines/yamanote/clips/melody/haru-tremolo.opus",
+        "lines/yamanote/clips/melody/haru.opus",
+        "lines/yamanote/clips/melody/jre-ikst-010-01.opus",
+        "lines/yamanote/clips/melody/jre-ikst-010-02.opus",
+        "lines/yamanote/clips/melody/jre-ikst-010-03.opus",
+        "lines/yamanote/clips/melody/jre-ikst-010-05.opus",
+        "lines/yamanote/clips/melody/mondamin-1.opus",
+        "lines/yamanote/clips/melody/sakura-sakura-2.opus",
+        "lines/yamanote/clips/melody/seseragi.opus"
+      ]
+    },
+    {
+      "id": "urgWl5RYueU",
+      "use": "pack-supplement",
+      "note": "E235 Osaki terminating service, source description and English ASR establish scenario; transcript corrected from noisy ASR, needs ear check.",
+      "url": "https://www.youtube.com/watch?v=urgWl5RYueU",
+      "title": "【レアな放送？】山手線E235系大崎行き大崎駅到着前の放送",
+      "creator": "ああいい",
+      "creator_url": "https://www.youtube.com/channel/UCswfVohcBarv-LHaDelW6Kw",
+      "license": "Free to use; credit the creator",
+      "clips": [
+        "lines/yamanote/clips/announce/general_terminal_en_urgWl5RYueU_round5.opus",
+        "lines/yamanote/clips/announce/general_terminal_ja_urgWl5RYueU_round5.opus"
+      ]
+    },
+    {
+      "id": "user-yamanote-door-warning",
+      "use": "voice",
+      "title": "doagabi-marimasu.mp3",
+      "provider": "User-supplied attachment",
+      "provenance": "user-provided",
+      "original_archive": "raw/yamanote/user-supplied/doagabi-marimasu.mp3",
+      "original_sha256": "7fe8d8657f520609038b5e0e33a7a645dcb4c6b74c6d12a01ed08bc73f206d2e",
+      "original_bytes": 55307,
+      "attribution": "User-supplied recording",
+      "license_note": "Supplied by the project owner; free to use.",
+      "clips": [
+        "lines/yamanote/clips/voice/general_doors_closing_ja_e235.opus"
+      ]
+    }
+  ],
+  "hibiya": [
+    {
+      "id": "CGi4vbwS2IE",
+      "use": "voice",
+      "note": "Naka-Meguro -> Kita-Senju, all announcements, clean, 2025-01",
+      "direction": "to-kita-senju",
+      "url": "https://www.youtube.com/watch?v=CGi4vbwS2IE",
+      "title": "東京メトロ日比谷線 中目黒〜北千住 全区間車内放送",
+      "creator": "BRAVERY",
+      "creator_url": "https://www.youtube.com/channel/UCCEX0AKiX7RWWohqzkteCQQ",
+      "license": "Free to use; credit the creator",
+      "clips": [
+        "lines/hibiya/clips/voice/H02-ebisu_arriving_en_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H02-ebisu_arriving_ja_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H02-ebisu_next_en_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H02-ebisu_next_ja_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H02-ebisu_transfer_ja_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H03-hiroo_arriving_en_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H03-hiroo_arriving_ja_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H03-hiroo_next_en_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H03-hiroo_next_ja_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H04-roppongi_arriving_en_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H04-roppongi_arriving_ja_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H04-roppongi_emergency_ja_to-kita-senju_conductor_01.opus",
+        "lines/hibiya/clips/voice/H04-roppongi_next_en_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H04-roppongi_next_ja_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H04-roppongi_transfer_ja_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H05-kamiyacho_arriving_en_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H05-kamiyacho_arriving_ja_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H05-kamiyacho_next_en_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H05-kamiyacho_next_ja_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H06-toranomon-hills_next_en_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H06-toranomon-hills_next_ja_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H06-toranomon-hills_transfer_en_to-kita-senju_01_complete.opus",
+        "lines/hibiya/clips/voice/H06-toranomon-hills_transfer_ja_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H07-kasumigaseki_arriving_en_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H07-kasumigaseki_arriving_ja_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H07-kasumigaseki_exit-side_ja_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H07-kasumigaseki_next_en_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H07-kasumigaseki_next_ja_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H07-kasumigaseki_transfer_en_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H07-kasumigaseki_transfer_ja_to-kita-senju_01_complete.opus",
+        "lines/hibiya/clips/voice/H08-hibiya_arriving_en_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H08-hibiya_arriving_ja_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H08-hibiya_next_en_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H08-hibiya_next_ja_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H08-hibiya_transfer_en_to-kita-senju_01_complete.opus",
+        "lines/hibiya/clips/voice/H08-hibiya_transfer_ja_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H09-ginza_next_en_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H09-ginza_next_ja_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H09-ginza_transfer_en_to-kita-senju_01_round5.opus",
+        "lines/hibiya/clips/voice/H09-ginza_transfer_ja_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H10-higashi-ginza_arriving_en_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H10-higashi-ginza_arriving_ja_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H10-higashi-ginza_next_en_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H10-higashi-ginza_next_ja_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H10-higashi-ginza_transfer_en_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H10-higashi-ginza_transfer_ja_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H11-tsukiji_arriving_en_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H11-tsukiji_arriving_ja_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H11-tsukiji_next_en_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H11-tsukiji_next_ja_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H11-tsukiji_transfer_en_to-kita-senju_01_round5.opus",
+        "lines/hibiya/clips/voice/H11-tsukiji_transfer_ja_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H12-hatchobori_arriving_en_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H12-hatchobori_arriving_ja_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H12-hatchobori_next_en_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H12-hatchobori_next_ja_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H12-hatchobori_transfer_en_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H12-hatchobori_transfer_ja_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H13-kayabacho_next_en_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H13-kayabacho_next_ja_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H13-kayabacho_transfer_en_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H13-kayabacho_transfer_ja_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H14-ningyocho_arriving_en_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H14-ningyocho_arriving_ja_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H14-ningyocho_next_en_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H14-ningyocho_next_ja_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H14-ningyocho_transfer_en_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H14-ningyocho_transfer_ja_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H15-kodemmacho_arriving_en_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H15-kodemmacho_arriving_ja_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H15-kodemmacho_next_en_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H15-kodemmacho_next_ja_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H16-akihabara_arriving_en_to-kita-senju_02_round4_round5.opus",
+        "lines/hibiya/clips/voice/H16-akihabara_arriving_ja_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H16-akihabara_next_en_to-kita-senju_01_round4_round5.opus",
+        "lines/hibiya/clips/voice/H16-akihabara_transfer_en_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H16-akihabara_transfer_ja_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H17-naka-okachimachi_arriving_en_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H17-naka-okachimachi_arriving_ja_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H17-naka-okachimachi_next_en_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H17-naka-okachimachi_next_ja_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H17-naka-okachimachi_transfer_en_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H17-naka-okachimachi_transfer_ja_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H18-ueno_next_en_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H18-ueno_next_ja_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H18-ueno_transfer_en_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H18-ueno_transfer_ja_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H19-iriya_arriving_en_to-kita-senju_02_round4_round5.opus",
+        "lines/hibiya/clips/voice/H19-iriya_arriving_ja_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H19-iriya_bound_en_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H19-iriya_bound_ja_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H19-iriya_next_en_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H19-iriya_next_ja_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H20-minowa_arriving_en_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H20-minowa_arriving_ja_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H20-minowa_next_en_to-kita-senju_01_round4_round5.opus",
+        "lines/hibiya/clips/voice/H21-minami-senju_arriving_en_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H21-minami-senju_arriving_ja_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H21-minami-senju_exit-side_ja_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H21-minami-senju_transfer_en_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H21-minami-senju_transfer_ja_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H22-kita-senju_arriving_en_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H22-kita-senju_arriving_ja_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H22-kita-senju_next_en_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H22-kita-senju_next_ja_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/H22-kita-senju_transfer_en_to-kita-senju_01_complete.opus",
+        "lines/hibiya/clips/voice/H22-kita-senju_transfer_ja_to-kita-senju_01.opus",
+        "lines/hibiya/clips/voice/general_safety_ja_complete_round5.opus"
+      ]
+    },
+    {
+      "id": "Q2gZBv2uapU",
+      "use": "door",
+      "note": "Clean standard G5/D5 three-pair MIDI door-chime recreation; Hibiya candidate, pitch/timbre need ear check (about 2 percent below the close-up recording).",
+      "url": "https://www.youtube.com/watch?v=Q2gZBv2uapU",
+      "title": "ドアチャイム　再現　フリー音源",
+      "creator": "北関東",
+      "creator_url": "https://www.youtube.com/channel/UCvLw6OPD4krRsLL7XIeqRmg",
+      "license": "Free to use; credit the creator",
+      "clips": [
+        "lines/hibiya/clips/door/door-chime-clean.opus"
+      ]
+    },
+    {
+      "id": "RoKgAVyEn1I",
+      "use": "melody",
+      "note": "Tokyo Metro departure melody compilation, 2025-10",
+      "url": "https://www.youtube.com/watch?v=RoKgAVyEn1I",
+      "title": "東京メトロ 全発車メロディ集 / Tokyo Metro Departure Melody Compilation (Japanese Train Jingles)【高音質・乗降促進付】",
+      "creator": "もちお",
+      "creator_url": "https://www.youtube.com/channel/UCzy9k5cCtD3IrusD_4jO1og",
+      "license": "Free to use; credit the creator",
+      "clips": [
+        "lines/hibiya/clips/melody/H02-ebisu_to-kita-senju.opus",
+        "lines/hibiya/clips/melody/H02-ebisu_to-naka-meguro.opus",
+        "lines/hibiya/clips/melody/H03-hiroo_to-kita-senju.opus",
+        "lines/hibiya/clips/melody/H03-hiroo_to-naka-meguro.opus",
+        "lines/hibiya/clips/melody/H04-roppongi_to-kita-senju.opus",
+        "lines/hibiya/clips/melody/H04-roppongi_to-naka-meguro.opus",
+        "lines/hibiya/clips/melody/H05-kamiyacho_to-kita-senju.opus",
+        "lines/hibiya/clips/melody/H05-kamiyacho_to-naka-meguro.opus",
+        "lines/hibiya/clips/melody/H06-toranomon-hills_to-kita-senju.opus",
+        "lines/hibiya/clips/melody/H06-toranomon-hills_to-naka-meguro.opus",
+        "lines/hibiya/clips/melody/H07-kasumigaseki_to-kita-senju.opus",
+        "lines/hibiya/clips/melody/H07-kasumigaseki_to-naka-meguro.opus",
+        "lines/hibiya/clips/melody/H08-hibiya_to-kita-senju.opus",
+        "lines/hibiya/clips/melody/H08-hibiya_to-naka-meguro.opus",
+        "lines/hibiya/clips/melody/H09-ginza_to-kita-senju.opus",
+        "lines/hibiya/clips/melody/H09-ginza_to-naka-meguro.opus",
+        "lines/hibiya/clips/melody/H10-higashi-ginza_to-kita-senju.opus",
+        "lines/hibiya/clips/melody/H10-higashi-ginza_to-naka-meguro.opus",
+        "lines/hibiya/clips/melody/H11-tsukiji_to-kita-senju.opus",
+        "lines/hibiya/clips/melody/H11-tsukiji_to-naka-meguro.opus",
+        "lines/hibiya/clips/melody/H12-hatchobori_to-kita-senju.opus",
+        "lines/hibiya/clips/melody/H12-hatchobori_to-naka-meguro.opus",
+        "lines/hibiya/clips/melody/H13-kayabacho_to-kita-senju.opus",
+        "lines/hibiya/clips/melody/H13-kayabacho_to-naka-meguro.opus",
+        "lines/hibiya/clips/melody/H14-ningyocho_to-kita-senju.opus",
+        "lines/hibiya/clips/melody/H14-ningyocho_to-naka-meguro.opus",
+        "lines/hibiya/clips/melody/H15-kodemmacho_to-kita-senju.opus",
+        "lines/hibiya/clips/melody/H15-kodemmacho_to-naka-meguro.opus",
+        "lines/hibiya/clips/melody/H16-akihabara_to-kita-senju.opus",
+        "lines/hibiya/clips/melody/H16-akihabara_to-naka-meguro.opus",
+        "lines/hibiya/clips/melody/H17-naka-okachimachi_to-kita-senju.opus",
+        "lines/hibiya/clips/melody/H17-naka-okachimachi_to-naka-meguro.opus",
+        "lines/hibiya/clips/melody/H18-ueno_to-kita-senju.opus",
+        "lines/hibiya/clips/melody/H18-ueno_to-naka-meguro.opus",
+        "lines/hibiya/clips/melody/H19-iriya_to-kita-senju.opus",
+        "lines/hibiya/clips/melody/H19-iriya_to-naka-meguro.opus",
+        "lines/hibiya/clips/melody/H20-minowa_to-kita-senju.opus",
+        "lines/hibiya/clips/melody/H20-minowa_to-naka-meguro.opus",
+        "lines/hibiya/clips/melody/H21-minami-senju_to-kita-senju.opus",
+        "lines/hibiya/clips/melody/H21-minami-senju_to-naka-meguro.opus",
+        "lines/hibiya/clips/melody/boarding-metro-no-kyujitsu.opus"
+      ]
+    },
+    {
+      "id": "SZ60zRLWMvc",
+      "use": "platform-door",
+      "note": "Tokyo Metro platform door chimes, all kinds 2024, high quality",
+      "url": "https://www.youtube.com/watch?v=SZ60zRLWMvc",
+      "title": "【高音質】 東京メトロ ホームドア チャイム音 全集 【2024年】",
+      "creator": "masshiro",
+      "creator_url": "https://www.youtube.com/channel/UCRCbffzlciodHdoHg5sfiMg",
+      "license": "Free to use; credit the creator",
+      "clips": [
+        "lines/hibiya/clips/platform-door/platform-door_tokyo-metro-platform-door-ch_07.opus",
+        "lines/hibiya/clips/platform-door/platform-door_tokyo-metro-platform-door-ch_09.opus"
+      ]
+    },
+    {
+      "id": "WpOT8ynJv34",
+      "use": "voice",
+      "note": "Kita-Senju -> Naka-Meguro automatic announcements, 2022",
+      "direction": "to-naka-meguro",
+      "url": "https://www.youtube.com/watch?v=WpOT8ynJv34",
+      "title": "＜電車内自動放送＞【東京メトロ日比谷線】北千住→中目黒",
+      "creator": "日本全国鉄道チャンネル",
+      "creator_url": "https://www.youtube.com/channel/UCCUcMnkeaYfiL3Uued2pOSg",
+      "license": "Free to use; credit the creator",
+      "clips": [
+        "lines/hibiya/clips/voice/H01-naka-meguro_bound_en_to-naka-meguro_01.opus",
+        "lines/hibiya/clips/voice/H06-toranomon-hills_arriving_en_to-naka-meguro_01.opus",
+        "lines/hibiya/clips/voice/H06-toranomon-hills_arriving_ja_to-naka-meguro_01.opus",
+        "lines/hibiya/clips/voice/H13-kayabacho_arriving_en_to-naka-meguro_01.opus",
+        "lines/hibiya/clips/voice/H13-kayabacho_arriving_ja_to-naka-meguro_01.opus",
+        "lines/hibiya/clips/voice/H18-ueno_arriving_en_to-naka-meguro_01_round4_round5.opus",
+        "lines/hibiya/clips/voice/H21-minami-senju_next_en_to-naka-meguro_01.opus",
+        "lines/hibiya/clips/voice/H21-minami-senju_next_ja_to-naka-meguro_01.opus",
+        "lines/hibiya/clips/voice/general_doors_ja_to-naka-meguro_01.opus",
+        "lines/hibiya/clips/voice/general_phrase_en_to-naka-meguro_18.opus"
+      ]
+    },
+    {
+      "id": "j6bVtG7xDnM",
+      "use": "audio",
+      "url": "https://www.youtube.com/watch?v=j6bVtG7xDnM",
+      "title": "【レア？】銀座線 停電による全線運転見合わせ 駅構内自動放送 密着録音",
+      "creator": "駅メロチャンネル",
+      "creator_url": "https://www.youtube.com/channel/UCUNKwON2ZijtAv_UdfileJQ",
+      "license": "Free to use; credit the creator",
+      "clips": [
+        "lines/hibiya/clips/announce/power_outage_connecting_ginza_ja_round4_round5.opus"
+      ]
+    },
+    {
+      "id": "qoomXw1eJs0",
+      "use": "voice",
+      "note": "13000 Kita-Koshigaya -> Naka-Meguro announcements, includes an emergency stop",
+      "direction": "to-naka-meguro",
+      "url": "https://www.youtube.com/watch?v=qoomXw1eJs0",
+      "title": "【車内放送・急停車有り】東武スカイツリーライン・東京メトロ日比谷線 中目黒行き(北越谷～中目黒)【13000系】",
+      "creator": "Fresh825",
+      "creator_url": "https://www.youtube.com/channel/UCNFB3wKPUaEGMjCVTNF4WtA",
+      "license": "Free to use; credit the creator",
+      "clips": [
+        "lines/hibiya/clips/voice/H01-naka-meguro_arriving_en_to-naka-meguro_01.opus",
+        "lines/hibiya/clips/voice/H01-naka-meguro_arriving_ja_to-naka-meguro_01.opus",
+        "lines/hibiya/clips/voice/H01-naka-meguro_next_en_to-naka-meguro_01_round4_round5.opus",
+        "lines/hibiya/clips/voice/H01-naka-meguro_next_ja_to-naka-meguro_01.opus",
+        "lines/hibiya/clips/voice/H01-naka-meguro_transfer_en_to-naka-meguro_02_complete_round5.opus",
+        "lines/hibiya/clips/voice/H01-naka-meguro_transfer_ja_to-naka-meguro_01.opus",
+        "lines/hibiya/clips/voice/H02-ebisu_transfer_en_to-naka-meguro_01.opus",
+        "lines/hibiya/clips/voice/H03-hiroo_emergency_ja_to-naka-meguro_01.opus",
+        "lines/hibiya/clips/voice/H04-roppongi_transfer_en_to-naka-meguro_02.opus",
+        "lines/hibiya/clips/voice/H16-akihabara_next_ja_to-naka-meguro_01.opus",
+        "lines/hibiya/clips/voice/H18-ueno_arriving_ja_to-naka-meguro_01.opus",
+        "lines/hibiya/clips/voice/H20-minowa_bound_en_to-naka-meguro_01.opus",
+        "lines/hibiya/clips/voice/H20-minowa_bound_ja_to-naka-meguro_01.opus",
+        "lines/hibiya/clips/voice/H20-minowa_next_ja_to-naka-meguro_01.opus",
+        "lines/hibiya/clips/voice/H22-kita-senju_bound_ja_to-naka-meguro_04.opus",
+        "lines/hibiya/clips/voice/general_emergency_ja_to-naka-meguro_01.opus",
+        "lines/hibiya/clips/voice/general_emergency_ja_to-naka-meguro_conductor_02.opus"
+      ]
+    },
+    {
+      "id": "tYhJzjJ1B0A",
+      "use": "pack-supplement",
+      "note": "Actual seven-car Hibiya platform PA (recorded 2017); destination and car count supported by timed ASR. Historical platform safety wording; needs ear check.",
+      "url": "https://www.youtube.com/watch?v=tYhJzjJ1B0A",
+      "title": "日比谷線北千住行き7両到着放送",
+      "creator": "西武所沢車両鉄道チャンネル",
+      "creator_url": "https://www.youtube.com/channel/UCzd-Vifk0lLEEgpSspZs7gQ",
+      "license": "Free to use; credit the creator",
+      "clips": [
+        "lines/hibiya/clips/announce/platform_approach_ja_7cars_round5.opus"
+      ]
+    }
+  ],
+  "sakaisuji": [
+    {
+      "id": "125IlLiSiSo",
+      "use": "emergency",
+      "note": "Midosuji emergency stop, power cut and recovery, 2016",
+      "direction": "incident",
+      "url": "https://www.youtube.com/watch?v=125IlLiSiSo",
+      "title": "【緊急停止】大阪市営地下鉄御堂筋線江坂駅で乗客がホームに転落し緊急停止。救護の為、停電→運転再開し江坂駅に到着＠2016.07.30",
+      "creator": "S.M.Express",
+      "creator_url": "https://www.youtube.com/channel/UCV8CopfXC0XJYoHs5wdsAbw",
+      "license": "Free to use; credit the creator",
+      "clips": [
+        "lines/sakaisuji/clips/voice/general_emergency_ja_incident_conductor_02.opus"
+      ]
+    },
+    {
+      "id": "1qiArl3tQXM",
+      "use": "platform-door",
+      "note": "Osaka Metro platform door chimes, all kinds 2024, high quality",
+      "url": "https://www.youtube.com/watch?v=1qiArl3tQXM",
+      "title": "【高音質】 大阪メトロ (Osaka Metro) ホームドア チャイム音 全集 【2024年】",
+      "creator": "masshiro",
+      "creator_url": "https://www.youtube.com/channel/UCRCbffzlciodHdoHg5sfiMg",
+      "license": "Free to use; credit the creator",
+      "clips": [
+        "lines/sakaisuji/clips/platform-door/platform-door-close.opus",
+        "lines/sakaisuji/clips/platform-door/platform-door-open.opus"
+      ]
+    },
+    {
+      "id": "6JWcI0AS8mk",
+      "use": "melody",
+      "note": "Osaka Metro station melody compilation, high quality",
+      "url": "https://www.youtube.com/watch?v=6JWcI0AS8mk",
+      "title": "大阪メトロ 駅メロディ集 / Osaka Metro Melody Compilation (Japanese Train Jingles)【高音質・接近放送付】",
+      "creator": "もちお",
+      "creator_url": "https://www.youtube.com/channel/UCzy9k5cCtD3IrusD_4jO1og",
+      "license": "Free to use; credit the creator",
+      "clips": [
+        "lines/sakaisuji/clips/melody/last-train-chime.opus",
+        "lines/sakaisuji/clips/melody/notice-chime.opus",
+        "lines/sakaisuji/clips/melody/out-of-service-chime.opus"
+      ]
+    },
+    {
+      "id": "99-1SdiffHM",
+      "use": "voice",
+      "note": "Tengachaya -> Kyoto-Kawaramachi, new announcer 2026-08; conductor lines marked by speaker",
+      "direction": "northbound",
+      "url": "https://www.youtube.com/watch?v=99-1SdiffHM",
+      "title": "【紀伊さつき】Osaka Metro堺筋線 阪急京都線 準急【天下茶屋～京都河原町】車内放送",
+      "creator": "おやいろ",
+      "creator_url": "https://www.youtube.com/channel/UCJlsnTj76aFk1zIliF9MeVA",
+      "license": "Free to use; credit the creator",
+      "clips": [
+        "lines/sakaisuji/clips/voice/K11-tenjimbashisuji-rokuchome_arriving_en_northbound_01.opus",
+        "lines/sakaisuji/clips/voice/K11-tenjimbashisuji-rokuchome_arriving_ja_northbound_01.opus",
+        "lines/sakaisuji/clips/voice/K11-tenjimbashisuji-rokuchome_transfer_en_northbound_01.opus",
+        "lines/sakaisuji/clips/voice/K11-tenjimbashisuji-rokuchome_transfer_ja_northbound_01.opus",
+        "lines/sakaisuji/clips/voice/K12-ogimachi_arriving_en_northbound_01.opus",
+        "lines/sakaisuji/clips/voice/K12-ogimachi_next_ja_northbound_01.opus",
+        "lines/sakaisuji/clips/voice/K13-minami-morimachi_arriving_en_northbound_01.opus",
+        "lines/sakaisuji/clips/voice/K13-minami-morimachi_arriving_ja_northbound_01.opus",
+        "lines/sakaisuji/clips/voice/K13-minami-morimachi_next_ja_northbound_01.opus",
+        "lines/sakaisuji/clips/voice/K13-minami-morimachi_transfer_en_northbound_01.opus",
+        "lines/sakaisuji/clips/voice/K14-kitahama_transfer_ja_northbound_01.opus",
+        "lines/sakaisuji/clips/voice/K15-sakaisuji-hommachi_arriving_ja_northbound_01.opus",
+        "lines/sakaisuji/clips/voice/K15-sakaisuji-hommachi_transfer_ja_northbound_01.opus",
+        "lines/sakaisuji/clips/voice/K16-nagahoribashi_next_ja_northbound_01.opus",
+        "lines/sakaisuji/clips/voice/K17-nippombashi_exit-side_en_northbound_01.opus",
+        "lines/sakaisuji/clips/voice/K17-nippombashi_exit-side_ja_northbound_01.opus",
+        "lines/sakaisuji/clips/voice/K17-nippombashi_next_ja_northbound_01.opus",
+        "lines/sakaisuji/clips/voice/K17-nippombashi_transfer_en_northbound_01.opus",
+        "lines/sakaisuji/clips/voice/K17-nippombashi_transfer_ja_northbound_01.opus",
+        "lines/sakaisuji/clips/voice/K19-dobutsuen-mae_exit-side_ja_northbound_01.opus",
+        "lines/sakaisuji/clips/voice/K19-dobutsuen-mae_next_ja_northbound_01.opus",
+        "lines/sakaisuji/clips/voice/K19-dobutsuen-mae_transfer_en_northbound_01.opus",
+        "lines/sakaisuji/clips/voice/general_bound_en_northbound_01.opus",
+        "lines/sakaisuji/clips/voice/general_bound_ja_northbound_01.opus",
+        "lines/sakaisuji/clips/voice/general_phrase_en_northbound_07.opus"
+      ]
+    },
+    {
+      "id": "9q8OtaQ6yhU",
+      "use": "door",
+      "note": "Osaka Metro chime collection: door open, close, guidance bell, high quality",
+      "url": "https://www.youtube.com/watch?v=9q8OtaQ6yhU",
+      "title": "【高音質】大阪市営地下鉄　チャイムコレクション（ドア開・閉・誘導鈴）《30000系で収録》",
+      "creator": "Dinostar",
+      "creator_url": "https://www.youtube.com/channel/UCk7pf8V94WSwxbik4OcHD3A",
+      "license": "Free to use; credit the creator",
+      "clips": [
+        "lines/sakaisuji/clips/door/door_osaka-metro-chime-collection_03.opus"
+      ]
+    },
+    {
+      "id": "A8PDIr1wNjw",
+      "use": "melody",
+      "note": "Sakaisuji approach announcements + melodies collection",
+      "url": "https://www.youtube.com/watch?v=A8PDIr1wNjw",
+      "title": "大阪メトロ 堺筋線 列車接近放送・メロディ集",
+      "creator": "ゆうまチャンネル",
+      "creator_url": "https://www.youtube.com/channel/UCrqmYPrtAtSKeJjnSXLWAtA",
+      "license": "Free to use; credit the creator",
+      "clips": [
+        "lines/sakaisuji/clips/melody/approach-chime.opus",
+        "lines/sakaisuji/clips/melody/approach-melody-1.opus",
+        "lines/sakaisuji/clips/melody/departure-melody.opus",
+        "lines/sakaisuji/clips/melody/melody_platform-pa_01.opus",
+        "lines/sakaisuji/clips/melody/melody_platform-pa_02.opus",
+        "lines/sakaisuji/clips/melody/melody_platform-pa_03_round5.opus",
+        "lines/sakaisuji/clips/melody/melody_platform-pa_04_round5.opus",
+        "lines/sakaisuji/clips/melody/melody_platform-pa_05_round5.opus"
+      ]
+    },
+    {
+      "id": "LDsiZ8HtkVE",
+      "use": "emergency",
+      "note": "emergency stop announcement then departure",
+      "direction": "incident",
+      "url": "https://www.youtube.com/watch?v=LDsiZ8HtkVE",
+      "title": "急停車放送後何事もなく発車していく",
+      "creator": "しゅうううううううう",
+      "creator_url": "https://www.youtube.com/channel/UCME3t1hC4LK0qD8yg7ACgzg",
+      "license": "Free to use; credit the creator",
+      "clips": [
+        "lines/sakaisuji/clips/voice/general_emergency_en_incident_01.opus"
+      ]
+    },
+    {
+      "id": "MBPDNiinBAU",
+      "use": "emergency",
+      "note": "Midosuji power outage suspension announcements",
+      "direction": "incident",
+      "url": "https://www.youtube.com/watch?v=MBPDNiinBAU",
+      "title": "御堂筋線停電に伴う運転見合わせ 簡易放送",
+      "creator": "阪堺上町線",
+      "creator_url": "https://www.youtube.com/channel/UCJUkvdat31WFHC_614BEKvg",
+      "license": "Free to use; credit the creator",
+      "clips": [
+        "lines/sakaisuji/clips/voice/general_emergency_ja_incident_conductor_07.opus"
+      ]
+    },
+    {
+      "id": "S4YYm-WwFRI",
+      "use": "voice",
+      "note": "Tengachaya -> Tenjimbashisuji 6, new announcer, 2026-06",
+      "direction": "northbound",
+      "url": "https://www.youtube.com/watch?v=S4YYm-WwFRI",
+      "title": "【自動放送更新】Osaka Metro堺筋線　天下茶屋ー天神橋筋六丁目　車内放送",
+      "creator": "かんてつ_Kantetsu",
+      "creator_url": "https://www.youtube.com/channel/UC5u92FcW0k8x8WZiVZu3z3w",
+      "license": "Free to use; credit the creator",
+      "clips": [
+        "lines/sakaisuji/clips/voice/K14-kitahama_arriving_en_northbound_02.opus",
+        "lines/sakaisuji/clips/voice/K14-kitahama_bound_en_northbound_01.opus",
+        "lines/sakaisuji/clips/voice/K14-kitahama_exit-side_ja_northbound_02.opus",
+        "lines/sakaisuji/clips/voice/K14-kitahama_next_ja_northbound_01.opus",
+        "lines/sakaisuji/clips/voice/K14-kitahama_transfer_en_northbound_01.opus",
+        "lines/sakaisuji/clips/voice/K15-sakaisuji-hommachi_arriving_en_northbound_01.opus",
+        "lines/sakaisuji/clips/voice/K15-sakaisuji-hommachi_bound_ja_northbound_02.opus",
+        "lines/sakaisuji/clips/voice/K15-sakaisuji-hommachi_safety_ja_northbound_01.opus",
+        "lines/sakaisuji/clips/voice/K16-nagahoribashi_arriving_en_northbound_01_round4_round5.opus",
+        "lines/sakaisuji/clips/voice/K16-nagahoribashi_arriving_ja_northbound_01.opus",
+        "lines/sakaisuji/clips/voice/K16-nagahoribashi_exit-side_en_northbound_01.opus",
+        "lines/sakaisuji/clips/voice/K16-nagahoribashi_next_en_northbound_01.opus",
+        "lines/sakaisuji/clips/voice/K16-nagahoribashi_transfer_en_northbound_01.opus",
+        "lines/sakaisuji/clips/voice/K17-nippombashi_arriving_ja_northbound_01.opus",
+        "lines/sakaisuji/clips/voice/K17-nippombashi_next_en_northbound_02.opus",
+        "lines/sakaisuji/clips/voice/K19-dobutsuen-mae_arriving_en_northbound_01.opus",
+        "lines/sakaisuji/clips/voice/K19-dobutsuen-mae_arriving_ja_northbound_01.opus",
+        "lines/sakaisuji/clips/voice/K19-dobutsuen-mae_transfer_ja_northbound_01_complete.opus",
+        "lines/sakaisuji/clips/voice/general_bound_en_northbound_02.opus",
+        "lines/sakaisuji/clips/voice/general_manners_ja_northbound_02.opus",
+        "lines/sakaisuji/clips/voice/general_phrase_en_northbound_08.opus",
+        "lines/sakaisuji/clips/voice/general_phrase_en_northbound_09.opus",
+        "lines/sakaisuji/clips/voice/general_terminal_en_complete_round5.opus",
+        "lines/sakaisuji/clips/voice/general_terminal_ja_complete_round5.opus"
+      ]
+    },
+    {
+      "id": "UVZwY7E9lAs",
+      "use": "voice",
+      "note": "Tenjimbashisuji 6 -> Tengachaya, new announcer, 2026-06",
+      "direction": "southbound",
+      "url": "https://www.youtube.com/watch?v=UVZwY7E9lAs",
+      "title": "【自動放送更新】Osaka Metro堺筋線　天神橋筋六丁目ー天下茶屋　車内放送",
+      "creator": "かんてつ_Kantetsu",
+      "creator_url": "https://www.youtube.com/channel/UC5u92FcW0k8x8WZiVZu3z3w",
+      "license": "Free to use; credit the creator",
+      "clips": [
+        "lines/sakaisuji/clips/voice/K12-ogimachi_arriving_ja_southbound_01.opus",
+        "lines/sakaisuji/clips/voice/K12-ogimachi_exit-side_ja_southbound_01.opus",
+        "lines/sakaisuji/clips/voice/K12-ogimachi_next_en_southbound_01.opus",
+        "lines/sakaisuji/clips/voice/K12-ogimachi_transfer_en_southbound_01.opus",
+        "lines/sakaisuji/clips/voice/K12-ogimachi_transfer_ja_southbound_01.opus",
+        "lines/sakaisuji/clips/voice/K13-minami-morimachi_next_en_southbound_01.opus",
+        "lines/sakaisuji/clips/voice/K13-minami-morimachi_transfer_ja_southbound_01.opus",
+        "lines/sakaisuji/clips/voice/K14-kitahama_arriving_ja_southbound_01.opus",
+        "lines/sakaisuji/clips/voice/K14-kitahama_next_en_southbound_01.opus",
+        "lines/sakaisuji/clips/voice/K15-sakaisuji-hommachi_next_en_southbound_01.opus",
+        "lines/sakaisuji/clips/voice/K15-sakaisuji-hommachi_next_ja_southbound_01_round5.opus",
+        "lines/sakaisuji/clips/voice/K15-sakaisuji-hommachi_transfer_en_southbound_01.opus",
+        "lines/sakaisuji/clips/voice/K16-nagahoribashi_bound_en_southbound_01.opus",
+        "lines/sakaisuji/clips/voice/K16-nagahoribashi_transfer_ja_southbound_01.opus",
+        "lines/sakaisuji/clips/voice/K17-nippombashi_arriving_en_southbound_01.opus",
+        "lines/sakaisuji/clips/voice/K18-ebisucho_arriving_en_southbound_01.opus",
+        "lines/sakaisuji/clips/voice/K18-ebisucho_arriving_ja_southbound_01.opus",
+        "lines/sakaisuji/clips/voice/K18-ebisucho_next_en_southbound_01.opus",
+        "lines/sakaisuji/clips/voice/K18-ebisucho_next_ja_southbound_01_round5.opus",
+        "lines/sakaisuji/clips/voice/K18-ebisucho_transfer_en_southbound_01.opus",
+        "lines/sakaisuji/clips/voice/K19-dobutsuen-mae_next_en_southbound_01.opus",
+        "lines/sakaisuji/clips/voice/K20-tengachaya_arriving_en_southbound_01.opus",
+        "lines/sakaisuji/clips/voice/K20-tengachaya_arriving_ja_southbound_01.opus",
+        "lines/sakaisuji/clips/voice/K20-tengachaya_next_en_southbound_01.opus",
+        "lines/sakaisuji/clips/voice/K20-tengachaya_next_ja_southbound_01_round5.opus",
+        "lines/sakaisuji/clips/voice/K20-tengachaya_transfer_en_southbound_01.opus",
+        "lines/sakaisuji/clips/voice/K20-tengachaya_transfer_ja_southbound_01.opus",
+        "lines/sakaisuji/clips/voice/general_doors_ja_southbound_01_round5.opus"
+      ]
+    },
+    {
+      "id": "ge_CnniuCUE",
+      "use": "door",
+      "note": "Osaka Metro door chimes + door warning chimes",
+      "url": "https://www.youtube.com/watch?v=ge_CnniuCUE",
+      "title": "大阪メトロドアチャイム・ドア予告チャイム集",
+      "creator": "もにのら",
+      "creator_url": "https://www.youtube.com/channel/UCUnmYoyYof5exqQEhojB2DA",
+      "license": "Free to use; credit the creator",
+      "clips": [
+        "lines/sakaisuji/clips/door/door-close-chime.opus",
+        "lines/sakaisuji/clips/door/door-open-chime.opus"
+      ]
+    }
+  ],
+  "movement": [
+    {
+      "id": "tokyo",
+      "creator": "21854F (@F21854)",
+      "title": "TM13000Sound.zip v0.4",
+      "url": "https://uu.getuploader.com/Tob21854F_BVEdate/download/15",
+      "license_note": "Original author readme retained in motion/tokyo-source-readme.txt.",
+      "note": "Motor layers, brake rub (first 8 s) and air release (peak-normalised) converted losslessly to FLAC.",
+      "used_by": [
+        "hibiya"
+      ],
+      "clips": [
+        "motion/clips/tm13000/air-release.flac",
+        "motion/clips/tm13000/brake-rub.flac",
+        "motion/clips/tm13000/motor-1.flac",
+        "motion/clips/tm13000/motor-2.flac",
+        "motion/clips/tm13000/motor-3.flac",
+        "motion/clips/tm13000/motor-4.flac",
+        "motion/clips/tm13000/motor-6.flac",
+        "motion/clips/tm13000/motor-7.flac"
+      ]
+    },
+    {
+      "id": "commons:Rail_Joint_sound_OER_MSE.ogg",
+      "creator": "Cassiopeia sweet",
+      "title": "Rail Joint sound OER MSE",
+      "url": "https://commons.wikimedia.org/wiki/File:Rail_Joint_sound_OER_MSE.ogg",
+      "license": "Public domain",
+      "used_by": [
+        "hibiya",
+        "sakaisuji",
+        "yamanote"
+      ],
+      "clips": [
+        "motion/clips/shared/joint-01.opus",
+        "motion/clips/shared/joint-04.opus",
+        "motion/clips/shared/joint-07.opus",
+        "motion/clips/shared/joint-10.opus"
+      ]
+    },
+    {
+      "id": "commons:Rail_Joint_sound_OER_HiSE.ogg",
+      "creator": "Cassiopeia sweet",
+      "title": "Rail Joint sound OER HiSE",
+      "url": "https://commons.wikimedia.org/wiki/File:Rail_Joint_sound_OER_HiSE.ogg",
+      "license": "Public domain",
+      "used_by": [
+        "hibiya",
+        "sakaisuji",
+        "yamanote"
+      ],
+      "clips": [
+        "motion/clips/shared/joint-02.opus",
+        "motion/clips/shared/joint-05.opus",
+        "motion/clips/shared/joint-08.opus",
+        "motion/clips/shared/joint-11.opus"
+      ]
+    },
+    {
+      "id": "commons:Rail_Joint_sound_OER_VSE.ogg",
+      "creator": "Cassiopeia sweet",
+      "title": "Rail Joint sound OER VSE",
+      "url": "https://commons.wikimedia.org/wiki/File:Rail_Joint_sound_OER_VSE.ogg",
+      "license": "Public domain",
+      "used_by": [
+        "hibiya",
+        "sakaisuji",
+        "yamanote"
+      ],
+      "clips": [
+        "motion/clips/shared/joint-03.opus",
+        "motion/clips/shared/joint-06.opus",
+        "motion/clips/shared/joint-09.opus",
+        "motion/clips/shared/joint-12.opus"
+      ]
+    },
+    {
+      "id": "freesound:388568",
+      "creator": "totalcult",
+      "title": "Train Air Brake 01.wav",
+      "url": "https://freesound.org/people/totalcult/sounds/388568/",
+      "license": "CC0-1.0",
+      "used_by": [
+        "hibiya",
+        "sakaisuji",
+        "yamanote"
+      ],
+      "clips": [
+        "motion/clips/shared/release-01.opus"
+      ]
+    },
+    {
+      "id": "freesound:148922",
+      "creator": "MacFerret_20",
+      "title": "DH12_136RsRailD1.wav",
+      "url": "https://freesound.org/people/MacFerret_20/sounds/148922/",
+      "license": "CC0-1.0",
+      "used_by": [
+        "hibiya",
+        "sakaisuji",
+        "yamanote"
+      ],
+      "clips": [
+        "motion/clips/shared/release-02.opus"
+      ]
+    },
+    {
+      "id": "freesound:124011",
+      "creator": "alienistcog",
+      "title": "md9trk4.AIF",
+      "url": "https://freesound.org/people/alienistcog/sounds/124011/",
+      "license": "CC0-1.0",
+      "used_by": [
+        "hibiya",
+        "sakaisuji",
+        "yamanote"
+      ],
+      "clips": [
+        "motion/clips/shared/release-03.opus"
+      ]
+    },
+    {
+      "id": "freesound:849797",
+      "creator": "IENBA",
+      "title": "Metal Rattles",
+      "url": "https://freesound.org/people/IENBA/sounds/849797/",
+      "license": "CC0-1.0",
+      "used_by": [
+        "hibiya",
+        "sakaisuji",
+        "yamanote"
+      ],
+      "clips": [
+        "motion/clips/shared/rattle-01.opus",
+        "motion/clips/shared/rattle-02.opus"
+      ]
+    },
+    {
+      "id": "freesound:849796",
+      "creator": "IENBA",
+      "title": "Low Old Wagon Metal Rattles",
+      "url": "https://freesound.org/people/IENBA/sounds/849796/",
+      "license": "CC0-1.0",
+      "used_by": [
+        "hibiya",
+        "sakaisuji",
+        "yamanote"
+      ],
+      "clips": [
+        "motion/clips/shared/rattle-03.opus"
+      ]
+    },
+    {
+      "id": "freesound:713915",
+      "creator": "joliusnyren",
+      "title": "NYC Subway 2 (extra creaky)",
+      "url": "https://freesound.org/people/joliusnyren/sounds/713915/",
+      "license": "CC0-1.0",
+      "used_by": [
+        "hibiya",
+        "sakaisuji",
+        "yamanote"
+      ],
+      "clips": [
+        "motion/clips/shared/rattle-04.opus",
+        "motion/clips/shared/rattle-05.opus"
+      ]
+    },
+    {
+      "id": "freesound:177723",
+      "creator": "kyles",
+      "title": "Thailand passenger train between cars train moving, start, stop",
+      "url": "https://freesound.org/people/kyles/sounds/177723/",
+      "license": "CC0-1.0",
+      "used_by": [
+        "hibiya",
+        "sakaisuji",
+        "yamanote"
+      ],
+      "clips": [
+        "motion/clips/shared/rattle-06.opus"
+      ]
+    },
+    {
+      "id": "freesound:742847",
+      "creator": "itinerantmonk108",
+      "title": "Large fan in train station",
+      "url": "https://freesound.org/people/itinerantmonk108/sounds/742847/",
+      "license": "CC0-1.0",
+      "used_by": [
+        "hibiya",
+        "sakaisuji",
+        "yamanote"
+      ],
+      "clips": [
+        "motion/clips/shared/hvac.opus"
+      ]
+    },
+    {
+      "id": "freesound:872230",
+      "creator": "KoimeMatsuchiya",
+      "title": "Shinkansen Hikari Green Car Interior Ambience Stopped",
+      "url": "https://freesound.org/people/KoimeMatsuchiya/sounds/872230/",
+      "license": "CC0-1.0",
+      "used_by": [
+        "hibiya",
+        "sakaisuji",
+        "yamanote"
+      ],
+      "clips": [
+        "motion/clips/shared/standing.opus"
+      ]
+    },
+    {
+      "id": "freesound:42210",
+      "creator": "markystar",
+      "title": "KeihinTohokuSen120.wav",
+      "url": "https://freesound.org/people/markystar/sounds/42210/",
+      "license": "CC0-1.0",
+      "used_by": [
+        "yamanote"
+      ],
+      "clips": [
+        "motion/clips/e235/rolling.opus"
+      ]
+    },
+    {
+      "id": "commons:JRE_Joban_line_Local_moha207-901.ogg",
+      "creator": "緑15号 (Japanese Wikipedia)",
+      "title": "JRE Joban line Local moha207-901",
+      "url": "https://commons.wikimedia.org/wiki/File:JRE_Joban_line_Local_moha207-901.ogg",
+      "license": "Public domain",
+      "used_by": [
+        "hibiya"
+      ],
+      "clips": [
+        "motion/clips/open/rolling.opus"
+      ]
+    },
+    {
+      "id": "freesound:315900",
+      "creator": "manuke",
+      "title": "Tokyo - Train Interior 2",
+      "url": "https://freesound.org/people/manuke/sounds/315900/",
+      "license": "CC0-1.0",
+      "used_by": [
+        "hibiya"
+      ],
+      "clips": [
+        "motion/clips/hibiya/rolling-tunnel.opus"
+      ]
+    },
+    {
+      "id": "commons:Seoul_subway_line_3_Jongro-samga_~_Express_bus_terminal.ogg",
+      "creator": "콩가루",
+      "title": "Seoul subway line 3 Jongro-samga ~ Express bus terminal",
+      "url": "https://commons.wikimedia.org/wiki/File:Seoul_subway_line_3_Jongro-samga_~_Express_bus_terminal.ogg",
+      "license": "CC0-1.0",
+      "used_by": [
+        "sakaisuji"
+      ],
+      "clips": [
+        "motion/clips/sakaisuji/rolling-tunnel.opus"
+      ]
+    },
+    {
+      "id": "freesound:647259",
+      "creator": "kousuke",
+      "title": "at_Kichijoji_station_platform_220815.wav",
+      "url": "https://freesound.org/people/kousuke/sounds/647259/",
+      "license": "CC0-1.0",
+      "used_by": [
+        "hibiya",
+        "sakaisuji",
+        "yamanote"
+      ],
+      "clips": [
+        "motion/clips/platform/surface.opus"
+      ]
+    },
+    {
+      "id": "freesound:504666",
+      "creator": "selcukartut",
+      "title": "Tokyo Metro",
+      "url": "https://freesound.org/people/selcukartut/sounds/504666/",
+      "license": "CC0-1.0",
+      "used_by": [
+        "hibiya",
+        "yamanote"
+      ],
+      "clips": [
+        "motion/clips/platform/underground.opus"
+      ]
+    },
+    {
+      "id": "freesound:320071",
+      "creator": "macdaddyno1",
+      "title": "Train apraoching ikebukuro station. Fukutoshin line, Tokyo Metro.",
+      "url": "https://freesound.org/people/macdaddyno1/sounds/320071/",
+      "license": "CC0-1.0",
+      "used_by": [
+        "sakaisuji"
+      ],
+      "clips": [
+        "motion/clips/platform/underground-osaka.opus"
+      ]
+    }
+  ]
+}

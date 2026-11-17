@@ -1,0 +1,125 @@
+{
+  "id": "sakaisuji",
+  "name": {
+    "ja": "堺筋線",
+    "en": "Sakaisuji Line"
+  },
+  "operator": "Osaka Metro",
+  "color": "#814721",
+  "loop": false,
+  "stations": [
+    {
+      "code": "K11",
+      "kanji": "天神橋筋六丁目",
+      "kana": "てんじんばしすじろくちょうめ",
+      "romaji": "Tenjimbashisuji Rokuchōme",
+      "transferCodes": [
+        "T18"
+      ],
+      "lat": 34.7106,
+      "lon": 135.511,
+      "wikidata": "Q1143934"
+    },
+    {
+      "code": "K12",
+      "kanji": "扇町",
+      "kana": "おうぎまち",
+      "romaji": "Ogimachi",
+      "transferCodes": [],
+      "lat": 34.70380833,
+      "lon": 135.51083333,
+      "wikidata": "Q843811"
+    },
+    {
+      "code": "K13",
+      "kanji": "南森町",
+      "kana": "みなみもりまち",
+      "romaji": "Minami-morimachi",
+      "transferCodes": [
+        "T21"
+      ],
+      "lat": 34.697697222222,
+      "lon": 135.51101944444,
+      "wikidata": "Q1039923"
+    },
+    {
+      "code": "K14",
+      "kanji": "北浜",
+      "kana": "きたはま",
+      "romaji": "Kitahama",
+      "transferCodes": [],
+      "lat": 34.69159,
+      "lon": 135.506637,
+      "wikidata": "Q1042837"
+    },
+    {
+      "code": "K15",
+      "kanji": "堺筋本町",
+      "kana": "さかいすじほんまち",
+      "romaji": "Sakaisuji-Hommachi",
+      "transferCodes": [
+        "C17"
+      ],
+      "lat": 34.681861111111,
+      "lon": 135.50691111111,
+      "wikidata": "Q1074425"
+    },
+    {
+      "code": "K16",
+      "kanji": "長堀橋",
+      "kana": "ながほりばし",
+      "romaji": "Nagahoribashi",
+      "transferCodes": [
+        "N16"
+      ],
+      "lat": 34.674647222222,
+      "lon": 135.50632222222,
+      "wikidata": "Q1038083"
+    },
+    {
+      "code": "K17",
+      "kanji": "日本橋",
+      "kana": "にっぽんばし",
+      "romaji": "Nippombashi",
+      "transferCodes": [
+        "S17"
+      ],
+      "lat": 34.666994444444,
+      "lon": 135.50613333333,
+      "wikidata": "Q1040630"
+    },
+    {
+      "code": "K18",
+      "kanji": "恵美須町",
+      "kana": "えびすちょう",
+      "romaji": "Ebisuchō",
+      "transferCodes": [],
+      "lat": 34.655585,
+      "lon": 135.505663,
+      "wikidata": "Q2066656"
+    },
+    {
+      "code": "K19",
+      "kanji": "動物園前",
+      "kana": "どうぶつえんまえ",
+      "romaji": "Dōbutsuen-mae",
+      "transferCodes": [
+        "M22"
+      ],
+      "lat": 34.648816666667,
+      "lon": 135.50441111111,
+      "wikidata": "Q1038365"
+    },
+    {
+      "code": "K20",
+      "kanji": "天下茶屋",
+      "kana": "てんがちゃや",
+      "romaji": "Tengachaya",
+      "transferCodes": [],
+      "lat": 34.63769,
+      "lon": 135.49713,
+      "wikidata": "Q111751098"
+    }
+  ],
+  "source": "Wikidata Q1143250, fetched 2026-10-22"
+}

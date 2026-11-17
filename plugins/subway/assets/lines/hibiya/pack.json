@@ -1,0 +1,4632 @@
+{
+  "id": "hibiya",
+  "name": "Hibiya Line",
+  "directions": {
+    "to-kita-senju": "Toward Kita-Senju",
+    "to-naka-meguro": "Toward Naka-Meguro"
+  },
+  "movement": "tokyo",
+  "stations": [
+    {
+      "code": "H01",
+      "name": "Naka-Meguro",
+      "kanji": "中目黒",
+      "notes": {},
+      "required": {
+        "next_ja": "No complete automatic sentence retained.",
+        "next_en": "No complete automatic sentence retained.",
+        "arriving_ja": "No complete automatic sentence retained.",
+        "arriving_en": "No complete automatic sentence retained.",
+        "transfer_ja": "Interchange station; no separate complete automatic transfer retained.",
+        "transfer_en": "Interchange station; no separate complete automatic transfer retained."
+      },
+      "departure_melody": {},
+      "next": {
+        "ja": [
+          {
+            "file": "lines/hibiya/clips/voice/H01-naka-meguro_next_ja_to-naka-meguro_01.opus",
+            "text": "次は、中目黒、終点です。",
+            "status": "approved",
+            "note": "",
+            "kind": "next",
+            "station": "H01",
+            "speaker": "auto",
+            "direction": "to-naka-meguro",
+            "clarity": 44.9,
+            "lang": "ja",
+            "source": "qoomXw1eJs0",
+            "start": 1185.48,
+            "end": 1188.77,
+            "directions": [
+              "to-naka-meguro"
+            ],
+            "asr": "次は、中目黒、終点です。",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "ad3d4f6fcc4263809bd8eac605bc022ca4ceb512b06e246d53318e111183ff8e"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/hibiya/clips/voice/H01-naka-meguro_next_en_to-naka-meguro_01_round4_round5.opus",
+            "text": "The next stop is Naka-Meguro H01, the last stop.",
+            "status": "needs ear check",
+            "note": "Round 4 rejected clipped H; extended through the complete number and last stop. Full large-v3 CUDA fixed-language transcript and word timings checked; new cut needs listening. Round 5: more than 150 ms pre-roll; envelope onset with 60 ms consonant guard; speech retained, boundary changed; needs ear check.",
+            "kind": "next",
+            "station": "H01",
+            "speaker": "auto",
+            "direction": "to-naka-meguro",
+            "clarity": 46.0,
+            "lang": "en",
+            "source": "qoomXw1eJs0",
+            "start": 1193.65,
+            "end": 1198.2,
+            "directions": [
+              "to-naka-meguro"
+            ],
+            "revision": "round5 boundary trim",
+            "asr": "The next stop is Nakameguro H1, the last stop.",
+            "transcript_audit": "large-v3 / CUDA / round5 final-cut boundary verification",
+            "approval_before_trim": "approved",
+            "speech_unchanged": true,
+            "boundary_trim": {
+              "input_sha256": "ea3771722a69f52979d1bf2c8567f09cef2e45b26d15643b45c5380c1a45afab",
+              "start": 0.17,
+              "end": 4.55,
+              "fade_in": 0.005,
+              "fade_out": 0.025,
+              "input_archive": "raw/hibiya/round5-inputs/H01-naka-meguro_next_en_to-naka-meguro_01_round4.opus"
+            },
+            "sha256": "3ac8f3f72720aa083b01116837dba3cd0a9b34a5301f919d2d9af4bb97333d37"
+          }
+        ]
+      },
+      "arriving": {
+        "ja": [
+          {
+            "file": "lines/hibiya/clips/voice/H01-naka-meguro_arriving_ja_to-naka-meguro_01.opus",
+            "text": "まもなく、中目黒、終点です。",
+            "status": "approved",
+            "note": "",
+            "kind": "arriving",
+            "station": "H01",
+            "speaker": "auto",
+            "direction": "to-naka-meguro",
+            "clarity": 45.5,
+            "lang": "ja",
+            "source": "qoomXw1eJs0",
+            "start": 1204.97,
+            "end": 1208.4,
+            "directions": [
+              "to-naka-meguro"
+            ],
+            "asr": "まもなく、中目黒、終点です。",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "8e614bca20840a8c45140518f6dfc142afefb26071fe2f1501f2fe1f6699f415"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/hibiya/clips/voice/H01-naka-meguro_arriving_en_to-naka-meguro_01.opus",
+            "text": "Arriving at Naka-Meguro H01, the last stop.",
+            "status": "approved",
+            "note": "",
+            "kind": "arriving",
+            "station": "H01",
+            "speaker": "auto",
+            "direction": "to-naka-meguro",
+            "clarity": 49.4,
+            "lang": "en",
+            "source": "qoomXw1eJs0",
+            "start": 1221.28,
+            "end": 1225.73,
+            "directions": [
+              "to-naka-meguro"
+            ],
+            "asr": "Arriving at Nakameguro H1, the last stop.",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "d6196ca722227d961d5dc973bea43d68c6484e430a2f977ab347bccba3d20402"
+          }
+        ]
+      },
+      "transfer": {
+        "ja": [
+          {
+            "file": "lines/hibiya/clips/voice/H01-naka-meguro_transfer_ja_to-naka-meguro_01.opus",
+            "text": "東急東横線はお乗り換えです。",
+            "status": "approved",
+            "note": "",
+            "kind": "transfer",
+            "station": "H01",
+            "speaker": "auto",
+            "direction": "to-naka-meguro",
+            "clarity": 45.8,
+            "lang": "ja",
+            "source": "qoomXw1eJs0",
+            "start": 1189.28,
+            "end": 1192.18,
+            "directions": [
+              "to-naka-meguro"
+            ],
+            "asr": "東急東横線はお乗り換えです。",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "23ca2e6b4624aec29ac249db265d8e1aa70d6e133073b25c41706992cab7e332"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/hibiya/clips/voice/H01-naka-meguro_transfer_en_to-naka-meguro_02_complete_round5.opus",
+            "text": "Please change here for the Tokyu Toyoko Line.",
+            "status": "needs ear check",
+            "note": "Rejoined contiguous transfer-list fragments from the raw recording; complete cut needs a new ear check. Round 5: more than 150 ms pre-roll; envelope onset with 60 ms consonant guard; speech retained, boundary changed; needs ear check.",
+            "kind": "transfer",
+            "station": "H01",
+            "speaker": "auto",
+            "direction": "to-naka-meguro",
+            "clarity": 40.6,
+            "lang": "en",
+            "source": "qoomXw1eJs0",
+            "start": 1198.94,
+            "end": 1202.19,
+            "directions": [
+              "to-naka-meguro"
+            ],
+            "asr": "Please change your for the Tokyo Toyokon line.",
+            "transcript_audit": "large-v3 / CUDA / round5 final-cut boundary verification",
+            "revision": "round5 boundary trim",
+            "approval_before_trim": "approved",
+            "speech_unchanged": true,
+            "boundary_trim": {
+              "input_sha256": "e5936bfec926a2d6205c3a3e17a9b3b4fbbd93ad532790f3b595000201472dad",
+              "start": 0.11,
+              "end": 3.25,
+              "fade_in": 0.005,
+              "fade_out": 0.025,
+              "input_archive": "raw/hibiya/round5-inputs/H01-naka-meguro_transfer_en_to-naka-meguro_02_complete.opus"
+            },
+            "sha256": "7a30059359e81989114e92fbf857ec508fe5f512661c7793aa0d8b517fee1ffb"
+          }
+        ]
+      }
+    },
+    {
+      "code": "H02",
+      "name": "Ebisu",
+      "kanji": "恵比寿",
+      "notes": {},
+      "required": {
+        "next_ja": "No complete automatic sentence retained.",
+        "next_en": "No complete automatic sentence retained.",
+        "arriving_ja": "No complete automatic sentence retained.",
+        "arriving_en": "No complete automatic sentence retained."
+      },
+      "departure_melody": {
+        "to-naka-meguro": {
+          "file": "lines/hibiya/clips/melody/H02-ebisu_to-naka-meguro.opus",
+          "text": "アルテミス",
+          "status": "approved",
+          "note": "",
+          "kind": "departure",
+          "station": "H02",
+          "start": 958,
+          "end": 965.5,
+          "source": "RoKgAVyEn1I",
+          "platform": "A線",
+          "sha256": "0963b926a94c3ca403d485bcefd8515c03af1eec55bb707b738b611cf0ae27ea"
+        },
+        "to-kita-senju": {
+          "file": "lines/hibiya/clips/melody/H02-ebisu_to-kita-senju.opus",
+          "text": "Sparkling Road",
+          "status": "approved",
+          "note": "",
+          "kind": "departure",
+          "station": "H02",
+          "start": 965.5,
+          "end": 974,
+          "source": "RoKgAVyEn1I",
+          "platform": "B線",
+          "sha256": "0809ff5ba0fad1c96c888301a322411d94bbf315b242c9086bc1dc200d637ff9"
+        }
+      },
+      "next": {
+        "ja": [
+          {
+            "file": "lines/hibiya/clips/voice/H02-ebisu_next_ja_to-kita-senju_01.opus",
+            "text": "次は、恵比寿です。",
+            "status": "approved",
+            "note": "",
+            "kind": "next",
+            "station": "H02",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 54.4,
+            "lang": "ja",
+            "source": "CGi4vbwS2IE",
+            "start": 0.53,
+            "end": 2.3,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "次は恵比寿です。",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "2854a84fc776afdec17d603015e02d3245327cfbade6a7cd4c47734c333e12a5"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/hibiya/clips/voice/H02-ebisu_next_en_to-kita-senju_01.opus",
+            "text": "The next stop is Ebisu H02.",
+            "status": "approved",
+            "note": "",
+            "kind": "next",
+            "station": "H02",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 54.1,
+            "lang": "en",
+            "source": "CGi4vbwS2IE",
+            "start": 6.92,
+            "end": 10.39,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "The next stop is Ebisu H2.",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "8f7d53d0f61f005f5dc80354377ddbf64a526d16509990449982b92555fe2255"
+          }
+        ]
+      },
+      "arriving": {
+        "ja": [
+          {
+            "file": "lines/hibiya/clips/voice/H02-ebisu_arriving_ja_to-kita-senju_01.opus",
+            "text": "まもなく、恵比寿です。",
+            "status": "approved",
+            "note": "",
+            "kind": "arriving",
+            "station": "H02",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 57.1,
+            "lang": "ja",
+            "source": "CGi4vbwS2IE",
+            "start": 33.38,
+            "end": 35.41,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "まもなく恵比寿です",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "526106adbef72826a772fce438c754d2e48e4b3a9898bbfa76cddde9483bfe97"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/hibiya/clips/voice/H02-ebisu_arriving_en_to-kita-senju_01.opus",
+            "text": "Arriving at Ebisu H02.",
+            "status": "approved",
+            "note": "",
+            "kind": "arriving",
+            "station": "H02",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 55.8,
+            "lang": "en",
+            "source": "CGi4vbwS2IE",
+            "start": 42.19,
+            "end": 45.69,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "Arriving at Ebisu H2",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "42caab0ebdfe4c72266b1ea245bf7554cc8b47eaa10a9ad91818ec93303ec0e4"
+          }
+        ]
+      },
+      "transfer": {
+        "ja": [
+          {
+            "file": "lines/hibiya/clips/voice/H02-ebisu_transfer_ja_to-kita-senju_01.opus",
+            "text": "JR線はお乗り換えです。",
+            "status": "approved",
+            "note": "",
+            "kind": "transfer",
+            "station": "H02",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 48.1,
+            "lang": "ja",
+            "source": "CGi4vbwS2IE",
+            "start": 2.88,
+            "end": 5.35,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "JR線はお乗り換えです。",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "bd681ba8abf07de19fa1fef5fdc65d337f1c7af5ca5e70c637ac2a0c86a6213b"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/hibiya/clips/voice/H02-ebisu_transfer_en_to-naka-meguro_01.opus",
+            "text": "Please change here for The JR line.",
+            "status": "approved",
+            "note": "",
+            "kind": "transfer",
+            "station": "H02",
+            "speaker": "auto",
+            "direction": "to-naka-meguro",
+            "clarity": 35.9,
+            "lang": "en",
+            "source": "qoomXw1eJs0",
+            "start": 1161.21,
+            "end": 1163.86,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "Please change your floor. The JR line.",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "bd4411d98c09a03401bb77b23f2214d89466ec34aae33524dcd0c321d5e76023"
+          }
+        ]
+      }
+    },
+    {
+      "code": "H03",
+      "name": "Hiroo",
+      "kanji": "広尾",
+      "notes": {},
+      "required": {
+        "next_ja": "No complete automatic sentence retained.",
+        "next_en": "No complete automatic sentence retained.",
+        "arriving_ja": "No complete automatic sentence retained.",
+        "arriving_en": "No complete automatic sentence retained."
+      },
+      "departure_melody": {
+        "to-naka-meguro": {
+          "file": "lines/hibiya/clips/melody/H03-hiroo_to-naka-meguro.opus",
+          "text": "昼下がりのテラス",
+          "status": "approved",
+          "note": "",
+          "kind": "departure",
+          "station": "H03",
+          "start": 950,
+          "end": 958,
+          "source": "RoKgAVyEn1I",
+          "platform": "A線",
+          "sha256": "7af0504827dffc81f76f14b0c69d18535e8e7a2afdec0ebe91e8792ae9b199ab"
+        },
+        "to-kita-senju": {
+          "file": "lines/hibiya/clips/melody/H03-hiroo_to-kita-senju.opus",
+          "text": "希望の地へ",
+          "status": "approved",
+          "note": "",
+          "kind": "departure",
+          "station": "H03",
+          "start": 974,
+          "end": 983.5,
+          "source": "RoKgAVyEn1I",
+          "platform": "B線",
+          "sha256": "bbba8c5b9a637e2115c0d6649746102918c65a0db9047e0a8f4b84edb693d3d6"
+        }
+      },
+      "next": {
+        "ja": [
+          {
+            "file": "lines/hibiya/clips/voice/H03-hiroo_next_ja_to-kita-senju_01.opus",
+            "text": "次は、広尾です。",
+            "status": "approved",
+            "note": "",
+            "kind": "next",
+            "station": "H03",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 65.0,
+            "lang": "ja",
+            "source": "CGi4vbwS2IE",
+            "start": 46.38,
+            "end": 48.22,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "次は披露です",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "6ecaa353eeb4b3677125ce2c3fc834b01568ac48a8e4413957a931ff0bcf98ab"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/hibiya/clips/voice/H03-hiroo_next_en_to-kita-senju_01.opus",
+            "text": "The next stop is Hiroo H03.",
+            "status": "approved",
+            "note": "",
+            "kind": "next",
+            "station": "H03",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 56.8,
+            "lang": "en",
+            "source": "CGi4vbwS2IE",
+            "start": 53.28,
+            "end": 56.84,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "The next stop is Hiro H3.",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "320606c68579e9ec959b0003ef51ed2c489fcf1fe369b534506b03c1ba3642ca"
+          }
+        ]
+      },
+      "arriving": {
+        "ja": [
+          {
+            "file": "lines/hibiya/clips/voice/H03-hiroo_arriving_ja_to-kita-senju_01.opus",
+            "text": "まもなく、広尾です。",
+            "status": "approved",
+            "note": "",
+            "kind": "arriving",
+            "station": "H03",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 67.0,
+            "lang": "ja",
+            "source": "CGi4vbwS2IE",
+            "start": 74.67,
+            "end": 76.75,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "まもなく披露です",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "ef3d3b00ab51ebf67a9569632d15da06ccbe49e487e3e610f92564872b80d483"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/hibiya/clips/voice/H03-hiroo_arriving_en_to-kita-senju_01.opus",
+            "text": "Arriving at Hiroo H03.",
+            "status": "approved",
+            "note": "",
+            "kind": "arriving",
+            "station": "H03",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 60.1,
+            "lang": "en",
+            "source": "CGi4vbwS2IE",
+            "start": 80.92,
+            "end": 84.51,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "Arriving at Hiro H3",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "880ee472a27286e9766b1db4d71b862e13efd1a5fa9c287d4aca1b29b704a907"
+          }
+        ]
+      },
+      "transfer": {
+        "ja": [],
+        "en": []
+      }
+    },
+    {
+      "code": "H04",
+      "name": "Roppongi",
+      "kanji": "六本木",
+      "notes": {},
+      "required": {
+        "next_ja": "No complete automatic sentence retained.",
+        "next_en": "No complete automatic sentence retained.",
+        "arriving_ja": "No complete automatic sentence retained.",
+        "arriving_en": "No complete automatic sentence retained.",
+        "transfer_ja": "Interchange station; no separate complete automatic transfer retained.",
+        "transfer_en": "Interchange station; no separate complete automatic transfer retained."
+      },
+      "departure_melody": {
+        "to-naka-meguro": {
+          "file": "lines/hibiya/clips/melody/H04-roppongi_to-naka-meguro.opus",
+          "text": "セレンディピティ",
+          "status": "approved",
+          "note": "",
+          "kind": "departure",
+          "station": "H04",
+          "start": 942,
+          "end": 950,
+          "source": "RoKgAVyEn1I",
+          "platform": "A線",
+          "sha256": "b7a4df2c9ae11b73a07e647b03d8f7bbf3b421eec49f9fd282402919641962a6"
+        },
+        "to-kita-senju": {
+          "file": "lines/hibiya/clips/melody/H04-roppongi_to-kita-senju.opus",
+          "text": "patio",
+          "status": "approved",
+          "note": "",
+          "kind": "departure",
+          "station": "H04",
+          "start": 983.5,
+          "end": 991.5,
+          "source": "RoKgAVyEn1I",
+          "platform": "B線",
+          "sha256": "8b8a374b16b957dfc7ead973bcd3c73b4a4786545d5355946ca81cc48b857ff5"
+        }
+      },
+      "next": {
+        "ja": [
+          {
+            "file": "lines/hibiya/clips/voice/H04-roppongi_next_ja_to-kita-senju_01.opus",
+            "text": "次は、六本木です。",
+            "status": "approved",
+            "note": "",
+            "kind": "next",
+            "station": "H04",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 58.8,
+            "lang": "ja",
+            "source": "CGi4vbwS2IE",
+            "start": 85.75,
+            "end": 87.79,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "次は六本木です。",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "91d7297a8f3f3b72ae78a7e97235155e0d71a3bdb7abbc85b6b554ef33b09bc2"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/hibiya/clips/voice/H04-roppongi_next_en_to-kita-senju_01.opus",
+            "text": "The next stop is Roppongi H04.",
+            "status": "approved",
+            "note": "",
+            "kind": "next",
+            "station": "H04",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 58.2,
+            "lang": "en",
+            "source": "CGi4vbwS2IE",
+            "start": 92.78,
+            "end": 96.55,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "The next stop is Roppongi H4.",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "67eba4c5b48f64fb50466d0c2a0b8c59f817ee3dedd3a166a01d39031eb32d82"
+          }
+        ]
+      },
+      "arriving": {
+        "ja": [
+          {
+            "file": "lines/hibiya/clips/voice/H04-roppongi_arriving_ja_to-kita-senju_01.opus",
+            "text": "まもなく、六本木です。",
+            "status": "approved",
+            "note": "",
+            "kind": "arriving",
+            "station": "H04",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 64.0,
+            "lang": "ja",
+            "source": "CGi4vbwS2IE",
+            "start": 101.43,
+            "end": 103.72,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "まもなく六本木です。",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "dd253aeb33df21cd593c6e6ed2de928f8dd6404875a0e43173356e7f29f9ecb3"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/hibiya/clips/voice/H04-roppongi_arriving_en_to-kita-senju_01.opus",
+            "text": "Arriving at Roppongi H04.",
+            "status": "approved",
+            "note": "",
+            "kind": "arriving",
+            "station": "H04",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 60.7,
+            "lang": "en",
+            "source": "CGi4vbwS2IE",
+            "start": 110.5,
+            "end": 114.31,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "Arriving at Roppongi H4",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "adf9a54f8a5fc7b64ea284b41b2f9635ff6554a17842edd27280bca645868471"
+          }
+        ]
+      },
+      "transfer": {
+        "ja": [
+          {
+            "file": "lines/hibiya/clips/voice/H04-roppongi_transfer_ja_to-kita-senju_01.opus",
+            "text": "都営大江戸線はお乗り換えです。",
+            "status": "approved",
+            "note": "",
+            "kind": "transfer",
+            "station": "H04",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 55.2,
+            "lang": "ja",
+            "source": "CGi4vbwS2IE",
+            "start": 88.37,
+            "end": 91.19,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "都営大江戸線はお乗り換えです。",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "81dd24e2e8233ef969406809907671ad023b38aa8a548fb9c66b6ca297a9c5e1"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/hibiya/clips/voice/H04-roppongi_transfer_en_to-naka-meguro_02.opus",
+            "text": "Please change here for the Toei Oedo Line.",
+            "status": "approved",
+            "note": "",
+            "kind": "transfer",
+            "station": "H04",
+            "speaker": "auto",
+            "direction": "to-naka-meguro",
+            "clarity": 41.5,
+            "lang": "en",
+            "source": "qoomXw1eJs0",
+            "start": 1077.29,
+            "end": 1080.4,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "Please change your for the Toei Oedo Line.",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "9f88ea3e2b686c81d0ecd361bed8842c07c77828c9038b745e410d07c0586096"
+          }
+        ]
+      }
+    },
+    {
+      "code": "H05",
+      "name": "Kamiyachō",
+      "kanji": "神谷町",
+      "notes": {},
+      "required": {
+        "next_ja": "No complete automatic sentence retained.",
+        "next_en": "No complete automatic sentence retained.",
+        "arriving_ja": "No complete automatic sentence retained.",
+        "arriving_en": "No complete automatic sentence retained."
+      },
+      "departure_melody": {
+        "to-naka-meguro": {
+          "file": "lines/hibiya/clips/melody/H05-kamiyacho_to-naka-meguro.opus",
+          "text": "昇って降りて",
+          "status": "approved",
+          "note": "",
+          "kind": "departure",
+          "station": "H05",
+          "start": 934.5,
+          "end": 942,
+          "source": "RoKgAVyEn1I",
+          "platform": "A線",
+          "sha256": "77feb56c12e5b2346ce4b72df472529cf131d558c2d47617de69b6482b9da501"
+        },
+        "to-kita-senju": {
+          "file": "lines/hibiya/clips/melody/H05-kamiyacho_to-kita-senju.opus",
+          "text": "Lovely Morning",
+          "status": "approved",
+          "note": "",
+          "kind": "departure",
+          "station": "H05",
+          "start": 991.5,
+          "end": 998.5,
+          "source": "RoKgAVyEn1I",
+          "platform": "B線",
+          "sha256": "faa363a99225d404aa40e5a03b0ed5c13e119cc666d04da04843d3d166c1117c"
+        }
+      },
+      "next": {
+        "ja": [
+          {
+            "file": "lines/hibiya/clips/voice/H05-kamiyacho_next_ja_to-kita-senju_01.opus",
+            "text": "次は、神谷町です。",
+            "status": "approved",
+            "note": "",
+            "kind": "next",
+            "station": "H05",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 58.4,
+            "lang": "ja",
+            "source": "CGi4vbwS2IE",
+            "start": 131.19,
+            "end": 133.26,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "次は、神谷町です。",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "2c5852ce279f1b1d7497a0bdf751e4e04eec8136dd57fdff9bfbdca03e46386d"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/hibiya/clips/voice/H05-kamiyacho_next_en_to-kita-senju_01.opus",
+            "text": "The next stop is Kamiyachō H05.",
+            "status": "approved",
+            "note": "",
+            "kind": "next",
+            "station": "H05",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 59.7,
+            "lang": "en",
+            "source": "CGi4vbwS2IE",
+            "start": 134.86,
+            "end": 138.79,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "The next stop is Kamiacho H5.",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "ccba753cb652b84b9b7430295432f7decc520d8b13000c2e6055d13dfccfe3ae"
+          }
+        ]
+      },
+      "arriving": {
+        "ja": [
+          {
+            "file": "lines/hibiya/clips/voice/H05-kamiyacho_arriving_ja_to-kita-senju_01.opus",
+            "text": "まもなく、神谷町です。",
+            "status": "approved",
+            "note": "",
+            "kind": "arriving",
+            "station": "H05",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 63.6,
+            "lang": "ja",
+            "source": "CGi4vbwS2IE",
+            "start": 140.14,
+            "end": 142.46,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "まもなく、神谷町です。",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "f017997a9bf7f6f6a528b279bada5bf0769473726f64833d7c0018733b436a4f"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/hibiya/clips/voice/H05-kamiyacho_arriving_en_to-kita-senju_01.opus",
+            "text": "Arriving at Kamiyachō H05.",
+            "status": "approved",
+            "note": "",
+            "kind": "arriving",
+            "station": "H05",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 60.3,
+            "lang": "en",
+            "source": "CGi4vbwS2IE",
+            "start": 146.62,
+            "end": 150.58,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "Arriving at Kamiacho H5.",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "7cda8b105b8919740d683296ee59392b7a3c54f1cf608f1b9011ebec7dcbb610"
+          }
+        ]
+      },
+      "transfer": {
+        "ja": [],
+        "en": []
+      }
+    },
+    {
+      "code": "H06",
+      "name": "Toranomon Hills",
+      "kanji": "虎ノ門ヒルズ",
+      "notes": {},
+      "required": {
+        "next_ja": "No complete automatic sentence retained.",
+        "next_en": "No complete automatic sentence retained.",
+        "arriving_ja": "No complete automatic sentence retained.",
+        "arriving_en": "No complete automatic sentence retained."
+      },
+      "departure_melody": {
+        "to-naka-meguro": {
+          "file": "lines/hibiya/clips/melody/H06-toranomon-hills_to-naka-meguro.opus",
+          "text": "輝く都市",
+          "status": "approved",
+          "note": "",
+          "kind": "departure",
+          "station": "H06",
+          "start": 926,
+          "end": 934.5,
+          "source": "RoKgAVyEn1I",
+          "platform": "A線",
+          "sha256": "a10aa4f365b7b5bce242ec8b33e6df574ba613b0d53f6975104dc1337ed370e6"
+        },
+        "to-kita-senju": {
+          "file": "lines/hibiya/clips/melody/H06-toranomon-hills_to-kita-senju.opus",
+          "text": "夏雲",
+          "status": "approved",
+          "note": "",
+          "kind": "departure",
+          "station": "H06",
+          "start": 998.5,
+          "end": 1006.5,
+          "source": "RoKgAVyEn1I",
+          "platform": "B線",
+          "sha256": "cc5098fb2eb2d82d8ed8a4dc4bbdc79cf0d340d6c5e9f6124af7b112189a254c"
+        }
+      },
+      "next": {
+        "ja": [
+          {
+            "file": "lines/hibiya/clips/voice/H06-toranomon-hills_next_ja_to-kita-senju_01.opus",
+            "text": "次は、虎ノ門ヒルズです。",
+            "status": "approved",
+            "note": "",
+            "kind": "next",
+            "station": "H06",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 66.3,
+            "lang": "ja",
+            "source": "CGi4vbwS2IE",
+            "start": 151.59,
+            "end": 153.99,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "次は、トラノモンヒルズです。",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "a8fc9eb895b7a1cde01d3d2384dcde076bd2cd72fd41cb5b1e9c991904495f5a"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/hibiya/clips/voice/H06-toranomon-hills_next_en_to-kita-senju_01.opus",
+            "text": "The next stop is Toranomon Hills H06.",
+            "status": "approved",
+            "note": "",
+            "kind": "next",
+            "station": "H06",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 61.1,
+            "lang": "en",
+            "source": "CGi4vbwS2IE",
+            "start": 158.57,
+            "end": 162.86,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "The next stop is Toranomon Hills H06.",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "49b7d38efd131f988d34c6870a7fe0c272067ede763c4ef616f58f86f9133b3e"
+          }
+        ]
+      },
+      "arriving": {
+        "ja": [
+          {
+            "file": "lines/hibiya/clips/voice/H06-toranomon-hills_arriving_ja_to-naka-meguro_01.opus",
+            "text": "まもなく、虎ノ門ヒルズです。",
+            "status": "approved",
+            "note": "",
+            "kind": "arriving",
+            "station": "H06",
+            "speaker": "auto",
+            "direction": "to-naka-meguro",
+            "clarity": 35.9,
+            "lang": "ja",
+            "source": "WpOT8ynJv34",
+            "start": 1868.03,
+            "end": 1870.66,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "まもなく、トラノモンヒルズです。",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "ac2c05561646ae193492cc2167d56bba270862c375d430b7f6371aa574190b89"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/hibiya/clips/voice/H06-toranomon-hills_arriving_en_to-naka-meguro_01.opus",
+            "text": "Arriving at Toranomon Hills H06.",
+            "status": "approved",
+            "note": "",
+            "kind": "arriving",
+            "station": "H06",
+            "speaker": "auto",
+            "direction": "to-naka-meguro",
+            "clarity": 36.6,
+            "lang": "en",
+            "source": "WpOT8ynJv34",
+            "start": 1876.47,
+            "end": 1880.79,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "Arriving at Toranomon Hills H06",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "08d1a3acaef8f76942d103411d97f6caa69fccc1248b2150d2fd95392076cdcc"
+          }
+        ]
+      },
+      "transfer": {
+        "ja": [
+          {
+            "file": "lines/hibiya/clips/voice/H06-toranomon-hills_transfer_ja_to-kita-senju_01.opus",
+            "text": "銀座線はお乗り換えです。",
+            "status": "approved",
+            "note": "",
+            "kind": "transfer",
+            "station": "H06",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 60.1,
+            "lang": "ja",
+            "source": "CGi4vbwS2IE",
+            "start": 154.66,
+            "end": 156.94,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "銀座線はお乗り換えです。",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "bccc4aec079b16d9a49823579aca715a01d814bc445e465b5a07df44ffecf772"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/hibiya/clips/voice/H06-toranomon-hills_transfer_en_to-kita-senju_01_complete.opus",
+            "text": "Please change here for the Ginza Line.",
+            "status": "approved",
+            "note": "Rejoined contiguous transfer-list fragments from the raw recording; complete cut needs a new ear check.",
+            "kind": "transfer",
+            "station": "H06",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 55.6,
+            "lang": "en",
+            "source": "CGi4vbwS2IE",
+            "start": 163.51,
+            "end": 166.29,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "Please change here for the Ginza Line.",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "2a4ac3dd711c98c885346fbf3770ca1334460690b3c64cf513c59705359d0ed0"
+          }
+        ]
+      }
+    },
+    {
+      "code": "H07",
+      "name": "Kasumigaseki",
+      "kanji": "霞ケ関",
+      "notes": {},
+      "required": {
+        "next_ja": "No complete automatic sentence retained.",
+        "next_en": "No complete automatic sentence retained.",
+        "arriving_ja": "No complete automatic sentence retained.",
+        "arriving_en": "No complete automatic sentence retained.",
+        "transfer_ja": "Interchange station; no separate complete automatic transfer retained.",
+        "transfer_en": "Interchange station; no separate complete automatic transfer retained."
+      },
+      "departure_melody": {
+        "to-naka-meguro": {
+          "file": "lines/hibiya/clips/melody/H07-kasumigaseki_to-naka-meguro.opus",
+          "text": "明日への序章",
+          "status": "approved",
+          "note": "",
+          "kind": "departure",
+          "station": "H07",
+          "start": 917.5,
+          "end": 926,
+          "source": "RoKgAVyEn1I",
+          "platform": "A線",
+          "sha256": "fed5ed9229e1ae3ef31019bd59c3ed285839bcd1210cab398051cb3772081f16"
+        },
+        "to-kita-senju": {
+          "file": "lines/hibiya/clips/melody/H07-kasumigaseki_to-kita-senju.opus",
+          "text": "今日も一日",
+          "status": "approved",
+          "note": "",
+          "kind": "departure",
+          "station": "H07",
+          "start": 1006.5,
+          "end": 1014.5,
+          "source": "RoKgAVyEn1I",
+          "platform": "B線",
+          "sha256": "b8749883e8101f4a6fe6d5af9020028accdec004d93283c36a7fe9f9e903c0d7"
+        }
+      },
+      "next": {
+        "ja": [
+          {
+            "file": "lines/hibiya/clips/voice/H07-kasumigaseki_next_ja_to-kita-senju_01.opus",
+            "text": "次は、霞ケ関です。",
+            "status": "approved",
+            "note": "",
+            "kind": "next",
+            "station": "H07",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 66.2,
+            "lang": "ja",
+            "source": "CGi4vbwS2IE",
+            "start": 170.48,
+            "end": 172.67,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "次は、霞ヶ関です。",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "b55d1cae27828e15e5f896cc64d92125cdf79169f4fc13b717fd13240991e626"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/hibiya/clips/voice/H07-kasumigaseki_next_en_to-kita-senju_01.opus",
+            "text": "The next stop is Kasumigaseki H07.",
+            "status": "approved",
+            "note": "",
+            "kind": "next",
+            "station": "H07",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 60.5,
+            "lang": "en",
+            "source": "CGi4vbwS2IE",
+            "start": 178.31,
+            "end": 182.18,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "The next stop is Kasumigaseki H7.",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "23464e8cd61c385eb0dda7310bc8d4a3fb84a9e4d1774cae45a9bc88d672ba18"
+          }
+        ]
+      },
+      "arriving": {
+        "ja": [
+          {
+            "file": "lines/hibiya/clips/voice/H07-kasumigaseki_arriving_ja_to-kita-senju_01.opus",
+            "text": "まもなく、霞ケ関です。",
+            "status": "approved",
+            "note": "",
+            "kind": "arriving",
+            "station": "H07",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 68.0,
+            "lang": "ja",
+            "source": "CGi4vbwS2IE",
+            "start": 188.2,
+            "end": 190.63,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "まもなく、霞ヶ関です。",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "f2363658f09a32f9c8415655f3c62f33d4979495d2d7580181c330b8a40345a4"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/hibiya/clips/voice/H07-kasumigaseki_arriving_en_to-kita-senju_01.opus",
+            "text": "Arriving at Kasumigaseki H07.",
+            "status": "approved",
+            "note": "",
+            "kind": "arriving",
+            "station": "H07",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 63.4,
+            "lang": "en",
+            "source": "CGi4vbwS2IE",
+            "start": 194.69,
+            "end": 198.58,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "Arriving at Kasumigaseki H7",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "671baf3ffd4967f11d78fed35eff2afcc525b5a7fab32ba9ac0809a8618f5afe"
+          }
+        ]
+      },
+      "transfer": {
+        "ja": [
+          {
+            "file": "lines/hibiya/clips/voice/H07-kasumigaseki_transfer_ja_to-kita-senju_01_complete.opus",
+            "text": "丸ノ内線・千代田線はお乗り換えです。",
+            "status": "approved",
+            "note": "Rejoined contiguous transfer-list fragments from the raw recording; complete cut needs a new ear check.",
+            "kind": "transfer",
+            "station": "H07",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 58.7,
+            "lang": "ja",
+            "source": "CGi4vbwS2IE",
+            "start": 173.26,
+            "end": 176.72,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "丸ノ内線・千代田線はお乗り換えです。",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "6f2b79a2ae383647076289333752f7cc9bcb981df0297c48a65dc5ddb7797a9d"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/hibiya/clips/voice/H07-kasumigaseki_transfer_en_to-kita-senju_01.opus",
+            "text": "Please change here for the Marunouchi Line and the Chiyoda Line.",
+            "status": "approved",
+            "note": "",
+            "kind": "transfer",
+            "station": "H07",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 40.4,
+            "lang": "en",
+            "source": "CGi4vbwS2IE",
+            "start": 182.82,
+            "end": 187.09,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "Please change here for the Marunouchi Line and the Chiyoda Line.",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "6617c13ebea0a68e6027086c7136494cf758587bd49b38a4440075bca25913f1"
+          }
+        ]
+      }
+    },
+    {
+      "code": "H08",
+      "name": "Hibiya",
+      "kanji": "日比谷",
+      "notes": {},
+      "required": {
+        "next_ja": "No complete automatic sentence retained.",
+        "next_en": "No complete automatic sentence retained.",
+        "arriving_ja": "No complete automatic sentence retained.",
+        "arriving_en": "No complete automatic sentence retained.",
+        "transfer_ja": "Interchange station; no separate complete automatic transfer retained.",
+        "transfer_en": "Interchange station; no separate complete automatic transfer retained."
+      },
+      "departure_melody": {
+        "to-naka-meguro": {
+          "file": "lines/hibiya/clips/melody/H08-hibiya_to-naka-meguro.opus",
+          "text": "銀杏の下で",
+          "status": "approved",
+          "note": "",
+          "kind": "departure",
+          "station": "H08",
+          "start": 909,
+          "end": 917.5,
+          "source": "RoKgAVyEn1I",
+          "platform": "A線",
+          "sha256": "f53d8563b8a443eb64a932280f36ab76407252820e0ca5fdaf36a926f245e9ed"
+        },
+        "to-kita-senju": {
+          "file": "lines/hibiya/clips/melody/H08-hibiya_to-kita-senju.opus",
+          "text": "公園日和",
+          "status": "approved",
+          "note": "",
+          "kind": "departure",
+          "station": "H08",
+          "start": 1014.5,
+          "end": 1023,
+          "source": "RoKgAVyEn1I",
+          "platform": "B線",
+          "sha256": "818dbecf5b002ff9eff3da348ac7f40f46f69f4bfc45c4e1b7ffeedf9ff4d224"
+        }
+      },
+      "next": {
+        "ja": [
+          {
+            "file": "lines/hibiya/clips/voice/H08-hibiya_next_ja_to-kita-senju_01.opus",
+            "text": "次は、日比谷です。",
+            "status": "approved",
+            "note": "",
+            "kind": "next",
+            "station": "H08",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 65.5,
+            "lang": "ja",
+            "source": "CGi4vbwS2IE",
+            "start": 199.81,
+            "end": 201.61,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "次は日比谷です。",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "693906ebcb90558db060b71e9cf254ee8650ce8269c67ecd11cfd28d9cce177d"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/hibiya/clips/voice/H08-hibiya_next_en_to-kita-senju_01.opus",
+            "text": "The next stop is Hibiya H08.",
+            "status": "approved",
+            "note": "",
+            "kind": "next",
+            "station": "H08",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 60.8,
+            "lang": "en",
+            "source": "CGi4vbwS2IE",
+            "start": 208.64,
+            "end": 212.22,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "The next stop is Hibiya H8.",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "6f12af648561c5a962a67082c5e7a986ed5a7d7699b3448b92a28b64a0dda400"
+          }
+        ]
+      },
+      "arriving": {
+        "ja": [
+          {
+            "file": "lines/hibiya/clips/voice/H08-hibiya_arriving_ja_to-kita-senju_01.opus",
+            "text": "まもなく、日比谷です。",
+            "status": "approved",
+            "note": "",
+            "kind": "arriving",
+            "station": "H08",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 61.1,
+            "lang": "ja",
+            "source": "CGi4vbwS2IE",
+            "start": 237.87,
+            "end": 239.92,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "まもなく、日比谷です。",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "1cdce0921a95f10672e45e97043702c973b90515a932eb68a20dec63ef8b5fb1"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/hibiya/clips/voice/H08-hibiya_arriving_en_to-kita-senju_01.opus",
+            "text": "Arriving at Hibiya H08.",
+            "status": "approved",
+            "note": "",
+            "kind": "arriving",
+            "station": "H08",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 56.5,
+            "lang": "en",
+            "source": "CGi4vbwS2IE",
+            "start": 244.09,
+            "end": 247.7,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "Arriving at Hibiya H8.",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "8afeee4dd2d51c4ad6167ef008ec06321624f38d202013a9f4e98d3e65eb062e"
+          }
+        ]
+      },
+      "transfer": {
+        "ja": [
+          {
+            "file": "lines/hibiya/clips/voice/H08-hibiya_transfer_ja_to-kita-senju_01.opus",
+            "text": "千代田線、有楽町線、都営三田線はお乗り換えです。",
+            "status": "approved",
+            "note": "",
+            "kind": "transfer",
+            "station": "H08",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 60.3,
+            "lang": "ja",
+            "source": "CGi4vbwS2IE",
+            "start": 202.19,
+            "end": 207.04,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "千代田線、有楽町線、都営三田線はお乗り換えです。",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "ad52e8524e8f7380d6c3b56f51a17fa6e61a7d5d3d8ad85c1b5a30050950c14b"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/hibiya/clips/voice/H08-hibiya_transfer_en_to-kita-senju_01_complete.opus",
+            "text": "Please change here for the Chiyoda Line, the Yurakucho Line, and the Toei-Mita Line.",
+            "status": "approved",
+            "note": "Rejoined contiguous transfer-list fragments from the raw recording; complete cut needs a new ear check.",
+            "kind": "transfer",
+            "station": "H08",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 40.8,
+            "lang": "en",
+            "source": "CGi4vbwS2IE",
+            "start": 212.83,
+            "end": 218.73,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "Please change here for the Chioda Line, the Yurakusho Line, and the Toei-Mita Line.",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "e6735609f049d0d4acdd0afdad0c5e6606f09c8d047144707da508204a203cb0"
+          }
+        ]
+      }
+    },
+    {
+      "code": "H09",
+      "name": "Ginza",
+      "kanji": "銀座",
+      "notes": {
+        "arriving_ja": "Four ride sources (including 2026) and published wording: arrival contains generic JA exit side only; no separate station-name arrival found.",
+        "arriving_en": "Four ride sources (including 2026) and published wording: arrival contains generic JA exit side only; no separate station-name arrival found."
+      },
+      "required": {
+        "next_ja": "No complete automatic sentence retained.",
+        "next_en": "No complete automatic sentence retained.",
+        "transfer_ja": "Interchange station; no separate complete automatic transfer retained.",
+        "transfer_en": "Interchange station; no separate complete automatic transfer retained."
+      },
+      "departure_melody": {
+        "to-naka-meguro": {
+          "file": "lines/hibiya/clips/melody/H09-ginza_to-naka-meguro.opus",
+          "text": "銀座の恋の物語 Ver.C",
+          "status": "approved",
+          "note": "",
+          "kind": "departure",
+          "station": "H09",
+          "start": 900,
+          "end": 909,
+          "source": "RoKgAVyEn1I",
+          "platform": "A線",
+          "sha256": "e0b5237ae3951793232b0a655f489ec3cb8a0ef86f5304b50da83955e8ea340c"
+        },
+        "to-kita-senju": {
+          "file": "lines/hibiya/clips/melody/H09-ginza_to-kita-senju.opus",
+          "text": "銀座の恋の物語 Ver.D",
+          "status": "approved",
+          "note": "",
+          "kind": "departure",
+          "station": "H09",
+          "start": 1023,
+          "end": 1032,
+          "source": "RoKgAVyEn1I",
+          "platform": "B線",
+          "sha256": "75ab650aed0a9794b1369643316da3e321f841e71b1492cb2d0df0fb4e70d0f6"
+        }
+      },
+      "next": {
+        "ja": [
+          {
+            "file": "lines/hibiya/clips/voice/H09-ginza_next_ja_to-kita-senju_01.opus",
+            "text": "次は、銀座、三越・松屋前です。",
+            "status": "approved",
+            "note": "",
+            "kind": "next",
+            "station": "H09",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 57.8,
+            "lang": "ja",
+            "source": "CGi4vbwS2IE",
+            "start": 248.77,
+            "end": 252.85,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "次は、銀座、三越、松山へです。",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "c1b1a4fc44d2f296bc75dcb70ed74420e7e24488403af038a2c2a6cb5a07a297"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/hibiya/clips/voice/H09-ginza_next_en_to-kita-senju_01.opus",
+            "text": "The next stop is Ginza H09.",
+            "status": "approved",
+            "note": "",
+            "kind": "next",
+            "station": "H09",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 55.3,
+            "lang": "en",
+            "source": "CGi4vbwS2IE",
+            "start": 258.42,
+            "end": 262.04,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "The next stop is Ginza H9.",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "28b824bb72601893575f159072bd15aa792c65670dd8fa2fffad87af2724abdf"
+          }
+        ]
+      },
+      "arriving": {
+        "ja": [],
+        "en": []
+      },
+      "transfer": {
+        "ja": [
+          {
+            "file": "lines/hibiya/clips/voice/H09-ginza_transfer_ja_to-kita-senju_01.opus",
+            "text": "銀座線、丸ノ内線はお乗り換えです。",
+            "status": "approved",
+            "note": "",
+            "kind": "transfer",
+            "station": "H09",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 55.9,
+            "lang": "ja",
+            "source": "CGi4vbwS2IE",
+            "start": 253.42,
+            "end": 256.83,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "銀座線、丸ノ内線はお乗り換えです。",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "d60d63b4ff4284331a5ecc1188e356649f88f9c8bffafabb0139f5e0be020815"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/hibiya/clips/voice/H09-ginza_transfer_en_to-kita-senju_01_round5.opus",
+            "text": "Please change here for the Ginza Line and the Marunouchi Line.",
+            "status": "needs ear check",
+            "note": " Round 5: more than 150 ms pre-roll; envelope onset with 60 ms consonant guard; speech retained, boundary changed; needs ear check.",
+            "kind": "transfer",
+            "station": "H09",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 46.0,
+            "lang": "en",
+            "source": "CGi4vbwS2IE",
+            "start": 262.67,
+            "end": 266.9,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "Please change here for the Ginza Line and the Marunouchi Line.",
+            "transcript_audit": "large-v3 / CUDA / round5 final-cut boundary verification",
+            "revision": "round5 boundary trim",
+            "approval_before_trim": "approved",
+            "speech_unchanged": true,
+            "boundary_trim": {
+              "input_sha256": "a7cbe3ecce7ce12174511e2c4e20f2d9635eeaa506ab54f8f1c120f7e07be707",
+              "start": 0.11,
+              "end": 4.23,
+              "fade_in": 0.005,
+              "fade_out": 0.025,
+              "input_archive": "raw/hibiya/round5-inputs/H09-ginza_transfer_en_to-kita-senju_01.opus"
+            },
+            "sha256": "7e9fc4165eee0271097d1166c0bc47ec6221fc02fa2650df79f19daaeab5dcb7"
+          }
+        ]
+      }
+    },
+    {
+      "code": "H10",
+      "name": "Higashi-ginza",
+      "kanji": "東銀座",
+      "notes": {},
+      "required": {
+        "next_ja": "No complete automatic sentence retained.",
+        "next_en": "No complete automatic sentence retained.",
+        "arriving_ja": "No complete automatic sentence retained.",
+        "arriving_en": "No complete automatic sentence retained.",
+        "transfer_ja": "Interchange station; no separate complete automatic transfer retained.",
+        "transfer_en": "Interchange station; no separate complete automatic transfer retained."
+      },
+      "departure_melody": {
+        "to-naka-meguro": {
+          "file": "lines/hibiya/clips/melody/H10-higashi-ginza_to-naka-meguro.opus",
+          "text": "桃山",
+          "status": "approved",
+          "note": "",
+          "kind": "departure",
+          "station": "H10",
+          "start": 891,
+          "end": 900,
+          "source": "RoKgAVyEn1I",
+          "platform": "A線",
+          "sha256": "b7de471014b958fc554ccd675f4584ffe828002aacd63237fd5a7d372b97ca92"
+        },
+        "to-kita-senju": {
+          "file": "lines/hibiya/clips/melody/H10-higashi-ginza_to-kita-senju.opus",
+          "text": "ノスタルジア",
+          "status": "approved",
+          "note": "",
+          "kind": "departure",
+          "station": "H10",
+          "start": 1032,
+          "end": 1041,
+          "source": "RoKgAVyEn1I",
+          "platform": "B線",
+          "sha256": "f4e4e74625aae9e9f8f1f1ddc8c1db14815f11345abde5ce1cd7298a1f136944"
+        }
+      },
+      "next": {
+        "ja": [
+          {
+            "file": "lines/hibiya/clips/voice/H10-higashi-ginza_next_ja_to-kita-senju_01.opus",
+            "text": "次は、東銀座です。",
+            "status": "approved",
+            "note": "",
+            "kind": "next",
+            "station": "H10",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 62.0,
+            "lang": "ja",
+            "source": "CGi4vbwS2IE",
+            "start": 271.07,
+            "end": 273.27,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "次は東銀座です。",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "e1114275131c2f2139a90a78bd2e262ddbc18550d8827330e903b9ed0af0480c"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/hibiya/clips/voice/H10-higashi-ginza_next_en_to-kita-senju_01.opus",
+            "text": "The next stop is Higashi-ginza H10.",
+            "status": "approved",
+            "note": "",
+            "kind": "next",
+            "station": "H10",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 59.8,
+            "lang": "en",
+            "source": "CGi4vbwS2IE",
+            "start": 278.29,
+            "end": 282.22,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "The next stop is Higashi-Ginza H10.",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "bd286d12da59fb150d3c0ba321c62c370e329f17273230c9e0c0cc635bd25e86"
+          }
+        ]
+      },
+      "arriving": {
+        "ja": [
+          {
+            "file": "lines/hibiya/clips/voice/H10-higashi-ginza_arriving_ja_to-kita-senju_01.opus",
+            "text": "まもなく、東銀座です。",
+            "status": "approved",
+            "note": "",
+            "kind": "arriving",
+            "station": "H10",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 62.9,
+            "lang": "ja",
+            "source": "CGi4vbwS2IE",
+            "start": 287.54,
+            "end": 289.98,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "まもなく、東銀座です。",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "97a280b5b8108c7affa91b52256c233be05ba796669f69bd69d239ac6042110e"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/hibiya/clips/voice/H10-higashi-ginza_arriving_en_to-kita-senju_01.opus",
+            "text": "Arriving at Higashi-ginza H10.",
+            "status": "approved",
+            "note": "",
+            "kind": "arriving",
+            "station": "H10",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 58.6,
+            "lang": "en",
+            "source": "CGi4vbwS2IE",
+            "start": 294.04,
+            "end": 297.99,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "Arriving at Higashi-ginza H10.",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "518118cbefc1d1a9d6a1e4fe95df1856ce3929b863fcb9e9aafc5423f9c92d63"
+          }
+        ]
+      },
+      "transfer": {
+        "ja": [
+          {
+            "file": "lines/hibiya/clips/voice/H10-higashi-ginza_transfer_ja_to-kita-senju_01.opus",
+            "text": "都営浅草線はお乗り換えです。",
+            "status": "approved",
+            "note": "",
+            "kind": "transfer",
+            "station": "H10",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 61.9,
+            "lang": "ja",
+            "source": "CGi4vbwS2IE",
+            "start": 273.85,
+            "end": 276.7,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "都営浅草線はお乗り換えです。",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "d8e05706d15ac53fcadc4c530f831e3239a493e05c36ee8bed00ffacc03593da"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/hibiya/clips/voice/H10-higashi-ginza_transfer_en_to-kita-senju_01.opus",
+            "text": "Please change here for the Toei Asakusa Line.",
+            "status": "approved",
+            "note": "",
+            "kind": "transfer",
+            "station": "H10",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 55.3,
+            "lang": "en",
+            "source": "CGi4vbwS2IE",
+            "start": 282.84,
+            "end": 286.32,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "Please change here for the Toei Asakusa Line.",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "ec97549a74a1eb0e3ea0c8c0eba8aedde6ca982e5ad6e0e76865e7631bfb8d18"
+          }
+        ]
+      }
+    },
+    {
+      "code": "H11",
+      "name": "Tsukiji",
+      "kanji": "築地",
+      "notes": {},
+      "required": {
+        "next_ja": "No complete automatic sentence retained.",
+        "next_en": "No complete automatic sentence retained.",
+        "arriving_ja": "No complete automatic sentence retained.",
+        "arriving_en": "No complete automatic sentence retained."
+      },
+      "departure_melody": {
+        "to-naka-meguro": {
+          "file": "lines/hibiya/clips/melody/H11-tsukiji_to-naka-meguro.opus",
+          "text": "オールマイティー",
+          "status": "approved",
+          "note": "",
+          "kind": "departure",
+          "station": "H11",
+          "start": 883,
+          "end": 891,
+          "source": "RoKgAVyEn1I",
+          "platform": "A線",
+          "sha256": "941a9f8ed1bc5c933865622b73a95c5089ff53b2611e1d4ab92fb74989d63c85"
+        },
+        "to-kita-senju": {
+          "file": "lines/hibiya/clips/melody/H11-tsukiji_to-kita-senju.opus",
+          "text": "潮騒",
+          "status": "approved",
+          "note": "",
+          "kind": "departure",
+          "station": "H11",
+          "start": 1041,
+          "end": 1049.5,
+          "source": "RoKgAVyEn1I",
+          "platform": "B線",
+          "sha256": "b08e799ca1aa1138a3889bf46ef5f6a97cdde5942ba34099c6eecc134179451e"
+        }
+      },
+      "next": {
+        "ja": [
+          {
+            "file": "lines/hibiya/clips/voice/H11-tsukiji_next_ja_to-kita-senju_01.opus",
+            "text": "次は、築地、本願寺前です。",
+            "status": "approved",
+            "note": "",
+            "kind": "next",
+            "station": "H11",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 65.7,
+            "lang": "ja",
+            "source": "CGi4vbwS2IE",
+            "start": 298.93,
+            "end": 302.1,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "次は築地、本願寺前です。",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "60c7f457f14c36ab1d205f02acde5f190ddd3050107e34bd48fdca86baf01620"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/hibiya/clips/voice/H11-tsukiji_next_en_to-kita-senju_01.opus",
+            "text": "The next stop is Tsukiji H11.",
+            "status": "approved",
+            "note": "",
+            "kind": "next",
+            "station": "H11",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 55.7,
+            "lang": "en",
+            "source": "CGi4vbwS2IE",
+            "start": 306.94,
+            "end": 310.83,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "The next stop is Tsukiji H11.",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "7633a6b918a593ae9b3929590671544c0fcf6b5aea8b6ffeb9507cd7ba477af9"
+          }
+        ]
+      },
+      "arriving": {
+        "ja": [
+          {
+            "file": "lines/hibiya/clips/voice/H11-tsukiji_arriving_ja_to-kita-senju_01.opus",
+            "text": "まもなく、築地です。",
+            "status": "approved",
+            "note": "",
+            "kind": "arriving",
+            "station": "H11",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 63.1,
+            "lang": "ja",
+            "source": "CGi4vbwS2IE",
+            "start": 315.83,
+            "end": 317.86,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "まもなく築地です。",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "5d437202ca6b1c20ee047aefad51d10a4a931bcfd5cf3b5e9d93864ffca6fc1f"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/hibiya/clips/voice/H11-tsukiji_arriving_en_to-kita-senju_01.opus",
+            "text": "Arriving at Tsukiji H11.",
+            "status": "approved",
+            "note": "",
+            "kind": "arriving",
+            "station": "H11",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 58.1,
+            "lang": "en",
+            "source": "CGi4vbwS2IE",
+            "start": 322.03,
+            "end": 325.95,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "Arriving at Tsukiji H11.",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "088dac0ed6e17a19a499d0d212d30448202f235e7b5e087130e5fbc7bcdc5952"
+          }
+        ]
+      },
+      "transfer": {
+        "ja": [
+          {
+            "file": "lines/hibiya/clips/voice/H11-tsukiji_transfer_ja_to-kita-senju_01.opus",
+            "text": "有楽町線はお乗り換えです。",
+            "status": "approved",
+            "note": "",
+            "kind": "transfer",
+            "station": "H11",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 52.4,
+            "lang": "ja",
+            "source": "CGi4vbwS2IE",
+            "start": 302.69,
+            "end": 305.31,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "有楽町線はお乗り換えです。",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "5c9835cf00f6da1c8ca2db267a6886a0d463da56754308090482bef3b5493bba"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/hibiya/clips/voice/H11-tsukiji_transfer_en_to-kita-senju_01_round5.opus",
+            "text": "Please change here for the Yurakucho Line.",
+            "status": "needs ear check",
+            "note": " Round 5: more than 150 ms pre-roll; envelope onset with 60 ms consonant guard; speech retained, boundary changed; needs ear check.",
+            "kind": "transfer",
+            "station": "H11",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 50.5,
+            "lang": "en",
+            "source": "CGi4vbwS2IE",
+            "start": 311.45,
+            "end": 314.66,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "Please change here for the Yurakusho Line.",
+            "transcript_audit": "large-v3 / CUDA / round5 final-cut boundary verification",
+            "revision": "round5 boundary trim",
+            "approval_before_trim": "approved",
+            "speech_unchanged": true,
+            "boundary_trim": {
+              "input_sha256": "8740398b20f00bd3c0f176b29b8ee9a881e4a310bbe892c574a7698b4524c191",
+              "start": 0.12,
+              "end": 3.21,
+              "fade_in": 0.005,
+              "fade_out": 0.025,
+              "input_archive": "raw/hibiya/round5-inputs/H11-tsukiji_transfer_en_to-kita-senju_01.opus"
+            },
+            "sha256": "70c1613b9afc3355232bfa80506181835e3f46cdc1376d0affa9d7b0167d1a2d"
+          }
+        ]
+      }
+    },
+    {
+      "code": "H12",
+      "name": "Hatchōbori",
+      "kanji": "八丁堀",
+      "notes": {},
+      "required": {
+        "next_ja": "No complete automatic sentence retained.",
+        "next_en": "No complete automatic sentence retained.",
+        "arriving_ja": "No complete automatic sentence retained.",
+        "arriving_en": "No complete automatic sentence retained.",
+        "transfer_ja": "Interchange station; no separate complete automatic transfer retained.",
+        "transfer_en": "Interchange station; no separate complete automatic transfer retained."
+      },
+      "departure_melody": {
+        "to-naka-meguro": {
+          "file": "lines/hibiya/clips/melody/H12-hatchobori_to-naka-meguro.opus",
+          "text": "黄金虫のワルツ",
+          "status": "approved",
+          "note": "",
+          "kind": "departure",
+          "station": "H12",
+          "start": 874.5,
+          "end": 883,
+          "source": "RoKgAVyEn1I",
+          "platform": "A線",
+          "sha256": "182cb90a61146668c61b444491f4409d4351ce83e8f0d7b06fa5585b0068b020"
+        },
+        "to-kita-senju": {
+          "file": "lines/hibiya/clips/melody/H12-hatchobori_to-kita-senju.opus",
+          "text": "煌めき",
+          "status": "approved",
+          "note": "",
+          "kind": "departure",
+          "station": "H12",
+          "start": 1049.5,
+          "end": 1057.5,
+          "source": "RoKgAVyEn1I",
+          "platform": "B線",
+          "sha256": "6cb09198369ee7a5854233a7cf64af3351887278376c2402ecbe8c68a543af46"
+        }
+      },
+      "next": {
+        "ja": [
+          {
+            "file": "lines/hibiya/clips/voice/H12-hatchobori_next_ja_to-kita-senju_01.opus",
+            "text": "次は、八丁堀です。",
+            "status": "approved",
+            "note": "",
+            "kind": "next",
+            "station": "H12",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 61.4,
+            "lang": "ja",
+            "source": "CGi4vbwS2IE",
+            "start": 326.74,
+            "end": 328.91,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "次は八丁堀です。",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "f2fb64407fcf7ba254f635cf2999d6e82464fd78f090d8fc95c85d2f196c35a8"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/hibiya/clips/voice/H12-hatchobori_next_en_to-kita-senju_01.opus",
+            "text": "The next stop is Hatchōbori H12.",
+            "status": "approved",
+            "note": "",
+            "kind": "next",
+            "station": "H12",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 55.8,
+            "lang": "en",
+            "source": "CGi4vbwS2IE",
+            "start": 334.08,
+            "end": 337.99,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "The next stop is Hatchōbori H12.",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "b3058e4c06a1edff06c5b3c40b1692933489d75d705435f312bda181d9564205"
+          }
+        ]
+      },
+      "arriving": {
+        "ja": [
+          {
+            "file": "lines/hibiya/clips/voice/H12-hatchobori_arriving_ja_to-kita-senju_01.opus",
+            "text": "まもなく、八丁堀です。",
+            "status": "approved",
+            "note": "",
+            "kind": "arriving",
+            "station": "H12",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 59.0,
+            "lang": "ja",
+            "source": "CGi4vbwS2IE",
+            "start": 343.15,
+            "end": 345.56,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "まもなく八丁堀です。",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "f3e3b9ff392e2e4ce7e763a2b65b3a5100948de0aaf802db3f23a65feabd0e81"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/hibiya/clips/voice/H12-hatchobori_arriving_en_to-kita-senju_01.opus",
+            "text": "Arriving at Hatchōbori H12.",
+            "status": "approved",
+            "note": "",
+            "kind": "arriving",
+            "station": "H12",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 57.2,
+            "lang": "en",
+            "source": "CGi4vbwS2IE",
+            "start": 349.62,
+            "end": 353.57,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "Arriving at Hatchōbori H12.",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "fbc129dfce4dea42b04b462d65c001810e9c722294472c10da556d0829f07ac6"
+          }
+        ]
+      },
+      "transfer": {
+        "ja": [
+          {
+            "file": "lines/hibiya/clips/voice/H12-hatchobori_transfer_ja_to-kita-senju_01.opus",
+            "text": "JR京葉線はお乗り換えです。",
+            "status": "approved",
+            "note": "",
+            "kind": "transfer",
+            "station": "H12",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 51.6,
+            "lang": "ja",
+            "source": "CGi4vbwS2IE",
+            "start": 329.49,
+            "end": 332.48,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "JR京葉線はお乗り換えです。",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "8336aa15f798c6db1cadf26d010ce4e0cca29d8ab141d3c22ca87389496da4ea"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/hibiya/clips/voice/H12-hatchobori_transfer_en_to-kita-senju_01.opus",
+            "text": "Please change here for the JR Keiyo Line.",
+            "status": "approved",
+            "note": "",
+            "kind": "transfer",
+            "station": "H12",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 28.9,
+            "lang": "en",
+            "source": "CGi4vbwS2IE",
+            "start": 338.62,
+            "end": 341.99,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "Please change here for the JR Kaio Line.",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "ceeaa5b29ca139a0b64899a84b81cb420b829bf228200c64e53767e3c1107859"
+          }
+        ]
+      }
+    },
+    {
+      "code": "H13",
+      "name": "Kayabachō",
+      "kanji": "茅場町",
+      "notes": {},
+      "required": {
+        "next_ja": "No complete automatic sentence retained.",
+        "next_en": "No complete automatic sentence retained.",
+        "arriving_ja": "No complete automatic sentence retained.",
+        "arriving_en": "No complete automatic sentence retained.",
+        "transfer_ja": "Interchange station; no separate complete automatic transfer retained.",
+        "transfer_en": "Interchange station; no separate complete automatic transfer retained."
+      },
+      "departure_melody": {
+        "to-naka-meguro": {
+          "file": "lines/hibiya/clips/melody/H13-kayabacho_to-naka-meguro.opus",
+          "text": "スピネル",
+          "status": "approved",
+          "note": "",
+          "kind": "departure",
+          "station": "H13",
+          "start": 866,
+          "end": 874.5,
+          "source": "RoKgAVyEn1I",
+          "platform": "A線",
+          "sha256": "f8fe07a05a06cb29918dc21d166682312db475ad9dfb74b4a8bcb0075e381a11"
+        },
+        "to-kita-senju": {
+          "file": "lines/hibiya/clips/melody/H13-kayabacho_to-kita-senju.opus",
+          "text": "キャノピー",
+          "status": "approved",
+          "note": "",
+          "kind": "departure",
+          "station": "H13",
+          "start": 1057.5,
+          "end": 1066.5,
+          "source": "RoKgAVyEn1I",
+          "platform": "B線",
+          "sha256": "3fd2e63fdce6dc101f9956702be747f9f4a0d8a74714f6264bb336d422625cf7"
+        }
+      },
+      "next": {
+        "ja": [
+          {
+            "file": "lines/hibiya/clips/voice/H13-kayabacho_next_ja_to-kita-senju_01.opus",
+            "text": "次は、茅場町です。",
+            "status": "approved",
+            "note": "",
+            "kind": "next",
+            "station": "H13",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 63.8,
+            "lang": "ja",
+            "source": "CGi4vbwS2IE",
+            "start": 354.57,
+            "end": 356.63,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "次は、茅場町です。",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "a0ec0f2c01df3dee9e546ef0e044cb5741f0dc2e3bcf5ff85a4ce06b9ff6897b"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/hibiya/clips/voice/H13-kayabacho_next_en_to-kita-senju_01.opus",
+            "text": "The next stop is Kayabachō H13.",
+            "status": "approved",
+            "note": "",
+            "kind": "next",
+            "station": "H13",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 53.7,
+            "lang": "en",
+            "source": "CGi4vbwS2IE",
+            "start": 361.17,
+            "end": 365.24,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "The next stop is Kayabachō H13.",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "23200db825319f1a3bd84ad828e355eccbd692a8a507f64b18b6c5d7e1087679"
+          }
+        ]
+      },
+      "arriving": {
+        "ja": [
+          {
+            "file": "lines/hibiya/clips/voice/H13-kayabacho_arriving_ja_to-naka-meguro_01.opus",
+            "text": "まもなく、茅場町です。",
+            "status": "approved",
+            "note": "",
+            "kind": "arriving",
+            "station": "H13",
+            "speaker": "auto",
+            "direction": "to-naka-meguro",
+            "clarity": 35.7,
+            "lang": "ja",
+            "source": "WpOT8ynJv34",
+            "start": 1076.87,
+            "end": 1079.22,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "まもなく、茅場町です。",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "212472bce01b4a70c057b5d5d25e1e4f1aab6bad0bdf3d2324267a56a18c9c86"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/hibiya/clips/voice/H13-kayabacho_arriving_en_to-naka-meguro_01.opus",
+            "text": "Arriving at Kayabachō H13.",
+            "status": "approved",
+            "note": "",
+            "kind": "arriving",
+            "station": "H13",
+            "speaker": "auto",
+            "direction": "to-naka-meguro",
+            "clarity": 33.0,
+            "lang": "en",
+            "source": "WpOT8ynJv34",
+            "start": 1084.41,
+            "end": 1088.51,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "Arriving at Kayabachō H13.",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "304831c7f29482db17de2e1a2f31f0898b3981f459012724e3a7a5142623b636"
+          }
+        ]
+      },
+      "transfer": {
+        "ja": [
+          {
+            "file": "lines/hibiya/clips/voice/H13-kayabacho_transfer_ja_to-kita-senju_01.opus",
+            "text": "東西線はお乗り換えです。",
+            "status": "approved",
+            "note": "",
+            "kind": "transfer",
+            "station": "H13",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 62.2,
+            "lang": "ja",
+            "source": "CGi4vbwS2IE",
+            "start": 357.21,
+            "end": 359.58,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "東西線はお乗り換えです。",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "d5ebfa53a5aea812a874dad7bea299ada7d154e8cb1eebc468c5b410ee5f8661"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/hibiya/clips/voice/H13-kayabacho_transfer_en_to-kita-senju_01.opus",
+            "text": "Please change here for the Tozai Line.",
+            "status": "approved",
+            "note": "",
+            "kind": "transfer",
+            "station": "H13",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 41.4,
+            "lang": "en",
+            "source": "CGi4vbwS2IE",
+            "start": 365.86,
+            "end": 368.56,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "Please change here for the Tozai Line.",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "c5b7156c1eb57d1820f99cd8c29ffd77a5acfafda268d379af9773a9d1700e67"
+          }
+        ]
+      }
+    },
+    {
+      "code": "H14",
+      "name": "Ningyōchō",
+      "kanji": "人形町",
+      "notes": {},
+      "required": {
+        "next_ja": "No complete automatic sentence retained.",
+        "next_en": "No complete automatic sentence retained.",
+        "arriving_ja": "No complete automatic sentence retained.",
+        "arriving_en": "No complete automatic sentence retained.",
+        "transfer_ja": "Interchange station; no separate complete automatic transfer retained.",
+        "transfer_en": "Interchange station; no separate complete automatic transfer retained."
+      },
+      "departure_melody": {
+        "to-naka-meguro": {
+          "file": "lines/hibiya/clips/melody/H14-ningyocho_to-naka-meguro.opus",
+          "text": "そぞろ歩き",
+          "status": "approved",
+          "note": "",
+          "kind": "departure",
+          "station": "H14",
+          "start": 858.5,
+          "end": 866,
+          "source": "RoKgAVyEn1I",
+          "platform": "A線",
+          "sha256": "d0753136819ef38bb71d661e50720df9cf75ac74fae91aa40d36371530aa25ed"
+        },
+        "to-kita-senju": {
+          "file": "lines/hibiya/clips/melody/H14-ningyocho_to-kita-senju.opus",
+          "text": "御伽草子",
+          "status": "approved",
+          "note": "",
+          "kind": "departure",
+          "station": "H14",
+          "start": 1066.5,
+          "end": 1075.5,
+          "source": "RoKgAVyEn1I",
+          "platform": "B線",
+          "sha256": "f4d7c5ca90440eefe52e9afcd0a84fd5639fbd21217fd22d4d8e4b30aed1aadb"
+        }
+      },
+      "next": {
+        "ja": [
+          {
+            "file": "lines/hibiya/clips/voice/H14-ningyocho_next_ja_to-kita-senju_01.opus",
+            "text": "次は、人形町です。",
+            "status": "approved",
+            "note": "",
+            "kind": "next",
+            "station": "H14",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 68.0,
+            "lang": "ja",
+            "source": "CGi4vbwS2IE",
+            "start": 372.17,
+            "end": 374.3,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "次は人形町です。",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "c79d8012ef7e4e5346b99487b2417ea8d29e74fef0eabac1a2cf60520f08f97a"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/hibiya/clips/voice/H14-ningyocho_next_en_to-kita-senju_01.opus",
+            "text": "The next stop is Ningyōchō H14.",
+            "status": "approved",
+            "note": "",
+            "kind": "next",
+            "station": "H14",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 60.8,
+            "lang": "en",
+            "source": "CGi4vbwS2IE",
+            "start": 380.85,
+            "end": 385.1,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "The next stop is 人形町 H14.",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "ce82a3ca77f44705cd4b3ff244d053fd343881b0c1987e85529c715784d7cacd"
+          }
+        ]
+      },
+      "arriving": {
+        "ja": [
+          {
+            "file": "lines/hibiya/clips/voice/H14-ningyocho_arriving_ja_to-kita-senju_01.opus",
+            "text": "まもなく、人形町です。",
+            "status": "approved",
+            "note": "",
+            "kind": "arriving",
+            "station": "H14",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 67.1,
+            "lang": "ja",
+            "source": "CGi4vbwS2IE",
+            "start": 401.8,
+            "end": 404.18,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "まもなく、人形町です。",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "207fa7bee53489b9c499c3faa13c3e053f9c9adba9697e7cf9ed1468c778a4ef"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/hibiya/clips/voice/H14-ningyocho_arriving_en_to-kita-senju_01.opus",
+            "text": "Arriving at Ningyōchō H14.",
+            "status": "approved",
+            "note": "",
+            "kind": "arriving",
+            "station": "H14",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 59.8,
+            "lang": "en",
+            "source": "CGi4vbwS2IE",
+            "start": 408.39,
+            "end": 412.68,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "Arriving at 人形町 H14",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "5f29299d0d38a3aa5f4d863dee24c82a19b66393147e0a3270953d6e42bbea98"
+          }
+        ]
+      },
+      "transfer": {
+        "ja": [
+          {
+            "file": "lines/hibiya/clips/voice/H14-ningyocho_transfer_ja_to-kita-senju_01.opus",
+            "text": "半蔵門線・都営浅草線はお乗り換えです。",
+            "status": "approved",
+            "note": "",
+            "kind": "transfer",
+            "station": "H14",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 58.1,
+            "lang": "ja",
+            "source": "CGi4vbwS2IE",
+            "start": 374.95,
+            "end": 379.23,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "半蔵門線・都営浅草線はお乗り換えです。",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "3229a2a5b5b8bd8322b1310810c38fee88876f2b9d010c04c0935b4655d08cd8"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/hibiya/clips/voice/H14-ningyocho_transfer_en_to-kita-senju_01.opus",
+            "text": "Please change here for the Hanzomon Line and the Toei Asakusa Line.",
+            "status": "approved",
+            "note": "",
+            "kind": "transfer",
+            "station": "H14",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 41.1,
+            "lang": "en",
+            "source": "CGi4vbwS2IE",
+            "start": 385.74,
+            "end": 390.88,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "Please change here for the Hanzomon Line and the Toei Asakusa Line.",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "a7dfbd7664ea140c3f2b123de1c9371ac9a88c028b71d97e6863ca3591334e28"
+          }
+        ]
+      }
+    },
+    {
+      "code": "H15",
+      "name": "Kodemmachō",
+      "kanji": "小伝馬町",
+      "notes": {},
+      "required": {
+        "next_ja": "No complete automatic sentence retained.",
+        "next_en": "No complete automatic sentence retained.",
+        "arriving_ja": "No complete automatic sentence retained.",
+        "arriving_en": "No complete automatic sentence retained."
+      },
+      "departure_melody": {
+        "to-naka-meguro": {
+          "file": "lines/hibiya/clips/melody/H15-kodemmacho_to-naka-meguro.opus",
+          "text": "いつもの店で",
+          "status": "approved",
+          "note": "",
+          "kind": "departure",
+          "station": "H15",
+          "start": 850,
+          "end": 858.5,
+          "source": "RoKgAVyEn1I",
+          "platform": "A線",
+          "sha256": "a328147166c749b336de32f0f6b8c164941e21156d0a9849dcebd97b16227cc8"
+        },
+        "to-kita-senju": {
+          "file": "lines/hibiya/clips/melody/H15-kodemmacho_to-kita-senju.opus",
+          "text": "向こう岸",
+          "status": "approved",
+          "note": "",
+          "kind": "departure",
+          "station": "H15",
+          "start": 1075.5,
+          "end": 1084,
+          "source": "RoKgAVyEn1I",
+          "platform": "B線",
+          "sha256": "a8a27a05a2ba93d7ff5d9cffe2c7fef78fe01cf0d14b93869f7477046fdd6522"
+        }
+      },
+      "next": {
+        "ja": [
+          {
+            "file": "lines/hibiya/clips/voice/H15-kodemmacho_next_ja_to-kita-senju_01.opus",
+            "text": "次は、小伝馬町です。",
+            "status": "approved",
+            "note": "",
+            "kind": "next",
+            "station": "H15",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 59.1,
+            "lang": "ja",
+            "source": "CGi4vbwS2IE",
+            "start": 413.91,
+            "end": 416.02,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "次は、こでんま町です。",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "6ff29bb7f7f93d9529ea4b290dd824704c0ad3749f6959affd5efd156a93e7a4"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/hibiya/clips/voice/H15-kodemmacho_next_en_to-kita-senju_01.opus",
+            "text": "The next stop is Kodemmachō H15.",
+            "status": "approved",
+            "note": "",
+            "kind": "next",
+            "station": "H15",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 61.5,
+            "lang": "en",
+            "source": "CGi4vbwS2IE",
+            "start": 417.62,
+            "end": 421.72,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "The next stop is Kodemmachō H15.",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "aa3a2bf5af2ed4faf2d7c8c1c5063dd107972b9d7ca5f51e3b309cd4c3d4725d"
+          }
+        ]
+      },
+      "arriving": {
+        "ja": [
+          {
+            "file": "lines/hibiya/clips/voice/H15-kodemmacho_arriving_ja_to-kita-senju_01.opus",
+            "text": "まもなく、小伝馬町です。",
+            "status": "approved",
+            "note": "",
+            "kind": "arriving",
+            "station": "H15",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 58.5,
+            "lang": "ja",
+            "source": "CGi4vbwS2IE",
+            "start": 422.83,
+            "end": 425.18,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "まもなく、こでんま町です。",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "3de04fe0cd8edfa85b0ca2a13046d6a0d19be146d4a22192f23842e7de1fa1ef"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/hibiya/clips/voice/H15-kodemmacho_arriving_en_to-kita-senju_01.opus",
+            "text": "Arriving at Kodemmachō H15.",
+            "status": "approved",
+            "note": "",
+            "kind": "arriving",
+            "station": "H15",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 59.7,
+            "lang": "en",
+            "source": "CGi4vbwS2IE",
+            "start": 429.36,
+            "end": 433.49,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "Arriving at Kodemmachō H15.",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "0e9fb14af0b05584c2f0c3ed77b569c4e6df8a920525f2c6126d04dff49544b4"
+          }
+        ]
+      },
+      "transfer": {
+        "ja": [],
+        "en": []
+      }
+    },
+    {
+      "code": "H16",
+      "name": "Akihabara",
+      "kanji": "秋葉原",
+      "notes": {},
+      "required": {
+        "next_ja": "No complete automatic sentence retained.",
+        "next_en": "No complete automatic sentence retained.",
+        "arriving_ja": "No complete automatic sentence retained.",
+        "arriving_en": "No complete automatic sentence retained."
+      },
+      "departure_melody": {
+        "to-naka-meguro": {
+          "file": "lines/hibiya/clips/melody/H16-akihabara_to-naka-meguro.opus",
+          "text": "恋するフォーチュンクッキー Ver.C",
+          "status": "approved",
+          "note": "",
+          "kind": "departure",
+          "station": "H16",
+          "start": 841.5,
+          "end": 850,
+          "source": "RoKgAVyEn1I",
+          "platform": "A線",
+          "sha256": "708e0004f3b5cba34497f0dc805be66d89d888c9e2c93de1fa9a3b70fdefbf55"
+        },
+        "to-kita-senju": {
+          "file": "lines/hibiya/clips/melody/H16-akihabara_to-kita-senju.opus",
+          "text": "恋するフォーチュンクッキー Ver.D",
+          "status": "approved",
+          "note": "",
+          "kind": "departure",
+          "station": "H16",
+          "start": 1084,
+          "end": 1093,
+          "source": "RoKgAVyEn1I",
+          "platform": "B線",
+          "sha256": "a0fc31ec638e045cdd5c3108476a440d83f6e56e58af0097d74f81ea80729f2d"
+        }
+      },
+      "next": {
+        "ja": [
+          {
+            "file": "lines/hibiya/clips/voice/H16-akihabara_next_ja_to-naka-meguro_01.opus",
+            "text": "次は、秋葉原です。",
+            "status": "approved",
+            "note": "",
+            "kind": "next",
+            "station": "H16",
+            "speaker": "auto",
+            "direction": "to-naka-meguro",
+            "clarity": 46.4,
+            "lang": "ja",
+            "source": "qoomXw1eJs0",
+            "start": 743.97,
+            "end": 745.95,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "次は秋葉原です。",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "35766ebd8b8fd3da16d176b7fa2319bb9fbeea80a84383a1dbc5bcbe3aa4eb55"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/hibiya/clips/voice/H16-akihabara_next_en_to-kita-senju_01_round4_round5.opus",
+            "text": "The next stop is Akihabara H16.",
+            "status": "needs ear check",
+            "note": "Audit found obsolete Akihabara H15; replaced with current H16. Full large-v3 CUDA fixed-language transcript and word timings checked; new cut needs listening. Round 5: more than 150 ms pre-roll; envelope onset with 60 ms consonant guard; non-speech tail beyond word and VAD end; 80 ms acoustic guard; speech retained, boundary changed; needs ear check.",
+            "kind": "next",
+            "station": "H16",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 37.6,
+            "lang": "en",
+            "source": "CGi4vbwS2IE",
+            "start": 444.65,
+            "end": 448.78,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "revision": "round5 boundary trim",
+            "asr": "The next stop is Akihabara H16.",
+            "transcript_audit": "large-v3 / CUDA / round5 final-cut boundary verification",
+            "approval_before_trim": "approved",
+            "speech_unchanged": true,
+            "boundary_trim": {
+              "input_sha256": "8dd5a4f606c23171ee4a5d603df0f91944b7012f6a22fc44f2bd66bc91507217",
+              "start": 0.16,
+              "end": 3.92,
+              "fade_in": 0.005,
+              "fade_out": 0.025,
+              "input_archive": "raw/hibiya/round5-inputs/H16-akihabara_next_en_to-kita-senju_01_round4.opus"
+            },
+            "sha256": "3d0e766d7454f63e4c74d7540ac97f3e593f4ced2dba82422e814a45973824e5"
+          }
+        ]
+      },
+      "arriving": {
+        "ja": [
+          {
+            "file": "lines/hibiya/clips/voice/H16-akihabara_arriving_ja_to-kita-senju_01.opus",
+            "text": "まもなく、秋葉原です。",
+            "status": "approved",
+            "note": "",
+            "kind": "arriving",
+            "station": "H16",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 61.3,
+            "lang": "ja",
+            "source": "CGi4vbwS2IE",
+            "start": 456.87,
+            "end": 459.12,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "まもなく、秋葉原です。",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "4194194a5bbb2b7dcaa3ce78e9765d7ff4cab1e269970a3282f25e3a68aa567a"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/hibiya/clips/voice/H16-akihabara_arriving_en_to-kita-senju_02_round4_round5.opus",
+            "text": "Arriving at Akihabara H16.",
+            "status": "needs ear check",
+            "note": "Round 4 rejected incomplete H16; current full number recovered. Full large-v3 CUDA fixed-language transcript and word timings checked; new cut needs listening. Round 5: more than 150 ms pre-roll; envelope onset with 60 ms consonant guard; non-speech tail beyond word and VAD end; 80 ms acoustic guard; speech retained, boundary changed; needs ear check.",
+            "kind": "arriving",
+            "station": "H16",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 50.1,
+            "lang": "en",
+            "source": "CGi4vbwS2IE",
+            "start": 463.15,
+            "end": 467.3,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "revision": "round5 boundary trim",
+            "asr": "Arriving at Akihabara H16.",
+            "transcript_audit": "large-v3 / CUDA / round5 final-cut boundary verification",
+            "approval_before_trim": "approved",
+            "speech_unchanged": true,
+            "boundary_trim": {
+              "input_sha256": "bb502c105c2a959ad5f4143315a8bca39ba2e9d66ef7ded919b6aedf78c8e1bf",
+              "start": 0.16,
+              "end": 3.984,
+              "fade_in": 0.005,
+              "fade_out": 0.025,
+              "input_archive": "raw/hibiya/round5-inputs/H16-akihabara_arriving_en_to-kita-senju_02_round4.opus"
+            },
+            "sha256": "91abbdcb6cd148f00047740148c8e2e900fb7925aa1264e8570cf251e0106641"
+          }
+        ]
+      },
+      "transfer": {
+        "ja": [
+          {
+            "file": "lines/hibiya/clips/voice/H16-akihabara_transfer_ja_to-kita-senju_01.opus",
+            "text": "都営新宿線、JR線、つくばエクスプレス線はお乗り換えです。",
+            "status": "approved",
+            "note": "",
+            "kind": "transfer",
+            "station": "H16",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 57.7,
+            "lang": "ja",
+            "source": "CGi4vbwS2IE",
+            "start": 437.64,
+            "end": 443.18,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "都営新宿線、JR線、筑波エクスプレッセンはお乗り換えです。",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "7ae652eeb72185c8c08d0bd48867b459948569246732a41f041329f1a53102b8"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/hibiya/clips/voice/H16-akihabara_transfer_en_to-kita-senju_01.opus",
+            "text": "Please change here for the Toei-Shinjuku Line, the JR Lines, and the Tsukuba Express Line.",
+            "status": "approved",
+            "note": "",
+            "kind": "transfer",
+            "station": "H16",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 46.4,
+            "lang": "en",
+            "source": "CGi4vbwS2IE",
+            "start": 449.24,
+            "end": 455.9,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "Please change here for the Toei-Shinjuku Line, the JR Lines, and the Tsukuba Express Line.",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "1ac76d711525384de8197b16157009ad19dad5a44fd4fca7dac0f170ac451238"
+          }
+        ]
+      }
+    },
+    {
+      "code": "H17",
+      "name": "Naka-Okachimachi",
+      "kanji": "仲御徒町",
+      "notes": {},
+      "required": {
+        "next_ja": "No complete automatic sentence retained.",
+        "next_en": "No complete automatic sentence retained.",
+        "arriving_ja": "No complete automatic sentence retained.",
+        "arriving_en": "No complete automatic sentence retained."
+      },
+      "departure_melody": {
+        "to-naka-meguro": {
+          "file": "lines/hibiya/clips/melody/H17-naka-okachimachi_to-naka-meguro.opus",
+          "text": "アッシュグレイ",
+          "status": "approved",
+          "note": "",
+          "kind": "departure",
+          "station": "H17",
+          "start": 833.5,
+          "end": 841.5,
+          "source": "RoKgAVyEn1I",
+          "platform": "A線",
+          "sha256": "163559693487b6457a7badd109c4aca70d023fb95ed82c3f470966bb6b0c4c26"
+        },
+        "to-kita-senju": {
+          "file": "lines/hibiya/clips/melody/H17-naka-okachimachi_to-kita-senju.opus",
+          "text": "ゆれる袂",
+          "status": "approved",
+          "note": "",
+          "kind": "departure",
+          "station": "H17",
+          "start": 1093,
+          "end": 1101.5,
+          "source": "RoKgAVyEn1I",
+          "platform": "B線",
+          "sha256": "2f07eb35020f13e274cb4482a6d5badb908f15581d6bf4654f8f0f8bc64896d8"
+        }
+      },
+      "next": {
+        "ja": [
+          {
+            "file": "lines/hibiya/clips/voice/H17-naka-okachimachi_next_ja_to-kita-senju_01.opus",
+            "text": "次は、仲御徒町です。",
+            "status": "approved",
+            "note": "",
+            "kind": "next",
+            "station": "H17",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 160.8,
+            "lang": "ja",
+            "source": "CGi4vbwS2IE",
+            "start": 468.38,
+            "end": 470.66,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "次は、仲岡市町です。",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "ff7f3fba41365648d54ba826c7a58aa386c02be89386a3b58c4db89a254fcd2f"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/hibiya/clips/voice/H17-naka-okachimachi_next_en_to-kita-senju_01.opus",
+            "text": "The next stop is Naka-Okachimachi H17.",
+            "status": "approved",
+            "note": "",
+            "kind": "next",
+            "station": "H17",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 58.0,
+            "lang": "en",
+            "source": "CGi4vbwS2IE",
+            "start": 475.65,
+            "end": 479.99,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "The next stop is Naka-Okachimachi H17.",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "2db1aa2696090f1ffee8789650091d89925bf451924f42cfd011debf71452380"
+          }
+        ]
+      },
+      "arriving": {
+        "ja": [
+          {
+            "file": "lines/hibiya/clips/voice/H17-naka-okachimachi_arriving_ja_to-kita-senju_01.opus",
+            "text": "まもなく、仲御徒町です。",
+            "status": "approved",
+            "note": "",
+            "kind": "arriving",
+            "station": "H17",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 62.6,
+            "lang": "ja",
+            "source": "CGi4vbwS2IE",
+            "start": 484.83,
+            "end": 487.35,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "まもなく、仲御徒町です。",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "9ee9fccea868a8c0503acdba499e4e3f0d46011d2e29f3801d848eb6ccff5104"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/hibiya/clips/voice/H17-naka-okachimachi_arriving_en_to-kita-senju_01.opus",
+            "text": "Arriving at Naka-Okachimachi H17.",
+            "status": "approved",
+            "note": "",
+            "kind": "arriving",
+            "station": "H17",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 59.7,
+            "lang": "en",
+            "source": "CGi4vbwS2IE",
+            "start": 491.41,
+            "end": 495.78,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "Arriving at Naka-Okachimachi H17.",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "440ff5913f937e2dbb9f258101a271901e98f05535b8d5d4bf679d194b6342bc"
+          }
+        ]
+      },
+      "transfer": {
+        "ja": [
+          {
+            "file": "lines/hibiya/clips/voice/H17-naka-okachimachi_transfer_ja_to-kita-senju_01.opus",
+            "text": "都営大江戸線はお乗り換えです。",
+            "status": "approved",
+            "note": "",
+            "kind": "transfer",
+            "station": "H17",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 56.3,
+            "lang": "ja",
+            "source": "CGi4vbwS2IE",
+            "start": 471.24,
+            "end": 474.06,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "都営大江戸線はお乗り換えです。",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "10614ef92e125e9c35c94fe32b370d80afbd6c4bc41de6c0cf950fa5705d1eb4"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/hibiya/clips/voice/H17-naka-okachimachi_transfer_en_to-kita-senju_01.opus",
+            "text": "Please change here for the Toei Oedo Line.",
+            "status": "approved",
+            "note": "",
+            "kind": "transfer",
+            "station": "H17",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 31.6,
+            "lang": "en",
+            "source": "CGi4vbwS2IE",
+            "start": 480.61,
+            "end": 483.81,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "Please change here for the Toei Oedo Line.",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "e614c04e219ac815b794b93d6dab18143f91f03785d46e2071300f5bd6790207"
+          }
+        ]
+      }
+    },
+    {
+      "code": "H18",
+      "name": "Ueno",
+      "kanji": "上野",
+      "notes": {},
+      "required": {
+        "next_ja": "No complete automatic sentence retained.",
+        "next_en": "No complete automatic sentence retained.",
+        "arriving_ja": "No complete automatic sentence retained.",
+        "arriving_en": "No complete automatic sentence retained.",
+        "transfer_ja": "Interchange station; no separate complete automatic transfer retained.",
+        "transfer_en": "Interchange station; no separate complete automatic transfer retained."
+      },
+      "departure_melody": {
+        "to-naka-meguro": {
+          "file": "lines/hibiya/clips/melody/H18-ueno_to-naka-meguro.opus",
+          "text": "Toy garden",
+          "status": "approved",
+          "note": "",
+          "kind": "departure",
+          "station": "H18",
+          "start": 826,
+          "end": 833.5,
+          "source": "RoKgAVyEn1I",
+          "platform": "A線",
+          "sha256": "7efff49cbebde21c5dc023ba1eac6b2e5621bd437cdb1e86e3ac154056a3b945"
+        },
+        "to-kita-senju": {
+          "file": "lines/hibiya/clips/melody/H18-ueno_to-kita-senju.opus",
+          "text": "さあ、行くよ！",
+          "status": "approved",
+          "note": "",
+          "kind": "departure",
+          "station": "H18",
+          "start": 1101.5,
+          "end": 1109.5,
+          "source": "RoKgAVyEn1I",
+          "platform": "B線",
+          "sha256": "0d84c9512be24c6ee5b9ec41de509dbb9b06e1fed52658b60b824f87865ac68c"
+        }
+      },
+      "next": {
+        "ja": [
+          {
+            "file": "lines/hibiya/clips/voice/H18-ueno_next_ja_to-kita-senju_01.opus",
+            "text": "次は、上野です。",
+            "status": "approved",
+            "note": "",
+            "kind": "next",
+            "station": "H18",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 60.9,
+            "lang": "ja",
+            "source": "CGi4vbwS2IE",
+            "start": 499.47,
+            "end": 501.22,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "次は、上野です。",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "7dde4d6576d77e72376f54a68e208d0a81a44c8cbc702833464530dd797db506"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/hibiya/clips/voice/H18-ueno_next_en_to-kita-senju_01.opus",
+            "text": "The next stop is Ueno H18.",
+            "status": "approved",
+            "note": "",
+            "kind": "next",
+            "station": "H18",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 57.0,
+            "lang": "en",
+            "source": "CGi4vbwS2IE",
+            "start": 507.8,
+            "end": 511.51,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "The next stop is Ueno H18.",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "b079bfab01858f0e1c8ba007f6e43b14d08c1086c1f0212890b622e685d5cdf1"
+          }
+        ]
+      },
+      "arriving": {
+        "ja": [
+          {
+            "file": "lines/hibiya/clips/voice/H18-ueno_arriving_ja_to-naka-meguro_01.opus",
+            "text": "まもなく、上野です。",
+            "status": "approved",
+            "note": "",
+            "kind": "arriving",
+            "station": "H18",
+            "speaker": "auto",
+            "direction": "to-naka-meguro",
+            "clarity": 37.9,
+            "lang": "ja",
+            "source": "qoomXw1eJs0",
+            "start": 701.92,
+            "end": 703.89,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "まもなく、上野です。",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "937e0cb89456fc705ee39dd83576c6df583346957ca68d88331efd70dd7fa9f2"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/hibiya/clips/voice/H18-ueno_arriving_en_to-naka-meguro_01_round4_round5.opus",
+            "text": "Arriving at Ueno H18.",
+            "status": "needs ear check",
+            "note": "Round 4 rejected old Ueno H17; replaced with current H18. Station name was Ueno, not Naka-Okachimachi. Full large-v3 CUDA fixed-language transcript and word timings checked; new cut needs listening. Round 5: word/VAD/envelope reviewed; removes isolated fragment or background pre-roll; non-speech tail beyond word and VAD end; 80 ms acoustic guard; speech retained, boundary changed; needs ear check.",
+            "kind": "arriving",
+            "station": "H18",
+            "speaker": "auto",
+            "direction": "to-naka-meguro",
+            "clarity": 46.7,
+            "lang": "en",
+            "source": "WpOT8ynJv34",
+            "start": 524.5,
+            "end": 528.75,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "revision": "round5 boundary trim",
+            "asr": "Arriving at Ueno H18",
+            "transcript_audit": "large-v3 / CUDA / round5 final-cut boundary verification",
+            "approval_before_trim": "approved",
+            "speech_unchanged": true,
+            "boundary_trim": {
+              "input_sha256": "e68165d041a5d5109da3f4984f4c51195282513797ee43a46d3300596f006708",
+              "start": 0.39,
+              "end": 3.952,
+              "fade_in": 0.005,
+              "fade_out": 0.025,
+              "input_archive": "raw/hibiya/round5-inputs/H18-ueno_arriving_en_to-naka-meguro_01_round4.opus"
+            },
+            "sha256": "b9c7eab3e0860826bfcdafe4195d167996a7057120c81afb91961020feee7ec7"
+          }
+        ]
+      },
+      "transfer": {
+        "ja": [
+          {
+            "file": "lines/hibiya/clips/voice/H18-ueno_transfer_ja_to-kita-senju_01.opus",
+            "text": "銀座線、JR線、京成線はお乗り換えです。",
+            "status": "approved",
+            "note": "",
+            "kind": "transfer",
+            "station": "H18",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 62.2,
+            "lang": "ja",
+            "source": "CGi4vbwS2IE",
+            "start": 501.79,
+            "end": 506.21,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "銀座線、JR線、京成線はお乗り換えです。",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "4da9c5c855f084c0b1420ac7cb130b9935d3130fd1924b301765274e9f667122"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/hibiya/clips/voice/H18-ueno_transfer_en_to-kita-senju_01.opus",
+            "text": "Please change here for the Ginza Line, the JR Lines, and the Keisei Line.",
+            "status": "approved",
+            "note": "",
+            "kind": "transfer",
+            "station": "H18",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 56.4,
+            "lang": "en",
+            "source": "CGi4vbwS2IE",
+            "start": 512.14,
+            "end": 517.24,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "Please change here for the Ginza Line, the JR Lines, and the Keisei Line.",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "8d6050320f8096b77a6f4f54fe45d1e7da3c7274257c8b937aeff44e61ed1e1b"
+          }
+        ]
+      }
+    },
+    {
+      "code": "H19",
+      "name": "Iriya",
+      "kanji": "入谷",
+      "notes": {},
+      "required": {
+        "next_ja": "No complete automatic sentence retained.",
+        "next_en": "No complete automatic sentence retained.",
+        "arriving_ja": "No complete automatic sentence retained.",
+        "arriving_en": "No complete automatic sentence retained."
+      },
+      "departure_melody": {
+        "to-naka-meguro": {
+          "file": "lines/hibiya/clips/melody/H19-iriya_to-naka-meguro.opus",
+          "text": "銀箭",
+          "status": "approved",
+          "note": "",
+          "kind": "departure",
+          "station": "H19",
+          "start": 817.5,
+          "end": 826,
+          "source": "RoKgAVyEn1I",
+          "platform": "A線",
+          "sha256": "32965a28133f624bf5bb183cfc92ab8e7b56986882aac7a9766f49d671c2ceeb"
+        },
+        "to-kita-senju": {
+          "file": "lines/hibiya/clips/melody/H19-iriya_to-kita-senju.opus",
+          "text": "花びら",
+          "status": "approved",
+          "note": "",
+          "kind": "departure",
+          "station": "H19",
+          "start": 1109.5,
+          "end": 1118.5,
+          "source": "RoKgAVyEn1I",
+          "platform": "B線",
+          "sha256": "13992bbcc84bc6845854ae301f614ee03c413702970e8c8d90cbaaad701b8819"
+        }
+      },
+      "next": {
+        "ja": [
+          {
+            "file": "lines/hibiya/clips/voice/H19-iriya_next_ja_to-kita-senju_01.opus",
+            "text": "次は、入谷です。",
+            "status": "approved",
+            "note": "",
+            "kind": "next",
+            "station": "H19",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 65.8,
+            "lang": "ja",
+            "source": "CGi4vbwS2IE",
+            "start": 534.18,
+            "end": 535.94,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "次は、入谷です。",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "b9b3829c92760860c66b92ba69809a4a2643f9e820b71ac97dfaaf44197f80ce"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/hibiya/clips/voice/H19-iriya_next_en_to-kita-senju_01.opus",
+            "text": "The next stop is Iriya H19.",
+            "status": "approved",
+            "note": "",
+            "kind": "next",
+            "station": "H19",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 57.7,
+            "lang": "en",
+            "source": "CGi4vbwS2IE",
+            "start": 541.0,
+            "end": 544.68,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "The next stop is Iriya H19.",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "fc72af32134c56e5835f8ea4f9af4e6a5214b93d1dc4c75fbea180314db6ce69"
+          }
+        ]
+      },
+      "arriving": {
+        "ja": [
+          {
+            "file": "lines/hibiya/clips/voice/H19-iriya_arriving_ja_to-kita-senju_01.opus",
+            "text": "まもなく、入谷です。",
+            "status": "approved",
+            "note": "",
+            "kind": "arriving",
+            "station": "H19",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 62.3,
+            "lang": "ja",
+            "source": "CGi4vbwS2IE",
+            "start": 549.37,
+            "end": 551.38,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "まもなく、入谷です。",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "e1f41b150cf3242f2c6cc7400ff5cdc022384b5e263d953a070023e9da2b0778"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/hibiya/clips/voice/H19-iriya_arriving_en_to-kita-senju_02_round4_round5.opus",
+            "text": "Arriving at Iriya H19.",
+            "status": "needs ear check",
+            "note": "Audit found obsolete Iriya H18; replaced with current H19. Full large-v3 CUDA fixed-language transcript and word timings checked; new cut needs listening. Round 5: more than 150 ms pre-roll; envelope onset with 60 ms consonant guard; non-speech tail beyond word and VAD end; 80 ms acoustic guard; speech retained, boundary changed; needs ear check.",
+            "kind": "arriving",
+            "station": "H19",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 50.0,
+            "lang": "en",
+            "source": "CGi4vbwS2IE",
+            "start": 555.4,
+            "end": 559.4,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "revision": "round5 boundary trim",
+            "asr": "Arriving at Iriya H19.",
+            "transcript_audit": "large-v3 / CUDA / round5 final-cut boundary verification",
+            "approval_before_trim": "approved",
+            "speech_unchanged": true,
+            "boundary_trim": {
+              "input_sha256": "88bde8bba6016d7913518484e077fea077bcbf7bdd2efe801a72340a32e1ddf2",
+              "start": 0.16,
+              "end": 3.824,
+              "fade_in": 0.005,
+              "fade_out": 0.025,
+              "input_archive": "raw/hibiya/round5-inputs/H19-iriya_arriving_en_to-kita-senju_02_round4.opus"
+            },
+            "sha256": "1a9e6cb483692d883d75fcd5b379175a829293a63cd138185a52e0df11c21020"
+          }
+        ]
+      },
+      "transfer": {
+        "ja": [],
+        "en": []
+      }
+    },
+    {
+      "code": "H20",
+      "name": "Minowa",
+      "kanji": "三ノ輪",
+      "notes": {},
+      "required": {
+        "next_ja": "No complete automatic sentence retained.",
+        "next_en": "No complete automatic sentence retained.",
+        "arriving_ja": "No complete automatic sentence retained.",
+        "arriving_en": "No complete automatic sentence retained."
+      },
+      "departure_melody": {
+        "to-naka-meguro": {
+          "file": "lines/hibiya/clips/melody/H20-minowa_to-naka-meguro.opus",
+          "text": "タイムマシン",
+          "status": "approved",
+          "note": "",
+          "kind": "departure",
+          "station": "H20",
+          "start": 808,
+          "end": 817.5,
+          "source": "RoKgAVyEn1I",
+          "platform": "A線",
+          "sha256": "8beb702f0ffd138e798ad5dea057fac97e87b14ae14c5334aae7fd36d933e907"
+        },
+        "to-kita-senju": {
+          "file": "lines/hibiya/clips/melody/H20-minowa_to-kita-senju.opus",
+          "text": "星まつり",
+          "status": "approved",
+          "note": "",
+          "kind": "departure",
+          "station": "H20",
+          "start": 1118.5,
+          "end": 1127.5,
+          "source": "RoKgAVyEn1I",
+          "platform": "B線",
+          "sha256": "c520771833a70bd319ef3fcbfe1bb130bab88d39d0316be24698f4e659a65a98"
+        }
+      },
+      "next": {
+        "ja": [
+          {
+            "file": "lines/hibiya/clips/voice/H20-minowa_next_ja_to-naka-meguro_01.opus",
+            "text": "次は、三ノ輪です。",
+            "status": "approved",
+            "note": "",
+            "kind": "next",
+            "station": "H20",
+            "speaker": "auto",
+            "direction": "to-naka-meguro",
+            "clarity": 50.7,
+            "lang": "ja",
+            "source": "qoomXw1eJs0",
+            "start": 629.91,
+            "end": 631.61,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "次は、ミノワです。",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "84552657b01240607ebec87a1c9163ad15b1d87045f9e4ed1d6b89e75ab69002"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/hibiya/clips/voice/H20-minowa_next_en_to-kita-senju_01_round4_round5.opus",
+            "text": "The next stop is Minowa H20.",
+            "status": "needs ear check",
+            "note": "Audit found obsolete Minowa H19; replaced with current H20. Full large-v3 CUDA fixed-language transcript and word timings checked; new cut needs listening. Round 5: more than 150 ms pre-roll; envelope onset with 60 ms consonant guard; non-speech tail beyond word and VAD end; 80 ms acoustic guard; speech retained, boundary changed; needs ear check.",
+            "kind": "next",
+            "station": "H20",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 45.6,
+            "lang": "en",
+            "source": "CGi4vbwS2IE",
+            "start": 563.24,
+            "end": 567.0,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "revision": "round5 boundary trim",
+            "asr": "The next stop is Minowa H20.",
+            "transcript_audit": "large-v3 / CUDA / round5 final-cut boundary verification",
+            "approval_before_trim": "approved",
+            "speech_unchanged": true,
+            "boundary_trim": {
+              "input_sha256": "1bb838db137e2fd4c58cef49c45c2f606a15e1061d1d3b28f9c94a781f462458",
+              "start": 0.17,
+              "end": 3.568,
+              "fade_in": 0.005,
+              "fade_out": 0.025,
+              "input_archive": "raw/hibiya/round5-inputs/H20-minowa_next_en_to-kita-senju_01_round4.opus"
+            },
+            "sha256": "c400954268e7534ab33c03e8c355c78a201bc9b7f8826d512ed32f493bd89be5"
+          }
+        ]
+      },
+      "arriving": {
+        "ja": [
+          {
+            "file": "lines/hibiya/clips/voice/H20-minowa_arriving_ja_to-kita-senju_01.opus",
+            "text": "まもなく、三ノ輪です。",
+            "status": "approved",
+            "note": "",
+            "kind": "arriving",
+            "station": "H20",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 65.6,
+            "lang": "ja",
+            "source": "CGi4vbwS2IE",
+            "start": 584.49,
+            "end": 586.5,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "まもなく、ミノワです。",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "7d35ac29ea8e31bf2b1c8f90f5f3cad1de7363f5f12ed8cce4ac68c4cf7afdaf"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/hibiya/clips/voice/H20-minowa_arriving_en_to-kita-senju_01.opus",
+            "text": "Arriving at Minowa H20.",
+            "status": "approved",
+            "note": "",
+            "kind": "arriving",
+            "station": "H20",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 57.9,
+            "lang": "en",
+            "source": "CGi4vbwS2IE",
+            "start": 590.67,
+            "end": 594.17,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "Arriving at Minowa H20.",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "7c0871fe6916235830a8e58acf032b3a7eb7c5655998504fbde975faaec30354"
+          }
+        ]
+      },
+      "transfer": {
+        "ja": [],
+        "en": []
+      }
+    },
+    {
+      "code": "H21",
+      "name": "Minami-Senju",
+      "kanji": "南千住",
+      "notes": {},
+      "required": {
+        "next_ja": "No complete automatic sentence retained.",
+        "next_en": "No complete automatic sentence retained.",
+        "arriving_ja": "No complete automatic sentence retained.",
+        "arriving_en": "No complete automatic sentence retained.",
+        "transfer_ja": "Interchange station; no separate complete automatic transfer retained.",
+        "transfer_en": "Interchange station; no separate complete automatic transfer retained."
+      },
+      "departure_melody": {
+        "to-naka-meguro": {
+          "file": "lines/hibiya/clips/melody/H21-minami-senju_to-naka-meguro.opus",
+          "text": "桜の川堤",
+          "status": "approved",
+          "note": "",
+          "kind": "departure",
+          "station": "H21",
+          "start": 800.5,
+          "end": 808,
+          "source": "RoKgAVyEn1I",
+          "platform": "A線",
+          "sha256": "de55a27edbb42c3a31da291ff6ddce9dd6e6117cf1a64ccbd8a6f4893f3725a6"
+        },
+        "to-kita-senju": {
+          "file": "lines/hibiya/clips/melody/H21-minami-senju_to-kita-senju.opus",
+          "text": "プリズム",
+          "status": "approved",
+          "note": "",
+          "kind": "departure",
+          "station": "H21",
+          "start": 1127.5,
+          "end": 1136.5,
+          "source": "RoKgAVyEn1I",
+          "platform": "B線",
+          "sha256": "986a8b05edb028a05bbfd665aa3e6960bc51774427dc2cd4b22ffac6bc44b50c"
+        }
+      },
+      "next": {
+        "ja": [
+          {
+            "file": "lines/hibiya/clips/voice/H21-minami-senju_next_ja_to-naka-meguro_01.opus",
+            "text": "次は、南千住です。",
+            "status": "approved",
+            "note": "",
+            "kind": "next",
+            "station": "H21",
+            "speaker": "auto",
+            "direction": "to-naka-meguro",
+            "clarity": 36.6,
+            "lang": "ja",
+            "source": "WpOT8ynJv34",
+            "start": 28.22,
+            "end": 30.41,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "次は、南千住です。",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "9fb811b98b068d641df8634494895f1de2d0886e378c89e36bf53d6c0ed906ea"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/hibiya/clips/voice/H21-minami-senju_next_en_to-naka-meguro_01.opus",
+            "text": "The next stop is Minami-Senju H21.",
+            "status": "approved",
+            "note": "",
+            "kind": "next",
+            "station": "H21",
+            "speaker": "auto",
+            "direction": "to-naka-meguro",
+            "clarity": 36.8,
+            "lang": "en",
+            "source": "WpOT8ynJv34",
+            "start": 38.2,
+            "end": 42.3,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "The next stop is Minami-Senju H21.",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "7fb0bb273623a8afefe803b410e811b5568f5ff2f35dff9717149b53ad76ce38"
+          }
+        ]
+      },
+      "arriving": {
+        "ja": [
+          {
+            "file": "lines/hibiya/clips/voice/H21-minami-senju_arriving_ja_to-kita-senju_01.opus",
+            "text": "まもなく、南千住です。",
+            "status": "approved",
+            "note": "",
+            "kind": "arriving",
+            "station": "H21",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 65.4,
+            "lang": "ja",
+            "source": "CGi4vbwS2IE",
+            "start": 614.66,
+            "end": 617.05,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "まもなく、南千住です。",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "bfc0d283424cf53aaccad3db736048476904d958f2b703ac3298d8750a663ea2"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/hibiya/clips/voice/H21-minami-senju_arriving_en_to-kita-senju_01.opus",
+            "text": "Arriving at Minami-Senju H21.",
+            "status": "approved",
+            "note": "",
+            "kind": "arriving",
+            "station": "H21",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 62.7,
+            "lang": "en",
+            "source": "CGi4vbwS2IE",
+            "start": 623.83,
+            "end": 628.11,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "Arriving at Minami-Senju H21",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "e2126d740bc5caf3df515c46c961545a1b89813699712a2bdb135f99c304ad6f"
+          }
+        ]
+      },
+      "transfer": {
+        "ja": [
+          {
+            "file": "lines/hibiya/clips/voice/H21-minami-senju_transfer_ja_to-kita-senju_01.opus",
+            "text": "JR常磐線つくばエクスプレス線はお乗り換えです。",
+            "status": "approved",
+            "note": "",
+            "kind": "transfer",
+            "station": "H21",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 61.8,
+            "lang": "ja",
+            "source": "CGi4vbwS2IE",
+            "start": 597.73,
+            "end": 602.19,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "JR常磐線 筑波エクスプレス線はお乗り換えです。",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "74b6fa647b1818291e62f03c49b89f6f495876fd04751fcdec72ef224723eef6"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/hibiya/clips/voice/H21-minami-senju_transfer_en_to-kita-senju_01.opus",
+            "text": "Please change here for the JR Joban Line and the Tsukuba Express Line.",
+            "status": "approved",
+            "note": "",
+            "kind": "transfer",
+            "station": "H21",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 36.6,
+            "lang": "en",
+            "source": "CGi4vbwS2IE",
+            "start": 608.66,
+            "end": 613.54,
+            "directions": [
+              "to-kita-senju",
+              "to-naka-meguro"
+            ],
+            "asr": "Please change here for the JR Joban Line and the Tsukuba Express Line.",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "64baa87e0afa2a42243a65611aecc8259a57a65869bc13cd58d97f8928054eb6"
+          }
+        ]
+      }
+    },
+    {
+      "code": "H22",
+      "name": "Kita-Senju",
+      "kanji": "北千住",
+      "notes": {},
+      "required": {
+        "next_ja": "No complete automatic sentence retained.",
+        "next_en": "No complete automatic sentence retained.",
+        "arriving_ja": "No complete automatic sentence retained.",
+        "arriving_en": "No complete automatic sentence retained.",
+        "transfer_ja": "Interchange station; no separate complete automatic transfer retained.",
+        "transfer_en": "Interchange station; no separate complete automatic transfer retained."
+      },
+      "departure_melody": {},
+      "next": {
+        "ja": [
+          {
+            "file": "lines/hibiya/clips/voice/H22-kita-senju_next_ja_to-kita-senju_01.opus",
+            "text": "次は、北千住、終点です。",
+            "status": "approved",
+            "note": "",
+            "kind": "next",
+            "station": "H22",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 61.0,
+            "lang": "ja",
+            "source": "CGi4vbwS2IE",
+            "start": 629.31,
+            "end": 632.54,
+            "directions": [
+              "to-kita-senju"
+            ],
+            "asr": "次は北千住、終点です。",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "70efaf338915ae07ed1c854be1080bafcc4812b1385fbe10b8f5d0f546dd81b5"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/hibiya/clips/voice/H22-kita-senju_next_en_to-kita-senju_01.opus",
+            "text": "The next stop is Kita-Senju H22, the last stop.",
+            "status": "approved",
+            "note": "",
+            "kind": "next",
+            "station": "H22",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 59.4,
+            "lang": "en",
+            "source": "CGi4vbwS2IE",
+            "start": 641.88,
+            "end": 647.36,
+            "directions": [
+              "to-kita-senju"
+            ],
+            "asr": "The next stop is Kita-Senju H22, the last stop.",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "166c189e72aa9ba225d7d63f6d4c2b7ceec58a257d3239e83d631dd2fb6f8338"
+          }
+        ]
+      },
+      "arriving": {
+        "ja": [
+          {
+            "file": "lines/hibiya/clips/voice/H22-kita-senju_arriving_ja_to-kita-senju_01.opus",
+            "text": "まもなく、北千住、終点です。",
+            "status": "approved",
+            "note": "",
+            "kind": "arriving",
+            "station": "H22",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 67.7,
+            "lang": "ja",
+            "source": "CGi4vbwS2IE",
+            "start": 657.41,
+            "end": 660.88,
+            "directions": [
+              "to-kita-senju"
+            ],
+            "asr": "まもなく、北千住、終点です。",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "8cdc501cc20ee615b81cc3efc14a448a478499ee654bf0590a36209a0dc75f2b"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/hibiya/clips/voice/H22-kita-senju_arriving_en_to-kita-senju_01.opus",
+            "text": "Arriving at Kita-Senju H22, the last stop.",
+            "status": "approved",
+            "note": "",
+            "kind": "arriving",
+            "station": "H22",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 59.2,
+            "lang": "en",
+            "source": "CGi4vbwS2IE",
+            "start": 673.62,
+            "end": 679.13,
+            "directions": [
+              "to-kita-senju"
+            ],
+            "asr": "Arriving at Kita-Senju H22, the last stop.",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "f25bbb37c721d3e1b6cb9cbf1f9b6738a174b28a7a54b9e1b902b80628314f44"
+          }
+        ]
+      },
+      "transfer": {
+        "ja": [
+          {
+            "file": "lines/hibiya/clips/voice/H22-kita-senju_transfer_ja_to-kita-senju_01.opus",
+            "text": "千代田線、JR常磐線、東武スカイツリーライン、つくばエクスプレス線はお乗り換えです。",
+            "status": "approved",
+            "note": "",
+            "kind": "transfer",
+            "station": "H22",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 56.2,
+            "lang": "ja",
+            "source": "CGi4vbwS2IE",
+            "start": 633.12,
+            "end": 640.29,
+            "directions": [
+              "to-kita-senju"
+            ],
+            "asr": "千代田線、JR常磐線、東武スカイツリーライン、筑波エクスプレス線はお乗り換えです。",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "a6da51e43143b6954923e2313c555bc9b404afaee3b7bd8d1d6afe8782e4f17a"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/hibiya/clips/voice/H22-kita-senju_transfer_en_to-kita-senju_01_complete.opus",
+            "text": "Please change here for the Chiyoda Line, the JR Joban Line, the Tobu Skytree Line, and the Tsukuba Express Line.",
+            "status": "approved",
+            "note": "Rejoined contiguous transfer-list fragments from the raw recording; complete cut needs a new ear check.",
+            "kind": "transfer",
+            "station": "H22",
+            "speaker": "auto",
+            "direction": "to-kita-senju",
+            "clarity": 36.7,
+            "lang": "en",
+            "source": "CGi4vbwS2IE",
+            "start": 648.08,
+            "end": 656.29,
+            "directions": [
+              "to-kita-senju"
+            ],
+            "asr": "Please change here for the Chiyoda Line, the JR Joban Line, the Tobu Skytree Line, and the Tsukuba Express Line.",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "3ff91079683b78ed5a5bf3f0cbb1114ce2189212bf2669393b3aa5ca26880067"
+          }
+        ]
+      }
+    }
+  ],
+  "generic": {
+    "exit_side": [
+      {
+        "file": "lines/hibiya/clips/voice/H07-kasumigaseki_exit-side_ja_to-kita-senju_01.opus",
+        "text": "出口は右側です。",
+        "status": "approved",
+        "note": "",
+        "kind": "exit_side",
+        "station": "H07",
+        "speaker": "auto",
+        "direction": "to-kita-senju",
+        "clarity": 65.4,
+        "lang": "ja",
+        "side": "right",
+        "source": "CGi4vbwS2IE",
+        "start": 191.22,
+        "end": 193.1,
+        "asr": "出口は右側です。",
+        "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+        "sha256": "6d405da8a36ea94ea1f3d84243ca11e4c27a34d8561fe0e107abdb5fc32ef555"
+      },
+      {
+        "file": "lines/hibiya/clips/voice/H21-minami-senju_exit-side_ja_to-kita-senju_01.opus",
+        "text": "出口は左側です。",
+        "status": "approved",
+        "note": "",
+        "kind": "exit_side",
+        "station": "H21",
+        "speaker": "auto",
+        "direction": "to-kita-senju",
+        "clarity": 67.5,
+        "lang": "ja",
+        "side": "left",
+        "source": "CGi4vbwS2IE",
+        "start": 620.25,
+        "end": 622.24,
+        "asr": "出口は左側です。",
+        "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+        "sha256": "c37210d0bc6024a2d95cd5b43042fb966bae2a5af2c9f62e3100248620b80446"
+      }
+    ],
+    "bound": [
+      {
+        "file": "lines/hibiya/clips/voice/H19-iriya_bound_ja_to-kita-senju_01.opus",
+        "text": "この電車は北千住行きです。",
+        "status": "approved",
+        "note": "",
+        "kind": "bound",
+        "station": "H19",
+        "speaker": "auto",
+        "direction": "to-kita-senju",
+        "clarity": 62.5,
+        "lang": "ja",
+        "source": "CGi4vbwS2IE",
+        "start": 536.52,
+        "end": 539.31,
+        "directions": [
+          "to-kita-senju"
+        ],
+        "asr": "この電車は北千住行きです。",
+        "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+        "sha256": "8ac1861c6749bb82d26f99581b45c979d65f988b521633e84f9e4f4a2c5e36e3"
+      },
+      {
+        "file": "lines/hibiya/clips/voice/H19-iriya_bound_en_to-kita-senju_01.opus",
+        "text": "This train is bound for Kita-Senju.",
+        "status": "approved",
+        "note": "",
+        "kind": "bound",
+        "station": "H19",
+        "speaker": "auto",
+        "direction": "to-kita-senju",
+        "clarity": 57.4,
+        "lang": "en",
+        "source": "CGi4vbwS2IE",
+        "start": 545.31,
+        "end": 548.05,
+        "directions": [
+          "to-kita-senju"
+        ],
+        "asr": "This train is bound for Kita-Senju.",
+        "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+        "sha256": "35adaaaaf56db37c9b3920470ab0dab2febb7118e810dbd469e7b85d614a8a94"
+      },
+      {
+        "file": "lines/hibiya/clips/voice/H20-minowa_bound_ja_to-naka-meguro_01.opus",
+        "text": "この電車は中目黒行きです。",
+        "status": "approved",
+        "note": "",
+        "kind": "bound",
+        "station": "H20",
+        "speaker": "auto",
+        "direction": "to-naka-meguro",
+        "clarity": 48.1,
+        "lang": "ja",
+        "source": "qoomXw1eJs0",
+        "start": 632.25,
+        "end": 635.03,
+        "directions": [
+          "to-naka-meguro"
+        ],
+        "asr": "この電車は中目黒行きです。",
+        "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+        "sha256": "dff19b623b7ea22cb490aedba5378350cc7130816f092a48b7867fc9635046d7"
+      },
+      {
+        "file": "lines/hibiya/clips/voice/H20-minowa_bound_en_to-naka-meguro_01.opus",
+        "text": "This train is bound for Nakameguro.",
+        "status": "approved",
+        "note": "",
+        "kind": "bound",
+        "station": "H20",
+        "speaker": "auto",
+        "direction": "to-naka-meguro",
+        "clarity": 46.2,
+        "lang": "en",
+        "source": "qoomXw1eJs0",
+        "start": 641.12,
+        "end": 643.66,
+        "directions": [
+          "to-naka-meguro"
+        ],
+        "asr": "This train is bound for Nakameguro.",
+        "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+        "sha256": "5917c0f512300ce2fb8d75c76951814f2e5091b36d3e2e818f08a1e21627d0ee"
+      },
+      {
+        "file": "lines/hibiya/clips/voice/H22-kita-senju_bound_ja_to-naka-meguro_04.opus",
+        "text": "この電車は、日比谷線中目黒行きです。",
+        "status": "approved",
+        "note": "",
+        "kind": "bound",
+        "station": "H22",
+        "speaker": "auto",
+        "direction": "to-naka-meguro",
+        "clarity": 43.5,
+        "lang": "ja",
+        "source": "qoomXw1eJs0",
+        "start": 566.42,
+        "end": 570.3,
+        "directions": [
+          "to-naka-meguro"
+        ],
+        "asr": "この電車は、日比谷線中目黒行きです。",
+        "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+        "sha256": "72d57379e9909304d17475a5e315d5d691d54b7e8dbaaa232554c63921e7f48d"
+      }
+    ],
+    "doors_closing": [
+      {
+        "file": "lines/hibiya/clips/voice/general_doors_ja_to-naka-meguro_01.opus",
+        "text": "ドアが閉まります。",
+        "status": "approved",
+        "note": "",
+        "kind": "doors",
+        "speaker": "auto",
+        "direction": "to-naka-meguro",
+        "clarity": 26.1,
+        "lang": "ja",
+        "source": "WpOT8ynJv34",
+        "start": 770.58,
+        "end": 771.82,
+        "asr": "ロナがしまいます",
+        "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+        "sha256": "6155ee5c9e6d00da96b5ae30fa04f74d4f4cbf32128846716595724d0209e305"
+      }
+    ],
+    "manners": [],
+    "misc": [
+      {
+        "file": "lines/hibiya/clips/voice/H03-hiroo_emergency_ja_to-naka-meguro_01.opus",
+        "text": "足を組んだり、前の方に出しておりますと、他のお客様のご迷惑となります。",
+        "status": "approved",
+        "note": "",
+        "kind": "emergency",
+        "station": "H03",
+        "speaker": "auto",
+        "direction": "to-naka-meguro",
+        "clarity": 42.0,
+        "lang": "ja",
+        "source": "qoomXw1eJs0",
+        "start": 1121.78,
+        "end": 1127.44,
+        "asr": "足を組んだり、前の方に出しておりますと、他のお客様のご迷惑となります。",
+        "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+        "sha256": "b39f1f4d4d60d9c748d50653b804f17bbc5c5ee88f3f468af6b768efc37bbb46"
+      },
+      {
+        "file": "lines/hibiya/clips/voice/general_safety_ja_complete_round5.opus",
+        "text": "急停車することがありますので、つり革、手すりにおつかまりください。",
+        "status": "needs ear check",
+        "note": "Joined the two contiguous fragments of the routine safety sentence from the actual Hibiya ride. Round 5: more than 150 ms pre-roll; envelope onset with 60 ms consonant guard; non-speech tail beyond word and VAD end; 80 ms acoustic guard; speech retained, boundary changed; needs ear check.",
+        "lang": "ja",
+        "source": "CGi4vbwS2IE",
+        "start": 68.47,
+        "end": 73.37,
+        "asr": "急停車することがありますので、つり革、手すりにおつかまりください。",
+        "transcript_audit": "large-v3 / CUDA / round5 final-cut boundary verification",
+        "revision": "round5 boundary trim",
+        "approval_before_trim": "approved",
+        "speech_unchanged": true,
+        "boundary_trim": {
+          "input_sha256": "e70743f93c71fedcdc710a6070fd658f28c310bfd569a2fbdbac92513dd21d09",
+          "start": 0.12,
+          "end": 4.72,
+          "fade_in": 0.005,
+          "fade_out": 0.025,
+          "input_archive": "raw/hibiya/round5-inputs/general_safety_ja_complete.opus"
+        },
+        "sha256": "8737f0dbc24ee5bf93f34abe2481b92ad8f67ffd4ce2e38c7bc963daa862b102"
+      }
+    ],
+    "start_end": [
+      {
+        "file": "lines/hibiya/clips/voice/general_phrase_en_to-naka-meguro_18.opus",
+        "text": "Please get off here.",
+        "status": "approved",
+        "note": "",
+        "kind": "phrase",
+        "speaker": "auto",
+        "direction": "to-naka-meguro",
+        "clarity": 34.4,
+        "lang": "en",
+        "source": "WpOT8ynJv34",
+        "start": 2720.3,
+        "end": 2721.6,
+        "asr": "Please get off here.",
+        "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+        "sha256": "59113c86b67655400d094b9a461b99ea9ebd27b053ffe6ad27cccf356ff919f3"
+      },
+      {
+        "file": "lines/hibiya/clips/voice/H01-naka-meguro_bound_en_to-naka-meguro_01.opus",
+        "text": "This is the last stop.",
+        "status": "approved",
+        "note": "",
+        "kind": "bound",
+        "station": "H01",
+        "speaker": "auto",
+        "direction": "to-naka-meguro",
+        "clarity": 30.1,
+        "lang": "en",
+        "source": "WpOT8ynJv34",
+        "start": 2716.39,
+        "end": 2718.0,
+        "asr": "This is the last stop.",
+        "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+        "sha256": "ed8f6ee22470c4e193db9a6120a79f691e5d589ae9b6efd6d5a955b84547d6db"
+      },
+      {
+        "file": "lines/hibiya/clips/voice/H01-naka-meguro_arriving_ja_to-naka-meguro_01.opus",
+        "text": "まもなく、中目黒、終点です。",
+        "status": "approved",
+        "note": "",
+        "kind": "arriving",
+        "station": "H01",
+        "speaker": "auto",
+        "direction": "to-naka-meguro",
+        "clarity": 45.5,
+        "lang": "ja",
+        "source": "qoomXw1eJs0",
+        "start": 1204.97,
+        "end": 1208.4,
+        "directions": [
+          "to-naka-meguro"
+        ],
+        "asr": "まもなく、中目黒、終点です。",
+        "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+        "sha256": "8e614bca20840a8c45140518f6dfc142afefb26071fe2f1501f2fe1f6699f415"
+      },
+      {
+        "file": "lines/hibiya/clips/voice/H01-naka-meguro_arriving_en_to-naka-meguro_01.opus",
+        "text": "Arriving at Naka-Meguro H01, the last stop.",
+        "status": "approved",
+        "note": "",
+        "kind": "arriving",
+        "station": "H01",
+        "speaker": "auto",
+        "direction": "to-naka-meguro",
+        "clarity": 49.4,
+        "lang": "en",
+        "source": "qoomXw1eJs0",
+        "start": 1221.28,
+        "end": 1225.73,
+        "directions": [
+          "to-naka-meguro"
+        ],
+        "asr": "Arriving at Nakameguro H1, the last stop.",
+        "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+        "sha256": "d6196ca722227d961d5dc973bea43d68c6484e430a2f977ab347bccba3d20402"
+      },
+      {
+        "file": "lines/hibiya/clips/voice/H22-kita-senju_arriving_ja_to-kita-senju_01.opus",
+        "text": "まもなく、北千住、終点です。",
+        "status": "approved",
+        "note": "",
+        "kind": "arriving",
+        "station": "H22",
+        "speaker": "auto",
+        "direction": "to-kita-senju",
+        "clarity": 67.7,
+        "lang": "ja",
+        "source": "CGi4vbwS2IE",
+        "start": 657.41,
+        "end": 660.88,
+        "directions": [
+          "to-kita-senju"
+        ],
+        "asr": "まもなく、北千住、終点です。",
+        "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+        "sha256": "8cdc501cc20ee615b81cc3efc14a448a478499ee654bf0590a36209a0dc75f2b"
+      },
+      {
+        "file": "lines/hibiya/clips/voice/H22-kita-senju_arriving_en_to-kita-senju_01.opus",
+        "text": "Arriving at Kita-Senju H22, the last stop.",
+        "status": "approved",
+        "note": "",
+        "kind": "arriving",
+        "station": "H22",
+        "speaker": "auto",
+        "direction": "to-kita-senju",
+        "clarity": 59.2,
+        "lang": "en",
+        "source": "CGi4vbwS2IE",
+        "start": 673.62,
+        "end": 679.13,
+        "directions": [
+          "to-kita-senju"
+        ],
+        "asr": "Arriving at Kita-Senju H22, the last stop.",
+        "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+        "sha256": "f25bbb37c721d3e1b6cb9cbf1f9b6738a174b28a7a54b9e1b902b80628314f44"
+      }
+    ],
+    "out_of_service": []
+  },
+  "on_station": [
+    {
+      "file": "lines/hibiya/clips/melody/boarding-metro-no-kyujitsu.opus",
+      "text": "メトロの休日",
+      "status": "approved",
+      "note": "Boarding / hurry-up melody.",
+      "kind": "boarding",
+      "start": 1136.5,
+      "end": 1146.5,
+      "source": "RoKgAVyEn1I",
+      "sha256": "06303d0cd3716f742972072833f360b65f283b4dddbe077a43cac957f4c638fd"
+    },
+    {
+      "file": "lines/hibiya/clips/announce/platform_approach_ja_7cars_round5.opus",
+      "text": "まもなく2番線に北千住行が7両編成で参ります。白線の内側でお待ちください。",
+      "status": "needs ear check",
+      "note": "Actual seven-car Hibiya platform PA (recorded 2017); destination and car count supported by timed ASR. Historical platform safety wording; needs ear check. Round 5: more than 150 ms pre-roll; envelope onset with 60 ms consonant guard; speech retained, boundary changed; needs ear check.",
+      "lang": "ja",
+      "source": "tYhJzjJ1B0A",
+      "start": 2.25,
+      "end": 11.95,
+      "asr": "まもなく2番線に北千住行きが7両編成で参ります 白線の内側でお待ちください",
+      "transcript_audit": "large-v3 / CUDA / round5 final-cut boundary verification",
+      "revision": "round5 boundary trim",
+      "approval_before_trim": "approved",
+      "speech_unchanged": true,
+      "boundary_trim": {
+        "input_sha256": "30da919fd1f3daecd3b2fe0927739b87654c6ec2a0a7e53546211bbe3cd0098a",
+        "start": 0.48,
+        "end": 9.7,
+        "fade_in": 0.005,
+        "fade_out": 0.025,
+        "input_archive": "raw/hibiya/round5-inputs/platform_approach_ja_7cars.opus"
+      },
+      "sha256": "b008889a3a31185f3dd48a27ec336c58509766754693ebf1989565d3bc499758"
+    }
+  ],
+  "emergency": [
+    {
+      "file": "lines/hibiya/clips/voice/general_emergency_ja_to-naka-meguro_01.opus",
+      "text": "急停車します。",
+      "status": "approved",
+      "note": "Transcript is machine evidence; confirm intelligibility and voice by ear.",
+      "kind": "emergency",
+      "speaker": "auto",
+      "direction": "to-naka-meguro",
+      "clarity": 49.2,
+      "lang": "ja",
+      "source": "qoomXw1eJs0",
+      "start": 291.33,
+      "end": 292.49,
+      "scenario": "emergency stop",
+      "asr": "急停車します",
+      "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+      "sha256": "b87706964c9fe76d08d70d38d8f5669874d10474c74d614b3c4cd4cbc89858b7"
+    },
+    {
+      "file": "lines/hibiya/clips/voice/H04-roppongi_emergency_ja_to-kita-senju_conductor_01.opus",
+      "text": "当駅にて前後の電車の間隔を調整するため停車をさせていただきます。お急ぎなところご迷惑をおかけいたします。",
+      "status": "approved",
+      "note": "Transcript is machine evidence; confirm intelligibility and voice by ear.",
+      "kind": "emergency",
+      "station": "H04",
+      "speaker": "conductor",
+      "direction": "to-kita-senju",
+      "clarity": 31.1,
+      "lang": "ja",
+      "source": "CGi4vbwS2IE",
+      "start": 115.73,
+      "end": 122.63,
+      "scenario": "train-spacing / stop waiting",
+      "asr": "当駅にて前後の電車の間隔を調整するため停車をさせていただきます。 お急ぎなところご迷惑をおかけいたします。",
+      "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+      "sha256": "30818c06667500499a09eb50f1d306b86a18d8db9de386dbef06203879125c7a"
+    },
+    {
+      "file": "lines/hibiya/clips/voice/general_emergency_ja_to-naka-meguro_conductor_02.opus",
+      "text": "先ほど、竹の塚駅で踏切安全確認を行いましたため、4分ほど遅れて運転しております。",
+      "status": "approved",
+      "note": "Transcript is machine evidence; confirm intelligibility and voice by ear.",
+      "kind": "emergency",
+      "speaker": "conductor",
+      "direction": "to-naka-meguro",
+      "clarity": 26.8,
+      "lang": "ja",
+      "source": "qoomXw1eJs0",
+      "start": 366.76,
+      "end": 371.21,
+      "scenario": "resumed with delay after safety check",
+      "asr": "先ほど、竹の塚駅で踏切安全確認を行いましたため、4分ほどかけて運転しております。",
+      "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+      "sha256": "2d2549a4cec06fddf55851a912dccc98b4ae0c9fb1f1fc738482206e111ee4d7"
+    },
+    {
+      "file": "lines/hibiya/clips/announce/power_outage_connecting_ginza_ja_round4_round5.opus",
+      "source": "j6bVtG7xDnM",
+      "start": 0.0,
+      "end": 17.7,
+      "lang": "ja",
+      "scenario": "Connecting Ginza Line outage / expected resumption (Hibiya platform PA)",
+      "text": "お客様に、銀座線運転見合わせのお知らせです。銀座線は15時ごろ停電のため、全線で運転を見合わせています。運転再開は15時30分ごろを見込んでいます。",
+      "note": "Recorded at Hibiya Akihabara in 2016. This concerns connecting Ginza Line, not an outage on the Hibiya Line or a 13000 in-car voice. First three complete sentences; needs ear check. Round 5: more than 150 ms pre-roll; envelope onset with 60 ms consonant guard; speech retained, boundary changed; needs ear check.",
+      "revision": "round5 boundary trim",
+      "status": "needs ear check",
+      "asr": "お客様に、銀座線、運転見合わせのお知らせです。 銀座線は、15時ごろ停電のため、全線で運転を見合わせています。 運転再開は、15時30分ごろを見込んでいます。",
+      "transcript_audit": "large-v3 / CUDA / round5 final-cut boundary verification",
+      "approval_before_trim": "approved",
+      "speech_unchanged": true,
+      "boundary_trim": {
+        "input_sha256": "5c4573cf8c6508adbe3b5a6015920aaa37578b429ff67070beda77956f2cb940",
+        "start": 0.73,
+        "end": 17.679,
+        "fade_in": 0.005,
+        "fade_out": 0.025,
+        "input_archive": "raw/hibiya/round5-inputs/power_outage_connecting_ginza_ja_round4.opus"
+      },
+      "sha256": "e6e2969fc86f402a0e2d6d00acbd4ce7904124f2fed62943d8b22f827968709f"
+    }
+  ],
+  "doors": {
+    "chime_open": {
+      "file": "lines/hibiya/clips/door/door-chime-clean.opus",
+      "note": "Clean MIDI recreation of the standard two-note chime x3. Approximate G5/D5 pitches are about 2 percent below the close-up 13000 recording; timbre/pitch need listening. Same cue for open/close; no Tobu dwell guidance tone. Source Q2gZBv2uapU 0.902-4.983s.",
+      "status": "needs ear check",
+      "source": "Q2gZBv2uapU",
+      "start": 0.902,
+      "end": 4.983,
+      "source_line": "hibiya",
+      "processing": "clean",
+      "sha256": "6ceced7fb7b5ca6d2395c37541a16aa2fdabe5237f4dafef29dd33d263621a0d",
+      "duration": 4.081,
+      "peak_dbfs": -9.87,
+      "active_rms_dbfs": -23.0,
+      "text": ""
+    },
+    "chime_close": {
+      "file": "lines/hibiya/clips/door/door-chime-clean.opus",
+      "note": "Clean MIDI recreation of the standard two-note chime x3. Approximate G5/D5 pitches are about 2 percent below the close-up 13000 recording; timbre/pitch need listening. Same cue for open/close; no Tobu dwell guidance tone. Source Q2gZBv2uapU 0.902-4.983s.",
+      "status": "needs ear check",
+      "source": "Q2gZBv2uapU",
+      "start": 0.902,
+      "end": 4.983,
+      "source_line": "hibiya",
+      "processing": "clean",
+      "sha256": "6ceced7fb7b5ca6d2395c37541a16aa2fdabe5237f4dafef29dd33d263621a0d",
+      "duration": 4.081,
+      "peak_dbfs": -9.87,
+      "active_rms_dbfs": -23.0,
+      "text": ""
+    },
+    "open": {
+      "file": "shared/door/door-mechanics.opus",
+      "text": "",
+      "status": "needs ear check",
+      "note": "User-supplied replacement (2026-10-22). Level adjustment and short edge fades only; original duration and playback speed retained. Shared generic open effect; the same file serves both roles.",
+      "source": "user-elevenlabs-door-mechanics",
+      "source_line": "shared",
+      "start": 0,
+      "end": 3.0,
+      "duration": 3.0,
+      "sha256": "0bb9a4fc8f8689232a3c6796ef7530b8ae12698165b02cdad9e3720ff67db2a9",
+      "processing": {
+        "gain": 2,
+        "fade_in": 0.005,
+        "fade_out": 0.04
+      },
+      "peak_dbfs": -11.46
+    },
+    "close": {
+      "file": "shared/door/door-mechanics.opus",
+      "text": "",
+      "status": "needs ear check",
+      "note": "User-supplied replacement (2026-10-22). Level adjustment and short edge fades only; original duration and playback speed retained. Shared generic close effect; the same file serves both roles.",
+      "source": "user-elevenlabs-door-mechanics",
+      "source_line": "shared",
+      "start": 0,
+      "end": 3.0,
+      "duration": 3.0,
+      "sha256": "0bb9a4fc8f8689232a3c6796ef7530b8ae12698165b02cdad9e3720ff67db2a9",
+      "processing": {
+        "gain": 2,
+        "fade_in": 0.005,
+        "fade_out": 0.04
+      },
+      "peak_dbfs": -11.46
+    },
+    "platform_open": {
+      "file": "lines/hibiya/clips/platform-door/platform-door_tokyo-metro-platform-door-ch_07.opus",
+      "note": "Electronic recreation, Hibiya type 1 default. Video labels both opening and closing with the same sound. Station photo is consistent with Toranomon Hills; full station coverage is not established. Source SZ60zRLWMvc 34.332-36.083s.",
+      "status": "needs ear check",
+      "variants": [
+        {
+          "stations": [
+            "H22"
+          ],
+          "file": "lines/hibiya/clips/platform-door/platform-door_tokyo-metro-platform-door-ch_09.opus",
+          "note": "Electronic recreation, Hibiya type 2. Video explicitly labels Tobu specification at Kita-Senju. Use instead of type 1 at H22; same cue for opening and closing. Source SZ60zRLWMvc 44.407-47.393s.",
+          "status": "needs ear check",
+          "source": "SZ60zRLWMvc",
+          "start": 44.407,
+          "end": 47.393,
+          "source_line": "hibiya",
+          "processing": "clean",
+          "sha256": "55c76f30ed54f27916d99ee5ed92ea660c429ab9194e7b88a7f42f9360f9015c",
+          "duration": 2.986,
+          "peak_dbfs": -12.42,
+          "active_rms_dbfs": -23.0,
+          "text": ""
+        }
+      ],
+      "source": "SZ60zRLWMvc",
+      "start": 34.332,
+      "end": 36.083,
+      "source_line": "hibiya",
+      "processing": "clean",
+      "sha256": "ccd30cab3bd71d73213f29efd53384392c09f9053690698003d50a7b1fb382ca",
+      "duration": 1.751,
+      "peak_dbfs": -6.85,
+      "active_rms_dbfs": -23.01,
+      "text": ""
+    },
+    "platform_close": {
+      "file": "lines/hibiya/clips/platform-door/platform-door_tokyo-metro-platform-door-ch_07.opus",
+      "note": "Electronic recreation, Hibiya type 1 default. Video labels both opening and closing with the same sound. Station photo is consistent with Toranomon Hills; full station coverage is not established. Source SZ60zRLWMvc 34.332-36.083s. No distinct repeating in-car beep established; signal is omitted rather than relabelling this pin-pon cue.",
+      "status": "needs ear check",
+      "variants": [
+        {
+          "stations": [
+            "H22"
+          ],
+          "file": "lines/hibiya/clips/platform-door/platform-door_tokyo-metro-platform-door-ch_09.opus",
+          "note": "Electronic recreation, Hibiya type 2. Video explicitly labels Tobu specification at Kita-Senju. Use instead of type 1 at H22; same cue for opening and closing. Source SZ60zRLWMvc 44.407-47.393s.",
+          "status": "needs ear check",
+          "source": "SZ60zRLWMvc",
+          "start": 44.407,
+          "end": 47.393,
+          "source_line": "hibiya",
+          "processing": "clean",
+          "sha256": "55c76f30ed54f27916d99ee5ed92ea660c429ab9194e7b88a7f42f9360f9015c",
+          "duration": 2.986,
+          "peak_dbfs": -12.42,
+          "active_rms_dbfs": -23.0,
+          "text": ""
+        }
+      ],
+      "source": "SZ60zRLWMvc",
+      "start": 34.332,
+      "end": 36.083,
+      "source_line": "hibiya",
+      "processing": "clean",
+      "sha256": "ccd30cab3bd71d73213f29efd53384392c09f9053690698003d50a7b1fb382ca",
+      "duration": 1.751,
+      "peak_dbfs": -6.85,
+      "active_rms_dbfs": -23.01,
+      "text": ""
+    },
+    "sequence": {
+      "close": [
+        {
+          "part": "platform_open",
+          "at": 0,
+          "until": "close_end-0.3",
+          "fade_out": 0.08
+        },
+        {
+          "part": "close",
+          "at": 0.9
+        }
+      ],
+      "open": [
+        {
+          "part": "platform_open",
+          "at": 0
+        },
+        {
+          "part": "open",
+          "at": 0.9
+        }
+      ],
+      "note": "Round 6 user choice: closing reuses the liked opening cue file(s), start offsets and order, substituting clean closing mechanics for opening mechanics. Any cue with an opening-end cutoff uses the corresponding closing-end cutoff. Closing chime is capped 0.30 s before the measured mechanical endpoint; no alias plays twice. Earlier reference timing and tempo adjustments are superseded. Library mechanics play at their natural speed.",
+      "status": "needs ear check",
+      "reference": {
+        "source": "R4wBThEta6U",
+        "title": "Japanese train Door Closing (Hibiya Line) #shorts",
+        "warning_start": 2.6,
+        "warning_repetitions": 3,
+        "warning_end": 5.35,
+        "movement_start": 3.5,
+        "movement_end": 5.6,
+        "uncertainty_seconds": 0.15,
+        "note": "Historical round-5 timing research; superseded for playback by the round-6 user request to reuse the opening sequence.",
+        "status": "needs ear check"
+      }
+    },
+    "signal": {
+      "file": "lines/hibiya/clips/door/door-chime-clean.opus",
+      "note": "Single clean three-pair warning used in place of the noisy R4wBThEta6U reference. Its approximately 800/600 Hz pattern differs from the separate platform pin-pon. Do not layer chime_close or platform_close over it. Source Q2gZBv2uapU 0.902-4.983s; reference timing R4wBThEta6U 2.60-5.60s. Needs timbral ear check.",
+      "status": "needs ear check",
+      "source": "Q2gZBv2uapU",
+      "start": 0.902,
+      "end": 4.983,
+      "source_line": "hibiya",
+      "processing": "clean",
+      "sha256": "6ceced7fb7b5ca6d2395c37541a16aa2fdabe5237f4dafef29dd33d263621a0d",
+      "duration": 4.081,
+      "peak_dbfs": -9.87,
+      "active_rms_dbfs": -23.0,
+      "text": ""
+    }
+  },
+  "missing": [
+    {
+      "item": "Hibiya-train power outage speech",
+      "reason": "New Akihabara platform clip announces a connecting Ginza Line outage; no intelligible 13000/Hibiya-own outage recording found."
+    },
+    {
+      "item": "EN exit side",
+      "reason": "No standalone English side sentence in the current 13000 recordings; English station arrival is used."
+    },
+    {
+      "item": "Hibiya out-of-service announcement",
+      "reason": "Rejected eight-car 回送 PA removed. No complete current seven-car Hibiya/13000 回送 announcement sourced; item left unsourced."
+    }
+  ]
+}

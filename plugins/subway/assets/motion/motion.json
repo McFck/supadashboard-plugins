@@ -1,0 +1,877 @@
+{
+  "version": 1,
+  "clips": {
+    "e235/rolling": {
+      "file": "motion/clips/e235/rolling.opus",
+      "sha256": "3c2b0c47b4a807b72301d4649cbc450223b56653aa4e817ac1ae9a0a886496a2"
+    },
+    "hibiya/rolling-tunnel": {
+      "file": "motion/clips/hibiya/rolling-tunnel.opus",
+      "sha256": "165476d6125011dd99caa5ea34fcaa569decc0d3d373a57ec3cfa7497a1515eb"
+    },
+    "open/rolling": {
+      "file": "motion/clips/open/rolling.opus",
+      "sha256": "3988cd3ba987c6bca704224418aed78709be872f89ca3012fbd5910e4c7489ba"
+    },
+    "platform/surface": {
+      "file": "motion/clips/platform/surface.opus",
+      "sha256": "633e5b622b5ec896fe707b3fb7b567fe2fd8631d4d147254aee0144b8d123167"
+    },
+    "platform/underground-osaka": {
+      "file": "motion/clips/platform/underground-osaka.opus",
+      "sha256": "a1719d8855c288ef2b69dea09d5d1987f563a6a4d54aef146a8032f63c44d616"
+    },
+    "platform/underground": {
+      "file": "motion/clips/platform/underground.opus",
+      "sha256": "366da3a0e58f3723e16ce8b7b49d2e2fadf05c6b030d0c7779aa868d78555cbf"
+    },
+    "sakaisuji/rolling-tunnel": {
+      "file": "motion/clips/sakaisuji/rolling-tunnel.opus",
+      "sha256": "608c0c39f6c034b9e546d66ea350a8e1fb69200363fef006bfc291c53c81f1ec"
+    },
+    "shared/hvac": {
+      "file": "motion/clips/shared/hvac.opus",
+      "sha256": "62f3e2764b21a3e1c0360040a0fd424af3ae85330d4c00f62baf509a1e7262b6"
+    },
+    "shared/joint-01": {
+      "file": "motion/clips/shared/joint-01.opus",
+      "sha256": "eb4a2e99cf70558a4274e6e544f915325f978972c9942b9e4828b5aa8f7c776e"
+    },
+    "shared/joint-02": {
+      "file": "motion/clips/shared/joint-02.opus",
+      "sha256": "ddb846d2b58506061efdc9bee75076d8bff4e05823f6f64bf3bb580495ff61d4"
+    },
+    "shared/joint-03": {
+      "file": "motion/clips/shared/joint-03.opus",
+      "sha256": "bff2401052255c49f0ea7d2292fb54a326960cc2517ccea33fc38c58cf9eba8f"
+    },
+    "shared/joint-04": {
+      "file": "motion/clips/shared/joint-04.opus",
+      "sha256": "de4a2a9eb43ddb6ee26765eb8578bbd5c10b14f94ba82d8238284e49b3b5772b"
+    },
+    "shared/joint-05": {
+      "file": "motion/clips/shared/joint-05.opus",
+      "sha256": "d67cc24bb91ffff9850775beb6e6e95f2d474191bf9db8e7b8f2d9b92ff0902c"
+    },
+    "shared/joint-06": {
+      "file": "motion/clips/shared/joint-06.opus",
+      "sha256": "2966112135c632433ef34e2c0457cf5b819ee1fbd56773ef054e8f7b1ab9507d"
+    },
+    "shared/joint-07": {
+      "file": "motion/clips/shared/joint-07.opus",
+      "sha256": "49be2daefa70ea453aaf008dd079782f58f144e3da156214dcf0338a3c9ff6a7"
+    },
+    "shared/joint-08": {
+      "file": "motion/clips/shared/joint-08.opus",
+      "sha256": "9e5495adb59fd10a1eecf2b9afa126138525d7257364cba9b6bdb9b246bccc31"
+    },
+    "shared/joint-09": {
+      "file": "motion/clips/shared/joint-09.opus",
+      "sha256": "0aecdff31134f704befcce63dd9ef794d49ed44e00570ca3c8c3a50700180982"
+    },
+    "shared/joint-10": {
+      "file": "motion/clips/shared/joint-10.opus",
+      "sha256": "4f7c42be2de401ae5080f73fe62067de3dd2d87fdcba19839bbec15beab82339"
+    },
+    "shared/joint-11": {
+      "file": "motion/clips/shared/joint-11.opus",
+      "sha256": "dc8c93559b6b81102ab89cbecbdd24ae1991f873742e36deb90f77b9709c01e7"
+    },
+    "shared/joint-12": {
+      "file": "motion/clips/shared/joint-12.opus",
+      "sha256": "56f54099807452dfa8d6c569a2a4f1fffd7edc35e86e0f3c777415a9d1442a98"
+    },
+    "shared/rattle-01": {
+      "file": "motion/clips/shared/rattle-01.opus",
+      "sha256": "4415b815a1497b11dde2df47767c2025f74bdd8b12ebb1329e4aa5c6197b1f33"
+    },
+    "shared/rattle-02": {
+      "file": "motion/clips/shared/rattle-02.opus",
+      "sha256": "fe1f86da7ab29efd768ae45aa0b64ed6bd288bbddb75c58357551b27468e3170"
+    },
+    "shared/rattle-03": {
+      "file": "motion/clips/shared/rattle-03.opus",
+      "sha256": "7db948e4ff8776433711585ddf296e5b231ae7336608343f8e0c0e8deb8cbead"
+    },
+    "shared/rattle-04": {
+      "file": "motion/clips/shared/rattle-04.opus",
+      "sha256": "80bc4d9886614df84fd6e42e70807f5d186a025a22320f8ec5f5aef02e68beea"
+    },
+    "shared/rattle-05": {
+      "file": "motion/clips/shared/rattle-05.opus",
+      "sha256": "73c9d720fa5061a608e07b31a1aa99f97edab25af7c523da334e5d93cc5f9944"
+    },
+    "shared/rattle-06": {
+      "file": "motion/clips/shared/rattle-06.opus",
+      "sha256": "1df1dbe7cfe2c8c1d73e1dfb1bb141ece73219518aac3895366f0f89aeb87b2a"
+    },
+    "shared/release-01": {
+      "file": "motion/clips/shared/release-01.opus",
+      "sha256": "6e71fcb50cb6aba7054f3b778327a7f57ae25337d867d9dcd36cfe12bbd5d621"
+    },
+    "shared/release-02": {
+      "file": "motion/clips/shared/release-02.opus",
+      "sha256": "e29e94eaf5d0794dd37293e2811cec286620fee1eb0aace29052a5611c7ceb3b"
+    },
+    "shared/release-03": {
+      "file": "motion/clips/shared/release-03.opus",
+      "sha256": "e605b6ae1d8e4426a05a3ec3cecc7794e2d76dd037daab0a296f508848bb5efb"
+    },
+    "shared/standing": {
+      "file": "motion/clips/shared/standing.opus",
+      "sha256": "ee3840b756cdb2cd2cd762e9d90bd93e382f28673b585386079066fdcefbc51e"
+    },
+    "tm13000/air-release": {
+      "file": "motion/clips/tm13000/air-release.flac",
+      "sha256": "f3ccbdc4c24d0662231c58adb995510b25a4089f2482ea47ff401b26256c1899"
+    },
+    "tm13000/brake-rub": {
+      "file": "motion/clips/tm13000/brake-rub.flac",
+      "sha256": "9119ddd0535759c54eee3081071049bf9f1e7fd0db9ec3bd9029e69e5572ba4b"
+    },
+    "tm13000/motor-1": {
+      "file": "motion/clips/tm13000/motor-1.flac",
+      "sha256": "9f024c904b1867120ffe43d409760aa5152e66c6be97cc933c18c7730ea13301"
+    },
+    "tm13000/motor-2": {
+      "file": "motion/clips/tm13000/motor-2.flac",
+      "sha256": "a5a1e9a63c38143e057c700180ede532bb52cbaec9912cbb1d3bb986a9734618"
+    },
+    "tm13000/motor-3": {
+      "file": "motion/clips/tm13000/motor-3.flac",
+      "sha256": "272b79a7c32db2ef52ac59be9343a0043adbc1c238f387aee970138677c0c06f"
+    },
+    "tm13000/motor-4": {
+      "file": "motion/clips/tm13000/motor-4.flac",
+      "sha256": "3706f1a0b84836a2b9ef3736100e11ee8b4ab4fd20b07473c61ccf8d43906573"
+    },
+    "tm13000/motor-6": {
+      "file": "motion/clips/tm13000/motor-6.flac",
+      "sha256": "2d0425f704bc190df1a020546b000505fc9f341d80bd87fe33f21522db13b4bf"
+    },
+    "tm13000/motor-7": {
+      "file": "motion/clips/tm13000/motor-7.flac",
+      "sha256": "c0b1ad5a5d093592d4f1e7d5a1b5bb2a91ad2797a986a6485e90cdeec031ec84"
+    }
+  },
+  "trains": [
+    {
+      "id": "e235",
+      "lines": [
+        "yamanote"
+      ],
+      "car": {
+        "length": 20,
+        "bogieCentres": 13.8,
+        "wheelbase": 2.1
+      },
+      "sections": {
+        "default": "open",
+        "stations": {},
+        "portals": {}
+      },
+      "termini": [],
+      "beds": {
+        "standing": "shared/standing",
+        "hvac": "shared/hvac",
+        "rolling": {
+          "open": "e235/rolling"
+        },
+        "platform": {
+          "open": "platform/surface",
+          "tunnel": "platform/underground"
+        }
+      },
+      "pools": {
+        "joint": [
+          "shared/joint-01",
+          "shared/joint-02",
+          "shared/joint-03",
+          "shared/joint-04",
+          "shared/joint-05",
+          "shared/joint-06",
+          "shared/joint-07",
+          "shared/joint-08",
+          "shared/joint-09",
+          "shared/joint-10",
+          "shared/joint-11",
+          "shared/joint-12"
+        ],
+        "release": [
+          "shared/release-01",
+          "shared/release-02",
+          "shared/release-03"
+        ],
+        "rattle": [
+          "shared/rattle-01",
+          "shared/rattle-02",
+          "shared/rattle-03",
+          "shared/rattle-04",
+          "shared/rattle-05",
+          "shared/rattle-06"
+        ]
+      },
+      "track": {
+        "jointSpacing": 90,
+        "jointDb": -12,
+        "jointCutoff": 7000,
+        "pointsChance": 0.35,
+        "curveShare": 0.05,
+        "curveDb": -40,
+        "brakeSquealChance": 0.3
+      },
+      "hvac": {
+        "levelDb": -12,
+        "cutoff": 9000,
+        "cycleSeconds": [
+          240,
+          420
+        ]
+      },
+      "motor": {
+        "kind": "vvvf",
+        "levelDb": -17,
+        "gear": 7.07,
+        "wheel": 0.82,
+        "polePairs": 2,
+        "carrier": [
+          [
+            0,
+            700
+          ],
+          [
+            15,
+            700
+          ],
+          [
+            35,
+            1200
+          ],
+          [
+            70,
+            1200
+          ]
+        ],
+        "sync": [],
+        "humDb": -6
+      }
+    },
+    {
+      "id": "tokyo-metro-13000",
+      "lines": [
+        "hibiya"
+      ],
+      "car": {
+        "length": 20,
+        "bogieCentres": 13.8,
+        "wheelbase": 2.1
+      },
+      "sections": {
+        "default": "tunnel",
+        "stations": {
+          "H01": "open",
+          "H21": "open",
+          "H22": "open"
+        },
+        "portals": {
+          "H01-H02": 0.3,
+          "H20-H21": 0.75
+        }
+      },
+      "termini": [
+        "H01",
+        "H22"
+      ],
+      "beds": {
+        "standing": "shared/standing",
+        "hvac": "shared/hvac",
+        "rolling": {
+          "tunnel": "hibiya/rolling-tunnel",
+          "open": "open/rolling"
+        },
+        "platform": {
+          "open": "platform/surface",
+          "tunnel": "platform/underground"
+        }
+      },
+      "pools": {
+        "joint": [
+          "shared/joint-01",
+          "shared/joint-02",
+          "shared/joint-03",
+          "shared/joint-04",
+          "shared/joint-05",
+          "shared/joint-06",
+          "shared/joint-07",
+          "shared/joint-08",
+          "shared/joint-09",
+          "shared/joint-10",
+          "shared/joint-11",
+          "shared/joint-12"
+        ],
+        "release": [
+          "tm13000/air-release",
+          "shared/release-01",
+          "shared/release-02",
+          "shared/release-03"
+        ],
+        "rattle": [
+          "shared/rattle-01",
+          "shared/rattle-02",
+          "shared/rattle-03",
+          "shared/rattle-04",
+          "shared/rattle-05",
+          "shared/rattle-06"
+        ]
+      },
+      "track": {
+        "jointSpacing": 140,
+        "jointDb": -15,
+        "jointCutoff": 3500,
+        "pointsChance": 0.25,
+        "curveShare": 0.4,
+        "curveDb": -38,
+        "brakeSquealChance": 0.4
+      },
+      "hvac": {
+        "levelDb": -10,
+        "cutoff": 8000,
+        "cycleSeconds": [
+          180,
+          300
+        ]
+      },
+      "motor": {
+        "kind": "bve",
+        "levelDb": 2.8,
+        "layers": [
+          {
+            "clip": "tm13000/motor-1",
+            "power": [
+              [
+                0,
+                0.3
+              ],
+              [
+                3,
+                0.4
+              ],
+              [
+                34,
+                0.3
+              ],
+              [
+                50,
+                0
+              ],
+              [
+                140,
+                0
+              ]
+            ],
+            "brake": [
+              [
+                0,
+                0.3
+              ],
+              [
+                3,
+                0.4
+              ],
+              [
+                26,
+                0.2
+              ],
+              [
+                34,
+                0
+              ],
+              [
+                50,
+                0
+              ],
+              [
+                140,
+                0
+              ]
+            ],
+            "powerRate": [
+              [
+                0,
+                1
+              ],
+              [
+                60,
+                1
+              ]
+            ],
+            "brakeRate": [
+              [
+                0,
+                1
+              ],
+              [
+                60,
+                1
+              ]
+            ]
+          },
+          {
+            "clip": "tm13000/motor-2",
+            "power": [
+              [
+                0,
+                0
+              ],
+              [
+                20,
+                0.2
+              ],
+              [
+                34,
+                0.3
+              ],
+              [
+                50,
+                0.2
+              ],
+              [
+                140,
+                0
+              ]
+            ],
+            "brake": [
+              [
+                0,
+                0
+              ],
+              [
+                20,
+                0.4
+              ],
+              [
+                34,
+                0.3
+              ],
+              [
+                50,
+                0.2
+              ],
+              [
+                140,
+                0
+              ]
+            ],
+            "powerRate": [
+              [
+                0,
+                1
+              ],
+              [
+                60,
+                1
+              ]
+            ],
+            "brakeRate": [
+              [
+                0,
+                1
+              ],
+              [
+                60,
+                1
+              ]
+            ]
+          },
+          {
+            "clip": "tm13000/motor-3",
+            "power": [
+              [
+                0,
+                0
+              ],
+              [
+                3,
+                1
+              ],
+              [
+                10,
+                0.9
+              ],
+              [
+                12,
+                0
+              ],
+              [
+                34,
+                0
+              ],
+              [
+                140,
+                0
+              ]
+            ],
+            "brake": [
+              [
+                0,
+                0
+              ],
+              [
+                12,
+                0
+              ],
+              [
+                34,
+                0
+              ],
+              [
+                140,
+                0
+              ]
+            ],
+            "powerRate": [
+              [
+                0,
+                0.4
+              ],
+              [
+                9,
+                1.3
+              ]
+            ],
+            "brakeRate": [
+              [
+                0,
+                0.4
+              ],
+              [
+                9,
+                1.3
+              ]
+            ]
+          },
+          {
+            "clip": "tm13000/motor-4",
+            "power": [
+              [
+                0,
+                0
+              ],
+              [
+                3,
+                0
+              ],
+              [
+                12,
+                0.4
+              ],
+              [
+                20,
+                0.5
+              ],
+              [
+                26,
+                0.4
+              ],
+              [
+                30,
+                0
+              ],
+              [
+                140,
+                0
+              ]
+            ],
+            "brake": [
+              [
+                0,
+                0.2
+              ],
+              [
+                10,
+                0.3
+              ],
+              [
+                20,
+                0.5
+              ],
+              [
+                26,
+                0.4
+              ],
+              [
+                30,
+                0
+              ],
+              [
+                140,
+                0
+              ]
+            ],
+            "powerRate": [
+              [
+                0,
+                0.2
+              ],
+              [
+                24,
+                1.374
+              ]
+            ],
+            "brakeRate": [
+              [
+                0,
+                0.2
+              ],
+              [
+                24,
+                1.374
+              ]
+            ]
+          },
+          {
+            "clip": "tm13000/motor-6",
+            "power": [
+              [
+                0,
+                0
+              ],
+              [
+                26,
+                0
+              ],
+              [
+                30,
+                0.4
+              ],
+              [
+                60,
+                0.3
+              ],
+              [
+                140,
+                0
+              ]
+            ],
+            "brake": [
+              [
+                0,
+                0
+              ],
+              [
+                26,
+                0
+              ],
+              [
+                30,
+                0.4
+              ],
+              [
+                60,
+                0.3
+              ],
+              [
+                140,
+                0
+              ]
+            ],
+            "powerRate": [
+              [
+                24,
+                0.625
+              ],
+              [
+                36,
+                0.9
+              ]
+            ],
+            "brakeRate": [
+              [
+                24,
+                0.625
+              ],
+              [
+                36,
+                0.9
+              ]
+            ]
+          },
+          {
+            "clip": "tm13000/motor-7",
+            "power": [
+              [
+                0,
+                0
+              ],
+              [
+                40,
+                0
+              ],
+              [
+                60,
+                0.5
+              ],
+              [
+                140,
+                0
+              ]
+            ],
+            "brake": [
+              [
+                0,
+                0
+              ],
+              [
+                40,
+                0
+              ],
+              [
+                60,
+                0.5
+              ],
+              [
+                140,
+                0
+              ]
+            ],
+            "powerRate": [
+              [
+                60,
+                1
+              ],
+              [
+                70,
+                1.2
+              ]
+            ],
+            "brakeRate": [
+              [
+                60,
+                1
+              ],
+              [
+                70,
+                1.2
+              ]
+            ]
+          }
+        ],
+        "rub": "tm13000/brake-rub",
+        "rubDb": -25.7
+      }
+    },
+    {
+      "id": "hankyu-1300",
+      "lines": [
+        "sakaisuji"
+      ],
+      "car": {
+        "length": 19,
+        "bogieCentres": 13.6,
+        "wheelbase": 2.2
+      },
+      "sections": {
+        "default": "tunnel",
+        "stations": {},
+        "portals": {}
+      },
+      "termini": [
+        "K11",
+        "K20"
+      ],
+      "beds": {
+        "standing": "shared/standing",
+        "hvac": "shared/hvac",
+        "rolling": {
+          "tunnel": "sakaisuji/rolling-tunnel"
+        },
+        "platform": {
+          "open": "platform/surface",
+          "tunnel": "platform/underground-osaka"
+        }
+      },
+      "pools": {
+        "joint": [
+          "shared/joint-01",
+          "shared/joint-02",
+          "shared/joint-03",
+          "shared/joint-04",
+          "shared/joint-05",
+          "shared/joint-06",
+          "shared/joint-07",
+          "shared/joint-08",
+          "shared/joint-09",
+          "shared/joint-10",
+          "shared/joint-11",
+          "shared/joint-12"
+        ],
+        "release": [
+          "shared/release-01",
+          "shared/release-02",
+          "shared/release-03"
+        ],
+        "rattle": [
+          "shared/rattle-01",
+          "shared/rattle-02",
+          "shared/rattle-03",
+          "shared/rattle-04",
+          "shared/rattle-05",
+          "shared/rattle-06"
+        ]
+      },
+      "track": {
+        "jointSpacing": 120,
+        "jointDb": -14,
+        "jointCutoff": 5000,
+        "pointsChance": 0.3,
+        "curveShare": 0.2,
+        "curveDb": -36,
+        "brakeSquealChance": 0.5
+      },
+      "hvac": {
+        "levelDb": -13,
+        "cutoff": 4500,
+        "cycleSeconds": [
+          240,
+          360
+        ]
+      },
+      "motor": {
+        "kind": "vvvf",
+        "levelDb": -14,
+        "gear": 5.3,
+        "wheel": 0.86,
+        "polePairs": 2,
+        "carrier": [
+          [
+            0,
+            1000
+          ],
+          [
+            25,
+            1000
+          ],
+          [
+            40,
+            1500
+          ],
+          [
+            70,
+            1500
+          ]
+        ],
+        "sync": [
+          [
+            48,
+            9
+          ],
+          [
+            56,
+            3
+          ]
+        ],
+        "humDb": -4
+      }
+    }
+  ]
+}

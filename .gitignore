@@ -3,3 +3,4 @@ target/
 dist/
 *-key.pem
 plugin-source/
+plugins/*/tests/

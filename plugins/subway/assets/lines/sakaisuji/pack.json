@@ -1,0 +1,2443 @@
+{
+  "id": "sakaisuji",
+  "name": "Sakaisuji Line",
+  "directions": {
+    "northbound": "Northbound",
+    "southbound": "Southbound"
+  },
+  "movement": "osaka",
+  "stations": [
+    {
+      "code": "K11",
+      "name": "Tenjimbashisuji Rokuchōme",
+      "kanji": "天神橋筋六丁目",
+      "notes": {
+        "next_ja": "Current 2026 sources switch directly from Ogimachi to まもなく / arrival; no separate northbound next sentence observed. Not a universal claim about every ROM.",
+        "next_en": "Current 2026 sources switch directly from Ogimachi to まもなく / arrival; no separate northbound next sentence observed. Not a universal claim about every ROM."
+      },
+      "required": {
+        "arriving_ja": "No complete automatic sentence retained.",
+        "arriving_en": "No complete automatic sentence retained.",
+        "transfer_ja": "Interchange station; no separate complete automatic transfer retained.",
+        "transfer_en": "Interchange station; no separate complete automatic transfer retained."
+      },
+      "departure_melody": {},
+      "next": {
+        "ja": [],
+        "en": []
+      },
+      "arriving": {
+        "ja": [
+          {
+            "file": "lines/sakaisuji/clips/voice/K11-tenjimbashisuji-rokuchome_arriving_ja_northbound_01.opus",
+            "text": "まもなく天神橋筋六丁目、天神橋筋六丁目です。",
+            "status": "approved",
+            "note": "",
+            "kind": "arriving",
+            "station": "K11",
+            "speaker": "auto",
+            "direction": "northbound",
+            "clarity": 42.5,
+            "lang": "ja",
+            "source": "99-1SdiffHM",
+            "start": 725.91,
+            "end": 730.23,
+            "directions": [
+              "northbound"
+            ],
+            "asr": "まもなく天神橋筋六丁目、天神橋筋六丁目です。",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "ce314bb7834a7a89653b4c4587807da7e955ada7f2c512a41b9807e2c8ea1cd6"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/sakaisuji/clips/voice/K11-tenjimbashisuji-rokuchome_arriving_en_northbound_01.opus",
+            "text": "We will soon be arriving at Tenjimbashisuji Rokuchōme, station number K11.",
+            "status": "approved",
+            "note": "",
+            "kind": "arriving",
+            "station": "K11",
+            "speaker": "auto",
+            "direction": "northbound",
+            "clarity": 47.0,
+            "lang": "en",
+            "source": "99-1SdiffHM",
+            "start": 761.62,
+            "end": 768.2,
+            "directions": [
+              "northbound"
+            ],
+            "asr": "We will soon be arriving at 天神橋筋六丁目, station number K11.",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "8588dcd759058afdb8cf3e7ac32927642205cb39a3de8106b2abc9fc9417ed0d"
+          }
+        ]
+      },
+      "transfer": {
+        "ja": [
+          {
+            "file": "lines/sakaisuji/clips/voice/K11-tenjimbashisuji-rokuchome_transfer_ja_northbound_01.opus",
+            "text": "谷町線はお乗り換えです。",
+            "status": "approved",
+            "note": "",
+            "kind": "transfer",
+            "station": "K11",
+            "speaker": "auto",
+            "direction": "northbound",
+            "clarity": 46.8,
+            "lang": "ja",
+            "source": "99-1SdiffHM",
+            "start": 730.69,
+            "end": 732.6,
+            "directions": [
+              "northbound"
+            ],
+            "asr": "谷町線はお乗り換えです。",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "d56b5b2ac72ce691b093fc07d7c0183a39f708f4a480b85c8d10538f856e1895"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/sakaisuji/clips/voice/K11-tenjimbashisuji-rokuchome_transfer_en_northbound_01.opus",
+            "text": "Passengers can transfer here to the Tanimachi Line.",
+            "status": "approved",
+            "note": "",
+            "kind": "transfer",
+            "station": "K11",
+            "speaker": "auto",
+            "direction": "northbound",
+            "clarity": 45.6,
+            "lang": "en",
+            "source": "99-1SdiffHM",
+            "start": 768.5,
+            "end": 772.0,
+            "directions": [
+              "northbound"
+            ],
+            "asr": "Passengers can transfer here to the Tanimachi Line.",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "0ccd86aa5ae36adbd8590841fd419846ed4cabb2ef9f8cc50546b7f76e50b486"
+          }
+        ]
+      }
+    },
+    {
+      "code": "K12",
+      "name": "Ogimachi",
+      "kanji": "扇町",
+      "notes": {},
+      "required": {
+        "next_ja": "No complete automatic sentence retained.",
+        "next_en": "No complete automatic sentence retained.",
+        "arriving_ja": "No complete automatic sentence retained.",
+        "arriving_en": "No complete automatic sentence retained."
+      },
+      "departure_melody": {},
+      "next": {
+        "ja": [
+          {
+            "file": "lines/sakaisuji/clips/voice/K12-ogimachi_next_ja_northbound_01.opus",
+            "text": "次は扇町です。",
+            "status": "approved",
+            "note": "",
+            "kind": "next",
+            "station": "K12",
+            "speaker": "auto",
+            "direction": "northbound",
+            "clarity": 49.9,
+            "lang": "ja",
+            "source": "99-1SdiffHM",
+            "start": 658.73,
+            "end": 660.52,
+            "directions": [
+              "northbound",
+              "southbound"
+            ],
+            "asr": "次は扇町です。",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "2cb37f002e97a239269c69c861d14ed323e37fbdacbf1462669a4c2695b464b0"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/sakaisuji/clips/voice/K12-ogimachi_next_en_southbound_01.opus",
+            "text": "The next stop is Ogimachi, station number K12. Passengers can transfer here to the JR Osaka Loop Line.",
+            "status": "approved",
+            "note": "",
+            "kind": "next",
+            "station": "K12",
+            "speaker": "auto",
+            "direction": "southbound",
+            "clarity": 50.1,
+            "lang": "en",
+            "source": "UVZwY7E9lAs",
+            "start": 38.43,
+            "end": 48.33,
+            "directions": [
+              "northbound",
+              "southbound"
+            ],
+            "asr": "The next stop is Ogimachi, station number K12. Passengers can transfer here to the JR Osaka Loop Line.",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "e64e7e5d5d8d2fcbbcd64e1ecd5c6ae5f4adc752533b278e33b2c3a5d8be3233"
+          }
+        ]
+      },
+      "arriving": {
+        "ja": [
+          {
+            "file": "lines/sakaisuji/clips/voice/K12-ogimachi_arriving_ja_southbound_01.opus",
+            "text": "扇町、扇町、JR環状線はお乗り換えです。",
+            "status": "approved",
+            "note": "",
+            "kind": "arriving",
+            "station": "K12",
+            "speaker": "auto",
+            "direction": "southbound",
+            "clarity": 46.9,
+            "lang": "ja",
+            "source": "UVZwY7E9lAs",
+            "start": 63.51,
+            "end": 68.46,
+            "directions": [
+              "northbound",
+              "southbound"
+            ],
+            "asr": "扇町、扇町、JR環状線はお乗り換えです。",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "cd14bbc6f33d9d28bb2dbb5929f0905f1760f45001e44cd9c190d8655c46452f"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/sakaisuji/clips/voice/K12-ogimachi_arriving_en_northbound_01.opus",
+            "text": "We will be stopping at Ogimachi, station number K12. Passengers can transfer here to the JR Osaka Loop Line.",
+            "status": "approved",
+            "note": "",
+            "kind": "arriving",
+            "station": "K12",
+            "speaker": "auto",
+            "direction": "northbound",
+            "clarity": 48.7,
+            "lang": "en",
+            "source": "99-1SdiffHM",
+            "start": 707.6,
+            "end": 717.17,
+            "directions": [
+              "northbound",
+              "southbound"
+            ],
+            "asr": "We will be stopping at Ogimachi, station number K12. Passengers can transfer here to the JR Osaka Loop Line.",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "7c9001f6a72983673b90639ac21bf4ff46656e058155af924503cdf63fa076fd"
+          }
+        ]
+      },
+      "transfer": {
+        "ja": [
+          {
+            "file": "lines/sakaisuji/clips/voice/K12-ogimachi_transfer_ja_southbound_01.opus",
+            "text": "JR環状線はお乗り換えです。",
+            "status": "approved",
+            "note": "",
+            "kind": "transfer",
+            "station": "K12",
+            "speaker": "auto",
+            "direction": "southbound",
+            "clarity": 40.2,
+            "lang": "ja",
+            "source": "UVZwY7E9lAs",
+            "start": 33.06,
+            "end": 35.68,
+            "directions": [
+              "northbound",
+              "southbound"
+            ],
+            "asr": "JR環状線はお乗り換えです。",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "5904cd8f03d7dfc43306c0d8c2586f70c576ec0d9f682b07f9fa84ab2d5b617a"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/sakaisuji/clips/voice/K12-ogimachi_transfer_en_southbound_01.opus",
+            "text": "K12. Passengers can transfer here to the JR Osaka Loop Line.",
+            "status": "approved",
+            "note": "",
+            "kind": "transfer",
+            "station": "K12",
+            "speaker": "auto",
+            "direction": "southbound",
+            "clarity": 49.8,
+            "lang": "en",
+            "source": "UVZwY7E9lAs",
+            "start": 77.18,
+            "end": 82.98,
+            "directions": [
+              "northbound",
+              "southbound"
+            ],
+            "asr": "K12. Passengers can transfer here to the JR Osaka Loop Line.",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "38f18ed5d981aedcae584ca4324e2427a4f35331c5701f932e84dd98d0da4842"
+          }
+        ]
+      }
+    },
+    {
+      "code": "K13",
+      "name": "Minami-morimachi",
+      "kanji": "南森町",
+      "notes": {},
+      "required": {
+        "next_ja": "No complete automatic sentence retained.",
+        "next_en": "No complete automatic sentence retained.",
+        "arriving_ja": "No complete automatic sentence retained.",
+        "arriving_en": "No complete automatic sentence retained.",
+        "transfer_ja": "Interchange station; no separate complete automatic transfer retained.",
+        "transfer_en": "Interchange station; no separate complete automatic transfer retained."
+      },
+      "departure_melody": {},
+      "next": {
+        "ja": [
+          {
+            "file": "lines/sakaisuji/clips/voice/K13-minami-morimachi_next_ja_northbound_01.opus",
+            "text": "次は、南森町です。",
+            "status": "approved",
+            "note": "",
+            "kind": "next",
+            "station": "K13",
+            "speaker": "auto",
+            "direction": "northbound",
+            "clarity": 50.5,
+            "lang": "ja",
+            "source": "99-1SdiffHM",
+            "start": 582.63,
+            "end": 584.81,
+            "directions": [
+              "northbound",
+              "southbound"
+            ],
+            "asr": "次は、南森町です。",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "7cc72dabda0ed0f8cad245be2ebfff0a8608d9c13236fe0efc56c8592e07b8cb"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/sakaisuji/clips/voice/K13-minami-morimachi_next_en_southbound_01.opus",
+            "text": "The next stop is Minami-morimachi, station number K13.",
+            "status": "approved",
+            "note": "",
+            "kind": "next",
+            "station": "K13",
+            "speaker": "auto",
+            "direction": "southbound",
+            "clarity": 49.7,
+            "lang": "en",
+            "source": "UVZwY7E9lAs",
+            "start": 114.11,
+            "end": 120.07,
+            "directions": [
+              "northbound",
+              "southbound"
+            ],
+            "asr": "The next stop is Minami-morimachi, station number K13.",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "8958861bdd688936b307f45d7a3629cbd58389dd6cfb906b271c37cc1ccc0201"
+          }
+        ]
+      },
+      "arriving": {
+        "ja": [
+          {
+            "file": "lines/sakaisuji/clips/voice/K13-minami-morimachi_arriving_ja_northbound_01.opus",
+            "text": "南森町、南森町。谷町線…",
+            "status": "approved",
+            "note": "",
+            "kind": "arriving",
+            "station": "K13",
+            "speaker": "auto",
+            "direction": "northbound",
+            "clarity": 44.3,
+            "lang": "ja",
+            "source": "99-1SdiffHM",
+            "start": 619.57,
+            "end": 623.55,
+            "directions": [
+              "northbound",
+              "southbound"
+            ],
+            "asr": "南森町 南森町 谷町線",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "ad8c9dd17036e5d10735ba0f6cdfcd8bc2d89a49feff7f5b54bd4a6bb81b4380"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/sakaisuji/clips/voice/K13-minami-morimachi_arriving_en_northbound_01.opus",
+            "text": "We will be stopping at Minami-morimachi, station number K13.",
+            "status": "approved",
+            "note": "",
+            "kind": "arriving",
+            "station": "K13",
+            "speaker": "auto",
+            "direction": "northbound",
+            "clarity": 48.2,
+            "lang": "en",
+            "source": "99-1SdiffHM",
+            "start": 631.8,
+            "end": 637.57,
+            "directions": [
+              "northbound",
+              "southbound"
+            ],
+            "asr": "We will be stopping at Minami-morimachi, station number K13.",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "5de5a4bd76a07f67fc67703437e34e8926a2f9161180d76a8cc5aa891b42f17e"
+          }
+        ]
+      },
+      "transfer": {
+        "ja": [
+          {
+            "file": "lines/sakaisuji/clips/voice/K13-minami-morimachi_transfer_ja_southbound_01.opus",
+            "text": "谷町線、JR東西線はお乗り換えです。",
+            "status": "approved",
+            "note": "",
+            "kind": "transfer",
+            "station": "K13",
+            "speaker": "auto",
+            "direction": "southbound",
+            "clarity": 39.5,
+            "lang": "ja",
+            "source": "UVZwY7E9lAs",
+            "start": 109.93,
+            "end": 113.71,
+            "directions": [
+              "northbound",
+              "southbound"
+            ],
+            "asr": "谷町線、JR東西線はお乗り換えです。",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "dfd9571b526a57539eb5907feaa22f97dd1572c1cc37c8c426b2678f30fd017b"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/sakaisuji/clips/voice/K13-minami-morimachi_transfer_en_northbound_01.opus",
+            "text": "Passengers can transfer here to the Tanimachi Line and JR Tozai Line.",
+            "status": "approved",
+            "note": "",
+            "kind": "transfer",
+            "station": "K13",
+            "speaker": "auto",
+            "direction": "northbound",
+            "clarity": 42.9,
+            "lang": "en",
+            "source": "99-1SdiffHM",
+            "start": 637.8,
+            "end": 643.38,
+            "directions": [
+              "northbound",
+              "southbound"
+            ],
+            "asr": "Passengers can transfer here to the Tanimachi Line and JR Tozai Line.",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "f4b1f46a9a00ea9ea6a3d551667d9bbfda53e67a2f4373faae8352519a074426"
+          }
+        ]
+      }
+    },
+    {
+      "code": "K14",
+      "name": "Kitahama",
+      "kanji": "北浜",
+      "notes": {},
+      "required": {
+        "next_ja": "No complete automatic sentence retained.",
+        "next_en": "No complete automatic sentence retained.",
+        "arriving_ja": "No complete automatic sentence retained.",
+        "arriving_en": "No complete automatic sentence retained."
+      },
+      "departure_melody": {},
+      "next": {
+        "ja": [
+          {
+            "file": "lines/sakaisuji/clips/voice/K14-kitahama_next_ja_northbound_01.opus",
+            "text": "次は北浜です。",
+            "status": "approved",
+            "note": "",
+            "kind": "next",
+            "station": "K14",
+            "speaker": "auto",
+            "direction": "northbound",
+            "clarity": 49.5,
+            "lang": "ja",
+            "source": "S4YYm-WwFRI",
+            "start": 519.26,
+            "end": 520.86,
+            "directions": [
+              "northbound",
+              "southbound"
+            ],
+            "asr": "次は北浜です。",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "6fab61eea1f59e0fe7bb190bca2ac9733b066910a8277f887ff7b53d2dbff10e"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/sakaisuji/clips/voice/K14-kitahama_next_en_southbound_01.opus",
+            "text": "The next stop is Kitahama, station number K14.",
+            "status": "approved",
+            "note": "",
+            "kind": "next",
+            "station": "K14",
+            "speaker": "auto",
+            "direction": "southbound",
+            "clarity": 44.7,
+            "lang": "en",
+            "source": "UVZwY7E9lAs",
+            "start": 184.74,
+            "end": 189.98,
+            "directions": [
+              "northbound",
+              "southbound"
+            ],
+            "asr": "The next stop is Kitahama, station number K14.",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "750280f4a5159ef8a24822a6f3f07eb4186ca4e3fa4e7454ea37c1272019e75e"
+          }
+        ]
+      },
+      "arriving": {
+        "ja": [
+          {
+            "file": "lines/sakaisuji/clips/voice/K14-kitahama_arriving_ja_southbound_01.opus",
+            "text": "北浜北浜京阪線はお乗り換えです。",
+            "status": "approved",
+            "note": "",
+            "kind": "arriving",
+            "station": "K14",
+            "speaker": "auto",
+            "direction": "southbound",
+            "clarity": 45.3,
+            "lang": "ja",
+            "source": "UVZwY7E9lAs",
+            "start": 236.5,
+            "end": 240.43,
+            "directions": [
+              "northbound",
+              "southbound"
+            ],
+            "asr": "北浜 北浜 京阪線はお乗り換えです。",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "9fc98580d783b35e7b862bbc8a03c71823c09d1db47e2aed5d5b504b09a18725"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/sakaisuji/clips/voice/K14-kitahama_arriving_en_northbound_02.opus",
+            "text": "We will be stopping at Kitahama, station number K14.",
+            "status": "approved",
+            "note": "",
+            "kind": "arriving",
+            "station": "K14",
+            "speaker": "auto",
+            "direction": "northbound",
+            "clarity": 48.8,
+            "lang": "en",
+            "source": "S4YYm-WwFRI",
+            "start": 562.74,
+            "end": 567.97,
+            "directions": [
+              "northbound",
+              "southbound"
+            ],
+            "asr": "We will be stopping at Kitahama, station number K14.",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "c50b59d4c17e7b7c8200468fa14b84cdbe4039d1d143d62d009903a118003ebc"
+          }
+        ]
+      },
+      "transfer": {
+        "ja": [
+          {
+            "file": "lines/sakaisuji/clips/voice/K14-kitahama_transfer_ja_northbound_01.opus",
+            "text": "京阪線はお乗り換えです。",
+            "status": "approved",
+            "note": "",
+            "kind": "transfer",
+            "station": "K14",
+            "speaker": "auto",
+            "direction": "northbound",
+            "clarity": 43.9,
+            "lang": "ja",
+            "source": "99-1SdiffHM",
+            "start": 519.24,
+            "end": 521.29,
+            "directions": [
+              "northbound",
+              "southbound"
+            ],
+            "asr": "京阪線はお乗り換えです。",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "b243e06a48cce5ab854afaecbe6d0137bbd805b2692610b928dd4a2819ed24a2"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/sakaisuji/clips/voice/K14-kitahama_transfer_en_northbound_01.opus",
+            "text": "Passengers can transfer here to the Keihan Line.",
+            "status": "approved",
+            "note": "",
+            "kind": "transfer",
+            "station": "K14",
+            "speaker": "auto",
+            "direction": "northbound",
+            "clarity": 46.5,
+            "lang": "en",
+            "source": "S4YYm-WwFRI",
+            "start": 537.52,
+            "end": 541.4,
+            "directions": [
+              "northbound",
+              "southbound"
+            ],
+            "asr": "Passengers can transfer here to the Keihan Line.",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "b0e28889348cafa081e1a7671d85539ac5ff4bc71515e6219d3d6fa78d23d5b9"
+          }
+        ]
+      }
+    },
+    {
+      "code": "K15",
+      "name": "Sakaisuji-Hommachi",
+      "kanji": "堺筋本町",
+      "notes": {},
+      "required": {
+        "next_ja": "No complete automatic sentence retained.",
+        "next_en": "No complete automatic sentence retained.",
+        "arriving_ja": "No complete automatic sentence retained.",
+        "arriving_en": "No complete automatic sentence retained.",
+        "transfer_ja": "Interchange station; no separate complete automatic transfer retained.",
+        "transfer_en": "Interchange station; no separate complete automatic transfer retained."
+      },
+      "departure_melody": {},
+      "next": {
+        "ja": [
+          {
+            "file": "lines/sakaisuji/clips/voice/K15-sakaisuji-hommachi_next_ja_southbound_01_round5.opus",
+            "text": "次は、堺筋本町です。",
+            "status": "needs ear check",
+            "note": " Round 5: word/VAD/envelope reviewed; removes isolated fragment or background pre-roll; speech retained, boundary changed; needs ear check.",
+            "kind": "next",
+            "station": "K15",
+            "speaker": "auto",
+            "direction": "southbound",
+            "clarity": 34.6,
+            "lang": "ja",
+            "source": "UVZwY7E9lAs",
+            "start": 292.16,
+            "end": 297.44,
+            "directions": [
+              "northbound",
+              "southbound"
+            ],
+            "asr": "次は、堺筋本町です。",
+            "transcript_audit": "large-v3 / CUDA / round5 final-cut boundary verification",
+            "revision": "round5 boundary trim",
+            "approval_before_trim": "approved",
+            "speech_unchanged": true,
+            "boundary_trim": {
+              "input_sha256": "efa34063d20dee0417a4f94283f15faf425170375b492597f03e35e47a93f420",
+              "start": 3.1,
+              "end": 5.28,
+              "fade_in": 0.005,
+              "fade_out": 0.025,
+              "input_archive": "raw/sakaisuji/round5-inputs/K15-sakaisuji-hommachi_next_ja_southbound_01.opus"
+            },
+            "sha256": "9eb5ddc0f691e20ef0c09a68aee54b5046c1fbe8bae7692d6343b866db655b89"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/sakaisuji/clips/voice/K15-sakaisuji-hommachi_next_en_southbound_01.opus",
+            "text": "The next stop is Sakaisuji-Hommachi.",
+            "status": "approved",
+            "note": "",
+            "kind": "next",
+            "station": "K15",
+            "speaker": "auto",
+            "direction": "southbound",
+            "clarity": 49.2,
+            "lang": "en",
+            "source": "UVZwY7E9lAs",
+            "start": 301.85,
+            "end": 305.07,
+            "directions": [
+              "northbound",
+              "southbound"
+            ],
+            "asr": "The next stop is Sakaisuji-Hommachi.",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "bc77bc0f59e9b696dfbcf394d0b29c7bc686b3c4c102a80cf483d657609e2316"
+          }
+        ]
+      },
+      "arriving": {
+        "ja": [
+          {
+            "file": "lines/sakaisuji/clips/voice/K15-sakaisuji-hommachi_arriving_ja_northbound_01.opus",
+            "text": "堺筋本町堺筋本町。",
+            "status": "approved",
+            "note": "",
+            "kind": "arriving",
+            "station": "K15",
+            "speaker": "auto",
+            "direction": "northbound",
+            "clarity": 42.7,
+            "lang": "ja",
+            "source": "99-1SdiffHM",
+            "start": 477.39,
+            "end": 480.35,
+            "directions": [
+              "northbound",
+              "southbound"
+            ],
+            "asr": "堺筋本町 堺筋本町",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "cdf5baf6aa62b0f566818784cc5b44618cfee0192281bd6eef3cb46a51aac862"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/sakaisuji/clips/voice/K15-sakaisuji-hommachi_arriving_en_northbound_01.opus",
+            "text": "We will be stopping at Sakaisuji-Hommachi.",
+            "status": "approved",
+            "note": "",
+            "kind": "arriving",
+            "station": "K15",
+            "speaker": "auto",
+            "direction": "northbound",
+            "clarity": 51.6,
+            "lang": "en",
+            "source": "S4YYm-WwFRI",
+            "start": 472.88,
+            "end": 476.08,
+            "directions": [
+              "northbound",
+              "southbound"
+            ],
+            "asr": "We will be stopping at Sakaisuji-Hommachi.",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "1f420437ae69c12accef4bf6df5c529400d6270792f24a1eb3ba89223196faeb"
+          }
+        ]
+      },
+      "transfer": {
+        "ja": [
+          {
+            "file": "lines/sakaisuji/clips/voice/K15-sakaisuji-hommachi_transfer_ja_northbound_01.opus",
+            "text": "中央線はお乗り換えです。",
+            "status": "approved",
+            "note": "",
+            "kind": "transfer",
+            "station": "K15",
+            "speaker": "auto",
+            "direction": "northbound",
+            "clarity": 45.3,
+            "lang": "ja",
+            "source": "99-1SdiffHM",
+            "start": 435.58,
+            "end": 437.6,
+            "directions": [
+              "northbound",
+              "southbound"
+            ],
+            "asr": "中央線はお乗り換えです。",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "d15e4cf2a36b6f6425b4bc572c5b4ae5dcea9aaa3ec58f470674fcb166b76b5c"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/sakaisuji/clips/voice/K15-sakaisuji-hommachi_transfer_en_southbound_01.opus",
+            "text": "Passengers can transfer here to the Chūō Line.",
+            "status": "approved",
+            "note": "",
+            "kind": "transfer",
+            "station": "K15",
+            "speaker": "auto",
+            "direction": "southbound",
+            "clarity": 47.4,
+            "lang": "en",
+            "source": "UVZwY7E9lAs",
+            "start": 307.57,
+            "end": 310.87,
+            "directions": [
+              "northbound",
+              "southbound"
+            ],
+            "asr": "Passengers can transfer here to the Chūō Line.",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "05d02401ff696cfade73ae5731b7d6f9998b42ce23cf5616ac2bd2acec5d97bb"
+          }
+        ]
+      }
+    },
+    {
+      "code": "K16",
+      "name": "Nagahoribashi",
+      "kanji": "長堀橋",
+      "notes": {
+        "transfer_ja": "Transfer is included in the station sentence."
+      },
+      "required": {
+        "next_ja": "No complete automatic sentence retained.",
+        "next_en": "No complete automatic sentence retained.",
+        "arriving_ja": "No complete automatic sentence retained.",
+        "arriving_en": "No complete automatic sentence retained.",
+        "transfer_en": "Interchange station; no separate complete automatic transfer retained."
+      },
+      "departure_melody": {},
+      "next": {
+        "ja": [
+          {
+            "file": "lines/sakaisuji/clips/voice/K16-nagahoribashi_next_ja_northbound_01.opus",
+            "text": "次は、長堀橋です。",
+            "status": "approved",
+            "note": "",
+            "kind": "next",
+            "station": "K16",
+            "speaker": "auto",
+            "direction": "northbound",
+            "clarity": 51.0,
+            "lang": "ja",
+            "source": "99-1SdiffHM",
+            "start": 362.56,
+            "end": 364.61,
+            "directions": [
+              "northbound",
+              "southbound"
+            ],
+            "asr": "次は、長堀橋です。",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "405b874978022848c1a1df630ac955675624988db625c11d2827af5c7fbe6501"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/sakaisuji/clips/voice/K16-nagahoribashi_next_en_northbound_01.opus",
+            "text": "The next stop is Nagahoribashi, station number K16.",
+            "status": "approved",
+            "note": "",
+            "kind": "next",
+            "station": "K16",
+            "speaker": "auto",
+            "direction": "northbound",
+            "clarity": 53.1,
+            "lang": "en",
+            "source": "S4YYm-WwFRI",
+            "start": 334.77,
+            "end": 340.42,
+            "directions": [
+              "northbound",
+              "southbound"
+            ],
+            "asr": "The next stop is Nagahoribashi, station number K16.",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "ac8d8fce3da67d2604842218c2a28fe3bec75e651743c6469448bf05f5b44508"
+          }
+        ]
+      },
+      "arriving": {
+        "ja": [
+          {
+            "file": "lines/sakaisuji/clips/voice/K16-nagahoribashi_arriving_ja_northbound_01.opus",
+            "text": "長堀橋、長堀橋、長堀鶴見緑地線はお乗り換えです。",
+            "status": "approved",
+            "note": "",
+            "kind": "arriving",
+            "station": "K16",
+            "speaker": "auto",
+            "direction": "northbound",
+            "clarity": 48.5,
+            "lang": "ja",
+            "source": "S4YYm-WwFRI",
+            "start": 364.71,
+            "end": 370.22,
+            "directions": [
+              "northbound",
+              "southbound"
+            ],
+            "asr": "長堀橋、長堀橋、長堀鶴見緑地線はお乗り換えです。",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "67e7e19a693c2aa40ee64b329d81d80441767a759e196da10382704f6a4f78d1"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/sakaisuji/clips/voice/K16-nagahoribashi_arriving_en_northbound_01_round4_round5.opus",
+            "text": "We will be stopping at Nagahoribashi, station number K16.",
+            "status": "needs ear check",
+            "note": "Round 4 rejected stray leading Japanese station name; cut now starts at We. Full large-v3 CUDA fixed-language transcript and word timings checked; new cut needs listening. Round 5: word/VAD/envelope reviewed; removes isolated fragment or background pre-roll; speech retained, boundary changed; needs ear check.",
+            "kind": "arriving",
+            "station": "K16",
+            "speaker": "auto",
+            "direction": "northbound",
+            "clarity": 48.4,
+            "lang": "en",
+            "source": "S4YYm-WwFRI",
+            "start": 375.1,
+            "end": 380.65,
+            "directions": [
+              "northbound",
+              "southbound"
+            ],
+            "revision": "round5 boundary trim",
+            "asr": "We will be stopping at Nagahoribashi, station number K16.",
+            "transcript_audit": "large-v3 / CUDA / round5 final-cut boundary verification",
+            "approval_before_trim": "rejected",
+            "speech_unchanged": true,
+            "boundary_trim": {
+              "input_sha256": "77ef1b798db322ca5aa73e8949f931c5d812985a918398da9026a3191d04a9ce",
+              "start": 0.45,
+              "end": 5.55,
+              "fade_in": 0.005,
+              "fade_out": 0.025,
+              "input_archive": "raw/sakaisuji/round5-inputs/K16-nagahoribashi_arriving_en_northbound_01_round4.opus"
+            },
+            "sha256": "2a557f30236f55c3ebda38b35f592ef2eeda57eacdbfad73293432945c45dd58"
+          }
+        ]
+      },
+      "transfer": {
+        "ja": [
+          {
+            "file": "lines/sakaisuji/clips/voice/K16-nagahoribashi_transfer_ja_southbound_01.opus",
+            "text": "長堀鶴見緑地線はお乗り換えです。",
+            "status": "approved",
+            "note": "",
+            "kind": "transfer",
+            "station": "K16",
+            "speaker": "auto",
+            "direction": "southbound",
+            "clarity": 40.4,
+            "lang": "ja",
+            "source": "UVZwY7E9lAs",
+            "start": 397.37,
+            "end": 400.13,
+            "directions": [
+              "northbound",
+              "southbound"
+            ],
+            "asr": "長堀鶴見緑地線はお乗り換えです。",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "073b536c8a1fb40036ff480cac9cf668a68aab040711cd3d53a5825f5dce0387"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/sakaisuji/clips/voice/K16-nagahoribashi_transfer_en_northbound_01.opus",
+            "text": "Passengers can transfer here to the Nagahori Tsurumi-Ryokuchi Line.",
+            "status": "approved",
+            "note": "",
+            "kind": "transfer",
+            "station": "K16",
+            "speaker": "auto",
+            "direction": "northbound",
+            "clarity": 47.6,
+            "lang": "en",
+            "source": "S4YYm-WwFRI",
+            "start": 340.53,
+            "end": 345.24,
+            "directions": [
+              "northbound",
+              "southbound"
+            ],
+            "asr": "Passengers can transfer here to the Nagahori Tsurumi-Ryokuchi Line.",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "533c116c7219d2920d4bf190780a24af7843a892b6a2b1d7ed053c05837655dc"
+          }
+        ]
+      }
+    },
+    {
+      "code": "K17",
+      "name": "Nippombashi",
+      "kanji": "日本橋",
+      "notes": {},
+      "required": {
+        "next_ja": "No complete automatic sentence retained.",
+        "next_en": "No complete automatic sentence retained.",
+        "arriving_ja": "No complete automatic sentence retained.",
+        "arriving_en": "No complete automatic sentence retained.",
+        "transfer_ja": "Interchange station; no separate complete automatic transfer retained.",
+        "transfer_en": "Interchange station; no separate complete automatic transfer retained."
+      },
+      "departure_melody": {},
+      "next": {
+        "ja": [
+          {
+            "file": "lines/sakaisuji/clips/voice/K17-nippombashi_next_ja_northbound_01.opus",
+            "text": "次は、日本橋です。",
+            "status": "approved",
+            "note": "",
+            "kind": "next",
+            "station": "K17",
+            "speaker": "auto",
+            "direction": "northbound",
+            "clarity": 51.9,
+            "lang": "ja",
+            "source": "99-1SdiffHM",
+            "start": 276.85,
+            "end": 278.87,
+            "directions": [
+              "northbound",
+              "southbound"
+            ],
+            "asr": "次は、日本橋です。",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "43ff0f0eb16ab76f0ff67d9e6c4d146e6308a118e2c22021a4809549517d6873"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/sakaisuji/clips/voice/K17-nippombashi_next_en_northbound_02.opus",
+            "text": "The next stop is Nippombashi, station number K17.",
+            "status": "approved",
+            "note": "",
+            "kind": "next",
+            "station": "K17",
+            "speaker": "auto",
+            "direction": "northbound",
+            "clarity": 50.7,
+            "lang": "en",
+            "source": "S4YYm-WwFRI",
+            "start": 229.97,
+            "end": 235.55,
+            "directions": [
+              "northbound",
+              "southbound"
+            ],
+            "asr": "The next stop is Nippombashi, station number K17.",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "443b3c92a8735f4624ca651fe63be113eba21148371dfd48a9f9838d337ffea2"
+          }
+        ]
+      },
+      "arriving": {
+        "ja": [
+          {
+            "file": "lines/sakaisuji/clips/voice/K17-nippombashi_arriving_ja_northbound_01.opus",
+            "text": "日本橋、日本橋。",
+            "status": "approved",
+            "note": "",
+            "kind": "arriving",
+            "station": "K17",
+            "speaker": "auto",
+            "direction": "northbound",
+            "clarity": 48.2,
+            "lang": "ja",
+            "source": "S4YYm-WwFRI",
+            "start": 271.6,
+            "end": 273.99,
+            "directions": [
+              "northbound",
+              "southbound"
+            ],
+            "asr": "日本橋、日本橋",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "33269df40a5b773e6478a6d432fcf5425f4ba53274f83fcda27e2f69c85826af"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/sakaisuji/clips/voice/K17-nippombashi_arriving_en_southbound_01.opus",
+            "text": "We will be stopping at Nippombashi.",
+            "status": "approved",
+            "note": "",
+            "kind": "arriving",
+            "station": "K17",
+            "speaker": "auto",
+            "direction": "southbound",
+            "clarity": 51.3,
+            "lang": "en",
+            "source": "UVZwY7E9lAs",
+            "start": 535.45,
+            "end": 538.28,
+            "directions": [
+              "northbound",
+              "southbound"
+            ],
+            "asr": "We will be stopping at Nippombashi.",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "f7bf570378446276c3d529f0b5c3512235cad143dbd8a1c3210898e97cd1f8c9"
+          }
+        ]
+      },
+      "transfer": {
+        "ja": [
+          {
+            "file": "lines/sakaisuji/clips/voice/K17-nippombashi_transfer_ja_northbound_01.opus",
+            "text": "千日前線、近鉄線はお乗り換えです。",
+            "status": "approved",
+            "note": "",
+            "kind": "transfer",
+            "station": "K17",
+            "speaker": "auto",
+            "direction": "northbound",
+            "clarity": 43.1,
+            "lang": "ja",
+            "source": "99-1SdiffHM",
+            "start": 279.02,
+            "end": 282.46,
+            "directions": [
+              "northbound",
+              "southbound"
+            ],
+            "asr": "千日前線、近鉄線はお乗り換えです。",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "386fbe5430e97399b256724012f90184cf551f985ef05c258fc82ec83fd77597"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/sakaisuji/clips/voice/K17-nippombashi_transfer_en_northbound_01.opus",
+            "text": "Passengers can transfer here to the Sennichimae Line and Kintetsu Line.",
+            "status": "approved",
+            "note": "",
+            "kind": "transfer",
+            "station": "K17",
+            "speaker": "auto",
+            "direction": "northbound",
+            "clarity": 44.5,
+            "lang": "en",
+            "source": "99-1SdiffHM",
+            "start": 342.43,
+            "end": 347.67,
+            "directions": [
+              "northbound",
+              "southbound"
+            ],
+            "asr": "Passengers can transfer here to the 千日前 line and 近鉄 line.",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "8e323f03187185a3781af4d8a9cdfaef21b9b082afc95585c5f62c19cf199b9d"
+          }
+        ]
+      }
+    },
+    {
+      "code": "K18",
+      "name": "Ebisuchō",
+      "kanji": "恵美須町",
+      "notes": {},
+      "required": {
+        "next_ja": "No complete automatic sentence retained.",
+        "next_en": "No complete automatic sentence retained.",
+        "arriving_ja": "No complete automatic sentence retained.",
+        "arriving_en": "No complete automatic sentence retained."
+      },
+      "departure_melody": {},
+      "next": {
+        "ja": [
+          {
+            "file": "lines/sakaisuji/clips/voice/K18-ebisucho_next_ja_southbound_01_round5.opus",
+            "text": "次は恵美須町です。阪堺線はお乗り換えです。出口は右側に変わります。",
+            "status": "needs ear check",
+            "note": " Round 5: word/VAD/envelope reviewed; removes isolated fragment or background pre-roll; speech retained, boundary changed; needs ear check.",
+            "kind": "next",
+            "station": "K18",
+            "speaker": "auto",
+            "direction": "southbound",
+            "clarity": 36.6,
+            "lang": "ja",
+            "side": "right",
+            "source": "UVZwY7E9lAs",
+            "start": 558.14,
+            "end": 565.52,
+            "directions": [
+              "northbound",
+              "southbound"
+            ],
+            "asr": "次は恵美須町です。 半回線はお乗り換えです。 出口は右側に変わります。",
+            "transcript_audit": "large-v3 / CUDA / round5 final-cut boundary verification",
+            "revision": "round5 boundary trim",
+            "approval_before_trim": "approved",
+            "speech_unchanged": true,
+            "boundary_trim": {
+              "input_sha256": "a0e32d2694c9b89a375c253ed3220b7792e270e804946b2827ae03f1ba086395",
+              "start": 1.04,
+              "end": 7.38,
+              "fade_in": 0.005,
+              "fade_out": 0.025,
+              "input_archive": "raw/sakaisuji/round5-inputs/K18-ebisucho_next_ja_southbound_01.opus"
+            },
+            "sha256": "b68367fad7ec42b50f83d35b96440bf91d22473809f2cdad9f587f585a180911"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/sakaisuji/clips/voice/K18-ebisucho_next_en_southbound_01.opus",
+            "text": "The next stop is Ebisuchō, station number K18.",
+            "status": "approved",
+            "note": "",
+            "kind": "next",
+            "station": "K18",
+            "speaker": "auto",
+            "direction": "southbound",
+            "clarity": 45.7,
+            "lang": "en",
+            "source": "UVZwY7E9lAs",
+            "start": 565.79,
+            "end": 571.42,
+            "directions": [
+              "northbound",
+              "southbound"
+            ],
+            "asr": "The next stop is Ebisuchō, station number K18.",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "ee78638364cb66e027da57e636bf8396001bf6bf16692178b6892caf27d5d7f6"
+          }
+        ]
+      },
+      "arriving": {
+        "ja": [
+          {
+            "file": "lines/sakaisuji/clips/voice/K18-ebisucho_arriving_ja_southbound_01.opus",
+            "text": "恵美須町恵美須町阪堺線はお乗り換えです。",
+            "status": "approved",
+            "note": "",
+            "kind": "arriving",
+            "station": "K18",
+            "speaker": "auto",
+            "direction": "southbound",
+            "clarity": 45.3,
+            "lang": "ja",
+            "source": "UVZwY7E9lAs",
+            "start": 604.16,
+            "end": 608.65,
+            "directions": [
+              "northbound",
+              "southbound"
+            ],
+            "asr": "恵美須町 恵美須町 半回線はお乗り換えです。",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "dba86288fad0566e7b0443364cc0c947b841ad33dd56c70fb4926c80900920bc"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/sakaisuji/clips/voice/K18-ebisucho_arriving_en_southbound_01.opus",
+            "text": "We will be stopping at Ebisuchō, station number K18.",
+            "status": "approved",
+            "note": "",
+            "kind": "arriving",
+            "station": "K18",
+            "speaker": "auto",
+            "direction": "southbound",
+            "clarity": 52.4,
+            "lang": "en",
+            "source": "UVZwY7E9lAs",
+            "start": 613.7,
+            "end": 619.09,
+            "directions": [
+              "northbound",
+              "southbound"
+            ],
+            "asr": "We will be stopping at Ebisuchō, station number K18.",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "842669dc44b4a938d8d0d34c74985131140aabe32a5f31403b52fa1980a6e7a0"
+          }
+        ]
+      },
+      "transfer": {
+        "ja": [],
+        "en": [
+          {
+            "file": "lines/sakaisuji/clips/voice/K18-ebisucho_transfer_en_southbound_01.opus",
+            "text": "Passengers can transfer here to the Hankai Line.",
+            "status": "approved",
+            "note": "",
+            "kind": "transfer",
+            "station": "K18",
+            "speaker": "auto",
+            "direction": "southbound",
+            "clarity": 41.8,
+            "lang": "en",
+            "source": "UVZwY7E9lAs",
+            "start": 571.51,
+            "end": 575.03,
+            "directions": [
+              "northbound",
+              "southbound"
+            ],
+            "asr": "Passengers can transfer here to the Hankai Line.",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "b8f0092ef0abf3f2c7c87c89fd4baaa1f865c380218d3edd96d870dedfe4d113"
+          }
+        ]
+      }
+    },
+    {
+      "code": "K19",
+      "name": "Dōbutsuen-mae",
+      "kanji": "動物園前",
+      "notes": {
+        "transfer_ja": "Transfer is included in the station sentence."
+      },
+      "required": {
+        "next_ja": "No complete automatic sentence retained.",
+        "next_en": "No complete automatic sentence retained.",
+        "arriving_ja": "No complete automatic sentence retained.",
+        "arriving_en": "No complete automatic sentence retained.",
+        "transfer_en": "Interchange station; no separate complete automatic transfer retained."
+      },
+      "departure_melody": {},
+      "next": {
+        "ja": [
+          {
+            "file": "lines/sakaisuji/clips/voice/K19-dobutsuen-mae_next_ja_northbound_01.opus",
+            "text": "次は、動物園前です。",
+            "status": "approved",
+            "note": "",
+            "kind": "next",
+            "station": "K19",
+            "speaker": "auto",
+            "direction": "northbound",
+            "clarity": 49.1,
+            "lang": "ja",
+            "source": "99-1SdiffHM",
+            "start": 104.7,
+            "end": 106.92,
+            "directions": [
+              "northbound",
+              "southbound"
+            ],
+            "asr": "次は、動物園前です。",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "63c897f58b5e4b1fca8c58c552b048ab3c1bc363684f3613cded372d2c4d86fa"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/sakaisuji/clips/voice/K19-dobutsuen-mae_next_en_southbound_01.opus",
+            "text": "The next stop is Dōbutsuen-mae, station number K19.",
+            "status": "approved",
+            "note": "",
+            "kind": "next",
+            "station": "K19",
+            "speaker": "auto",
+            "direction": "southbound",
+            "clarity": 43.0,
+            "lang": "en",
+            "source": "UVZwY7E9lAs",
+            "start": 643.52,
+            "end": 649.69,
+            "directions": [
+              "northbound",
+              "southbound"
+            ],
+            "asr": "The next stop is Dōbutsuen-mae, station number K19.",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "13446cc35ebc8292b1b866007100fcbd068b31491e896bc7757e7c8ef09fa511"
+          }
+        ]
+      },
+      "arriving": {
+        "ja": [
+          {
+            "file": "lines/sakaisuji/clips/voice/K19-dobutsuen-mae_arriving_ja_northbound_01.opus",
+            "text": "動物園前動物園前御堂筋線JR線はお乗り換えです。",
+            "status": "approved",
+            "note": "",
+            "kind": "arriving",
+            "station": "K19",
+            "speaker": "auto",
+            "direction": "northbound",
+            "clarity": 47.0,
+            "lang": "ja",
+            "source": "S4YYm-WwFRI",
+            "start": 116.17,
+            "end": 122.26,
+            "directions": [
+              "northbound",
+              "southbound"
+            ],
+            "asr": "動物園前 動物園前 御堂筋線JR線はお乗り換えです。",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "6a7b0a3ecdd419aaa7ca2059720b35486644929fc20a3775b0352c77881cb0e6"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/sakaisuji/clips/voice/K19-dobutsuen-mae_arriving_en_northbound_01.opus",
+            "text": "We will be stopping at Dōbutsuen-mae, station number K19.",
+            "status": "approved",
+            "note": "",
+            "kind": "arriving",
+            "station": "K19",
+            "speaker": "auto",
+            "direction": "northbound",
+            "clarity": 49.1,
+            "lang": "en",
+            "source": "S4YYm-WwFRI",
+            "start": 127.89,
+            "end": 133.65,
+            "directions": [
+              "northbound",
+              "southbound"
+            ],
+            "asr": "We will be stopping at Dōbutsuen-mae, station number K19.",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "dd3664f266980e5c1ebc028c18f23fbeaf70e3fffc8dd0f9467b817d142945d4"
+          }
+        ]
+      },
+      "transfer": {
+        "ja": [
+          {
+            "file": "lines/sakaisuji/clips/voice/K19-dobutsuen-mae_transfer_ja_northbound_01_complete.opus",
+            "text": "御堂筋線はお乗り換えです。",
+            "status": "approved",
+            "note": "Rejoined contiguous transfer-list fragments from the raw recording; complete cut needs a new ear check.",
+            "kind": "transfer",
+            "station": "K19",
+            "speaker": "auto",
+            "direction": "northbound",
+            "clarity": 42.5,
+            "lang": "ja",
+            "source": "S4YYm-WwFRI",
+            "start": 50.69,
+            "end": 54.01,
+            "directions": [
+              "northbound",
+              "southbound"
+            ],
+            "asr": "御堂筋線 はお乗り換えです。",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "138e5094ab028dc27767bd7a55817cf17399ed4a3edccaa6b7f6c640fb8ce836"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/sakaisuji/clips/voice/K19-dobutsuen-mae_transfer_en_northbound_01.opus",
+            "text": "Passengers can transfer here to the Midosuji Line and JR Line.",
+            "status": "approved",
+            "note": "",
+            "kind": "transfer",
+            "station": "K19",
+            "speaker": "auto",
+            "direction": "northbound",
+            "clarity": 46.1,
+            "lang": "en",
+            "source": "99-1SdiffHM",
+            "start": 196.56,
+            "end": 201.4,
+            "directions": [
+              "northbound",
+              "southbound"
+            ],
+            "asr": "Passengers can transfer here to the Midosuji Line and JR Line.",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "4e584ca6a069a0b1a0c1da63cfa228983a23e4519e5d30a86fc0580b5d9ec0e1"
+          }
+        ]
+      }
+    },
+    {
+      "code": "K20",
+      "name": "Tengachaya",
+      "kanji": "天下茶屋",
+      "notes": {},
+      "required": {
+        "next_ja": "No complete automatic sentence retained.",
+        "next_en": "No complete automatic sentence retained.",
+        "arriving_ja": "No complete automatic sentence retained.",
+        "arriving_en": "No complete automatic sentence retained."
+      },
+      "departure_melody": {},
+      "next": {
+        "ja": [
+          {
+            "file": "lines/sakaisuji/clips/voice/K20-tengachaya_next_ja_southbound_01_round5.opus",
+            "text": "次は、天下茶屋、終点です。",
+            "status": "needs ear check",
+            "note": " Round 5: word/VAD/envelope reviewed; removes isolated fragment or background pre-roll; speech retained, boundary changed; needs ear check.",
+            "kind": "next",
+            "station": "K20",
+            "speaker": "auto",
+            "direction": "southbound",
+            "clarity": 33.1,
+            "lang": "ja",
+            "source": "UVZwY7E9lAs",
+            "start": 733.06,
+            "end": 736.34,
+            "directions": [
+              "southbound"
+            ],
+            "asr": "次は、天下茶屋、終点です。",
+            "transcript_audit": "large-v3 / CUDA / round5 final-cut boundary verification",
+            "revision": "round5 boundary trim",
+            "approval_before_trim": "approved",
+            "speech_unchanged": true,
+            "boundary_trim": {
+              "input_sha256": "ffe1b73844b2ff7a16f920b2d5e2eaa35dbf21f046a17de3c60a3ce64ff24633",
+              "start": 0.6,
+              "end": 3.28,
+              "fade_in": 0.005,
+              "fade_out": 0.025,
+              "input_archive": "raw/sakaisuji/round5-inputs/K20-tengachaya_next_ja_southbound_01.opus"
+            },
+            "sha256": "adfa600b191185bb805024c4ea4ba13ab6ddf3327ab1e69c335b876a5958d3a0"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/sakaisuji/clips/voice/K20-tengachaya_next_en_southbound_01.opus",
+            "text": "The next stop is Tengachaya.",
+            "status": "approved",
+            "note": "",
+            "kind": "next",
+            "station": "K20",
+            "speaker": "auto",
+            "direction": "southbound",
+            "clarity": 33.0,
+            "lang": "en",
+            "source": "UVZwY7E9lAs",
+            "start": 739.73,
+            "end": 742.82,
+            "directions": [
+              "southbound"
+            ],
+            "asr": "The next stop is Tengachaya.",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "840ead7b7f82f6f0cb046b8e686c5375b2b80e27762e67db7e0dc4221f0f6efb"
+          }
+        ]
+      },
+      "arriving": {
+        "ja": [
+          {
+            "file": "lines/sakaisuji/clips/voice/K20-tengachaya_arriving_ja_southbound_01.opus",
+            "text": "天下茶屋、天下茶屋、終点です。",
+            "status": "approved",
+            "note": "",
+            "kind": "arriving",
+            "station": "K20",
+            "speaker": "auto",
+            "direction": "southbound",
+            "clarity": 49.3,
+            "lang": "ja",
+            "source": "UVZwY7E9lAs",
+            "start": 794.13,
+            "end": 797.4,
+            "directions": [
+              "southbound"
+            ],
+            "asr": "天下茶屋、天下茶屋、終点です。",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "0f69f86873d478277437f52033b45a75e7c2a65ec4029ea70c6e42148a9bb3fc"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/sakaisuji/clips/voice/K20-tengachaya_arriving_en_southbound_01.opus",
+            "text": "We will be stopping at Tengachaya.",
+            "status": "approved",
+            "note": "",
+            "kind": "arriving",
+            "station": "K20",
+            "speaker": "auto",
+            "direction": "southbound",
+            "clarity": 51.7,
+            "lang": "en",
+            "source": "UVZwY7E9lAs",
+            "start": 808.41,
+            "end": 811.26,
+            "directions": [
+              "southbound"
+            ],
+            "asr": "We will be stopping at Tengachaya.",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "6d3d21f5c52d85685a399a5efef073b0656c2747201738519fb05f0ba12a8ad8"
+          }
+        ]
+      },
+      "transfer": {
+        "ja": [
+          {
+            "file": "lines/sakaisuji/clips/voice/K20-tengachaya_transfer_ja_southbound_01.opus",
+            "text": "南海線はお乗り換えです。",
+            "status": "approved",
+            "note": "",
+            "kind": "transfer",
+            "station": "K20",
+            "speaker": "auto",
+            "direction": "southbound",
+            "clarity": 37.1,
+            "lang": "ja",
+            "source": "UVZwY7E9lAs",
+            "start": 797.89,
+            "end": 800.02,
+            "directions": [
+              "southbound"
+            ],
+            "asr": "南海線はお乗り換えです。",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "d3fc6270da60c8b734aafaa41eaa232f00e344a3be3f4c337b7354568728a61b"
+          }
+        ],
+        "en": [
+          {
+            "file": "lines/sakaisuji/clips/voice/K20-tengachaya_transfer_en_southbound_01.opus",
+            "text": "Passengers can transfer here to the Nankai Line.",
+            "status": "approved",
+            "note": "",
+            "kind": "transfer",
+            "station": "K20",
+            "speaker": "auto",
+            "direction": "southbound",
+            "clarity": 44.6,
+            "lang": "en",
+            "source": "UVZwY7E9lAs",
+            "start": 747.58,
+            "end": 751.37,
+            "directions": [
+              "southbound"
+            ],
+            "asr": "Passengers can transfer here to the Nankai Line.",
+            "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+            "sha256": "c1e47fa34e852eee729bb808f8521584224fddb6f9e58825b0c9222f1fd3c127"
+          }
+        ]
+      }
+    }
+  ],
+  "generic": {
+    "exit_side": [
+      {
+        "file": "lines/sakaisuji/clips/voice/K19-dobutsuen-mae_exit-side_ja_northbound_01.opus",
+        "text": "右側の扉が開きます。",
+        "status": "approved",
+        "note": "",
+        "kind": "exit_side",
+        "station": "K19",
+        "speaker": "auto",
+        "direction": "northbound",
+        "clarity": 45.4,
+        "lang": "ja",
+        "side": "right",
+        "source": "99-1SdiffHM",
+        "start": 185.57,
+        "end": 187.42,
+        "asr": "右側の扉が開きます。",
+        "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+        "sha256": "90ae8b8f71f70a9bf87c1349ef513774ad5ec2d6006d7dfc5fa342716d3bc0cc"
+      },
+      {
+        "file": "lines/sakaisuji/clips/voice/K17-nippombashi_exit-side_ja_northbound_01.opus",
+        "text": "左側の扉が開きます。",
+        "status": "approved",
+        "note": "",
+        "kind": "exit_side",
+        "station": "K17",
+        "speaker": "auto",
+        "direction": "northbound",
+        "clarity": 44.3,
+        "lang": "ja",
+        "side": "left",
+        "source": "99-1SdiffHM",
+        "start": 331.97,
+        "end": 333.92,
+        "asr": "左側の扉が開きます。",
+        "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+        "sha256": "079e720821f2d07276f630e7845c6030a0709a4a00757d6207995b28c78afe6c"
+      },
+      {
+        "file": "lines/sakaisuji/clips/voice/K17-nippombashi_exit-side_en_northbound_01.opus",
+        "text": "The doors on the left side will open.",
+        "status": "approved",
+        "note": "",
+        "kind": "exit_side",
+        "station": "K17",
+        "speaker": "auto",
+        "direction": "northbound",
+        "clarity": 51.4,
+        "lang": "en",
+        "side": "left",
+        "source": "99-1SdiffHM",
+        "start": 347.78,
+        "end": 350.6,
+        "asr": "The doors on the left side will open.",
+        "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+        "sha256": "4a704763225a578960f5b4f53b20fdc69880c0ba10e0bb15a2b5cf6fb66f86d5"
+      },
+      {
+        "file": "lines/sakaisuji/clips/voice/K16-nagahoribashi_exit-side_en_northbound_01.opus",
+        "text": "The doors on the right side will open.",
+        "status": "approved",
+        "note": "",
+        "kind": "exit_side",
+        "station": "K16",
+        "speaker": "auto",
+        "direction": "northbound",
+        "clarity": 52.5,
+        "lang": "en",
+        "side": "right",
+        "source": "S4YYm-WwFRI",
+        "start": 385.82,
+        "end": 388.58,
+        "asr": "The doors on the right side will open.",
+        "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+        "sha256": "5f3087c94e608ca67e46a169e52baac572f8c157038c0457aece04a88e52e288"
+      },
+      {
+        "file": "lines/sakaisuji/clips/voice/K14-kitahama_exit-side_ja_northbound_02.opus",
+        "text": "出口は右側に変わります。",
+        "status": "approved",
+        "note": "",
+        "kind": "exit_side",
+        "station": "K14",
+        "speaker": "auto",
+        "direction": "northbound",
+        "clarity": 46.5,
+        "lang": "ja",
+        "side": "right",
+        "source": "S4YYm-WwFRI",
+        "start": 523.31,
+        "end": 525.41,
+        "asr": "出口は右側に変わります。",
+        "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+        "sha256": "c7cc10a79274ceefcc18d387f2916510fc61a181b9b6bb0123269853d7be7d9c"
+      },
+      {
+        "file": "lines/sakaisuji/clips/voice/K12-ogimachi_exit-side_ja_southbound_01.opus",
+        "text": "出口は左側に変わります。",
+        "status": "approved",
+        "note": "",
+        "kind": "exit_side",
+        "station": "K12",
+        "speaker": "auto",
+        "direction": "southbound",
+        "clarity": 47.0,
+        "lang": "ja",
+        "side": "left",
+        "source": "UVZwY7E9lAs",
+        "start": 35.96,
+        "end": 38.12,
+        "asr": "出口は左側に変わります。",
+        "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+        "sha256": "e4ffb2342b9d5cd6e51b3f85e4a9db296d46b3200dfc63fea729e7d382d81880"
+      }
+    ],
+    "bound": [
+      {
+        "file": "lines/sakaisuji/clips/voice/general_bound_en_northbound_01.opus",
+        "text": "This semi-express train is bound for Kyoto Kawaramachi.",
+        "status": "approved",
+        "note": "",
+        "kind": "bound",
+        "speaker": "auto",
+        "direction": "northbound",
+        "clarity": 53.1,
+        "lang": "en",
+        "source": "99-1SdiffHM",
+        "start": 28.09,
+        "end": 33.17,
+        "directions": [
+          "northbound"
+        ],
+        "asr": "This semi-express train is bound for Kyoto Kawaramachi.",
+        "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+        "sha256": "b103eb0eebf7dae40d2382a41de777d927ae33a8877fe57bc767561178352699"
+      },
+      {
+        "file": "lines/sakaisuji/clips/voice/general_bound_en_northbound_02.opus",
+        "text": "This train is bound for Tenjimbashisuji Rokuchōme.",
+        "status": "approved",
+        "note": "",
+        "kind": "bound",
+        "speaker": "auto",
+        "direction": "northbound",
+        "clarity": 51.0,
+        "lang": "en",
+        "source": "S4YYm-WwFRI",
+        "start": 19.9,
+        "end": 24.97,
+        "directions": [
+          "northbound"
+        ],
+        "asr": "This train is bound for 天神橋筋六丁目",
+        "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+        "sha256": "df7226fee01826370cb08f8066aeb09c8856ee0dac2c20795b2902731d4e791d"
+      },
+      {
+        "file": "lines/sakaisuji/clips/voice/general_bound_ja_northbound_01.opus",
+        "text": "この電車は、準急京都河原町行きです。",
+        "status": "approved",
+        "note": "",
+        "kind": "bound",
+        "speaker": "auto",
+        "direction": "northbound",
+        "clarity": 46.2,
+        "lang": "ja",
+        "source": "99-1SdiffHM",
+        "start": 7.21,
+        "end": 10.97,
+        "directions": [
+          "northbound"
+        ],
+        "asr": "この電車は、準急京都河原町行きです。",
+        "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+        "sha256": "fd8a9b6346e26eb2fad9e437b04ef0adf1b9dc85b29bfbcaca27a5f833828e7b"
+      },
+      {
+        "file": "lines/sakaisuji/clips/voice/K15-sakaisuji-hommachi_bound_ja_northbound_02.opus",
+        "text": "この電車は天神橋筋六丁目行きです。",
+        "status": "approved",
+        "note": "",
+        "kind": "bound",
+        "station": "K15",
+        "speaker": "auto",
+        "direction": "northbound",
+        "clarity": 44.8,
+        "lang": "ja",
+        "source": "S4YYm-WwFRI",
+        "start": 515.56,
+        "end": 518.85,
+        "directions": [
+          "northbound"
+        ],
+        "asr": "この電車は天神橋筋六丁目行きです。",
+        "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+        "sha256": "857132228ffd78f90959b5b05f7e1a563da625c0c0d75ea6747b4471bf79f365"
+      },
+      {
+        "file": "lines/sakaisuji/clips/voice/K14-kitahama_bound_en_northbound_01.opus",
+        "text": "Thank you for riding with us. This train is bound for Tenjimbashisuji Rokuchōme.",
+        "status": "approved",
+        "note": "",
+        "kind": "bound",
+        "station": "K14",
+        "speaker": "auto",
+        "direction": "northbound",
+        "clarity": 42.3,
+        "lang": "en",
+        "source": "S4YYm-WwFRI",
+        "start": 525.9,
+        "end": 532.12,
+        "directions": [
+          "northbound"
+        ],
+        "asr": "Thank you for riding with us. This train is bound for 天神橋筋六丁目.",
+        "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+        "sha256": "bdf3b537a3e21449526875fb7e4ed442fb832aa75bbee92f262d5f8a0503279f"
+      },
+      {
+        "file": "lines/sakaisuji/clips/voice/K16-nagahoribashi_bound_en_southbound_01.opus",
+        "text": "This train is bound for Tengachaya.",
+        "status": "approved",
+        "note": "",
+        "kind": "bound",
+        "station": "K16",
+        "speaker": "auto",
+        "direction": "southbound",
+        "clarity": 40.0,
+        "lang": "en",
+        "source": "UVZwY7E9lAs",
+        "start": 404.49,
+        "end": 407.64,
+        "directions": [
+          "southbound"
+        ],
+        "asr": "This train is bound for Tengachaya.",
+        "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+        "sha256": "f730da399b3524e5d1fdcc056da744daca9e8ba9477d0a3146b8e1c151b0ceda"
+      }
+    ],
+    "doors_closing": [
+      {
+        "file": "lines/sakaisuji/clips/voice/general_doors_ja_southbound_01_round5.opus",
+        "text": "ドアが閉まります。ご注意ください。",
+        "status": "needs ear check",
+        "note": " Round 5: word/VAD/envelope reviewed; removes isolated fragment or background pre-roll; speech retained, boundary changed; needs ear check.",
+        "kind": "doors",
+        "speaker": "auto",
+        "direction": "southbound",
+        "clarity": 34.3,
+        "lang": "ja",
+        "source": "UVZwY7E9lAs",
+        "start": 285.43,
+        "end": 288.54,
+        "asr": "ドアが閉まります。ご注意ください。",
+        "transcript_audit": "large-v3 / CUDA / round5 final-cut boundary verification",
+        "revision": "round5 boundary trim",
+        "approval_before_trim": "approved",
+        "speech_unchanged": true,
+        "boundary_trim": {
+          "input_sha256": "3aa397197a694289881762254dbb976dffc01fbae75a2df7080dd9dd1e1212e3",
+          "start": 1.34,
+          "end": 3.11,
+          "fade_in": 0.005,
+          "fade_out": 0.025,
+          "input_archive": "raw/sakaisuji/round5-inputs/general_doors_ja_southbound_01.opus"
+        },
+        "sha256": "e08357673163f3ce3282b80a873160fa7ca3ab3cce69886b731975dc6e3a1c02"
+      }
+    ],
+    "manners": [
+      {
+        "file": "lines/sakaisuji/clips/voice/general_manners_ja_northbound_02.opus",
+        "text": "車内および駅構内で不審物を発見された場合は、触らず直ちに乗務員または駅係員にお知らせください。",
+        "status": "approved",
+        "note": "",
+        "kind": "manners",
+        "speaker": "auto",
+        "direction": "northbound",
+        "clarity": 40.3,
+        "lang": "ja",
+        "source": "S4YYm-WwFRI",
+        "start": 623.73,
+        "end": 632.54,
+        "asr": "車内および駅構内で不審物を発見された場合は、触らず直ちに乗務員または駅係員にお知らせください。",
+        "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+        "sha256": "86c197bcbf65036c8d57b59996726b277a98428c5582eed78afcf43c5a530a40"
+      }
+    ],
+    "misc": [
+      {
+        "file": "lines/sakaisuji/clips/voice/K15-sakaisuji-hommachi_safety_ja_northbound_01.opus",
+        "text": "やむを得ず急停車することがありますので、つり革、手すりなどをお持ちください。",
+        "status": "approved",
+        "note": "",
+        "kind": "safety",
+        "station": "K15",
+        "speaker": "auto",
+        "direction": "northbound",
+        "clarity": 44.3,
+        "lang": "ja",
+        "source": "S4YYm-WwFRI",
+        "start": 432.77,
+        "end": 437.97,
+        "asr": "やむを得ず急停車することがありますので、すり革、手すりなどをお持ちください。",
+        "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+        "sha256": "3d85a61983afcb27f99d2eea37c2625ff9326146918d6ed7391fe8a95cbdf736"
+      },
+      {
+        "file": "lines/sakaisuji/clips/voice/general_phrase_en_northbound_07.opus",
+        "text": "Please be careful of the train doors.",
+        "status": "approved",
+        "note": "",
+        "kind": "phrase",
+        "speaker": "auto",
+        "direction": "northbound",
+        "clarity": 48.6,
+        "lang": "en",
+        "source": "99-1SdiffHM",
+        "start": 350.62,
+        "end": 353.12,
+        "asr": "Please be careful of the train doors.",
+        "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+        "sha256": "9baea953d75562a74538f948d973ce15d761a714d2388bf5a1b7f271f87fb783"
+      },
+      {
+        "file": "lines/sakaisuji/clips/voice/general_phrase_en_northbound_08.opus",
+        "text": "We will be departing soon.",
+        "status": "approved",
+        "note": "",
+        "kind": "phrase",
+        "speaker": "auto",
+        "direction": "northbound",
+        "clarity": 50.0,
+        "lang": "en",
+        "source": "S4YYm-WwFRI",
+        "start": 25.37,
+        "end": 27.44,
+        "asr": "We will be departing soon.",
+        "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+        "sha256": "5375425ed54ef9a77c37de88cafc4274761da8c0d6f9f8ddec948ce176b94d9a"
+      },
+      {
+        "file": "lines/sakaisuji/clips/voice/general_phrase_en_northbound_09.opus",
+        "text": "Thank you for riding with Osaka Metro.",
+        "status": "approved",
+        "note": "",
+        "kind": "phrase",
+        "speaker": "auto",
+        "direction": "northbound",
+        "clarity": 44.7,
+        "lang": "en",
+        "source": "S4YYm-WwFRI",
+        "start": 54.33,
+        "end": 57.33,
+        "asr": "Thank you for riding with Osaka Metro.",
+        "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+        "sha256": "51a0f9b50c0644f17e4518b20206c428903d1ccbf9d1b8b4502f8a4b9729ef76"
+      }
+    ],
+    "start_end": [
+      {
+        "file": "lines/sakaisuji/clips/voice/general_terminal_ja_complete_round5.opus",
+        "text": "本日も大阪メトロをご利用いただきましてありがとうございましたこの電車はこの駅までお忘れ物のないようご注意ください。",
+        "status": "needs ear check",
+        "note": "Current 66-series K11 terminating service; consecutive original fragments rejoined into the terminal message. Round 5: more than 150 ms pre-roll; envelope onset with 60 ms consonant guard; non-speech tail beyond word and VAD end; 80 ms acoustic guard; speech retained, boundary changed; needs ear check.",
+        "lang": "ja",
+        "source": "S4YYm-WwFRI",
+        "start": 790.72,
+        "end": 799.95,
+        "asr": "本日も大阪メトロをご利用いただきましてありがとうございました この電車はこの駅までお忘れ物のないようご注意ください",
+        "transcript_audit": "large-v3 / CUDA / round5 final-cut boundary verification",
+        "revision": "round5 boundary trim",
+        "approval_before_trim": "approved",
+        "speech_unchanged": true,
+        "boundary_trim": {
+          "input_sha256": "14cd55e6524aaeda445b04c9b2e7d8e525ee62b25037c0d2cd5e5f21d44174b1",
+          "start": 0.15,
+          "end": 9.04,
+          "fade_in": 0.005,
+          "fade_out": 0.025,
+          "input_archive": "raw/sakaisuji/round5-inputs/general_terminal_ja_complete.opus"
+        },
+        "sha256": "e976c5c893854bf4874c0254af1bf982cf493c81df3edfb6de131aa709531548"
+      },
+      {
+        "file": "lines/sakaisuji/clips/voice/general_terminal_en_complete_round5.opus",
+        "text": "This train will go no further than this station. For passengers heading towards Kitasenri and Takatsukishi, please wait at the platform.",
+        "status": "needs ear check",
+        "note": "Current 66-series K11 terminal message; complete English wording confirmed by forced-English ASR. Round 5: more than 150 ms pre-roll; envelope onset with 60 ms consonant guard; speech retained, boundary changed; needs ear check.",
+        "lang": "en",
+        "source": "S4YYm-WwFRI",
+        "start": 819.9,
+        "end": 830.05,
+        "asr": "This train will go no further than this station. For passengers heading towards Kitasendi and Takatsukishi, please wait at the platform.",
+        "transcript_audit": "large-v3 / CUDA / round5 final-cut boundary verification",
+        "revision": "round5 boundary trim",
+        "approval_before_trim": "approved",
+        "speech_unchanged": true,
+        "boundary_trim": {
+          "input_sha256": "4ba24e068f966a1e84125841da929ae5429f7c8a8c16fd5d9e2432e722ead45c",
+          "start": 0.38,
+          "end": 10.15,
+          "fade_in": 0.005,
+          "fade_out": 0.025,
+          "input_archive": "raw/sakaisuji/round5-inputs/general_terminal_en_complete.opus"
+        },
+        "sha256": "6dfac3754842dec7cdd8c14919095fec7d92e92d43e1e2f74dcdc91542b283f9"
+      },
+      {
+        "file": "lines/sakaisuji/clips/voice/K20-tengachaya_arriving_ja_southbound_01.opus",
+        "text": "天下茶屋、天下茶屋、終点です。",
+        "status": "approved",
+        "note": "",
+        "kind": "arriving",
+        "station": "K20",
+        "speaker": "auto",
+        "direction": "southbound",
+        "clarity": 49.3,
+        "lang": "ja",
+        "source": "UVZwY7E9lAs",
+        "start": 794.13,
+        "end": 797.4,
+        "directions": [
+          "southbound"
+        ],
+        "asr": "天下茶屋、天下茶屋、終点です。",
+        "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+        "sha256": "0f69f86873d478277437f52033b45a75e7c2a65ec4029ea70c6e42148a9bb3fc"
+      },
+      {
+        "file": "lines/sakaisuji/clips/voice/K20-tengachaya_arriving_en_southbound_01.opus",
+        "text": "We will be stopping at Tengachaya.",
+        "status": "approved",
+        "note": "",
+        "kind": "arriving",
+        "station": "K20",
+        "speaker": "auto",
+        "direction": "southbound",
+        "clarity": 51.7,
+        "lang": "en",
+        "source": "UVZwY7E9lAs",
+        "start": 808.41,
+        "end": 811.26,
+        "directions": [
+          "southbound"
+        ],
+        "asr": "We will be stopping at Tengachaya.",
+        "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+        "sha256": "6d3d21f5c52d85685a399a5efef073b0656c2747201738519fb05f0ba12a8ad8"
+      }
+    ],
+    "out_of_service": []
+  },
+  "on_station": [
+    {
+      "file": "lines/sakaisuji/clips/melody/approach-chime.opus",
+      "text": "approach chime",
+      "status": "approved",
+      "note": "Sakaisuji approach chime, before the approach announcement (2026-01)",
+      "source": "A8PDIr1wNjw",
+      "start": 6.41,
+      "end": 8.1,
+      "sha256": "42e631a09690351c381194ba21c1ff7c007ece21424d67668213cbf571bf1458"
+    },
+    {
+      "file": "lines/sakaisuji/clips/melody/approach-melody-1.opus",
+      "text": "approach melody",
+      "status": "approved",
+      "note": "approach melody, a ~3 s phrase played three times while the train comes in",
+      "source": "A8PDIr1wNjw",
+      "start": 21.42,
+      "end": 24.58,
+      "sha256": "e9b0f709a0dfc197ef82bab01de460fb9b97f2c450f4bd7820561617df4285ea"
+    },
+    {
+      "file": "lines/sakaisuji/clips/melody/departure-melody.opus",
+      "text": "departure melody",
+      "status": "approved",
+      "note": "after \"…が発車します\": short chime + melody (picked by ear)",
+      "source": "A8PDIr1wNjw",
+      "start": 69.64,
+      "end": 74.88,
+      "sha256": "7f6ea436a0613f6eafc66f517a3e70089a35512a3d22576f57b6e575d76dfb78"
+    },
+    {
+      "file": "lines/sakaisuji/clips/melody/out-of-service-chime.opus",
+      "text": "out of service chime",
+      "status": "approved",
+      "note": "Osaka Metro, train not in service approaching",
+      "source": "6JWcI0AS8mk",
+      "start": 249.08,
+      "end": 253.43,
+      "sha256": "4a561212e9a3f43bf272a7214cc4cc1a10b809721d822d5a58ffd8cea0630cff"
+    },
+    {
+      "file": "lines/sakaisuji/clips/melody/last-train-chime.opus",
+      "text": "last train chime",
+      "status": "approved",
+      "note": "Osaka Metro last-train notice chime",
+      "source": "6JWcI0AS8mk",
+      "start": 254.09,
+      "end": 258.05,
+      "sha256": "2bb7e25321e9e83d0f8ac9928a5d93ef4e62f7b433dbd51b023b9e6297f5a1b3"
+    },
+    {
+      "file": "lines/sakaisuji/clips/melody/notice-chime.opus",
+      "text": "notice chime",
+      "status": "approved",
+      "note": "chime before notices (manners, safety) (picked by ear)",
+      "source": "6JWcI0AS8mk",
+      "start": 267.35,
+      "end": 272,
+      "sha256": "d0a8ecda7a859e55dda83d9583cbc65f7d221d20a049c906842adfb2cf0cde66"
+    },
+    {
+      "file": "lines/sakaisuji/clips/melody/melody_platform-pa_01.opus",
+      "text": "1番線に天下茶屋行きが到着します。",
+      "status": "approved",
+      "note": "Sakaisuji approach announcements + melodies collection; Platform PA: approach",
+      "source": "A8PDIr1wNjw",
+      "start": 8.78,
+      "end": 13.03,
+      "asr": "1番線に天下茶屋役が到着します。",
+      "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+      "sha256": "47eea8dc6833e4768e98feaacd30354551762375172df340b817a6ed2222261c"
+    },
+    {
+      "file": "lines/sakaisuji/clips/melody/melody_platform-pa_02.opus",
+      "text": "危険ですので、ホーム柵から身を乗り出したり、物を立てかけたりしないでください。",
+      "status": "approved",
+      "note": "Sakaisuji approach announcements + melodies collection; Platform PA: safety",
+      "source": "A8PDIr1wNjw",
+      "start": 13.91,
+      "end": 20.23,
+      "asr": "危険ですので、ホーム柵から身を乗り出したり、物を立てかけたりしないでください。",
+      "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+      "sha256": "f481f2a84ebb792014d83b39c6892c6bfb5727c48ca2fa0801ad08759b724d10"
+    },
+    {
+      "file": "lines/sakaisuji/clips/melody/melody_platform-pa_03_round5.opus",
+      "text": "1番線に到着の電車は、日本橋・動物園前方面、天下茶屋行きです。",
+      "status": "needs ear check",
+      "note": "Sakaisuji approach announcements + melodies collection; Platform PA: arrival Round 5: non-speech tail beyond word and VAD end; 80 ms acoustic guard; speech retained, boundary changed; needs ear check.",
+      "source": "A8PDIr1wNjw",
+      "start": 35.26,
+      "end": 43.37,
+      "asr": "1番線に到着の電車は、日本橋動物園前放電、天下茶屋駅です。",
+      "transcript_audit": "large-v3 / CUDA / round5 final-cut boundary verification",
+      "revision": "round5 boundary trim",
+      "approval_before_trim": "approved",
+      "speech_unchanged": true,
+      "boundary_trim": {
+        "input_sha256": "5f815fa1f8d4f0ff036d695ec67566dc031622466724825722d66a0de32ab4ed",
+        "start": 0.0,
+        "end": 7.856,
+        "fade_in": 0.005,
+        "fade_out": 0.025,
+        "input_archive": "raw/sakaisuji/round5-inputs/melody_platform-pa_03.opus"
+      },
+      "sha256": "64b45ca761f0b77111c523c0b6cf081e307294cba323d89a6bcd913e2f15fa36"
+    },
+    {
+      "file": "lines/sakaisuji/clips/melody/melody_platform-pa_04_round5.opus",
+      "text": "The train on platform 1 is bound for Tengachaya via Nippombashi.",
+      "status": "needs ear check",
+      "note": "Sakaisuji approach announcements + melodies collection; Platform PA: arrival EN Round 5: non-speech tail beyond word and VAD end; 80 ms acoustic guard; speech retained, boundary changed; needs ear check.",
+      "source": "A8PDIr1wNjw",
+      "start": 46.16,
+      "end": 54.69,
+      "asr": "The train on platform 1 is bound for Tengachaya via Nippombashi.",
+      "transcript_audit": "large-v3 / CUDA / round5 final-cut boundary verification",
+      "revision": "round5 boundary trim",
+      "approval_before_trim": "approved",
+      "speech_unchanged": true,
+      "boundary_trim": {
+        "input_sha256": "49d566c63779c98696253bcd5fc5002235516ee046147f22b7c8bc9dcf57176e",
+        "start": 0.0,
+        "end": 7.856,
+        "fade_in": 0.005,
+        "fade_out": 0.025,
+        "input_archive": "raw/sakaisuji/round5-inputs/melody_platform-pa_04.opus"
+      },
+      "sha256": "7b19541028e886a6fde3d19751d6879d2e725f6c5f16392b316ba742f44bd7cb"
+    },
+    {
+      "file": "lines/sakaisuji/clips/melody/melody_platform-pa_05_round5.opus",
+      "text": "1番線から天下茶屋行きが発車します。",
+      "status": "needs ear check",
+      "note": "Sakaisuji approach announcements + melodies collection; Platform PA: departure Round 5: word/VAD/envelope reviewed; removes isolated fragment or background pre-roll; non-speech tail beyond word and VAD end; 80 ms acoustic guard; speech retained, boundary changed; needs ear check.",
+      "source": "A8PDIr1wNjw",
+      "start": 58.35,
+      "end": 64.49,
+      "asr": "一覧線から天下茶屋行きが発車します。",
+      "transcript_audit": "large-v3 / CUDA / round5 final-cut boundary verification",
+      "revision": "round5 boundary trim",
+      "approval_before_trim": "approved",
+      "speech_unchanged": true,
+      "boundary_trim": {
+        "input_sha256": "e364dea0135b51003004c56f9513bcf90a66be33250bccec18787c897eafe55e",
+        "start": 0.82,
+        "end": 5.936,
+        "fade_in": 0.005,
+        "fade_out": 0.025,
+        "input_archive": "raw/sakaisuji/round5-inputs/melody_platform-pa_05.opus"
+      },
+      "sha256": "a86c465a7c2ea2f9b2e7cc21fa5203c1a83c95da5b9e75ef81fe7273929d213b"
+    }
+  ],
+  "emergency": [
+    {
+      "file": "lines/sakaisuji/clips/voice/general_emergency_en_incident_01.opus",
+      "text": "Attention please. The emergency brakes have been applied.",
+      "status": "approved",
+      "note": "Transcript is machine evidence; confirm intelligibility and voice by ear. Osaka system example from another line; not verified as a 66-series recording.",
+      "kind": "emergency",
+      "speaker": "auto",
+      "direction": "incident",
+      "clarity": 39.9,
+      "lang": "en",
+      "source": "LDsiZ8HtkVE",
+      "start": 1.01,
+      "end": 4.1,
+      "scenario": "emergency stop",
+      "asr": "Attention please. The emergency brakes have been applied.",
+      "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+      "sha256": "ba3f862c04dd965e607580e4b734042c527fca59517144ccd79731bbade3b209"
+    },
+    {
+      "file": "lines/sakaisuji/clips/voice/general_emergency_ja_incident_conductor_02.opus",
+      "text": "完了いたしましたが、現場の安全確認を行っております。",
+      "status": "approved",
+      "note": "Transcript is machine evidence; confirm intelligibility and voice by ear. Osaka system example from another line; not verified as a 66-series recording.",
+      "kind": "emergency",
+      "speaker": "conductor",
+      "direction": "incident",
+      "clarity": 28.3,
+      "lang": "ja",
+      "source": "125IlLiSiSo",
+      "start": 147.75,
+      "end": 151.8,
+      "scenario": "safety check / stop waiting",
+      "asr": "完了いたしましたが、現場の安全確認を行っております。",
+      "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+      "sha256": "5a1835338d49e3785a0b4cab99a596901fd73fe3dd13a36ece8f8df9fffbf255"
+    },
+    {
+      "file": "lines/sakaisuji/clips/voice/general_emergency_ja_incident_conductor_07.opus",
+      "text": "本日、御堂筋線一部停電のため、列車ダイヤが乱れております。",
+      "status": "approved",
+      "note": "Transcript is machine evidence; confirm intelligibility and voice by ear. Osaka system example from another line; not verified as a 66-series recording.",
+      "kind": "emergency",
+      "speaker": "conductor",
+      "direction": "incident",
+      "clarity": 34.1,
+      "lang": "ja",
+      "source": "MBPDNiinBAU",
+      "start": 258.67,
+      "end": 263.88,
+      "scenario": "power outage / disrupted service",
+      "asr": "本日、水道水線一部停電のため、列車ダイヤが乱れております。",
+      "transcript_audit": "large-v3 / CUDA / fixed language; spelling and wording reviewed against ASR and source context",
+      "sha256": "e5533a20eb9f7f48b3c5019a14bb2ce6805139716a226e3f48430e91073ec197"
+    }
+  ],
+  "doors": {
+    "chime_open": {
+      "file": "lines/sakaisuji/clips/door/door-open-chime.opus",
+      "note": "Osaka Metro opening chime, equal-level repeat variant; chapter 0:05. Exact 66 formation variant needs listening. Source ge_CnniuCUE 5.787-8.988s.",
+      "status": "needs ear check",
+      "source": "ge_CnniuCUE",
+      "start": 5.787,
+      "end": 8.988,
+      "source_line": "sakaisuji",
+      "processing": "clean",
+      "sha256": "1b9cfa07d649f53297a6cc728b850ccffa2a7f544dcaf389a93569c02b14ad2d",
+      "duration": 3.201,
+      "peak_dbfs": -10.73,
+      "active_rms_dbfs": -23.0,
+      "text": ""
+    },
+    "chime_close": {
+      "file": "lines/sakaisuji/clips/door/door-close-chime.opus",
+      "note": "Osaka Metro closing chime, equal-level repeat variant; chapter 0:10. Exact 66 formation variant needs listening. Source ge_CnniuCUE 10.682-13.888s.",
+      "status": "needs ear check",
+      "source": "ge_CnniuCUE",
+      "start": 10.682,
+      "end": 13.888,
+      "source_line": "sakaisuji",
+      "processing": "clean",
+      "sha256": "5c6d84c7e3a67a33612285f4d8dbf4429486a95dc4e7bea13e63a0382bebdde2",
+      "duration": 3.206,
+      "peak_dbfs": -10.33,
+      "active_rms_dbfs": -22.99,
+      "text": ""
+    },
+    "signal": {
+      "file": "lines/sakaisuji/clips/platform-door/platform-door-close.opus",
+      "note": "Electronic recreation; fast-tempo closing warning. Signal and platform_close are aliases: play once. No separate continuous in-car beep established. Source 1qiArl3tQXM 22.172-26.243s.",
+      "status": "needs ear check",
+      "source": "1qiArl3tQXM",
+      "start": 22.172,
+      "end": 26.243,
+      "source_line": "sakaisuji",
+      "processing": "clean",
+      "sha256": "3cf5ffc6fd37e46f87e6bd4e5263b74fe4590e97a5f36540b23ecea8e203d3ad",
+      "duration": 4.071,
+      "peak_dbfs": -16.21,
+      "active_rms_dbfs": -23.01,
+      "text": ""
+    },
+    "open": {
+      "file": "shared/door/door-mechanics.opus",
+      "text": "",
+      "status": "needs ear check",
+      "note": "User-supplied replacement (2026-10-22). Level adjustment and short edge fades only; original duration and playback speed retained. Shared generic open effect; the same file serves both roles.",
+      "source": "user-elevenlabs-door-mechanics",
+      "source_line": "shared",
+      "start": 0,
+      "end": 3.0,
+      "duration": 3.0,
+      "sha256": "0bb9a4fc8f8689232a3c6796ef7530b8ae12698165b02cdad9e3720ff67db2a9",
+      "processing": {
+        "gain": 2,
+        "fade_in": 0.005,
+        "fade_out": 0.04
+      },
+      "peak_dbfs": -11.46
+    },
+    "close": {
+      "file": "shared/door/door-mechanics.opus",
+      "text": "",
+      "status": "needs ear check",
+      "note": "User-supplied replacement (2026-10-22). Level adjustment and short edge fades only; original duration and playback speed retained. Shared generic close effect; the same file serves both roles.",
+      "source": "user-elevenlabs-door-mechanics",
+      "source_line": "shared",
+      "start": 0,
+      "end": 3.0,
+      "duration": 3.0,
+      "sha256": "0bb9a4fc8f8689232a3c6796ef7530b8ae12698165b02cdad9e3720ff67db2a9",
+      "processing": {
+        "gain": 2,
+        "fade_in": 0.005,
+        "fade_out": 0.04
+      },
+      "peak_dbfs": -11.46
+    },
+    "platform_open": {
+      "file": "lines/sakaisuji/clips/platform-door/platform-door-open.opus",
+      "note": "Electronic recreation; fast-tempo chapter explicitly includes Sakaisuji. Source 1qiArl3tQXM 17.212-18.538s.",
+      "status": "needs ear check",
+      "source": "1qiArl3tQXM",
+      "start": 17.212,
+      "end": 18.538,
+      "source_line": "sakaisuji",
+      "processing": "clean",
+      "sha256": "75819301afd100ac3efe8ba613cedabd4945f98329e7b31d7c9dd65fb07197c1",
+      "duration": 1.326,
+      "peak_dbfs": -11.01,
+      "active_rms_dbfs": -22.99,
+      "text": ""
+    },
+    "platform_close": {
+      "file": "lines/sakaisuji/clips/platform-door/platform-door-close.opus",
+      "note": "Electronic recreation; fast-tempo closing warning. Signal and platform_close are aliases: play once. No separate continuous in-car beep established. Source 1qiArl3tQXM 22.172-26.243s.",
+      "status": "needs ear check",
+      "source": "1qiArl3tQXM",
+      "start": 22.172,
+      "end": 26.243,
+      "source_line": "sakaisuji",
+      "processing": "clean",
+      "sha256": "3cf5ffc6fd37e46f87e6bd4e5263b74fe4590e97a5f36540b23ecea8e203d3ad",
+      "duration": 4.071,
+      "peak_dbfs": -16.21,
+      "active_rms_dbfs": -23.01,
+      "text": ""
+    },
+    "bell": {
+      "file": "lines/sakaisuji/clips/door/door_osaka-metro-chime-collection_03.opus",
+      "note": "User-approved guidance bell, unchanged. Original collection recorded on a 30000, retained by request; 66 applicability not established. Source 9q8OtaQ6yhU 22.790-25.020s.",
+      "status": "approved",
+      "source": "9q8OtaQ6yhU",
+      "start": 22.79,
+      "end": 25.02,
+      "source_line": "sakaisuji",
+      "processing": "preserve",
+      "sha256": "73789bcf1d7877a7cdab6d1d6c198b2eb06c58c56b2efcb51a197c3f8a381a3b",
+      "duration": 2.23,
+      "peak_dbfs": 2.9,
+      "active_rms_dbfs": -7.01,
+      "text": ""
+    },
+    "sequence": {
+      "close": [
+        {
+          "part": "departure_melody",
+          "at": 0
+        },
+        {
+          "part": "close",
+          "at": "departure_melody_end+0.3"
+        }
+      ],
+      "open": [
+        {
+          "part": "open",
+          "at": 0
+        }
+      ],
+      "note": "Latest user correction: departure melody, then generic closing mechanics; opening mechanics only. departure_melody resolves from this line pack.on_station, not a copied asset. No repeating warning, in-car chime or bell is scheduled. The 30000-sourced guidance bell does not establish 66 applicability; retained individual assets do not imply active sequence approval.",
+      "status": "needs ear check"
+    }
+  },
+  "missing": [
+    {
+      "item": "66-series emergency resumption",
+      "reason": "Researched genuine post-outage ride 3g39Lbwk8Ok, but full large-v3 could not recover intelligible resumption speech; no complete verified 66-series resume sentence sourced."
+    }
+  ]
+}

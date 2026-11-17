@@ -1,0 +1,388 @@
+{
+  "id": "yamanote",
+  "name": {
+    "ja": "山手線",
+    "en": "Yamanote Line"
+  },
+  "color": "#9ACD32",
+  "loop": true,
+  "directions": {
+    "inner": "内回り",
+    "outer": "外回り"
+  },
+  "stations": [
+    {
+      "code": "JY01",
+      "abbr": "TYO",
+      "kanji": "東京",
+      "kana": "とうきょう",
+      "romaji": "Tokyo",
+      "zh": "东京",
+      "ko": "도쿄"
+    },
+    {
+      "code": "JY02",
+      "abbr": "KND",
+      "kanji": "神田",
+      "kana": "かんだ",
+      "romaji": "Kanda",
+      "zh": "神田",
+      "ko": "간다"
+    },
+    {
+      "code": "JY03",
+      "abbr": "AKB",
+      "kanji": "秋葉原",
+      "kana": "あきはばら",
+      "romaji": "Akihabara",
+      "zh": "秋叶原",
+      "ko": "아키하바라"
+    },
+    {
+      "code": "JY04",
+      "abbr": "OKC",
+      "kanji": "御徒町",
+      "kana": "おかちまち",
+      "romaji": "Okachimachi",
+      "zh": "御徒町",
+      "ko": "오카치마치"
+    },
+    {
+      "code": "JY05",
+      "abbr": "UEN",
+      "kanji": "上野",
+      "kana": "うえの",
+      "romaji": "Ueno",
+      "zh": "上野",
+      "ko": "우에노"
+    },
+    {
+      "code": "JY06",
+      "abbr": "UGD",
+      "kanji": "鶯谷",
+      "kana": "うぐいすだに",
+      "romaji": "Uguisudani",
+      "zh": "莺谷",
+      "ko": "우구이스다니"
+    },
+    {
+      "code": "JY07",
+      "abbr": "NPR",
+      "kanji": "日暮里",
+      "kana": "にっぽり",
+      "romaji": "Nippori",
+      "zh": "日暮里",
+      "ko": "닛포리"
+    },
+    {
+      "code": "JY08",
+      "abbr": "NNP",
+      "kanji": "西日暮里",
+      "kana": "にしにっぽり",
+      "romaji": "Nishi-Nippori",
+      "zh": "西日暮里",
+      "ko": "니시닛포리"
+    },
+    {
+      "code": "JY09",
+      "abbr": "TBT",
+      "kanji": "田端",
+      "kana": "たばた",
+      "romaji": "Tabata",
+      "zh": "田端",
+      "ko": "다바타"
+    },
+    {
+      "code": "JY10",
+      "abbr": "KMG",
+      "kanji": "駒込",
+      "kana": "こまごめ",
+      "romaji": "Komagome",
+      "zh": "驹込",
+      "ko": "고마고메"
+    },
+    {
+      "code": "JY11",
+      "abbr": "SGM",
+      "kanji": "巣鴨",
+      "kana": "すがも",
+      "romaji": "Sugamo",
+      "zh": "巢鸭",
+      "ko": "스가모"
+    },
+    {
+      "code": "JY12",
+      "abbr": "OTS",
+      "kanji": "大塚",
+      "kana": "おおつか",
+      "romaji": "Ōtsuka",
+      "zh": "大塚",
+      "ko": "오쓰카"
+    },
+    {
+      "code": "JY13",
+      "abbr": "IKB",
+      "kanji": "池袋",
+      "kana": "いけぶくろ",
+      "romaji": "Ikebukuro",
+      "zh": "池袋",
+      "ko": "이케부쿠로"
+    },
+    {
+      "code": "JY14",
+      "abbr": "MJR",
+      "kanji": "目白",
+      "kana": "めじろ",
+      "romaji": "Mejiro",
+      "zh": "目白",
+      "ko": "메지로"
+    },
+    {
+      "code": "JY15",
+      "abbr": "TKB",
+      "kanji": "高田馬場",
+      "kana": "たかだのばば",
+      "romaji": "Takadanobaba",
+      "zh": "高田马场",
+      "ko": "다카다노바바"
+    },
+    {
+      "code": "JY16",
+      "abbr": "SOK",
+      "kanji": "新大久保",
+      "kana": "しんおおくぼ",
+      "romaji": "Shin-Ōkubo",
+      "zh": "新大久保",
+      "ko": "신오쿠보"
+    },
+    {
+      "code": "JY17",
+      "abbr": "SJK",
+      "kanji": "新宿",
+      "kana": "しんじゅく",
+      "romaji": "Shinjuku",
+      "zh": "新宿",
+      "ko": "신주쿠"
+    },
+    {
+      "code": "JY18",
+      "abbr": "YOY",
+      "kanji": "代々木",
+      "kana": "よよぎ",
+      "romaji": "Yoyogi",
+      "zh": "代代木",
+      "ko": "요요기"
+    },
+    {
+      "code": "JY19",
+      "abbr": "JYH",
+      "kanji": "原宿",
+      "kana": "はらじゅく",
+      "romaji": "Harajuku",
+      "zh": "原宿",
+      "ko": "하라주쿠"
+    },
+    {
+      "code": "JY20",
+      "abbr": "SBY",
+      "kanji": "渋谷",
+      "kana": "しぶや",
+      "romaji": "Shibuya",
+      "zh": "涩谷",
+      "ko": "시부야"
+    },
+    {
+      "code": "JY21",
+      "abbr": "EBS",
+      "kanji": "恵比寿",
+      "kana": "えびす",
+      "romaji": "Ebisu",
+      "zh": "惠比寿",
+      "ko": "에비스"
+    },
+    {
+      "code": "JY22",
+      "abbr": "MGR",
+      "kanji": "目黒",
+      "kana": "めぐろ",
+      "romaji": "Meguro",
+      "zh": "目黑",
+      "ko": "메구로"
+    },
+    {
+      "code": "JY23",
+      "abbr": "GTN",
+      "kanji": "五反田",
+      "kana": "ごたんだ",
+      "romaji": "Gotanda",
+      "zh": "五反田",
+      "ko": "고탄다"
+    },
+    {
+      "code": "JY24",
+      "abbr": "OSK",
+      "kanji": "大崎",
+      "kana": "おおさき",
+      "romaji": "Ōsaki",
+      "zh": "大崎",
+      "ko": "오사키"
+    },
+    {
+      "code": "JY25",
+      "abbr": "SGW",
+      "kanji": "品川",
+      "kana": "しながわ",
+      "romaji": "Shinagawa",
+      "zh": "品川",
+      "ko": "시나가와"
+    },
+    {
+      "code": "JY26",
+      "abbr": "TGW",
+      "kanji": "高輪ゲートウェイ",
+      "kana": "たかなわげーとうぇい",
+      "romaji": "Takanawa Gateway",
+      "zh": "高轮Gateway",
+      "ko": "다카나와 게이트웨이"
+    },
+    {
+      "code": "JY27",
+      "abbr": "TMC",
+      "kanji": "田町",
+      "kana": "たまち",
+      "romaji": "Tamachi",
+      "zh": "田町",
+      "ko": "다마치"
+    },
+    {
+      "code": "JY28",
+      "abbr": "HMC",
+      "kanji": "浜松町",
+      "kana": "はままつちょう",
+      "romaji": "Hamamatsuchō",
+      "zh": "滨松町",
+      "ko": "하마마쓰초"
+    },
+    {
+      "code": "JY29",
+      "abbr": "SMB",
+      "kanji": "新橋",
+      "kana": "しんばし",
+      "romaji": "Shimbashi",
+      "zh": "新桥",
+      "ko": "신바시"
+    },
+    {
+      "code": "JY30",
+      "abbr": "YUR",
+      "kanji": "有楽町",
+      "kana": "ゆうらくちょう",
+      "romaji": "Yūrakuchō",
+      "zh": "有乐町",
+      "ko": "유라쿠초"
+    }
+  ],
+  "transfers": {
+    "JY01": {
+      "jp": "中央線、京浜東北線、東海道線、横須賀線、総武線快速、京葉線、上野東京ライン、東海道新幹線、東京メトロ丸ノ内線",
+      "en": "the Chuo, Keihin-Tohoku, Tokaido, Yokosuka, Sobu, Keiyo and Ueno-Tokyo Lines, the Tokaido Shinkansen, and the Tokyo Metro Marunouchi Line"
+    },
+    "JY02": {
+      "jp": "京浜東北線、中央線、東京メトロ銀座線",
+      "en": "the Keihin-Tohoku and Chuo Lines, and the Tokyo Metro Ginza Line"
+    },
+    "JY03": {
+      "jp": "京浜東北線、中央・総武線、東京メトロ日比谷線、つくばエクスプレス",
+      "en": "the Keihin-Tohoku and Chuo-Sobu Lines, the Tokyo Metro Hibiya Line, and the Tsukuba Express"
+    },
+    "JY04": {
+      "jp": "京浜東北線、東京メトロ銀座線、日比谷線、都営大江戸線",
+      "en": "the Keihin-Tohoku Line, the Tokyo Metro Ginza and Hibiya Lines, and the Toei Oedo Line"
+    },
+    "JY05": {
+      "jp": "京浜東北線、宇都宮線、高崎線、常磐線、上野東京ライン、東北・上越新幹線、東京メトロ銀座線、日比谷線、京成線",
+      "en": "the Keihin-Tohoku, Utsunomiya, Takasaki, Joban and Ueno-Tokyo Lines, the Tohoku and Joetsu Shinkansen, the Tokyo Metro Ginza and Hibiya Lines, and the Keisei Line"
+    },
+    "JY07": {
+      "jp": "京浜東北線、常磐線、京成線、日暮里・舎人ライナー",
+      "en": "the Keihin-Tohoku and Joban Lines, the Keisei Line, and the Nippori-Toneri Liner"
+    },
+    "JY08": {
+      "jp": "京浜東北線、東京メトロ千代田線、日暮里・舎人ライナー",
+      "en": "the Keihin-Tohoku Line, the Tokyo Metro Chiyoda Line, and the Nippori-Toneri Liner"
+    },
+    "JY09": {
+      "jp": "京浜東北線",
+      "en": "the Keihin-Tohoku Line"
+    },
+    "JY10": {
+      "jp": "東京メトロ南北線",
+      "en": "the Tokyo Metro Namboku Line"
+    },
+    "JY11": {
+      "jp": "都営三田線",
+      "en": "the Toei Mita Line"
+    },
+    "JY12": {
+      "jp": "都電荒川線",
+      "en": "the Toden Arakawa Line"
+    },
+    "JY13": {
+      "jp": "埼京線、湘南新宿ライン、東京メトロ丸ノ内線、有楽町線、副都心線、東武東上線、西武池袋線",
+      "en": "the Saikyo and Shonan-Shinjuku Lines, the Tokyo Metro Marunouchi, Yurakucho and Fukutoshin Lines, the Tobu Tojo Line, and the Seibu Ikebukuro Line"
+    },
+    "JY15": {
+      "jp": "西武新宿線、東京メトロ東西線",
+      "en": "the Seibu Shinjuku Line and the Tokyo Metro Tozai Line"
+    },
+    "JY17": {
+      "jp": "中央線、中央・総武線、埼京線、湘南新宿ライン、小田急線、京王線、東京メトロ丸ノ内線、都営新宿線、大江戸線",
+      "en": "the Chuo, Chuo-Sobu, Saikyo and Shonan-Shinjuku Lines, the Odakyu Line, the Keio Line, the Tokyo Metro Marunouchi Line, and the Toei Shinjuku and Oedo Lines"
+    },
+    "JY18": {
+      "jp": "中央・総武線、都営大江戸線",
+      "en": "the Chuo-Sobu Line and the Toei Oedo Line"
+    },
+    "JY19": {
+      "jp": "東京メトロ千代田線、副都心線",
+      "en": "the Tokyo Metro Chiyoda and Fukutoshin Lines"
+    },
+    "JY20": {
+      "jp": "埼京線、湘南新宿ライン、東京メトロ銀座線、半蔵門線、副都心線、東急東横線、田園都市線、京王井の頭線",
+      "en": "the Saikyo and Shonan-Shinjuku Lines, the Tokyo Metro Ginza, Hanzomon and Fukutoshin Lines, the Tokyu Toyoko and Den-en-toshi Lines, and the Keio Inokashira Line"
+    },
+    "JY21": {
+      "jp": "埼京線、湘南新宿ライン、東京メトロ日比谷線",
+      "en": "the Saikyo and Shonan-Shinjuku Lines, and the Tokyo Metro Hibiya Line"
+    },
+    "JY22": {
+      "jp": "東京メトロ南北線、都営三田線、東急目黒線",
+      "en": "the Tokyo Metro Namboku Line, the Toei Mita Line, and the Tokyu Meguro Line"
+    },
+    "JY23": {
+      "jp": "都営浅草線、東急池上線",
+      "en": "the Toei Asakusa Line and the Tokyu Ikegami Line"
+    },
+    "JY24": {
+      "jp": "埼京線、湘南新宿ライン、りんかい線",
+      "en": "the Saikyo and Shonan-Shinjuku Lines, and the Rinkai Line"
+    },
+    "JY25": {
+      "jp": "東海道線、横須賀線、京浜東北線、上野東京ライン、東海道新幹線、京急線",
+      "en": "the Tokaido, Yokosuka, Keihin-Tohoku and Ueno-Tokyo Lines, the Tokaido Shinkansen, and the Keikyu Line"
+    },
+    "JY28": {
+      "jp": "京浜東北線、東京モノレール、都営浅草線、大江戸線",
+      "en": "the Keihin-Tohoku Line, the Tokyo Monorail, and the Toei Asakusa and Oedo Lines"
+    },
+    "JY29": {
+      "jp": "東海道線、横須賀線、京浜東北線、上野東京ライン、東京メトロ銀座線、都営浅草線、ゆりかもめ",
+      "en": "the Tokaido, Yokosuka, Keihin-Tohoku and Ueno-Tokyo Lines, the Tokyo Metro Ginza Line, the Toei Asakusa Line, and the Yurikamome"
+    },
+    "JY30": {
+      "jp": "京浜東北線、東京メトロ有楽町線",
+      "en": "the Keihin-Tohoku Line and the Tokyo Metro Yurakucho Line"
+    }
+  },
+  "source": "yamanote-3d.com bundle, extracted 2026-10-22"
+}

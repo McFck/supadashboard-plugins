@@ -1,0 +1,275 @@
+{
+  "id": "hibiya",
+  "name": {
+    "ja": "日比谷線",
+    "en": "Hibiya Line"
+  },
+  "operator": "Tokyo Metro",
+  "color": "#9CAEB7",
+  "loop": false,
+  "odptRailway": "odpt.Railway:TokyoMetro.Hibiya",
+  "stations": [
+    {
+      "code": "H01",
+      "kanji": "中目黒",
+      "kana": "なかめぐろ",
+      "romaji": "Naka-Meguro",
+      "transferCodes": [
+        "TY03"
+      ],
+      "lat": 35.644305555556,
+      "lon": 139.69918611111,
+      "wikidata": "Q1132605"
+    },
+    {
+      "code": "H02",
+      "kanji": "恵比寿",
+      "kana": "えびす",
+      "romaji": "Ebisu",
+      "transferCodes": [],
+      "lat": 35.646915,
+      "lon": 139.70856,
+      "wikidata": "Q124643092"
+    },
+    {
+      "code": "H03",
+      "kanji": "広尾",
+      "kana": "ひろお",
+      "romaji": "Hiroo",
+      "transferCodes": [],
+      "lat": 35.652188888889,
+      "lon": 139.72222777778,
+      "wikidata": "Q1156428"
+    },
+    {
+      "code": "H04",
+      "kanji": "六本木",
+      "kana": "ろっぽんぎ",
+      "romaji": "Roppongi",
+      "transferCodes": [
+        "E23"
+      ],
+      "lat": 35.662777777778,
+      "lon": 139.73138888889,
+      "wikidata": "Q1326723"
+    },
+    {
+      "code": "H05",
+      "kanji": "神谷町",
+      "kana": "かみやちょう",
+      "romaji": "Kamiyachō",
+      "transferCodes": [],
+      "lat": 35.662947222222,
+      "lon": 139.74500555556,
+      "wikidata": "Q1072953"
+    },
+    {
+      "code": "H06",
+      "kanji": "虎ノ門ヒルズ",
+      "kana": "とらのもんヒルズ",
+      "romaji": "Toranomon Hills",
+      "transferCodes": [],
+      "lat": 35.667444,
+      "lon": 139.747778,
+      "wikidata": "Q59452622"
+    },
+    {
+      "code": "H07",
+      "kanji": "霞ケ関",
+      "kana": "かすみがせき",
+      "romaji": "Kasumigaseki",
+      "transferCodes": [
+        "C08",
+        "M15"
+      ],
+      "lat": 35.673888,
+      "lon": 139.751061,
+      "wikidata": "Q741614"
+    },
+    {
+      "code": "H08",
+      "kanji": "日比谷",
+      "kana": "ひびや",
+      "romaji": "Hibiya",
+      "transferCodes": [
+        "C09",
+        "I08"
+      ],
+      "lat": 35.674947222222,
+      "lon": 139.75962222222,
+      "wikidata": "Q511753"
+    },
+    {
+      "code": "H09",
+      "kanji": "銀座",
+      "kana": "ぎんざ",
+      "romaji": "Ginza",
+      "transferCodes": [
+        "G09",
+        "M16"
+      ],
+      "lat": 35.671230555556,
+      "lon": 139.765,
+      "wikidata": "Q602372"
+    },
+    {
+      "code": "H10",
+      "kanji": "東銀座",
+      "kana": "ひがしぎんざ",
+      "romaji": "Higashi-ginza",
+      "transferCodes": [
+        "A11"
+      ],
+      "lat": 35.6697,
+      "lon": 139.7673,
+      "wikidata": "Q1078393"
+    },
+    {
+      "code": "H11",
+      "kanji": "築地",
+      "kana": "つきじ",
+      "romaji": "Tsukiji",
+      "transferCodes": [],
+      "lat": 35.6681,
+      "lon": 139.7725,
+      "wikidata": "Q1072938"
+    },
+    {
+      "code": "H12",
+      "kanji": "八丁堀",
+      "kana": "はっちょうぼり",
+      "romaji": "Hatchōbori",
+      "transferCodes": [
+        "JE02"
+      ],
+      "lat": 35.674583333333,
+      "lon": 139.77777777778,
+      "wikidata": "Q1073008"
+    },
+    {
+      "code": "H13",
+      "kanji": "茅場町",
+      "kana": "かやばちょう",
+      "romaji": "Kayabachō",
+      "transferCodes": [
+        "T11"
+      ],
+      "lat": 35.679941666667,
+      "lon": 139.78015833333,
+      "wikidata": "Q80566"
+    },
+    {
+      "code": "H14",
+      "kanji": "人形町",
+      "kana": "にんぎょうちょう",
+      "romaji": "Ningyōchō",
+      "transferCodes": [
+        "A14"
+      ],
+      "lat": 35.686307,
+      "lon": 139.782277,
+      "wikidata": "Q1147003"
+    },
+    {
+      "code": "H15",
+      "kanji": "小伝馬町",
+      "kana": "こでんまちょう",
+      "romaji": "Kodemmachō",
+      "transferCodes": [],
+      "lat": 35.6906,
+      "lon": 139.7785,
+      "wikidata": "Q1072970"
+    },
+    {
+      "code": "H16",
+      "kanji": "秋葉原",
+      "kana": "あきはばら",
+      "romaji": "Akihabara",
+      "transferCodes": [],
+      "lat": 35.69848,
+      "lon": 139.77549,
+      "wikidata": "Q123329707"
+    },
+    {
+      "code": "H17",
+      "kanji": "仲御徒町",
+      "kana": "なかおかちまち",
+      "romaji": "Naka-Okachimachi",
+      "transferCodes": [],
+      "lat": 35.7064,
+      "lon": 139.776,
+      "wikidata": "Q1072993"
+    },
+    {
+      "code": "H18",
+      "kanji": "上野",
+      "kana": "うえの",
+      "romaji": "Ueno",
+      "transferCodes": [
+        "G16"
+      ],
+      "lat": 35.7117625,
+      "lon": 139.7753575,
+      "wikidata": "Q124340391"
+    },
+    {
+      "code": "H19",
+      "kanji": "入谷",
+      "kana": "いりや",
+      "romaji": "Iriya",
+      "transferCodes": [],
+      "lat": 35.720734,
+      "lon": 139.784542,
+      "wikidata": "Q1073228"
+    },
+    {
+      "code": "H20",
+      "kanji": "三ノ輪",
+      "kana": "みのわ",
+      "romaji": "Minowa",
+      "transferCodes": [],
+      "lat": 35.7298,
+      "lon": 139.7915,
+      "wikidata": "Q1072979"
+    },
+    {
+      "code": "H21",
+      "kanji": "南千住",
+      "kana": "みなみせんじゅ",
+      "romaji": "Minami-Senju",
+      "transferCodes": [
+        "JJ04",
+        "TX04"
+      ],
+      "lat": 35.7332,
+      "lon": 139.7993,
+      "wikidata": "Q80570"
+    },
+    {
+      "code": "H22",
+      "kanji": "北千住",
+      "kana": "きたせんじゅ",
+      "romaji": "Kita-Senju",
+      "transferCodes": [
+        "C18",
+        "JJ05",
+        "TS09",
+        "TX05"
+      ],
+      "lat": 35.749405555556,
+      "lon": 139.80510277778,
+      "wikidata": "Q801026"
+    }
+  ],
+  "transfers": {
+    "H08": {
+      "ja": "JR線",
+      "en": "JR Lines"
+    },
+    "H17": {
+      "ja": "JR線",
+      "en": "JR Lines"
+    }
+  },
+  "source": "Wikidata Q1196223, fetched 2026-10-22"
+}

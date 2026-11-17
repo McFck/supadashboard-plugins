@@ -1,0 +1,484 @@
+{
+  "version": 1,
+  "icons": [
+    {
+      "id": "jr-east/yamanote",
+      "shape": "letter-box",
+      "letter": "JY",
+      "color": "#79b52c",
+      "names": {
+        "ja": "山手線",
+        "en": "Yamanote Line"
+      },
+      "source": "hand-authored"
+    },
+    {
+      "id": "tokyo-metro/h",
+      "shape": "round",
+      "letter": "H",
+      "color": "#9caeb7",
+      "names": {
+        "ja": "日比谷線",
+        "en": "Hibiya Line"
+      },
+      "source": "hand-authored"
+    },
+    {
+      "id": "osaka-metro/k",
+      "shape": "round",
+      "letter": "K",
+      "color": "#bc782d",
+      "names": {
+        "ja": "堺筋線",
+        "en": "Sakaisuji Line"
+      },
+      "source": "hand-authored"
+    },
+    {
+      "id": "tokyo-metro/g",
+      "shape": "round",
+      "letter": "G",
+      "color": "#ed9200",
+      "names": {
+        "ja": "銀座線",
+        "en": "Ginza Line"
+      },
+      "source": "hand-authored"
+    },
+    {
+      "id": "tokyo-metro/m",
+      "shape": "round",
+      "letter": "M",
+      "color": "#df2534",
+      "names": {
+        "ja": "丸ノ内線",
+        "en": "Marunouchi Line"
+      },
+      "source": "hand-authored"
+    },
+    {
+      "id": "tokyo-metro/c",
+      "shape": "round",
+      "letter": "C",
+      "color": "#00a16b",
+      "names": {
+        "ja": "千代田線",
+        "en": "Chiyoda Line"
+      },
+      "source": "hand-authored"
+    },
+    {
+      "id": "tokyo-metro/y",
+      "shape": "round",
+      "letter": "Y",
+      "color": "#b49a41",
+      "names": {
+        "ja": "有楽町線",
+        "en": "Yurakucho Line"
+      },
+      "source": "hand-authored"
+    },
+    {
+      "id": "tokyo-metro/t",
+      "shape": "round",
+      "letter": "T",
+      "color": "#00a3bf",
+      "names": {
+        "ja": "東西線",
+        "en": "Tozai Line"
+      },
+      "source": "hand-authored"
+    },
+    {
+      "id": "tokyo-metro/z",
+      "shape": "round",
+      "letter": "Z",
+      "color": "#8e76b6",
+      "names": {
+        "ja": "半蔵門線",
+        "en": "Hanzomon Line"
+      },
+      "source": "hand-authored"
+    },
+    {
+      "id": "toei/a",
+      "shape": "round",
+      "letter": "A",
+      "color": "#d45b78",
+      "names": {
+        "ja": "都営浅草線",
+        "en": "Toei Asakusa Line"
+      },
+      "source": "hand-authored"
+    },
+    {
+      "id": "toei/e",
+      "shape": "round",
+      "letter": "E",
+      "color": "#b52962",
+      "names": {
+        "ja": "都営大江戸線",
+        "en": "Toei Oedo Line"
+      },
+      "source": "hand-authored"
+    },
+    {
+      "id": "toei/i",
+      "shape": "round",
+      "letter": "I",
+      "color": "#006db0",
+      "names": {
+        "ja": "都営三田線",
+        "en": "Toei Mita Line"
+      },
+      "source": "hand-authored"
+    },
+    {
+      "id": "toei/s",
+      "shape": "round",
+      "letter": "S",
+      "color": "#90b62d",
+      "names": {
+        "ja": "都営新宿線",
+        "en": "Toei Shinjuku Line"
+      },
+      "source": "hand-authored"
+    },
+    {
+      "id": "tokyu/ty",
+      "shape": "square",
+      "letter": "TY",
+      "color": "#d93549",
+      "names": {
+        "ja": "東急東横線",
+        "en": "Tokyu Toyoko Line"
+      },
+      "source": "hand-authored"
+    },
+    {
+      "id": "jr-east/je",
+      "shape": "square",
+      "letter": "JE",
+      "color": "#b92e4c",
+      "names": {
+        "ja": "JR京葉線",
+        "en": "JR Keiyo Line"
+      },
+      "source": "hand-authored"
+    },
+    {
+      "id": "jr-east/jj",
+      "shape": "square",
+      "letter": "JJ",
+      "color": "#21937b",
+      "names": {
+        "ja": "JR常磐線",
+        "en": "JR Joban Line"
+      },
+      "source": "hand-authored"
+    },
+    {
+      "id": "mir/tx",
+      "shape": "square",
+      "letter": "TX",
+      "color": "#263642",
+      "names": {
+        "ja": "つくばエクスプレス",
+        "en": "Tsukuba Express"
+      },
+      "source": "hand-authored"
+    },
+    {
+      "id": "tobu/ts",
+      "shape": "square",
+      "letter": "TS",
+      "color": "#0089c4",
+      "names": {
+        "ja": "東武スカイツリーライン",
+        "en": "Tobu Skytree Line"
+      },
+      "source": "hand-authored"
+    },
+    {
+      "id": "osaka-metro/t",
+      "shape": "round",
+      "letter": "T",
+      "color": "#82539d",
+      "names": {
+        "ja": "谷町線",
+        "en": "Tanimachi Line"
+      },
+      "source": "hand-authored"
+    },
+    {
+      "id": "osaka-metro/c",
+      "shape": "round",
+      "letter": "C",
+      "color": "#229780",
+      "names": {
+        "ja": "中央線",
+        "en": "Chuo Line"
+      },
+      "source": "hand-authored"
+    },
+    {
+      "id": "osaka-metro/n",
+      "shape": "round",
+      "letter": "N",
+      "color": "#87ad35",
+      "names": {
+        "ja": "長堀鶴見緑地線",
+        "en": "Nagahori Tsurumi-ryokuchi Line"
+      },
+      "source": "hand-authored"
+    },
+    {
+      "id": "osaka-metro/m",
+      "shape": "round",
+      "letter": "M",
+      "color": "#cf363d",
+      "names": {
+        "ja": "御堂筋線",
+        "en": "Midosuji Line"
+      },
+      "source": "hand-authored"
+    },
+    {
+      "id": "osaka-metro/s",
+      "shape": "round",
+      "letter": "S",
+      "color": "#d3759f",
+      "names": {
+        "ja": "千日前線",
+        "en": "Sennichimae Line"
+      },
+      "source": "hand-authored"
+    },
+    {
+      "id": "generic/jr-keihan",
+      "shape": "square",
+      "color": "#4a8193",
+      "source": "hand-authored"
+    },
+    {
+      "id": "generic/other",
+      "shape": "square",
+      "color": "#586f86",
+      "source": "hand-authored"
+    },
+    {
+      "id": "shinkansen/shinkansene5-00a000",
+      "shape": "solid",
+      "color": "#00a000",
+      "source": "NextStation"
+    },
+    {
+      "id": "shinkansen/shinkansen700-3f7fff",
+      "shape": "solid",
+      "color": "#3f7fff",
+      "source": "NextStation"
+    },
+    {
+      "id": "rail/jc-ff4000",
+      "shape": "letter-box",
+      "color": "#ff4000",
+      "letter": "JC",
+      "source": "NextStation"
+    },
+    {
+      "id": "rail/jt-ff8c00",
+      "shape": "letter-box",
+      "color": "#ff8c00",
+      "letter": "JT",
+      "source": "NextStation"
+    },
+    {
+      "id": "rail/ju-ff8c00",
+      "shape": "letter-box",
+      "color": "#ff8c00",
+      "letter": "JU",
+      "source": "NextStation"
+    },
+    {
+      "id": "rail/jo-0000ff",
+      "shape": "letter-box",
+      "color": "#0000ff",
+      "letter": "JO",
+      "source": "NextStation"
+    },
+    {
+      "id": "rail/je-f00000",
+      "shape": "letter-box",
+      "color": "#f00000",
+      "letter": "JE",
+      "source": "NextStation"
+    },
+    {
+      "id": "subway/m-ff0000",
+      "shape": "ring",
+      "color": "#ff0000",
+      "letter": "M",
+      "source": "NextStation"
+    },
+    {
+      "id": "subway/h-8c8c8c",
+      "shape": "ring",
+      "color": "#8c8c8c",
+      "letter": "H",
+      "source": "NextStation"
+    },
+    {
+      "id": "subway/y-a07f00",
+      "shape": "ring",
+      "color": "#a07f00",
+      "letter": "Y",
+      "source": "NextStation"
+    },
+    {
+      "id": "subway/g-ff8c00",
+      "shape": "ring",
+      "color": "#ff8c00",
+      "letter": "G",
+      "source": "NextStation"
+    },
+    {
+      "id": "subway/a-f0607f",
+      "shape": "ring",
+      "color": "#f0607f",
+      "letter": "A",
+      "source": "NextStation"
+    },
+    {
+      "id": "train/000000",
+      "shape": "train",
+      "color": "#000000",
+      "source": "NextStation"
+    },
+    {
+      "id": "subway/e-c00070",
+      "shape": "ring",
+      "color": "#c00070",
+      "letter": "E",
+      "source": "NextStation"
+    },
+    {
+      "id": "rail/jk-00c8ff",
+      "shape": "letter-box",
+      "color": "#00c8ff",
+      "letter": "JK",
+      "source": "NextStation"
+    },
+    {
+      "id": "rail/js-ff8c00",
+      "shape": "letter-box",
+      "color": "#ff8c00",
+      "letter": "JS",
+      "source": "NextStation"
+    },
+    {
+      "id": "rail/js-ff2a00",
+      "shape": "letter-box",
+      "color": "#ff2a00",
+      "letter": "JS",
+      "source": "NextStation"
+    },
+    {
+      "id": "rail/ja-009b8b",
+      "shape": "letter-box",
+      "color": "#009b8b",
+      "letter": "JA",
+      "source": "NextStation"
+    },
+    {
+      "id": "rail/r-0000ff",
+      "shape": "letter-box",
+      "color": "#0000ff",
+      "letter": "R",
+      "source": "NextStation"
+    },
+    {
+      "id": "train/r-000000",
+      "shape": "train",
+      "color": "#000000",
+      "letter": "R",
+      "source": "NextStation"
+    },
+    {
+      "id": "subway/n-009a98",
+      "shape": "ring",
+      "color": "#009a98",
+      "letter": "N",
+      "source": "NextStation"
+    },
+    {
+      "id": "subway/i-0000c8",
+      "shape": "ring",
+      "color": "#0000c8",
+      "letter": "I",
+      "source": "NextStation"
+    },
+    {
+      "id": "subway/z-a07fc0",
+      "shape": "ring",
+      "color": "#a07fc0",
+      "letter": "Z",
+      "source": "NextStation"
+    },
+    {
+      "id": "subway/f-c06020",
+      "shape": "ring",
+      "color": "#c06020",
+      "letter": "F",
+      "source": "NextStation"
+    },
+    {
+      "id": "subway/c-00a000",
+      "shape": "ring",
+      "color": "#00a000",
+      "letter": "C",
+      "source": "NextStation"
+    },
+    {
+      "id": "rail/jb-f7f700",
+      "shape": "letter-box",
+      "color": "#f7f700",
+      "letter": "JB",
+      "source": "NextStation"
+    },
+    {
+      "id": "subway/s-afc850",
+      "shape": "ring",
+      "color": "#afc850",
+      "letter": "S",
+      "source": "NextStation"
+    },
+    {
+      "id": "subway/t-00c8ff",
+      "shape": "ring",
+      "color": "#00c8ff",
+      "letter": "T",
+      "source": "NextStation"
+    },
+    {
+      "id": "subway/y-f0f000",
+      "shape": "ring",
+      "color": "#f0f000",
+      "letter": "Y",
+      "source": "NextStation"
+    },
+    {
+      "id": "subway/n-00c8ff",
+      "shape": "ring",
+      "color": "#00c8ff",
+      "letter": "N",
+      "source": "NextStation"
+    },
+    {
+      "id": "rail/jj-00c864",
+      "shape": "letter-box",
+      "color": "#00c864",
+      "letter": "JJ",
+      "source": "NextStation"
+    }
+  ]
+}

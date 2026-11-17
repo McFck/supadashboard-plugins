@@ -19,7 +19,7 @@ export type HapticsConfig = {
 
 /** Applies the settings natively; true when a tablet is connected. */
 export async function configureHaptics(config: HapticsConfig) {
-  return isTauri() && (await callPlugin<boolean>('haptics', 'configure', config));
+  return isTauri() && (await callPlugin('haptics', 'configure', config)) === true;
 }
 
 export function pulse(kind: PulseKind) {

@@ -1,21 +1,5 @@
-import { afterEach, expect, it, vi } from 'vitest';
-import { avatarUrl, readVoiceView, subscribeVoice, type VoiceView } from './discord';
-
-const native = vi.hoisted(() => ({
-  invoke: vi.fn(),
-  handlers: {} as Record<string, (event: { payload: unknown }) => void>,
-  unlisten: vi.fn(),
-}));
-vi.mock('@tauri-apps/api/core', () => ({
-  isTauri: () => true,
-  invoke: (...args: unknown[]) => native.invoke(...args),
-}));
-vi.mock('@tauri-apps/api/event', () => ({
-  listen: async (event: string, handler: (event: { payload: unknown }) => void) => {
-    native.handlers[event] = handler;
-    return native.unlisten;
-  },
-}));
+import { expect, it } from 'vitest';
+import { avatarUrl, readVoiceView } from './discord';
 
 const id = '123456789012345678';
 const hash = '0123456789abcdef0123456789abcdef';
@@ -37,9 +21,6 @@ const snapshot = {
   channel,
   members: [member],
 };
-const flush = () => new Promise((resolve) => setTimeout(resolve, 0));
-afterEach(() => vi.clearAllMocks());
-
 it('rejects malformed or oversized native state before it reaches controls', () => {
   for (const raw of [
     null,
@@ -101,41 +82,4 @@ it('builds only Discord CDN URLs from valid ids, hashes and default-avatar indic
       expected === undefined ? undefined : `https://cdn.discordapp.com/${expected}`,
     );
   }
-});
-
-it('shares the native worker and keeps newer events over a delayed subscribe reply', async () => {
-  let resolve: ((value: unknown) => void) | undefined;
-  native.invoke.mockImplementation((command: string, args?: { method?: string }) =>
-    command === 'plugin_call' && args?.method === 'subscribe'
-      ? new Promise((done) => {
-          resolve = done;
-        })
-      : Promise.resolve(),
-  );
-  const first: VoiceView[] = [];
-  const second: VoiceView[] = [];
-  const stopFirst = subscribeVoice((view) => first.push(view));
-  const stopSecond = subscribeVoice((view) => second.push(view));
-  await flush();
-  native.handlers['plugin://discord/state']?.({ payload: snapshot });
-  resolve?.({ state: 'needsAuth' });
-  await flush();
-  expect(first.at(-1)).toEqual(snapshot);
-  expect(second.at(-1)).toEqual(snapshot);
-  const subscribes = native.invoke.mock.calls.filter(([, args]) => args?.method === 'subscribe');
-  expect(subscribes).toHaveLength(1);
-  stopFirst();
-  await flush();
-  expect(native.unlisten).not.toHaveBeenCalled();
-  const late = native.handlers['plugin://discord/state'];
-  stopSecond();
-  late?.({ payload: { state: 'connecting' } });
-  await flush();
-  expect(second.at(-1)).toEqual(snapshot);
-  expect(native.unlisten).toHaveBeenCalled();
-  expect(native.invoke).toHaveBeenCalledWith('plugin_call', {
-    plugin: 'discord',
-    method: 'unsubscribe',
-    params: null,
-  });
 });

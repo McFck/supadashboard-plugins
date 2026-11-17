@@ -1,14 +1,17 @@
 import { describe, expect, it, vi } from 'vitest';
-import { invoke } from '@tauri-apps/api/core';
 import { readSpotifyView, spotifyTransport } from './spotify';
-import { ActionFailure } from '@supadashboard/kit';
+import { ActionFailure, callPlugin } from '@supadashboard/kit';
 import { readSourceState } from '@supadashboard/app/features/media/now-playing-read';
 vi.mock('@tauri-apps/api/core', () => ({ invoke: vi.fn(), isTauri: () => true }));
+vi.mock('@supadashboard/kit', async (original) => ({
+  ...(await original<object>()),
+  callPlugin: vi.fn(),
+}));
 
 describe('Spotify trust boundaries', () => {
   it('awaits native shuffle completion and propagates failure without trying another toggle', async () => {
     let finish: (() => void) | undefined;
-    vi.mocked(invoke).mockImplementationOnce(
+    vi.mocked(callPlugin).mockImplementationOnce(
       () =>
         new Promise((resolve) => {
           finish = () => resolve(undefined);
@@ -24,22 +27,22 @@ describe('Spotify trust boundaries', () => {
     await pending;
     expect(completed).toBe(true);
     for (const mode of ['on', 'off', 'toggle']) {
-      vi.mocked(invoke).mockRejectedValueOnce('native failure');
+      vi.mocked(callPlugin).mockRejectedValueOnce('native failure');
       await expect(spotifyTransport(`shuffle:${mode}`)).rejects.toEqual(
         new ActionFailure('native failure'),
       );
-      expect(invoke).toHaveBeenLastCalledWith('plugin_call', {
-        plugin: 'spotify',
-        method: 'shuffle',
-        params: { mode },
-      });
+      expect(callPlugin).toHaveBeenLastCalledWith('spotify', 'shuffle', { mode });
     }
-    vi.mocked(invoke).mockRejectedValueOnce('Turn off smart shuffle in Spotify');
+    vi.mocked(callPlugin).mockRejectedValueOnce('Turn off smart shuffle in Spotify');
     await expect(spotifyTransport('shuffle:toggle')).rejects.toEqual(
       new ActionFailure('Turn off smart shuffle in Spotify'),
     );
+    vi.mocked(callPlugin).mockRejectedValueOnce(new Error("Spotify isn't playing"));
+    await expect(spotifyTransport('shuffle:on')).rejects.toEqual(
+      new ActionFailure("Spotify isn't playing"),
+    );
     for (const error of ['x'.repeat(81), 'unsafe\nerror', { message: 'not a native title' }]) {
-      vi.mocked(invoke).mockRejectedValueOnce(error);
+      vi.mocked(callPlugin).mockRejectedValueOnce(error);
       await expect(spotifyTransport('shuffle:off')).rejects.toEqual(
         new ActionFailure('Spotify shuffle failed'),
       );

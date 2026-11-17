@@ -10,6 +10,7 @@ import {
   whileOwner,
 } from '@supadashboard/kit';
 import { spotifyCommand, spotifyTransport, subscribeSpotify } from './spotify';
+import { provideSpotify } from './service';
 import { playingSession } from './lyric-clock';
 import { setStepFeedback } from './components/offset-ruler';
 import ConnectionSection from './components/ConnectionSection.svelte';
@@ -177,6 +178,7 @@ const spotifyPlugin: Plugin = {
         readOnly: true,
       });
     }
+    whileOwner(provideSpotify);
     whileOwner(followSpotify(api));
   },
 };

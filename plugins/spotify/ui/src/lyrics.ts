@@ -64,9 +64,7 @@ export function readLyricsView(raw: unknown): LyricsView | null {
 /** Lyrics for a track; a failed lookup or a payload that does not validate means none. */
 export async function getLyrics(track: LyricsTrack): Promise<LyricsView> {
   try {
-    return (
-      readLyricsView(await callPlugin<unknown>('spotify', 'lyrics-get', track)) ?? { kind: 'none' }
-    );
+    return readLyricsView(await callPlugin('spotify', 'lyrics-get', track)) ?? { kind: 'none' };
   } catch {
     // LRCLIB being down or the network being gone only means no lyrics this time; nothing is lost.
     return { kind: 'none' };
@@ -86,7 +84,7 @@ export function readSongOffset(raw: unknown) {
 /** The offset the user saved for this song. */
 export async function getSongOffset(track: LyricsTrack) {
   try {
-    return readSongOffset(await callPlugin<unknown>('spotify', 'lyrics-offset-get', track));
+    return readSongOffset(await callPlugin('spotify', 'lyrics-offset-get', track));
   } catch {
     // An unreadable store only leaves the lines unshifted; the native side keeps the file it could not read.
     return 0;
@@ -95,4 +93,4 @@ export async function getSongOffset(track: LyricsTrack) {
 
 /** Saves this song's offset; 0 forgets it. */
 export const setSongOffset = (track: LyricsTrack, offsetMs: number) =>
-  callPlugin<void>('spotify', 'lyrics-offset-set', { ...track, offsetMs });
+  callPlugin('spotify', 'lyrics-offset-set', { ...track, offsetMs });

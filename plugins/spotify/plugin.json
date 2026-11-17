@@ -1,21 +1,23 @@
 {
   "id": "spotify",
-  "version": "1.0.0",
-  "protocol": 1,
-  "exe": "supadashboard-spotify.exe",
-  "windows": ["main", "panel"],
-  "methods": [
-    "subscribe",
-    "unsubscribe",
-    "authorize",
-    "logout",
-    "command",
-    "shuffle",
-    "lyrics-get",
-    "lyrics-offset-get",
-    "lyrics-offset-set"
-  ],
+  "version": "2.0.0",
+  "api": 2,
   "migrate": ["spotify.json", "lyrics", "lyrics-offsets.json"],
-  "media": "spotify",
-  "api": 1
+  "permissions": {
+    "http": ["api.spotify.com", "lrclib.net"],
+    "oauth": {
+      "spotify": {
+        "authorize": "https://accounts.spotify.com/authorize",
+        "token": "https://accounts.spotify.com/api/token",
+        "redirect": "http://127.0.0.1:43821/callback",
+        "scopes": [
+          "user-library-read",
+          "user-library-modify",
+          "user-read-playback-state",
+          "user-modify-playback-state"
+        ],
+        "send": ["api.spotify.com"]
+      }
+    }
+  }
 }

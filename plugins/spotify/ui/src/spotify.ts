@@ -68,7 +68,7 @@ async function command(method: string, params?: Record<string, unknown>) {
   if (!(await hub.settled()).subscribed) {
     throw new Error('Connect Spotify first');
   }
-  await callPlugin<void>('spotify', method, params);
+  await callPlugin('spotify', method, params);
 }
 
 export async function spotifyAuthorize(clientId: string) {
@@ -91,11 +91,12 @@ export async function spotifyTransport(command: string) {
   }
   if (command.startsWith('shuffle:')) {
     try {
-      await callPlugin<void>('spotify', 'shuffle', { mode: command.slice('shuffle:'.length) });
+      await callPlugin('spotify', 'shuffle', { mode: command.slice('shuffle:'.length) });
     } catch (error) {
+      const reason = error instanceof Error ? error.message : error;
       const title =
-        typeof error === 'string' && error.length <= 80 && validText(error)
-          ? error
+        typeof reason === 'string' && reason.length <= 80 && validText(reason)
+          ? reason
           : 'Spotify shuffle failed';
       throw new ActionFailure(title);
     }

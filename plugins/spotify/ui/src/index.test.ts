@@ -14,6 +14,7 @@ const sources = vi.hoisted(() => ({
 vi.mock('@supadashboard/app/app/runtime/session.svelte', () => ({
   currentRuntime: () => ({ isOwner: sources.owner }),
 }));
+vi.mock('./service', () => ({ provideSpotify: () => () => {} }));
 vi.mock('./spotify', () => ({
   subscribeSpotify: (receive: typeof sources.spotify) => {
     sources.spotify = receive;

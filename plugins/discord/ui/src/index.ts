@@ -5,9 +5,11 @@ import {
   type Plugin,
   type PluginApi,
   ownerAction,
+  providePlugin,
   whileOwner,
 } from '@supadashboard/kit';
 import { subscribeVoice, voiceCommand } from './discord';
+import { createDiscordService } from './service/service';
 import ConnectionSection from './components/ConnectionSection.svelte';
 import VoiceTile from './components/VoiceTile.svelte';
 import guide from '../../guide.md?raw';
@@ -76,7 +78,17 @@ const discordPlugin: Plugin = {
         readOnly: true,
       });
     }
-    whileOwner(() => followVoice(api));
+    // Provided before followVoice subscribes, so the owner's own subscription finds the service.
+    whileOwner(() => {
+      const { service, destroy } = createDiscordService();
+      const unprovide = providePlugin('discord', service);
+      const unfollow = followVoice(api);
+      return () => {
+        unfollow();
+        unprovide();
+        destroy();
+      };
+    });
   },
 };
 export default discordPlugin;

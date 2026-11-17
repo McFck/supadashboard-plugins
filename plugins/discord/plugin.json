@@ -1,10 +1,18 @@
 {
   "id": "discord",
-  "version": "1.0.0",
-  "protocol": 1,
-  "exe": "supadashboard-discord.exe",
-  "windows": ["main", "panel"],
-  "methods": ["subscribe", "unsubscribe", "authorize", "logout", "voice"],
+  "version": "2.0.0",
+  "api": 2,
   "migrate": ["discord.json"],
-  "api": 1
+  "permissions": {
+    "http": ["discord.com"],
+    "pipes": ["discord-ipc"],
+    "oauth": {
+      "discord": {
+        "token": "https://discord.com/api/oauth2/token",
+        "redirect": "http://127.0.0.1",
+        "scopes": ["rpc", "rpc.voice.read", "rpc.voice.write"],
+        "send": ["pipe:discord-ipc"]
+      }
+    }
+  }
 }

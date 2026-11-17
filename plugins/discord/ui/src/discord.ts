@@ -168,7 +168,7 @@ async function command(method: string, params?: Record<string, unknown>) {
   if (!(await hub.settled()).subscribed) {
     throw new Error('Connect Discord first');
   }
-  await callPlugin<void>('discord', method, params);
+  await callPlugin('discord', method, params);
 }
 
 export async function authorize(clientId: string) {

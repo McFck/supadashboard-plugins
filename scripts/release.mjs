@@ -11,6 +11,7 @@ import crypto from 'node:crypto';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
+import { API, newest, untar } from './release-lib.mjs';
 
 const REPO = 'McFck/supadashboard-plugins';
 const root = path.resolve(import.meta.dirname, '..');
@@ -22,23 +23,14 @@ const json = (file) => JSON.parse(fs.readFileSync(file, 'utf8'));
 const tag = (id, version) => `${id}-v${version}`;
 const gh = (...args) => execFileSync('gh', [...args, '-R', REPO], { encoding: 'utf8' });
 
-/** Entries of a ustar archive by name (the layout plugin-tools/release.mjs writes). */
-function untar(bytes) {
-  const files = new Map();
-  for (let at = 0; bytes[at] !== 0;) {
-    const name = bytes.toString('utf8', at, at + 100).replace(/\0.*$/s, '');
-    const size = parseInt(bytes.toString('ascii', at + 124, at + 135), 8);
-    files.set(name, bytes.subarray(at + 512, at + 512 + size));
-    at += 512 + Math.ceil(size / 512) * 512;
-  }
-  return files;
-}
-
 function entry(id, published, file) {
   const bytes = fs.readFileSync(file);
   const { version, api, permissions } = JSON.parse(
     untar(bytes).get('plugin.json').toString('utf8'),
   );
+  if (api !== API) {
+    throw new Error(`${id}: plugin.json api is ${api}, expected ${API}`);
+  }
   const plugin = path.join(root, 'plugins', id);
   return {
     id,
@@ -127,18 +119,17 @@ function releaseMissing() {
   }
 }
 
-/** The newest release of a plugin as a catalogue entry, its .sdplugin downloaded and hashed. */
+/** The newest v2 release of a plugin as a catalogue entry, its .sdplugin downloaded and hashed. */
 function latest(id, releases, work) {
-  const release = releases
-    .filter((r) => r.tagName.startsWith(`${id}-v`))
-    .sort((a, b) => b.publishedAt.localeCompare(a.publishedAt))[0];
-  if (!release) {
+  const pick = newest(id, releases, (tagName) =>
+    JSON.parse(gh('release', 'view', tagName, '--json', 'assets')).assets.map((a) => a.name),
+  );
+  if (!pick) {
     return [];
   }
-  const folder = path.join(work, release.tagName);
-  gh('release', 'download', release.tagName, '-D', folder);
-  const [asset] = fs.readdirSync(folder);
-  return [entry(id, release.publishedAt, path.join(folder, asset))];
+  const folder = path.join(work, pick.release.tagName);
+  gh('release', 'download', pick.release.tagName, '-p', pick.asset, '-D', folder);
+  return [entry(id, pick.release.publishedAt, path.join(folder, pick.asset))];
 }
 
 function publish() {

@@ -1,13 +1,15 @@
-import { answer, credentialId, fields, hello, isHex, reply } from './protocol.js';
+import { answer, credentialId, fields, hello, isHex } from './protocol.js';
+import { observe, reply } from './browser.js';
 
-const endpoint = 'ws://127.0.0.1:43822/browser-remote';
-const wake = 'browser-remote-reconnect';
+const endpoint = 'ws://127.0.0.1:43822/browser';
+const wake = 'webcompanion-reconnect';
+const credentialKey = 'webcompanionCredential';
 let socket;
 let retry;
 let backoff = 500;
 
 function report(error) {
-  console.error('Browser Remote:', error);
+  console.error('WebCompanion:', error);
 }
 
 function schedule() {
@@ -43,14 +45,22 @@ function connect(mode, secret) {
     };
     current.onclose = () => {
       clearTimeout(deadline);
-      reject(new Error('Browser Remote connection closed'));
+      if (phase.kind === 'connected') {
+        phase.observer.stop();
+      }
+      reject(new Error('WebCompanion connection closed'));
       if (socket === current) {
         socket = undefined;
         schedule();
       }
     };
     current.onmessage = ({ data }) => {
-      if (typeof data !== 'string' || data.length > 1024 || pending === 2) {
+      const limit = phase.kind === 'connected' ? 8192 : 1024;
+      if (
+        typeof data !== 'string' ||
+        new TextEncoder().encode(data).length > limit ||
+        pending === 2
+      ) {
         current.close();
         return;
       }
@@ -76,7 +86,7 @@ function connect(mode, secret) {
               if (mode === 'pair') {
                 const credential = phase.credential;
                 await chrome.alarms.create(wake, { periodInMinutes: 1 });
-                await chrome.storage.local.set({ credential });
+                await chrome.storage.local.set({ [credentialKey]: credential });
                 if (socket === current) {
                   current.onclose = null;
                   current.close();
@@ -84,13 +94,22 @@ function connect(mode, secret) {
                 }
                 break;
               }
-              phase = { kind: 'connected' };
+              phase = {
+                kind: 'connected',
+                observer: observe(send, (error) => {
+                  report(error);
+                  current.close();
+                }),
+              };
               backoff = 500;
               resolve();
               break;
             }
             case 'connected':
               send(await reply(message));
+              if (message.action.kind !== 'scroll') {
+                phase.observer.refresh();
+              }
               break;
           }
         })
@@ -109,7 +128,7 @@ async function reconnect() {
   if (socket || retry !== undefined) {
     return;
   }
-  const { credential } = await chrome.storage.local.get('credential');
+  const { [credentialKey]: credential } = await chrome.storage.local.get(credentialKey);
   if (isHex(credential, 64) && !socket && retry === undefined) {
     // Alarms wake a worker that Chromium suspended during backoff.
     if (!(await chrome.alarms.get(wake))) {
@@ -117,7 +136,7 @@ async function reconnect() {
     }
     if (!socket && retry === undefined) {
       await connect('auth', credential).catch(() => {
-        // A closed bridge is normal while the dashboard has no Browser Remote page.
+        // The dashboard can close while the browser stays open.
       });
     }
   }

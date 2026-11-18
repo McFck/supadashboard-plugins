@@ -1,4 +1,10 @@
-import { pluginBrowser, toast, type PluginBrowserSnapshot } from '@supadashboard/kit';
+import {
+  ActionFailure,
+  pluginBrowser,
+  toast,
+  type PluginBrowserAction,
+  type PluginBrowserSnapshot,
+} from '@supadashboard/kit';
 
 const plugin = 'webcompanion';
 
@@ -81,19 +87,38 @@ class WebCompanion {
     }
   }
 
-  async activate(tab: number) {
+  async action(action: PluginBrowserAction, signal?: AbortSignal) {
     const snapshot = this.snapshot;
     if (snapshot.kind !== 'connected') {
-      return;
+      return false;
     }
     const handle = this.handle;
     try {
       const watch = await handle;
-      if (watch != null && this.handle === handle) {
-        await pluginBrowser.activate(plugin, watch, snapshot.revision, tab);
+      if (watch != null && this.handle === handle && !signal?.aborted) {
+        await pluginBrowser.action(plugin, watch, snapshot.revision, action);
+        return true;
       }
     } catch (error) {
-      this.error(error, 'Could not activate the tab');
+      if (!signal?.aborted) {
+        this.error(error, 'Browser command failed');
+      }
+    }
+    return false;
+  }
+
+  async open(url: string, destination: 'new' | 'current', signal?: AbortSignal) {
+    const watch = await this.handle;
+    if (signal?.aborted) {
+      return;
+    }
+    if (watch == null) {
+      throw new ActionFailure('WebCompanion is offline');
+    }
+    try {
+      await pluginBrowser.open(plugin, watch, url, destination);
+    } catch (error) {
+      throw new ActionFailure(typeof error === 'string' ? error : 'Could not open website');
     }
   }
 

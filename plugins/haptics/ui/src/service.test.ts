@@ -1,12 +1,18 @@
-import { pluginProcess } from '@supadashboard/kit';
-import { expect, it, vi } from 'vitest';
+import { pluginProcess, type PluginProcessEvent } from '@supadashboard/kit';
+import { afterEach, expect, it, vi } from 'vitest';
 import { HapticsService } from './service';
 import { DEFAULTS, toConfig } from './settings';
 
 vi.mock('@supadashboard/kit', () => ({
   emitPluginEvent: vi.fn().mockResolvedValue(undefined),
   pluginProcess: { run: vi.fn(), spawn: vi.fn(), onPowerOff: vi.fn() },
+  toast: { error: vi.fn() },
 }));
+
+afterEach(() => {
+  vi.clearAllMocks();
+  vi.useRealTimers();
+});
 
 it('keeps PC lock available when the vibration shell cannot start', async () => {
   vi.mocked(pluginProcess.run).mockResolvedValue({
@@ -33,5 +39,47 @@ it('keeps PC lock available when the vibration shell cannot start', async () => 
   } finally {
     service.destroy();
     warning.mockRestore();
+  }
+});
+
+it('launches on wake with ADB still connected and on a fast replug with the same serial', async () => {
+  vi.useFakeTimers();
+  const run = vi.mocked(pluginProcess.run);
+  run.mockImplementation(async (_plugin, _adb, args) => {
+    if (args[0] === 'devices') {
+      return { code: 0, stdout: 'List of devices attached\nTABLET\tdevice\n' };
+    }
+    return { code: 0, stdout: 'package:com.limelight.noir\nStatus: ok\n' };
+  });
+  let shellEvent: ((event: PluginProcessEvent) => void) | undefined;
+  vi.mocked(pluginProcess.spawn).mockImplementation(async (_plugin, _adb, _args, onEvent) => {
+    shellEvent = onEvent;
+    return 1;
+  });
+  const service = new HapticsService();
+  const launches = () => run.mock.calls.filter(([, , args]) => args.includes('am')).length;
+  const replug = () => shellEvent?.({ kind: 'exited', code: 1 });
+  try {
+    await service.configure(
+      toConfig({
+        ...DEFAULTS,
+        enabled: true,
+        artemis: true,
+        artemisHost: 'PC',
+        adbPath: 'adb.exe',
+      }),
+    );
+    expect(launches()).toBe(1);
+    await service.resume();
+    expect(launches()).toBe(2);
+    replug();
+    await vi.advanceTimersByTimeAsync(5000);
+    expect(launches()).toBe(2);
+    replug();
+    await vi.advanceTimersByTimeAsync(5000);
+    expect(launches()).toBe(3);
+  } finally {
+    replug();
+    service.destroy();
   }
 });

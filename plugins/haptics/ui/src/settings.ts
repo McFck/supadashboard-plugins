@@ -11,6 +11,8 @@ export type HapticsSettings = {
   strength: Strength;
   lockWithPc: boolean;
   artemis: boolean;
+  artemisHost: string;
+  artemisApp: string;
   usbTethering: boolean;
 };
 
@@ -23,6 +25,8 @@ export const DEFAULTS: HapticsSettings = {
   strength: 'medium',
   lockWithPc: false,
   artemis: false,
+  artemisHost: '',
+  artemisApp: 'Virtual Display',
   usbTethering: false,
 };
 
@@ -38,6 +42,8 @@ export function normalizeSettings(raw: unknown): HapticsSettings {
     strength: STRENGTHS.find((strength) => strength === value.strength) ?? DEFAULTS.strength,
     lockWithPc: value.lockWithPc === true,
     artemis: value.artemis === true,
+    artemisHost: text(value.artemisHost),
+    artemisApp: text(value.artemisApp) || DEFAULTS.artemisApp,
     usbTethering: value.usbTethering === true,
   };
 }
@@ -49,6 +55,8 @@ export const toConfig = (s: HapticsSettings): HapticsConfig => ({
   strength: s.strength,
   lockWithPc: s.lockWithPc,
   artemis: s.artemis,
+  artemisHost: s.artemisHost,
+  artemisApp: s.artemisApp,
   usbTethering: s.usbTethering,
 });
 

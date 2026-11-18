@@ -187,7 +187,7 @@
 
 <Section title="Apollo + Artemis">
   <Row
-    label="Launch Artemis on connect"
+    label="Launch Artemis on wake or connect"
     for="android-artemis"
   >
     <Switch
@@ -195,6 +195,30 @@
       disabled={artemisUnavailable}
       checked={settings.artemis}
       onCheckedChange={(artemis) => apply({ artemis })}
+    />
+  </Row>
+  <Row
+    label="Artemis host"
+    for="artemis-host"
+  >
+    <Input
+      id="artemis-host"
+      disabled={!loaded || saving}
+      value={settings.artemisHost}
+      autocomplete="off"
+      onchange={(event) => apply({ artemisHost: event.currentTarget.value })}
+    />
+  </Row>
+  <Row
+    label="Artemis app"
+    for="artemis-app"
+  >
+    <Input
+      id="artemis-app"
+      disabled={!loaded || saving}
+      value={settings.artemisApp}
+      autocomplete="off"
+      onchange={(event) => apply({ artemisApp: event.currentTarget.value })}
     />
   </Row>
   <Row

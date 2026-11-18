@@ -1,4 +1,5 @@
 import { isTauri } from '@tauri-apps/api/core';
+import { listen } from '@tauri-apps/api/event';
 import { currentRuntime, providePlugin, whileOwner, type Plugin } from '@supadashboard/kit';
 import { launchArtemis, pulse, PULSE_KINDS, type PulseKind } from './haptics';
 import { HapticsService } from './service';
@@ -62,6 +63,14 @@ const hapticsPlugin: Plugin = {
       });
       let stopped = false;
       let unwatch: (() => void) | undefined;
+      let unlisten: (() => void) | undefined;
+      listen('plugin-power-resumed', () => {
+        if (!stopped) {
+          void service.resume().catch(console.warn);
+        }
+      })
+        .then((stop) => (stopped ? stop() : (unlisten = stop)))
+        .catch(console.warn);
       loadSettings()
         .then((saved) => {
           if (stopped) {
@@ -76,6 +85,7 @@ const hapticsPlugin: Plugin = {
         .catch((error) => console.warn('haptics', error));
       return () => {
         stopped = true;
+        unlisten?.();
         unwatch?.();
         unprovide();
         service.destroy();

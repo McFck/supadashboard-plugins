@@ -16,6 +16,8 @@ export type HapticsConfig = {
   /** Turns the tablet's screen off when the PC sleeps or shuts down. */
   lockWithPc: boolean;
   artemis: boolean;
+  artemisHost: string;
+  artemisApp: string;
   usbTethering: boolean;
 };
 

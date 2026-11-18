@@ -1,5 +1,5 @@
 // The haptics service, run by the dashboard owner: one persistent `adb shell` to the tablet, reconnected while
-// enabled, and the tablet locked when the PC sleeps.
+// enabled, with tablet lock on sleep and Artemis launch on resume or reconnect.
 import { emitPluginEvent, pluginProcess, toast, type PluginProcessEvent } from '@supadashboard/kit';
 import { adbCandidates, parseDevices, pickDevice, powerOffArgs, validSerial } from './adb';
 import { enableUsbTethering, openArtemis, type Tablet } from './artemis';
@@ -8,6 +8,7 @@ import { Limiter, pulseMillis } from './pulse';
 
 const PLUGIN = 'haptics';
 const RECONNECT_MS = 5000;
+const LAUNCH_DEBOUNCE_MS = 8000;
 const sameDevice = (a: HapticsConfig, b: HapticsConfig) =>
   a.enabled === b.enabled && a.adbPath === b.adbPath && a.serial === b.serial;
 
@@ -21,6 +22,8 @@ export class HapticsService {
   private armed: Tablet | undefined;
   private disposed = false;
   private syncing = false;
+  private transportLost = false;
+  private lastRecoveryLaunch: { tablet: Tablet; resumed: boolean; at: number } | undefined;
   private readonly limiter = new Limiter();
   private readonly timer = setInterval(() => this.poll(), RECONNECT_MS);
   /** Serializes connecting, so the poll and `configure` never open two shells. */
@@ -36,6 +39,8 @@ export class HapticsService {
       const previous = this.config;
       if (previous && !sameDevice(previous, next)) {
         this.setTablet(undefined);
+        this.lastRecoveryLaunch = undefined;
+        this.transportLost = false;
         await this.armPowerOff();
         await this.drop();
       }
@@ -52,12 +57,18 @@ export class HapticsService {
       if (!this.config?.artemis || !this.tablet || this.disposed) {
         throw new Error('Artemis unavailable');
       }
-      const failure = await openArtemis(this.tablet);
+      const failure = await openArtemis(
+        this.tablet,
+        this.config.artemisHost,
+        this.config.artemisApp,
+      );
       if (failure) {
         throw new Error(failure);
       }
       return true;
     });
+
+  resume = () => this.enqueue(() => this.connectAndArm(this.config, true));
 
   pulse = (params: unknown) => {
     const { kind } = params as { kind: PulseKind };
@@ -69,6 +80,7 @@ export class HapticsService {
     pluginProcess.write(PLUGIN, shell, `cmd vibrator_manager synced oneshot ${ms}\n`).catch(() => {
       if (this.shell === shell) {
         this.shell = undefined;
+        this.transportLost = true;
       }
     });
   };
@@ -102,20 +114,22 @@ export class HapticsService {
       return;
     }
     this.syncing = true;
-    void this.enqueue(() => this.connectAndArm())
+    void this.enqueue(() => this.connectAndArm(this.config))
       .catch(console.warn)
       .finally(() => {
         this.syncing = false;
       });
   }
 
-  private async connectAndArm(previous = this.config) {
+  private async connectAndArm(previous: HapticsConfig | undefined, resumed = false) {
     const config = this.config;
     if (!config?.enabled || this.disposed) {
       return;
     }
     const oldTablet = this.tablet;
-    if (this.shell === undefined) {
+    const transportLost = this.transportLost;
+    this.transportLost = false;
+    if (this.shell === undefined || resumed) {
       this.setTablet(await this.findTablet(config));
     }
     if (this.disposed) {
@@ -125,16 +139,36 @@ export class HapticsService {
     await this.armPowerOff();
     const tablet = this.tablet;
     if (!tablet || this.disposed) {
+      await this.drop();
       return;
     }
     const connected = oldTablet?.serial !== tablet.serial || oldTablet.adb !== tablet.adb;
-    const launch = config.artemis && (connected || !previous?.artemis);
+    if (connected && oldTablet) {
+      await this.drop();
+    }
+    const launch = config.artemis && (connected || transportLost || resumed || !previous?.artemis);
     const tether = config.artemis && config.usbTethering && (launch || !previous?.usbTethering);
     if (tether) {
       this.report(await enableUsbTethering(tablet));
     }
-    if (launch && !this.disposed) {
-      this.report(await openArtemis(tablet));
+    const recovering = resumed || transportLost || (connected && previous?.artemis === true);
+    const last = this.lastRecoveryLaunch;
+    // A resume can also drop ADB. Coalesce those two triggers for the same tablet.
+    const duplicate =
+      recovering &&
+      last?.tablet.serial === tablet.serial &&
+      last.tablet.adb === tablet.adb &&
+      last.resumed !== resumed &&
+      Date.now() - last.at < LAUNCH_DEBOUNCE_MS;
+    if (duplicate) {
+      this.lastRecoveryLaunch = undefined;
+    }
+    if (launch && !this.disposed && !duplicate) {
+      const failure = await openArtemis(tablet, config.artemisHost, config.artemisApp);
+      if (!failure && recovering && previous?.artemis) {
+        this.lastRecoveryLaunch = { tablet, resumed, at: Date.now() };
+      }
+      this.report(failure);
     }
     if (this.shell === undefined && !this.disposed) {
       await this.startShell(tablet);
@@ -161,8 +195,9 @@ export class HapticsService {
     const onEvent = (event: PluginProcessEvent) => {
       if (event.kind === 'exited') {
         exited = true;
-        if (this.shell === handle) {
+        if (handle !== undefined && this.shell === handle) {
           this.shell = undefined;
+          this.transportLost = true;
         }
       }
     };

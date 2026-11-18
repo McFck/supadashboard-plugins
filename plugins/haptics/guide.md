@@ -13,6 +13,8 @@
 
 **Lock with PC** sends the Android sleep key when Windows suspends or ends the session. Set a tablet screen lock and choose when it locks after the screen turns off.
 
-**Launch Artemis on connect** opens Artemis when ADB connects. Select the stream in Artemis. **USB tethering** can give Apollo and Artemis a network over the cable if the tablet supports it. If the switch fails, enable USB tethering in Android settings or use Wi-Fi.
+Set **Artemis host** to the paired PC's name as shown in Artemis. **Artemis app** defaults to Apollo's built-in **Virtual Display**. Open the host's app list in Artemis once so Artemis can look up the stream by name. For a custom entry such as **Desktop**, use its exact name and enable **Always create Virtual Display** for it in Apollo.
+
+**Launch Artemis on wake or connect** starts that stream on PC resume or when ADB connects. A blank host opens the Artemis PC list. Unlock the tablet if Android shows its lock screen. **USB tethering** can give Apollo and Artemis a network over the cable if the tablet supports it. If the switch fails, enable USB tethering in Android settings or use Wi-Fi.
 
 Vibration requires Android 12 or newer and a vibration motor.

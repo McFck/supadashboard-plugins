@@ -244,6 +244,9 @@
       return false;
     }
     switch (message.kind) {
+      case 'pointer_position':
+        respond(globalThis.webcompanionPointer(message));
+        return false;
       case 'page':
         respond(
           ['preview', 'clear_preview', 'press'].includes(message.input.kind)

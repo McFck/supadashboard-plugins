@@ -47,7 +47,7 @@ export async function ensure(tab) {
     // Tabs already open at install time do not get the declared content script.
     attempt = chrome.scripting.executeScript({
       target: { tabId: tab.id },
-      files: ['outline.js', 'page.js'],
+      files: ['outline.js', 'pointer.js', 'page.js'],
     });
     injections.set(tab.id, attempt);
   }

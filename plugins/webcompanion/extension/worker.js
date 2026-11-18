@@ -1,6 +1,7 @@
 import { answer, credentialId, fields, hello, isHex } from './protocol.js';
 import { observe, scroll } from './browser.js';
 import { OutlineWatch } from './outline-worker.js';
+import { BrowserPointer } from './pointer-worker.js';
 import { isCommand, reply } from './commands.js';
 
 const endpoint = 'ws://127.0.0.1:43822/browser';
@@ -51,6 +52,7 @@ function connect(mode, secret) {
       clearTimeout(deadline);
       if (phase.kind === 'connected') {
         phase.observer.stop();
+        phase.pointer.stop();
       }
       reject(new Error('WebCompanion connection closed'));
       if (socket === current) {
@@ -94,6 +96,7 @@ function connect(mode, secret) {
       });
       phase = {
         kind: 'connected',
+        pointer: new BrowserPointer(),
         outline,
         observer: observe(
           (state) => current.send(state),
@@ -141,13 +144,15 @@ function connect(mode, secret) {
         } else if (pending >= MAX_PENDING) {
           send({ kind: 'done', id: message.id, ok: false });
         } else {
-          const { observer } = phase;
+          const { observer, pointer } = phase;
           pending++;
-          void reply(message)
+          void reply(message, pointer)
             .then((result) => {
               if (isOpen()) {
                 send(result);
-                observer.refresh();
+                if (message.action?.kind !== 'pointer') {
+                  observer.refresh();
+                }
               }
             })
             .catch(fail)

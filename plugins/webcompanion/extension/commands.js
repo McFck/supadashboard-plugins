@@ -68,8 +68,10 @@ async function tabCommand(action) {
   return true;
 }
 
-async function run(action) {
+async function run(action, pointer) {
   switch (action.kind) {
+    case 'pointer':
+      return pointer.dispatch(action);
     case 'activate':
     case 'close':
       return tabCommand(action);
@@ -125,9 +127,9 @@ export function isCommand(message) {
   );
 }
 
-export async function reply({ id, action }) {
+export async function reply({ id, action }, pointer) {
   try {
-    return { kind: 'done', id, ok: await run(action) };
+    return { kind: 'done', id, ok: await run(action, pointer) };
   } catch (error) {
     return { kind: 'done', id, ok: false, gone: error === GONE, covered: error === COVERED };
   }

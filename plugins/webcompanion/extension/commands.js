@@ -30,7 +30,19 @@ async function fullscreen(windowId) {
 const currentTab = async () =>
   activeTab(await chrome.tabs.query({ windowType: 'normal', active: true }));
 
-async function cycle(tab, direction) {
+async function select(id, pointer) {
+  await existingTab(id);
+  const tab = await chrome.tabs.update(id, { active: true });
+  selectTab(tab);
+  if (website(tab.url)) {
+    await pointer.dispatch({ kind: 'pointer', tab: id, input: { kind: 'begin' } }).catch(() => {
+      // A restricted or still-loading page can be selected even if it cannot show the pointer.
+    });
+  }
+  return true;
+}
+
+async function cycle(tab, direction, pointer) {
   const [tabs, groups] = await Promise.all([
     chrome.tabs.query({ windowId: tab.windowId }),
     chrome.tabGroups.query({ windowId: tab.windowId, collapsed: true }),
@@ -45,12 +57,12 @@ async function cycle(tab, direction) {
   }
   const target = visible[(index + direction + visible.length) % visible.length];
   if (target.id !== tab.id) {
-    selectTab(await chrome.tabs.update(target.id, { active: true }));
+    return select(target.id, pointer);
   }
   return true;
 }
 
-async function tabCommand(input) {
+async function tabCommand(input, pointer) {
   const tab = await currentTab();
   switch (input) {
     case 'new':
@@ -75,7 +87,7 @@ async function tabCommand(input) {
       return true;
     case 'next':
     case 'previous':
-      return tab ? cycle(tab, input === 'next' ? 1 : -1) : false;
+      return tab ? cycle(tab, input === 'next' ? 1 : -1, pointer) : false;
     default:
       return false;
   }
@@ -106,8 +118,25 @@ async function run(action, pointer) {
   switch (action.kind) {
     case 'pointer':
       return pointer.dispatch(action);
-    case 'tab': {
-      const command = tabCommands.then(() => tabCommand(action.input));
+    case 'tab':
+    case 'select_tab':
+    case 'close_tab':
+    case 'group': {
+      const command = tabCommands.then(async () => {
+        switch (action.kind) {
+          case 'select_tab':
+            return select(action.tab, pointer);
+          case 'close_tab':
+            await existingTab(action.tab);
+            await chrome.tabs.remove(action.tab);
+            return true;
+          case 'group':
+            await chrome.tabGroups.update(action.group, { collapsed: action.collapsed });
+            return true;
+          default:
+            return tabCommand(action.input, pointer);
+        }
+      });
       tabCommands = command.catch(() => {});
       return command;
     }

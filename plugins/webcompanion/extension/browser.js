@@ -15,6 +15,11 @@ export function isSelected(id) {
 export function selectTab({ id, windowId }) {
   activeTabs.set(windowId, id);
   selectedWindow = windowId;
+  refresh();
+}
+
+export function pagePort(id) {
+  return pages.get(id)?.port;
 }
 
 export async function activeTab(tabs) {
@@ -52,7 +57,7 @@ export async function ensure(tab) {
     // Tabs already open at install time do not get the declared content script.
     attempt = chrome.scripting.executeScript({
       target: { tabId: tab.id },
-      files: ['pointer.js', 'page.js'],
+      files: ['hover.js', 'pointer.js', 'page.js'],
     });
     injections.set(tab.id, attempt);
   }
@@ -63,7 +68,7 @@ chrome.runtime.onConnect.addListener((port) => {
   const sender = port.sender;
   const id = sender?.tab?.id;
   if (
-    port.name !== 'scroll' ||
+    port.name !== 'webcompanion-page' ||
     sender?.id !== chrome.runtime.id ||
     sender.frameId !== 0 ||
     !idInRange(id, 0x7fffffff) ||
@@ -120,9 +125,13 @@ export function mediaTab(tabs, active) {
 }
 
 async function snapshot() {
-  const all = (await chrome.tabs.query({ windowType: 'normal' })).filter((tab) =>
-    idInRange(tab.id, 0x7fffffff),
-  );
+  const [open, tabGroups] = await Promise.all([
+    chrome.tabs.query({ windowType: 'normal' }),
+    chrome.tabGroups.query({}),
+  ]);
+  const all = open
+    .filter((tab) => idInRange(tab.id, 0x7fffffff))
+    .sort((a, b) => a.windowId - b.windowId || a.index - b.index);
   for (const tab of all) {
     if (tab.active && !activeTabs.has(tab.windowId)) {
       activeTabs.set(tab.windowId, tab.id);
@@ -147,6 +156,9 @@ async function snapshot() {
   const status = pages.get(player?.id)?.media;
   const window =
     player && status ? await chrome.windows.get(player.windowId).catch(() => null) : null;
+  const used = new Set(tabs.map((tab) => tab.groupId));
+  const groups = tabGroups.filter((group) => used.has(group.id));
+  const groupWindows = new Map(groups.map((group) => [group.id, group.windowId]));
   return {
     kind: 'state',
     state: {
@@ -157,9 +169,19 @@ async function snapshot() {
           title: title(tab.title),
           active: tab.active,
           favicon: icon && icon.length <= 512 && !icon.includes('\\') ? icon : null,
+          window: tab.windowId,
+          group: !tab.pinned && groupWindows.get(tab.groupId) === tab.windowId ? tab.groupId : null,
+          pinned: tab.pinned,
         };
       }),
       activeTab: active?.id ?? null,
+      groups: groups.map(({ id, windowId, title: name, color, collapsed }) => ({
+        id,
+        window: windowId,
+        title: title(name),
+        color,
+        collapsed,
+      })),
       media: window
         ? { tab: player.id, ...status, fullscreen: window.state === 'fullscreen' }
         : null,
@@ -221,6 +243,10 @@ export function observe(send, onError) {
     chrome.tabs.onMoved,
     chrome.tabs.onAttached,
     chrome.windows.onBoundsChanged,
+    chrome.tabGroups.onCreated,
+    chrome.tabGroups.onUpdated,
+    chrome.tabGroups.onMoved,
+    chrome.tabGroups.onRemoved,
   ];
   let timer;
   let running = false;

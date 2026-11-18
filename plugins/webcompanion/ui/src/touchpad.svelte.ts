@@ -4,9 +4,12 @@ import { ScrollGesture } from './scroll-gesture';
 type Action = Extract<PluginBrowserAction, { kind: 'pointer' }>;
 type Input = Action['input'];
 type Point = { x: number; y: number };
+type Direction = 'next' | 'previous';
 type Gesture =
   | { kind: 'idle' | 'spent' | 'scroll' }
   | { kind: 'aim'; origin: Point }
+  | { kind: 'pair'; origin: Point; time: number }
+  | { kind: 'swipe'; originX: number; x: number }
   | { kind: 'move' | 'drag'; last: Point };
 
 const bounded = (delta: number) => Math.max(-2048, Math.min(2048, delta));
@@ -27,6 +30,7 @@ export class TouchpadController {
     private pad: HTMLElement,
     private send: (action: Action) => Promise<boolean>,
     private sendScroll: (frame: PluginBrowserScrollFrame) => boolean,
+    private switchTab: (direction: Direction) => void,
   ) {
     this.scroll = new ScrollGesture((frame) => this.scrollFrame(frame));
     const options = { signal: this.lifetime.signal };
@@ -60,6 +64,9 @@ export class TouchpadController {
     };
     if (event.key === 'Escape') {
       this.reset();
+    } else if (event.altKey && (event.key === 'ArrowLeft' || event.key === 'ArrowRight')) {
+      event.preventDefault();
+      this.switchTab(event.key === 'ArrowLeft' ? 'previous' : 'next');
     } else {
       const delta = Object.entries(direction).find(([key]) => key === event.key)?.[1];
       if (delta) {
@@ -89,8 +96,8 @@ export class TouchpadController {
         this.command({ kind: 'up' });
       }
       const centre = this.centre();
-      if (centre && this.scroll.start(centre.x, centre.y, event.timeStamp)) {
-        this.gesture = { kind: 'scroll' };
+      if (centre) {
+        this.gesture = { kind: 'pair', origin: centre, time: event.timeStamp };
       } else {
         this.gesture = { kind: 'spent' };
       }
@@ -114,11 +121,8 @@ export class TouchpadController {
     const gesture = this.gesture;
     const here = point(event);
     this.fingers.set(event.pointerId, here);
-    if (gesture.kind === 'scroll') {
-      const centre = this.centre();
-      if (centre) {
-        this.scroll.move(centre.x, centre.y, event.timeStamp);
-      }
+    if (gesture.kind === 'pair' || gesture.kind === 'swipe' || gesture.kind === 'scroll') {
+      this.movePair(event.timeStamp);
     } else if (
       gesture.kind === 'aim' &&
       Math.hypot(here.x - gesture.origin.x, here.y - gesture.origin.y) >= 6
@@ -131,6 +135,33 @@ export class TouchpadController {
       gesture.last = here;
     }
   };
+
+  private movePair(time: number) {
+    const centre = this.centre();
+    if (!centre) {
+      return;
+    }
+    const gesture = this.gesture;
+    if (gesture.kind === 'pair') {
+      const dx = Math.abs(centre.x - gesture.origin.x);
+      const dy = Math.abs(centre.y - gesture.origin.y);
+      if (Math.max(dx, dy) < 8) {
+        return;
+      }
+      if (dx > 1.4 * dy) {
+        this.gesture = { kind: 'swipe', originX: gesture.origin.x, x: centre.x };
+      } else if (this.scroll.start(gesture.origin.x, gesture.origin.y, gesture.time)) {
+        this.gesture = { kind: 'scroll' };
+        this.scroll.move(centre.x, centre.y, time);
+      } else {
+        this.gesture = { kind: 'spent' };
+      }
+    } else if (gesture.kind === 'scroll') {
+      this.scroll.move(centre.x, centre.y, time);
+    } else if (gesture.kind === 'swipe') {
+      gesture.x = centre.x;
+    }
+  }
 
   private up = (event: PointerEvent) => {
     if (!this.fingers.has(event.pointerId)) {
@@ -145,6 +176,11 @@ export class TouchpadController {
       this.command({ kind: 'up' });
     } else if (this.gesture.kind === 'scroll') {
       this.scroll.finish(event.timeStamp);
+    } else if (this.gesture.kind === 'swipe') {
+      const distance = this.gesture.x - this.gesture.originX;
+      if (Math.abs(distance) >= 45) {
+        this.switchTab(distance < 0 ? 'next' : 'previous');
+      }
     }
     this.gesture = this.fingers.size ? { kind: 'spent' } : { kind: 'idle' };
   };
@@ -213,7 +249,13 @@ export class TouchpadController {
     } else {
       this.queue.push({ kind: 'pointer', tab: this.tab, input });
     }
-    this.schedule();
+    if (input.kind === 'move') {
+      this.schedule();
+    } else {
+      cancelAnimationFrame(this.frame);
+      this.frame = 0;
+      void this.flush();
+    }
   }
 
   private schedule() {
@@ -238,10 +280,8 @@ export class TouchpadController {
       await this.send(action);
     } finally {
       this.busy = false;
-      if (this.queue[0]?.input.kind === 'cancel') {
+      if (this.queue.length) {
         void this.flush();
-      } else if (this.queue.length) {
-        this.schedule();
       }
     }
   }

@@ -2,7 +2,7 @@ import type { PluginBrowserScrollFrame } from '@supadashboard/kit';
 
 type Point = { x: number; y: number; time: number };
 type Drag = { samples: Point[]; last: Point; dx: number; dy: number };
-const SCROLL_GAIN = 1.25;
+const SCROLL_GAIN = 2.1;
 
 function clamp(value: number, limit: number) {
   return Math.max(-limit, Math.min(limit, value));

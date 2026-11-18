@@ -1,5 +1,5 @@
-import { ensure, isSelected } from './browser.js';
-import { fields, idInRange, isHex, website } from './protocol.js';
+import { ensure, isSelected, pagePort } from './browser.js';
+import { fields, idInRange } from './protocol.js';
 
 function valid(action) {
   if (!fields(action, 'kind', 'tab', 'input') || !idInRange(action.tab, 0x7fffffff)) {
@@ -15,8 +15,14 @@ function valid(action) {
   return fields(input, 'kind') && ['begin', 'click', 'down', 'up', 'cancel'].includes(input.kind);
 }
 
-function send(tab, doc, input) {
-  return chrome.tabs.sendMessage(tab, { kind: 'pointer_input', doc, input }, { frameId: 0 });
+function send(port, input) {
+  try {
+    port.postMessage({ kind: 'pointer_input', input });
+    return true;
+  } catch {
+    // The previous document can disconnect while a tab change is being delivered.
+    return false;
+  }
 }
 
 export class BrowserPointer {
@@ -44,67 +50,53 @@ export class BrowserPointer {
     chrome.tabs.onActivated.removeListener(this.#activeChanged);
     chrome.windows.onFocusChanged.removeListener(this.#activeChanged);
     chrome.tabs.onUpdated.removeListener(this.#navigated);
-    void this.#cancel();
+    this.#cancel();
   }
 
   #activeChanged = () => {
     if (this.#session && !isSelected(this.#session.tab)) {
-      void this.#cancel();
+      this.#cancel();
     }
   };
 
   #navigated = (tab, change) => {
     if (change.status === 'loading' && this.#session?.tab === tab) {
-      void this.#cancel();
+      this.#cancel();
     }
   };
 
-  async #cancel() {
+  #cancel() {
     const session = this.#session;
     this.#session = undefined;
-    if (session?.doc) {
-      await send(session.tab, session.doc, { kind: 'cancel' }).catch(() => {
-        // The old document may have gone away with the gesture.
-      });
+    if (session) {
+      send(session.port, { kind: 'cancel' });
     }
   }
 
   async #begin(tab, input) {
-    if (this.#session?.tab === tab && this.#session.doc) {
-      const session = this.#session;
-      if ((await send(tab, session.doc, input)) === true) {
-        return this.#session === session && !this.#stopped && isSelected(tab);
-      }
+    let port = pagePort(tab);
+    if (!port) {
+      const candidate = await chrome.tabs.get(tab);
+      await ensure(candidate);
+      port = pagePort(tab);
     }
-    await this.#cancel();
-    const candidate = await chrome.tabs.get(tab);
-    if (!candidate.active || candidate.status !== 'complete' || !website(candidate.url)) {
+    if (!port || this.#stopped || !isSelected(tab)) {
       return false;
     }
-    await ensure(candidate);
-    if (this.#stopped || !isSelected(tab)) {
+    if (this.#session?.port !== port) {
+      this.#cancel();
+    }
+    if (!send(port, input)) {
       return false;
     }
-    const session = { tab, doc: undefined };
-    this.#session = session;
-    const response = await send(tab, null, input);
-    if (
-      this.#session !== session ||
-      this.#stopped ||
-      !isSelected(tab) ||
-      !fields(response, 'doc') ||
-      !isHex(response.doc, 32)
-    ) {
-      return false;
-    }
-    session.doc = response.doc;
+    this.#session = { tab, port };
     return true;
   }
 
   async #apply({ tab, input }) {
     if (input.kind === 'cancel') {
       if (this.#session?.tab === tab) {
-        await this.#cancel();
+        this.#cancel();
       }
       return true;
     }
@@ -115,9 +107,9 @@ export class BrowserPointer {
       return this.#begin(tab, input);
     }
     const session = this.#session;
-    if (session?.tab !== tab || !session.doc) {
+    if (session?.tab !== tab || session.port !== pagePort(tab)) {
       return false;
     }
-    return (await send(tab, session.doc, input)) === true;
+    return send(session.port, input);
   }
 }

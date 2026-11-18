@@ -4,8 +4,8 @@
   }
   globalThis.webcompanionScrollInstalled = true;
 
-  const EASE_MS = 28;
-  const FRICTION_MS = 325;
+  const EASE_MS = 22;
+  const FRICTION_MS = 375;
   const STOP_PX_S = 12;
   const IDLE_MS = 300;
   const clamp = (value, limit) =>
@@ -178,12 +178,17 @@
     if (!chrome.runtime?.id) {
       return;
     }
-    port = chrome.runtime.connect(chrome.runtime.id, { name: 'scroll' });
+    port = chrome.runtime.connect(chrome.runtime.id, { name: 'webcompanion-page' });
     port.onMessage.addListener((frame) => {
       reconnectDelay = 250;
-      scroller.apply(frame);
+      if (frame?.kind === 'pointer_input') {
+        pointer.input(frame.input);
+      } else {
+        scroller.apply(frame);
+      }
     });
     port.onDisconnect.addListener(() => {
+      pointer.input({ kind: 'cancel' });
       port = undefined;
       setTimeout(connect, reconnectDelay);
       reconnectDelay = Math.min(reconnectDelay * 2, 4000);
@@ -250,9 +255,6 @@
       return false;
     }
     switch (message.kind) {
-      case 'pointer_input':
-        respond(pointer.input(message));
-        return false;
       case 'page':
         respond(scroller.jump(message.input));
         return false;

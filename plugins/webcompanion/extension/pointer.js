@@ -2,9 +2,6 @@
   if (globalThis.webcompanionPointer) {
     return;
   }
-  const doc = Array.from(crypto.getRandomValues(new Uint8Array(16)), (byte) =>
-    byte.toString(16).padStart(2, '0'),
-  ).join('');
   const host = document.createElement('div');
   host.setAttribute('aria-hidden', 'true');
   host.style.cssText =
@@ -16,6 +13,7 @@
   let last;
   let pressed;
   let hovered;
+  let hoverPath = [];
   let hide;
   const clamp = (value, size) => Math.round(Math.max(0, Math.min(value, size - 1, 32767)));
 
@@ -32,11 +30,12 @@
   }
 
   function event(target, type, buttons, relatedTarget = null) {
-    const moving = /(?:move|over|out)$/.test(type);
+    const moving = /(?:move|over|out|enter|leave)$/.test(type);
+    const boundary = /(?:enter|leave)$/.test(type);
     const options = {
-      bubbles: true,
-      composed: true,
-      cancelable: true,
+      bubbles: !boundary,
+      composed: !boundary,
+      cancelable: !boundary,
       view: window,
       clientX: last.x,
       clientY: last.y,
@@ -57,18 +56,44 @@
     return target.dispatchEvent(synthetic);
   }
 
+  function path(target) {
+    const nodes = [];
+    for (let node = target; node;) {
+      nodes.push(node);
+      const root = node.getRootNode();
+      node = node.parentElement ?? (root instanceof ShadowRoot ? root.host : null);
+    }
+    return nodes;
+  }
+
   function hover(target) {
     if (target === hovered) {
       return;
     }
     const buttons = pressed ? 1 : 0;
+    const previous = hoverPath;
+    hoverPath = path(target);
+    globalThis.webcompanionHover.apply(previous, hoverPath);
     if (hovered?.isConnected) {
       event(hovered, 'pointerout', buttons, target);
       event(hovered, 'mouseout', buttons, target);
     }
+    for (const node of previous) {
+      if (node.isConnected && !hoverPath.includes(node)) {
+        event(node, 'pointerleave', buttons, target);
+        event(node, 'mouseleave', buttons, target);
+      }
+    }
     if (target) {
       event(target, 'pointerover', buttons, hovered);
       event(target, 'mouseover', buttons, hovered);
+    }
+    for (let index = hoverPath.length - 1; index >= 0; index--) {
+      const node = hoverPath[index];
+      if (!previous.includes(node)) {
+        event(node, 'pointerenter', buttons, hovered);
+        event(node, 'mouseenter', buttons, hovered);
+      }
     }
     hovered = target;
   }
@@ -118,12 +143,17 @@
     }
   });
   window.addEventListener('pagehide', cancel);
+  document.addEventListener(
+    'scroll',
+    () => {
+      if (last && host.isConnected) {
+        hover(targetAt(last.x, last.y));
+      }
+    },
+    true,
+  );
 
-  function input(message) {
-    const { input: action } = message;
-    if (message.doc !== doc && !(message.doc === null && action?.kind === 'begin')) {
-      return false;
-    }
+  function input(action) {
     if (action.kind === 'cancel') {
       cancel();
       return true;
@@ -143,8 +173,9 @@
     }
     switch (action.kind) {
       case 'begin':
+        globalThis.webcompanionHover.prepare();
         event(target, 'mousemove', 0);
-        return message.doc === null ? { doc } : true;
+        return true;
       case 'move': {
         const receiver = pressed?.isConnected ? pressed : target;
         event(receiver, 'pointermove', pressed ? 1 : 0);

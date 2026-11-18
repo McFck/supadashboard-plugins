@@ -12,7 +12,7 @@
       case 'absent':
         return 'Not running';
       case 'needsAuth':
-        return 'Not connected';
+        return 'Plugin not set up';
       case 'authorizing':
         return 'Waiting for Discord';
       case 'connecting':

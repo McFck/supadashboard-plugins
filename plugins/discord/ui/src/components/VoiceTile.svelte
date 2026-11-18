@@ -1,6 +1,8 @@
 <script lang="ts">
   import HeadphoneOff from '@lucide/svelte/icons/headphone-off';
+  import LockKeyhole from '@lucide/svelte/icons/lock-keyhole';
   import MicOff from '@lucide/svelte/icons/mic-off';
+  import Volume2 from '@lucide/svelte/icons/volume-2';
   import { onDestroy } from 'svelte';
   import { ContentTile, Icon, type ControlConfig } from '@supadashboard/kit';
   import type { VoiceMember } from '../discord';
@@ -30,21 +32,32 @@
   const short = $derived(Math.min(pixelWidth, pixelHeight));
   const pad = $derived(Math.round(Math.min(14, Math.max(8, short * 0.09))));
   const gap = $derived(Math.round(Math.min(8, Math.max(4, short * 0.035))));
+  const channel = $derived(voice.view.state === 'inVoice' ? voice.view.channel : undefined);
+  const HEADER_HEIGHT = 16;
   const members = $derived(voice.view.state === 'inVoice' ? voice.view.members : []);
-  const grid = $derived(pack(members.length, pixelWidth - 2 * pad, pixelHeight - 2 * pad, gap));
+  const grid = $derived(
+    pack(
+      members.length,
+      pixelWidth - 2 * pad,
+      pixelHeight - 2 * pad - (channel ? HEADER_HEIGHT + gap : 0),
+      gap,
+    ),
+  );
   const shown = $derived(grid.overflow ? members.slice(0, grid.cols * grid.rows - 1) : members);
   const status = $derived.by(() => {
     switch (voice.view.state) {
       case 'absent':
         return 'Not running';
+      case 'needsAuth':
+        return 'Set up Discord in Plugins';
+      case 'authorizing':
+        return 'Waiting for Discord';
       case 'connecting':
         return 'Connecting';
       case 'idle':
         return 'Not in voice';
       case 'inVoice':
         return members.length ? '' : 'Empty channel';
-      default:
-        return 'Not connected';
     }
   });
 
@@ -71,75 +84,110 @@
   {#snippet children()}
     <div
       data-voice-tile
-      class="grid h-full w-full place-items-center"
+      class="box-border grid h-full w-full min-w-0"
+      style:padding="{pad}px"
+      style:row-gap="{gap}px"
+      style:grid-template-rows={channel ? `${HEADER_HEIGHT}px minmax(0, 1fr)` : 'minmax(0, 1fr)'}
     >
-      {#if status}
-        <div class="flex flex-col items-center gap-1.5 text-zinc-500">
-          <span class="opacity-60">
-            <Icon
-              name="discord-voice"
-              size={Math.round(Math.min(36, Math.max(22, short * 0.22)))}
-            />
-          </span>
-          <span class="text-xs whitespace-nowrap">{status}</span>
-        </div>
-      {:else}
+      {#if channel}
         <div
-          role="group"
-          aria-label={voice.view.state === 'inVoice' ? voice.view.channel.name : undefined}
-          class="flex flex-wrap content-center justify-center"
-          style:width="{grid.cols * grid.size + (grid.cols - 1) * gap}px"
-          style:gap="{gap}px"
-          style:--size="{grid.size}px"
+          class="flex min-w-0 items-center gap-1.5 text-xs font-medium text-foreground"
+          title={channel.name}
         >
-          {#each shown as member (member.id)}
-            {@const src = voice.src(member)}
-            <div
-              role="img"
-              aria-label={describe(member)}
-              data-member={member.id}
-              class="avatar"
-              class:speaking={member.speaking}
-            >
-              <span
-                class="ring"
-                aria-hidden="true"
-              ></span>
-              {#if src}
-                <img
-                  {src}
-                  alt=""
-                  draggable="false"
-                  onerror={() => voice.fail(src)}
-                />
-              {:else}
-                <span class="face initial">{[...member.name][0]?.toUpperCase()}</span>
-              {/if}
-              {#if (member.muted || member.deafened) && grid.size >= BADGE_MIN}
-                <span
-                  class="badge"
+          <span
+            class="relative shrink-0 text-muted-foreground"
+            role="img"
+            aria-label={channel.access === 'restricted'
+              ? 'Restricted voice channel'
+              : channel.access === 'open'
+                ? 'Open voice channel'
+                : 'Voice channel'}
+          >
+            <Volume2
+              size={15}
+              aria-hidden="true"
+            />
+            {#if channel.access === 'restricted'}
+              <span class="absolute -top-0.5 -right-0.5 rounded-sm bg-background">
+                <LockKeyhole
+                  size={9}
                   aria-hidden="true"
-                >
-                  {#if member.deafened}
-                    <HeadphoneOff />
-                  {:else}
-                    <MicOff />
-                  {/if}
-                </span>
-              {/if}
-            </div>
-          {/each}
-          {#if grid.overflow}
-            <div
-              role="img"
-              aria-label="{grid.overflow} more"
-              class="avatar"
-            >
-              <span class="face more">+{grid.overflow}</span>
-            </div>
-          {/if}
+                />
+              </span>
+            {/if}
+          </span>
+          <span class="truncate">{channel.name}</span>
         </div>
       {/if}
+      <div class="grid min-h-0 min-w-0 place-items-center">
+        {#if status}
+          <div class="flex flex-col items-center gap-1.5 text-muted-foreground">
+            <span class="opacity-60">
+              <Icon
+                name="discord-voice"
+                size={Math.round(Math.min(36, Math.max(22, short * 0.22)))}
+              />
+            </span>
+            <span class="text-center text-xs text-balance">{status}</span>
+          </div>
+        {:else}
+          <div
+            role="group"
+            aria-label={channel?.name}
+            class="flex flex-wrap content-center justify-center"
+            style:width="{grid.cols * grid.size + (grid.cols - 1) * gap}px"
+            style:gap="{gap}px"
+            style:--size="{grid.size}px"
+          >
+            {#each shown as member (member.id)}
+              {@const src = voice.src(member)}
+              <div
+                role="img"
+                aria-label={describe(member)}
+                data-member={member.id}
+                class="avatar"
+                class:speaking={member.speaking}
+              >
+                <span
+                  class="ring"
+                  aria-hidden="true"
+                ></span>
+                {#if src}
+                  <img
+                    {src}
+                    alt=""
+                    draggable="false"
+                    onerror={() => voice.fail(src)}
+                  />
+                {:else}
+                  <span class="face initial">{[...member.name][0]?.toUpperCase()}</span>
+                {/if}
+                {#if (member.muted || member.deafened) && grid.size >= BADGE_MIN}
+                  <span
+                    class="badge"
+                    aria-hidden="true"
+                  >
+                    {#if member.deafened}
+                      <HeadphoneOff />
+                    {:else}
+                      <MicOff />
+                    {/if}
+                  </span>
+                {/if}
+              </div>
+            {/each}
+            {#if grid.overflow}
+              <div
+                role="img"
+                aria-label="{grid.overflow} more"
+                class="avatar"
+              >
+                <span class="face more">+{grid.overflow}</span>
+              </div>
+            {/if}
+          </div>
+        {/if}
+      </div>
     </div>
   {/snippet}
 </ContentTile>

@@ -26,5 +26,5 @@ Connecting needs a free Discord application of your own. It takes about five min
 ## If it does not connect
 
 - **Not running**: start the Discord desktop app on this PC.
-- **Not connected** after authorizing: check that the redirect `http://127.0.0.1` and **Public Client** were saved.
+- If **Plugin not set up** remains after you authorize, check the redirect `http://127.0.0.1` and the **Public Client** setting.
 - Discord only lets the account that owns the application use voice control. Create the application with the same account you use in the Discord app.

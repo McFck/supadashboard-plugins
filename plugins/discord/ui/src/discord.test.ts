@@ -31,6 +31,7 @@ it('rejects malformed or oversized native state before it reaches controls', () 
     { ...snapshot, user: { id, name: 'x'.repeat(65) } },
     { ...snapshot, channel: { ...channel, guildId: '../guild' } },
     { ...snapshot, channel: { ...channel, kind: 'text' } },
+    { ...snapshot, channel: { ...channel, access: 'unknown' } },
     { ...snapshot, lastChannel: { ...channel, kind: 'dm' } },
     { ...snapshot, members: Array(100).fill(member) },
     { ...snapshot, members: [member, member] },
@@ -45,6 +46,9 @@ it('rejects malformed or oversized native state before it reaches controls', () 
     expect(readVoiceView(raw), JSON.stringify(raw)).toBeUndefined();
   }
   expect(readVoiceView(snapshot)).toEqual(snapshot);
+  expect(
+    readVoiceView({ ...snapshot, channel: { ...channel, access: 'restricted' } }),
+  ).toMatchObject({ channel: { ...channel, access: 'restricted' } });
   expect(readVoiceView({ ...snapshot, lastChannel: channel })).toMatchObject({
     lastChannel: channel,
   });

@@ -1,8 +1,8 @@
 import { isTauri } from '@tauri-apps/api/core';
 import { callPlugin, pluginStateHub, isRecord } from '@supadashboard/kit';
+import type { Channel as VoiceChannel } from './service/model';
 
 type VoiceUser = { id: string; name: string };
-type VoiceChannel = VoiceUser & { kind: 'guild' | 'dm'; guildId?: string };
 export type VoiceMember = VoiceUser & {
   avatar: string | null;
   discriminator: string;
@@ -50,7 +50,8 @@ function readChannel(raw: unknown): VoiceChannel | undefined {
     !user ||
     !isRecord(raw) ||
     (raw.kind !== 'guild' && raw.kind !== 'dm') ||
-    (raw.guildId !== undefined && !validId(raw.guildId))
+    (raw.guildId !== undefined && !validId(raw.guildId)) ||
+    (raw.access !== undefined && raw.access !== 'open' && raw.access !== 'restricted')
   ) {
     return undefined;
   }
@@ -58,6 +59,7 @@ function readChannel(raw: unknown): VoiceChannel | undefined {
     ...user,
     kind: raw.kind,
     ...(raw.guildId === undefined ? {} : { guildId: raw.guildId }),
+    ...(raw.access === undefined ? {} : { access: raw.access }),
   };
 }
 

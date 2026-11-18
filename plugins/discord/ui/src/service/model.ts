@@ -1,5 +1,11 @@
 // Discord RPC payloads reduced to the views the dashboard shows. Everything from the pipe is validated here.
-export type Channel = { id: string; name: string; kind: 'guild' | 'dm'; guildId?: string };
+export type Channel = {
+  id: string;
+  name: string;
+  kind: 'guild' | 'dm';
+  guildId?: string;
+  access?: 'open' | 'restricted';
+};
 export type User = { id: string; name: string };
 export type Member = User & {
   avatar: string | null;
@@ -103,6 +109,44 @@ function channelKind(type: number) {
   return type === 1 || type === 3 ? 'dm' : undefined;
 }
 
+const VOICE_ACCESS = (1n << 10n) | (1n << 20n); // VIEW_CHANNEL and CONNECT.
+
+function permissionBits(raw: unknown) {
+  if (typeof raw === 'string' && /^\d{1,20}$/.test(raw)) {
+    return BigInt(raw);
+  }
+  if (typeof raw === 'number' && Number.isSafeInteger(raw) && raw >= 0) {
+    return BigInt(raw);
+  }
+}
+
+/** The room's @everyone overwrite if Discord supplies it, otherwise the user's effective access if available. */
+export function readChannelAccess(raw: unknown, guildId?: string): Channel['access'] {
+  if (!isRecord(raw)) {
+    return undefined;
+  }
+  const permissions = permissionBits(raw.permissions);
+  if (permissions !== undefined && (permissions & VOICE_ACCESS) !== VOICE_ACCESS) {
+    return 'restricted';
+  }
+  if (guildId && Array.isArray(raw.permission_overwrites)) {
+    const everyone = raw.permission_overwrites.find(
+      (item) => isRecord(item) && item.id === guildId && (item.type === 0 || item.type === 'role'),
+    );
+    if (isRecord(everyone)) {
+      const denied = permissionBits(everyone.deny);
+      if (denied !== undefined) {
+        return (denied & VOICE_ACCESS) !== 0n ? 'restricted' : 'open';
+      }
+    } else if (raw.permission_overwrites.every(isRecord)) {
+      return 'open';
+    }
+  }
+  if (permissions !== undefined) {
+    return 'open';
+  }
+}
+
 /** A GET_SELECTED_VOICE_CHANNEL reply: `null` when out of voice; throws on a malformed channel. */
 export function readSelected(data: unknown): { channel?: Channel; members: Member[] } {
   if (data === null || data === undefined) {
@@ -123,11 +167,14 @@ export function readSelected(data: unknown): { channel?: Channel; members: Membe
     throw new Error('Invalid Discord channel type');
   }
   const fallback = kind === 'dm' ? 'Voice call' : '';
+  const guildId = typeof data.guild_id === 'string' ? data.guild_id : undefined;
+  const access = kind === 'guild' ? readChannelAccess(data, guildId) : undefined;
   const channel: Channel = {
     id: data.id,
     name: cleanName(typeof data.name === 'string' && data.name.trim() ? data.name : fallback),
     kind,
-    ...(typeof data.guild_id === 'string' ? { guildId: data.guild_id } : {}),
+    ...(guildId === undefined ? {} : { guildId }),
+    ...(access === undefined ? {} : { access }),
   };
   if (!validChannel(channel)) {
     throw new Error('Invalid Discord channel');

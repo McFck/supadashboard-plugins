@@ -15,7 +15,14 @@ export const emptyVoice = (lastChannel?: Channel): VoiceState => ({ members: [],
 /** Rebuilds from GET_SELECTED_VOICE_CHANNEL; ordering and speaking survive across snapshots. */
 export function applySelected(state: VoiceState, data: unknown): VoiceState {
   const { channel, members: incoming } = readSelected(data);
-  const next: VoiceState = { ...state, channel };
+  const previousAccess = state.channel?.access;
+  const next: VoiceState = {
+    ...state,
+    channel:
+      channel?.id === state.channel?.id && channel && !channel.access && previousAccess
+        ? { ...channel, access: previousAccess }
+        : channel,
+  };
   let members = state.members;
   if (state.channel?.id !== channel?.id) {
     if (state.channel?.kind === 'guild') {

@@ -2,6 +2,7 @@
 // so two toggles cannot read the same state.
 import { executeVoice, type VoiceCommand } from './actions';
 import { connect, refresh } from './connection';
+import { isRecord, readChannelAccess } from './model';
 import { Rpc } from './rpc';
 import { needsRefresh, readCredentials, saveLastChannel, signOut, type Credentials } from './store';
 import {
@@ -21,6 +22,7 @@ export type Operation =
   | { kind: 'voice'; command: VoiceCommand };
 
 const BACKOFF_SECONDS = [1, 2, 5, 10, 30];
+const CHANNEL_REFRESH_MS = 2000;
 const message = (error: unknown) => (error instanceof Error ? error.message : String(error));
 
 export class Client {
@@ -33,6 +35,7 @@ export class Client {
   private subscribed?: VoiceState['channel'];
   private retry = 0;
   private nextRetry = 0;
+  private nextChannelRefresh = 0;
   private lastView = '';
   private fault?: string;
   private stopped = false;
@@ -60,6 +63,7 @@ export class Client {
         return await job();
       } finally {
         await this.drain();
+        this.publish();
       }
     });
     this.queue = result.catch(() => {});
@@ -113,7 +117,16 @@ export class Client {
         // Re-authenticate the new token on a fresh RPC session without reopening consent.
         this.closeRpc();
       }
-      this.publish();
+      if (this.phase === 'ready' && Date.now() >= this.nextChannelRefresh) {
+        try {
+          await this.selected();
+        } catch (error) {
+          if (this.rpc) {
+            console.warn('Discord channel refresh failed', message(error));
+            this.disconnected();
+          }
+        }
+      }
     })
       .catch(() => {})
       .finally(() => {
@@ -197,13 +210,13 @@ export class Client {
       throw new Error("Discord isn't running");
     }
     const rpc = this.rpc;
+    const queued = rpc.events.length;
     try {
       const data = await rpc.request(cmd, args, event);
-      // Pre-reply dispatches are already reflected in a snapshot. Replaying them could resurrect a departed
-      // member or restore older mute settings.
+      // A snapshot supersedes older deltas. A dispatch received during the request may be newer than the reply,
+      // and channel-selection events always deserve a fresh read.
       const stale = {
         GET_SELECTED_VOICE_CHANNEL: [
-          'VOICE_CHANNEL_SELECT',
           'VOICE_STATE_CREATE',
           'VOICE_STATE_UPDATE',
           'VOICE_STATE_DELETE',
@@ -211,7 +224,9 @@ export class Client {
         GET_VOICE_SETTINGS: ['VOICE_SETTINGS_UPDATE'],
       }[cmd];
       if (stale) {
-        const kept = rpc.events.filter((frame) => !stale.includes(String(frame.evt)));
+        const kept = rpc.events.filter(
+          (frame, index) => index >= queued || !stale.includes(String(frame.evt)),
+        );
         rpc.events.splice(0, rpc.events.length, ...kept);
       }
       return data;
@@ -226,6 +241,7 @@ export class Client {
 
   /** Re-reads the selected channel and moves the per-channel subscriptions with it. */
   async selected() {
+    this.nextChannelRefresh = Date.now() + CHANNEL_REFRESH_MS;
     const next = applySelected(this.voice, await this.request('GET_SELECTED_VOICE_CHANNEL', {}));
     const moves = subscriptions(this.subscribed, next.channel);
     if (this.voice.lastChannel?.id !== next.lastChannel?.id) {
@@ -245,6 +261,25 @@ export class Client {
       await this.rpc.request(cmd, { channel_id: channelId }, event);
     }
     this.subscribed = next.channel;
+    const channel = next.channel;
+    if (moves.length && channel?.guildId && channel.access === undefined) {
+      this.publish();
+      try {
+        const data = await this.request('GET_CHANNELS', { guild_id: channel.guildId });
+        if (isRecord(data) && Array.isArray(data.channels)) {
+          const entry = data.channels.find((item) => isRecord(item) && item.id === channel.id);
+          const access = readChannelAccess(entry, channel.guildId);
+          if (access !== undefined) {
+            this.voice = { ...next, channel: { ...channel, access } };
+          }
+        }
+      } catch (error) {
+        // The guild listing is optional. Some Discord clients reject it with these voice scopes.
+        if (message(error) !== 'Discord rejected GET_CHANNELS') {
+          throw error;
+        }
+      }
+    }
   }
 
   private async drain() {

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { adbCandidates, parseDevices, pickDevice, validSerial } from './adb';
+import { adbCandidates, parseDevices, pickDevice, powerOffArgs, validSerial } from './adb';
 import { Limiter, pulseMillis } from './pulse';
 
 const OUTPUT =
@@ -12,6 +12,20 @@ describe('adb device choice', () => {
     expect(pickDevice(devices)).toBe('R52Y208M6XE');
     expect(pickDevice(devices, 'AAA')).toBeUndefined();
     expect(pickDevice(devices, 'R52Y208M6XE')).toBe('R52Y208M6XE');
+  });
+
+  it('arms a one-shot sleep command only for the ready tablet with lock enabled', () => {
+    const devices = parseDevices(OUTPUT);
+    expect(powerOffArgs(true, pickDevice(devices))).toEqual([
+      '-s',
+      'R52Y208M6XE',
+      'shell',
+      'input',
+      'keyevent',
+      '223',
+    ]);
+    expect(powerOffArgs(false, pickDevice(devices))).toBeNull();
+    expect(powerOffArgs(true, pickDevice(devices, 'AAA'))).toBeNull();
   });
 
   it('two ready devices need a serial', () => {

@@ -15,11 +15,21 @@ export type HapticsConfig = {
   strength: Strength;
   /** Turns the tablet's screen off when the PC sleeps or shuts down. */
   lockWithPc: boolean;
+  artemis: boolean;
+  usbTethering: boolean;
 };
 
 /** Applies the settings natively; true when a tablet is connected. */
 export async function configureHaptics(config: HapticsConfig) {
   return isTauri() && (await callPlugin('haptics', 'configure', config)) === true;
+}
+
+export async function tabletReady() {
+  return isTauri() && (await callPlugin('haptics', 'tabletReady')) === true;
+}
+
+export async function launchArtemis() {
+  await callPlugin('haptics', 'launchArtemis');
 }
 
 export function pulse(kind: PulseKind) {

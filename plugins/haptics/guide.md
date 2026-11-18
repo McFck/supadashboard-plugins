@@ -1,32 +1,18 @@
-Makes a USB-connected Android tablet a better dashboard screen: it vibrates when you press a button and can lock the tablet when the PC sleeps or shuts down. It drives the tablet over **adb**, Android's debugging tool, so nothing is installed on the tablet.
+## Use the tablet as a second screen
 
-Setup takes about ten minutes, once. You need a USB cable that carries data, not only charging.
+**spacedesk:** Install the [Windows Driver and Android Viewer](https://www.spacedesk.net/). Open Viewer on the same network and select the PC. For a cable connection, enable **USB Cable Android** under **Communication Interfaces** in the Windows Driver Console, then plug in the tablet. In Windows display settings, extend the desktop to the new screen.
 
-## 1. Install adb on the PC
+**Apollo + Artemis:** Install [Apollo](https://github.com/ClassicOldSong/Apollo/releases) on Windows and [Artemis](https://github.com/ClassicOldSong/moonlight-android/releases) on Android. Connect both to the same network. Select the PC in Artemis and enter the pairing PIN in Apollo's web UI. Start **Virtual Display** from Artemis, then set Windows to extend to that display. Move the dashboard onto the tablet screen.
 
-1. Download [SDK Platform-Tools for Windows](https://developer.android.com/tools/releases/platform-tools) and unzip it, for example to `C:\platform-tools`.
-2. SupaDashboard finds adb in an installed Android SDK or on PATH. Otherwise paste the full path to `adb.exe` into **ADB path** on this page, for example `C:\platform-tools\adb.exe`.
+## Connect ADB
 
-## 2. Turn on USB debugging on the tablet
+1. Unzip [Android SDK Platform-Tools for Windows](https://developer.android.com/tools/releases/platform-tools). If ADB is outside your Android SDK or PATH, enter the full path to `adb.exe` in **ADB path**.
+2. On the tablet, tap **Build number** seven times in **About tablet** or **Software information**. Open **Developer options** and turn on **USB debugging**.
+3. Connect with a USB data cable. Unlock the tablet and accept **Allow USB debugging**. Run `adb devices` from the platform-tools folder. The tablet should show as `device`. If it says `unauthorized`, accept the prompt on the tablet.
+4. Turn on **Tablet** in the plugin. If several devices are listed, enter the tablet's serial in **Device serial**.
 
-1. Open **Settings**, then **About tablet**, and tap **Build number** seven times until the tablet says you are a developer. On some tablets it is under **Software information**.
-2. Open **Settings**, then **System**, then **Developer options**, and turn on **USB debugging**.
-3. Connect the tablet to the PC. When the tablet asks to allow USB debugging, tick **Always allow from this computer** and tap **Allow**.
+**Lock with PC** sends the Android sleep key when Windows suspends or ends the session. Set a tablet screen lock and choose when it locks after the screen turns off.
 
-## 3. Check that the PC sees the tablet
+**Launch Artemis on connect** opens Artemis when ADB connects. Select the stream in Artemis. **USB tethering** can give Apollo and Artemis a network over the cable if the tablet supports it. If the switch fails, enable USB tethering in Android settings or use Wi-Fi.
 
-1. Open the platform-tools folder, type `cmd` in the File Explorer address bar and press Enter.
-2. Run `adb devices`. The tablet should be listed with the word `device`.
-3. `unauthorized` means the prompt on the tablet was not accepted: unplug the cable, plug it back in and allow it. An empty list usually means the cable only charges; try another one.
-
-## 4. Turn it on
-
-1. Turn on **Tablet** on this page. The tablet is found by itself.
-2. With more than one Android device connected, copy the tablet's serial from `adb devices` into **Device serial**.
-3. Pick a **Vibration strength** and choose whether every press vibrates with **Vibrate on press**.
-4. Turn on **Lock with PC** to switch the tablet's screen off when the PC sleeps, shuts down, restarts or signs out.
-
-## Use it
-
-- Add the **Vibrate** action to a button or scenario for a **Tick**, **Tap** or **Confirm** pulse.
-- Vibration needs Android 12 or newer and a tablet with a vibration motor. Locking works without one.
+Vibration requires Android 12 or newer and a vibration motor.

@@ -25,6 +25,10 @@ export function pickDevice(devices: Device[], wanted?: string): string | undefin
 
 export const validSerial = (serial: string) => /^[A-Za-z0-9._:-]{1,64}$/.test(serial);
 
+export function powerOffArgs(lockWithPc: boolean, serial?: string): string[] | null {
+  return lockWithPc && serial ? ['-s', serial, 'shell', 'input', 'keyevent', '223'] : null;
+}
+
 /**
  * Programs to try in order: the override, else an installed SDK's platform-tools, else adb on PATH. The host
  * expands `%VAR%` (an unset one fails to start), so the first that runs `adb devices` wins.

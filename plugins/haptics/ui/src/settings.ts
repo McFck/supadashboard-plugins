@@ -10,6 +10,8 @@ export type HapticsSettings = {
   serial: string;
   strength: Strength;
   lockWithPc: boolean;
+  artemis: boolean;
+  usbTethering: boolean;
 };
 
 const KEY = 'settings';
@@ -20,6 +22,8 @@ export const DEFAULTS: HapticsSettings = {
   serial: '',
   strength: 'medium',
   lockWithPc: false,
+  artemis: false,
+  usbTethering: false,
 };
 
 export function normalizeSettings(raw: unknown): HapticsSettings {
@@ -33,6 +37,8 @@ export function normalizeSettings(raw: unknown): HapticsSettings {
     // Files saved before strength existed read as the default.
     strength: STRENGTHS.find((strength) => strength === value.strength) ?? DEFAULTS.strength,
     lockWithPc: value.lockWithPc === true,
+    artemis: value.artemis === true,
+    usbTethering: value.usbTethering === true,
   };
 }
 
@@ -42,6 +48,8 @@ export const toConfig = (s: HapticsSettings): HapticsConfig => ({
   serial: s.serial || undefined,
   strength: s.strength,
   lockWithPc: s.lockWithPc,
+  artemis: s.artemis,
+  usbTethering: s.usbTethering,
 });
 
 async function openStore(): Promise<Store> {

@@ -1,5 +1,5 @@
 {
   "title": "Android compatibility",
-  "description": "Haptics and screen lock for a USB-connected Android tablet, over adb.",
-  "icon": "vibrate"
+  "description": "Vibration, screen lock, and Artemis launch for an Android tablet over ADB.",
+  "icon": "android"
 }

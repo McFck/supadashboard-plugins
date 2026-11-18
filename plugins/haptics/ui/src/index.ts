@@ -1,6 +1,6 @@
 import { isTauri } from '@tauri-apps/api/core';
 import { currentRuntime, providePlugin, whileOwner, type Plugin } from '@supadashboard/kit';
-import { pulse, PULSE_KINDS, type PulseKind } from './haptics';
+import { launchArtemis, pulse, PULSE_KINDS, type PulseKind } from './haptics';
 import { HapticsService } from './service';
 import HapticsSection from './components/HapticsSection.svelte';
 import { DEFAULTS, loadSettings, toConfig, watchSettings, type HapticsSettings } from './settings';
@@ -42,6 +42,11 @@ const hapticsPlugin: Plugin = {
         pulse(kind);
       },
     });
+    api.registerAction({
+      id: 'haptics.launch-artemis',
+      title: 'Launch Artemis',
+      run: launchArtemis,
+    });
     if (!isTauri()) {
       return;
     }
@@ -52,11 +57,16 @@ const hapticsPlugin: Plugin = {
       const unprovide = providePlugin('haptics', {
         configure: service.configure,
         pulse: service.pulse,
+        tabletReady: service.tabletReady,
+        launchArtemis: service.launchArtemis,
       });
       let stopped = false;
       let unwatch: (() => void) | undefined;
       loadSettings()
         .then((saved) => {
+          if (stopped) {
+            return;
+          }
           current = saved;
           return saved.enabled ? service.configure(toConfig(saved)) : undefined;
         })

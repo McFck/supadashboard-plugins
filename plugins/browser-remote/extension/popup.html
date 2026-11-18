@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Browser Remote</title>
+  </head>
+  <body>
+    <form>
+      <label for="code">Pairing code</label>
+      <input
+        id="code"
+        name="code"
+        required
+        minlength="32"
+        maxlength="32"
+        autocomplete="off"
+        spellcheck="false"
+      />
+      <button type="submit">Pair</button>
+      <p role="status"></p>
+    </form>
+    <script
+      type="module"
+      src="popup.js"
+    ></script>
+  </body>
+</html>

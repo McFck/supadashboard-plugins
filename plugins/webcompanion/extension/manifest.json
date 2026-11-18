@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "SupaDashboard Browser Remote",
+  "name": "SupaDashboard WebCompanion",
   "version": "0.1.0",
   "minimum_chrome_version": "116",
   "incognito": "not_allowed",
@@ -10,5 +10,5 @@
     "extension_pages": "script-src 'self'; object-src 'none'; connect-src ws://127.0.0.1:43822"
   },
   "background": { "service_worker": "worker.js", "type": "module" },
-  "action": { "default_title": "Browser Remote", "default_popup": "popup.html" }
+  "action": { "default_title": "SupaDashboard WebCompanion", "default_popup": "popup.html" }
 }

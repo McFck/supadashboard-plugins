@@ -1,8 +1,8 @@
 import { pluginBrowser, toast, type PluginBrowserSnapshot } from '@supadashboard/kit';
 
-const plugin = 'browser-remote';
+const plugin = 'webcompanion';
 
-class BrowserRemote {
+class WebCompanion {
   snapshot = $state<PluginBrowserSnapshot>({ kind: 'offline' });
   code = $state('');
   ready = $state(false);
@@ -38,7 +38,7 @@ class BrowserRemote {
       })
       .catch((error: unknown) => {
         if (this.handle === handle) {
-          this.error(error, 'Could not start Browser Remote');
+          this.error(error, 'Could not start WebCompanion');
         }
         return null;
       });
@@ -62,7 +62,7 @@ class BrowserRemote {
             await pluginBrowser.unwatch(plugin, id);
           }
         })
-        .catch((error: unknown) => this.error(error, 'Could not stop Browser Remote'));
+        .catch((error: unknown) => this.error(error, 'Could not stop WebCompanion'));
     }
   }
 
@@ -102,4 +102,4 @@ class BrowserRemote {
   }
 }
 
-export const browserRemote = new BrowserRemote();
+export const webCompanion = new WebCompanion();

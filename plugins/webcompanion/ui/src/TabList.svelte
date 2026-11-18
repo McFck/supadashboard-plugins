@@ -1,21 +1,21 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { browserRemote } from './browser-remote.svelte';
+  import { webCompanion } from './webcompanion.svelte';
 
-  onMount(() => browserRemote.mount());
+  onMount(() => webCompanion.mount());
 </script>
 
-{#if browserRemote.snapshot.kind === 'connected'}
+{#if webCompanion.snapshot.kind === 'connected'}
   <ul
     style="max-height: 100%; overflow: auto"
     aria-label="Browser tabs"
   >
-    {#each browserRemote.snapshot.tabs as tab (tab.id)}
+    {#each webCompanion.snapshot.tabs as tab (tab.id)}
       <li>
         <button
           type="button"
           aria-pressed={tab.active}
-          onclick={() => browserRemote.activate(tab.id)}
+          onclick={() => webCompanion.activate(tab.id)}
         >
           {tab.title || 'Untitled tab'}
         </button>

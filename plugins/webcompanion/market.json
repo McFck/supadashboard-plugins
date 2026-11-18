@@ -1,5 +1,5 @@
 {
-  "title": "Browser Remote",
+  "title": "SupaDashboard WebCompanion",
   "description": "List and activate tabs in a paired Chromium browser.",
-  "icon": "browser-remote"
+  "icon": "webcompanion"
 }

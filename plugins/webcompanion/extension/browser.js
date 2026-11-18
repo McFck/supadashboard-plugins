@@ -1,8 +1,17 @@
 import { fields, idInRange, title, website } from './protocol.js';
 
+const pages = new Map();
+const injections = new Map();
+const activeTabs = new Map();
 let selectedWindow;
+let refresh = () => {};
 
-async function activeTab(tabs) {
+export function selectTab({ id, windowId }) {
+  activeTabs.set(windowId, id);
+  selectedWindow = windowId;
+}
+
+export async function activeTab(tabs) {
   const selected = tabs.find((tab) => tab.active && tab.windowId === selectedWindow);
   if (selected) {
     return selected;
@@ -13,58 +22,113 @@ async function activeTab(tabs) {
   );
 }
 
-async function page(tab, message) {
-  if (!tab.url || !website(tab.url)) {
-    throw new Error('This page does not allow browser controls');
-  }
-  const send = () => chrome.tabs.sendMessage(tab.id, message, { frameId: 0 });
-  try {
-    return await send();
-  } catch {
-    // Existing tabs and newly navigated documents may not have the content script yet.
-    await chrome.scripting.executeScript({ target: { tabId: tab.id }, files: ['page.js'] });
-    return send();
-  }
-}
-
-async function mediaOn(tab) {
-  try {
-    const status = await page(tab, { kind: 'status' });
-    if (status) {
-      return { tab: tab.id, ...status };
+export function scroll(frame) {
+  const page = pages.get(activeTabs.get(selectedWindow));
+  if (page) {
+    try {
+      page.port.postMessage(frame);
+    } catch {
+      // The document may have navigated before onDisconnect is delivered.
     }
-  } catch {
-    // Chrome blocks scripting on some pages, and tabs can close during a snapshot.
   }
-  return null;
 }
 
-async function mediaState(tabs, active) {
-  const current = active ? await mediaOn(active) : null;
-  let media = current;
-  if (current?.paused !== false) {
-    const audible = tabs.filter((tab) => tab.audible && tab.id !== active?.id);
-    const players = await Promise.all(audible.map(mediaOn));
-    media = players.find((player) => player?.paused === false) ?? current;
+export async function ensure(tab) {
+  if (pages.has(tab.id) || tab.status !== 'complete' || !tab.url || !website(tab.url)) {
+    return;
   }
-  if (!media) {
-    return null;
+  let attempt = injections.get(tab.id);
+  if (!attempt) {
+    // Tabs already open at install time do not get the declared content script.
+    attempt = chrome.scripting.executeScript({ target: { tabId: tab.id }, files: ['page.js'] });
+    injections.set(tab.id, attempt);
   }
-  const tab = tabs.find((item) => item.id === media.tab);
-  const window = await chrome.windows.get(tab.windowId).catch(() => null);
-  return window ? { ...media, fullscreen: window.state === 'fullscreen' } : null;
+  await attempt;
+}
+
+chrome.runtime.onConnect.addListener((port) => {
+  const sender = port.sender;
+  const id = sender?.tab?.id;
+  if (
+    port.name !== 'scroll' ||
+    sender?.id !== chrome.runtime.id ||
+    sender.frameId !== 0 ||
+    !idInRange(id, 0x7fffffff) ||
+    !sender.url ||
+    !website(sender.url)
+  ) {
+    port.disconnect();
+    return;
+  }
+  const page = { port, media: null };
+  pages.set(id, page);
+  port.onMessage.addListener((message) => {
+    if (
+      pages.get(id) !== page ||
+      !fields(message, 'kind', 'media') ||
+      message.kind !== 'media_changed'
+    ) {
+      return;
+    }
+    const media = message.media;
+    if (
+      media !== null &&
+      (!fields(media, 'paused', 'rate') ||
+        typeof media.paused !== 'boolean' ||
+        typeof media.rate !== 'number' ||
+        !(media.rate === 0 || (media.rate >= 0.0625 && media.rate <= 16)))
+    ) {
+      return;
+    }
+    page.media = media;
+    refresh();
+  });
+  port.onDisconnect.addListener(() => {
+    if (pages.get(id) === page) {
+      pages.delete(id);
+      refresh();
+    }
+  });
+});
+
+export function mediaTab(tabs, active) {
+  if (pages.get(active?.id)?.media?.paused === false) {
+    return active;
+  }
+  return (
+    tabs.find((tab) => tab.audible && pages.get(tab.id)?.media?.paused === false) ??
+    (pages.get(active?.id)?.media ? active : undefined)
+  );
 }
 
 async function snapshot() {
   const all = (await chrome.tabs.query({ windowType: 'normal' })).filter((tab) =>
     idInRange(tab.id, 0x7fffffff),
   );
+  for (const tab of all) {
+    if (tab.active && !activeTabs.has(tab.windowId)) {
+      activeTabs.set(tab.windowId, tab.id);
+    }
+  }
   const active = await activeTab(all);
+  if (!activeTabs.has(selectedWindow)) {
+    selectedWindow = active?.windowId;
+  }
   const tabs = all.slice(0, 256);
   if (active && !tabs.includes(active)) {
     tabs[255] = active;
   }
-  const media = await mediaState(tabs, active);
+  for (const tab of tabs) {
+    if (tab.id === active?.id || tab.audible) {
+      void ensure(tab).catch(() => {
+        // Some browser pages cannot be scripted even with host permission.
+      });
+    }
+  }
+  const player = mediaTab(tabs, active);
+  const status = pages.get(player?.id)?.media;
+  const window =
+    player && status ? await chrome.windows.get(player.windowId).catch(() => null) : null;
   return {
     kind: 'state',
     state: {
@@ -78,89 +142,69 @@ async function snapshot() {
         };
       }),
       activeTab: active?.id ?? null,
-      media,
+      media: window
+        ? { tab: player.id, ...status, fullscreen: window.state === 'fullscreen' }
+        : null,
     },
   };
 }
 
-async function run(action) {
-  switch (action.kind) {
-    case 'activate': {
-      const tab = await chrome.tabs.update(action.tab, { active: true });
-      selectedWindow = tab.windowId;
-      return;
-    }
-    case 'close':
-      await chrome.tabs.remove(action.tab);
-      return;
-    case 'open': {
-      const url = website(action.url);
-      const tab = await activeTab(await chrome.tabs.query({ windowType: 'normal', active: true }));
-      if (!url || !tab) {
-        throw new Error('No browser window or invalid URL');
-      }
-      if (action.destination === 'current') {
-        await chrome.tabs.update(tab.id, { url });
-      } else if (action.destination === 'new') {
-        await chrome.tabs.create({ windowId: tab.windowId, url, active: true });
-      } else {
-        throw new Error('Invalid destination');
-      }
-      return;
-    }
-    case 'scroll': {
-      const tab = await activeTab(await chrome.tabs.query({ windowType: 'normal', active: true }));
-      if (!tab || tab.id !== action.tab || (await page(tab, action)) !== true) {
-        throw new Error('No active scroll target');
-      }
-      return;
-    }
-    case 'media': {
-      const tab = await chrome.tabs.get(action.tab);
-      if (action.input.kind === 'fullscreen') {
-        const window = await chrome.windows.get(tab.windowId);
-        await chrome.windows.update(tab.windowId, {
-          state: window.state === 'fullscreen' ? 'normal' : 'fullscreen',
-        });
-      } else if ((await page(tab, action)) !== true) {
-        throw new Error('No media target');
-      }
-      return;
-    }
-    default:
-      throw new Error('Unknown browser action');
+chrome.tabs.onActivated.addListener(({ tabId, windowId }) => {
+  activeTabs.set(windowId, tabId);
+  refresh();
+});
+chrome.windows.onFocusChanged.addListener((id) => {
+  if (id !== chrome.windows.WINDOW_ID_NONE) {
+    selectedWindow = id;
+    refresh();
   }
+});
+chrome.windows.onRemoved.addListener((id) => {
+  activeTabs.delete(id);
+  if (selectedWindow === id) {
+    selectedWindow = undefined;
+  }
+  refresh();
+});
+chrome.tabs.onUpdated.addListener((id, change) => {
+  if (change.status === 'loading') {
+    injections.delete(id);
+  }
+  refresh();
+});
+chrome.tabs.onDetached.addListener((id, { oldWindowId }) => {
+  if (activeTabs.get(oldWindowId) === id) {
+    activeTabs.delete(oldWindowId);
+  }
+  refresh();
+});
+function removeTab(id) {
+  pages.delete(id);
+  injections.delete(id);
+  for (const [window, active] of activeTabs) {
+    if (active === id) {
+      activeTabs.delete(window);
+    }
+  }
+  refresh();
 }
-
-export async function reply(message) {
-  if (!fields(message, 'id', 'action') || !idInRange(message.id, 0xffffffff)) {
-    throw new Error('Invalid browser request');
-  }
-  try {
-    await run(message.action);
-    return { kind: 'done', id: message.id, ok: true };
-  } catch {
-    return { kind: 'done', id: message.id, ok: false };
-  }
-}
+chrome.tabs.onRemoved.addListener(removeTab);
+chrome.tabs.onReplaced.addListener((_added, removed) => removeTab(removed));
 
 export function observe(send, onError) {
   const events = [
     chrome.tabs.onCreated,
-    chrome.tabs.onUpdated,
-    chrome.tabs.onActivated,
-    chrome.tabs.onRemoved,
     chrome.tabs.onMoved,
     chrome.tabs.onAttached,
-    chrome.tabs.onDetached,
-    chrome.tabs.onReplaced,
     chrome.windows.onBoundsChanged,
   ];
   let timer;
   let running = false;
   let pending = false;
   let stopped = false;
-  function refresh() {
+  let heartbeatDue = false;
+  let lastState;
+  function schedule() {
     pending = true;
     if (!running && timer === undefined && !stopped) {
       timer = setTimeout(publish, 35);
@@ -170,10 +214,13 @@ export function observe(send, onError) {
     timer = undefined;
     running = true;
     pending = false;
+    const heartbeat = heartbeatDue;
+    heartbeatDue = false;
     try {
-      const state = await snapshot();
-      if (!stopped) {
+      const state = JSON.stringify(await snapshot());
+      if (!stopped && (heartbeat || state !== lastState)) {
         send(state);
+        lastState = state;
       }
     } catch (error) {
       if (!stopped) {
@@ -182,40 +229,32 @@ export function observe(send, onError) {
     } finally {
       running = false;
       if (pending) {
-        refresh();
+        schedule();
       }
-    }
-  }
-  function focus(windowId) {
-    if (windowId !== chrome.windows.WINDOW_ID_NONE) {
-      selectedWindow = undefined;
-      refresh();
-    }
-  }
-  function media(message, sender) {
-    if (message?.kind === 'media_changed' && sender.tab && sender.frameId === 0) {
-      refresh();
     }
   }
   for (const event of events) {
-    event.addListener(refresh);
+    event.addListener(schedule);
   }
-  chrome.windows.onFocusChanged.addListener(focus);
-  chrome.runtime.onMessage.addListener(media);
-  // Idle traffic keeps the MV3 worker alive and recovers missed page notifications.
-  const heartbeat = setInterval(refresh, 15_000);
-  refresh();
+  refresh = schedule;
+  // Idle traffic keeps the MV3 worker connected.
+  const heartbeat = setInterval(() => {
+    heartbeatDue = true;
+    schedule();
+  }, 15_000);
+  schedule();
   return {
-    refresh,
+    refresh: schedule,
     stop() {
       stopped = true;
+      if (refresh === schedule) {
+        refresh = () => {};
+      }
       clearTimeout(timer);
       clearInterval(heartbeat);
       for (const event of events) {
-        event.removeListener(refresh);
+        event.removeListener(schedule);
       }
-      chrome.windows.onFocusChanged.removeListener(focus);
-      chrome.runtime.onMessage.removeListener(media);
     },
   };
 }

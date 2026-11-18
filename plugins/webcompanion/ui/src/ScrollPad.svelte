@@ -1,20 +1,23 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { Button, type PluginBrowserScroll } from '@supadashboard/kit';
-  import { ScrollPadController } from './scroll-pad.svelte';
+  import { Button, type PluginBrowserAction } from '@supadashboard/kit';
+  import { PagePadController } from './page-pad.svelte';
   import { webCompanion } from './webcompanion.svelte';
 
-  let { tab }: { tab: number } = $props();
   let pad = $state<HTMLButtonElement | null>(null);
   const buttons = [
     { key: 'Home', label: 'Top', input: { kind: 'top' } },
     { key: 'PageUp', label: 'Page up', input: { kind: 'page_up' } },
     { key: 'PageDown', label: 'Page down', input: { kind: 'page_down' } },
     { key: 'End', label: 'Bottom', input: { kind: 'bottom' } },
-  ] satisfies { key: string; label: string; input: PluginBrowserScroll }[];
+  ] satisfies {
+    key: string;
+    label: string;
+    input: Extract<PluginBrowserAction, { kind: 'page' }>['input'];
+  }[];
 
-  function send(input: PluginBrowserScroll, signal?: AbortSignal) {
-    return webCompanion.action({ kind: 'scroll', tab, input }, signal);
+  function send(input: (typeof buttons)[number]['input']) {
+    return webCompanion.action({ kind: 'page', input });
   }
 
   function keydown(event: KeyboardEvent) {
@@ -27,7 +30,7 @@
 
   onMount(() => {
     if (pad) {
-      const controller = new ScrollPadController(pad, send);
+      const controller = new PagePadController(pad, webCompanion.scroll);
       return () => controller.destroy();
     }
   });

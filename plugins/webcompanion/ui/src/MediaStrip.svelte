@@ -1,13 +1,13 @@
 <script lang="ts">
-  import { Button, type PluginBrowserMedia, type PluginBrowserSnapshot } from '@supadashboard/kit';
+  import { Button, type PluginBrowserAction, type PluginBrowserSnapshot } from '@supadashboard/kit';
   import { webCompanion } from './webcompanion.svelte';
 
   type Media = NonNullable<Extract<PluginBrowserSnapshot, { kind: 'connected' }>['media']>;
   let { media }: { media: Media } = $props();
   const rates = [0.5, 0.75, 1, 1.25, 1.5, 1.75, 2];
 
-  function send(input: PluginBrowserMedia) {
-    return webCompanion.action({ kind: 'media', tab: media.tab, input });
+  function send(input: Extract<PluginBrowserAction, { kind: 'media' }>['input']) {
+    return webCompanion.action({ kind: 'media', input });
   }
 
   function changeSpeed(event: Event) {
@@ -32,13 +32,13 @@
     size="xs"
     variant="outline"
     aria-label="Back 10 seconds"
-    onclick={() => send({ kind: 'back' })}>−10 s</Button
+    onclick={() => send({ kind: 'seek', seconds: -10 })}>−10 s</Button
   >
   <Button
     size="xs"
     variant="outline"
     aria-label="Forward 10 seconds"
-    onclick={() => send({ kind: 'forward' })}>+10 s</Button
+    onclick={() => send({ kind: 'seek', seconds: 10 })}>+10 s</Button
   >
   <select
     aria-label="Playback speed"

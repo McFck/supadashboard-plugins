@@ -44,11 +44,7 @@
         <li>No tabs</li>
       {/each}
     </ul>
-    {#if snapshot.activeTab !== null}
-      {#key snapshot.activeTab}
-        <ScrollPad tab={snapshot.activeTab} />
-      {/key}
-    {/if}
+    <ScrollPad />
     {#if snapshot.media}
       <MediaStrip media={snapshot.media} />
     {/if}

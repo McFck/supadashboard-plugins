@@ -3,6 +3,7 @@ import {
   pluginBrowser,
   toast,
   type PluginBrowserAction,
+  type PluginBrowserScrollFrame,
   type PluginBrowserSnapshot,
 } from '@supadashboard/kit';
 
@@ -14,6 +15,7 @@ class WebCompanion {
   ready = $state(false);
   private users = 0;
   private handle: Promise<number | null> | undefined;
+  private watch: number | null = null;
   private stopping = Promise.resolve();
 
   mount() {
@@ -38,6 +40,7 @@ class WebCompanion {
       )
       .then((id) => {
         if (this.handle === handle) {
+          this.watch = id;
           this.ready = true;
         }
         return id;
@@ -58,6 +61,7 @@ class WebCompanion {
     }
     const handle = this.handle;
     this.handle = undefined;
+    this.watch = null;
     this.ready = false;
     this.snapshot = { kind: 'offline' };
     this.code = '';
@@ -87,25 +91,30 @@ class WebCompanion {
     }
   }
 
-  async action(action: PluginBrowserAction, signal?: AbortSignal) {
-    const snapshot = this.snapshot;
-    if (snapshot.kind !== 'connected') {
+  async action(action: PluginBrowserAction) {
+    if (this.snapshot.kind !== 'connected') {
       return false;
     }
     const handle = this.handle;
     try {
       const watch = await handle;
-      if (watch != null && this.handle === handle && !signal?.aborted) {
-        await pluginBrowser.action(plugin, watch, snapshot.revision, action);
+      if (watch != null && this.handle === handle) {
+        await pluginBrowser.action(plugin, watch, action);
         return true;
       }
     } catch (error) {
-      if (!signal?.aborted) {
-        this.error(error, 'Browser command failed');
-      }
+      this.error(error, 'Browser command failed');
     }
     return false;
   }
+
+  scroll = (frame: PluginBrowserScrollFrame): boolean => {
+    if (this.snapshot.kind !== 'connected' || this.watch === null) {
+      return false;
+    }
+    pluginBrowser.scroll(plugin, this.watch, frame);
+    return true;
+  };
 
   async open(url: string, destination: 'new' | 'current', signal?: AbortSignal) {
     const watch = await this.handle;
@@ -116,7 +125,7 @@ class WebCompanion {
       throw new ActionFailure('WebCompanion is offline');
     }
     try {
-      await pluginBrowser.open(plugin, watch, url, destination);
+      await pluginBrowser.action(plugin, watch, { kind: 'open', url, destination });
     } catch (error) {
       throw new ActionFailure(typeof error === 'string' ? error : 'Could not open website');
     }

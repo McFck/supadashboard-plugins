@@ -22,6 +22,8 @@ export function pagePort(id) {
   return pages.get(id)?.port;
 }
 
+export const tabOrder = (a, b) => a.windowId - b.windowId || a.index - b.index;
+
 export async function activeTab(tabs) {
   const selected = tabs.find((tab) => tab.active && tab.windowId === selectedWindow);
   if (selected) {
@@ -129,9 +131,7 @@ async function snapshot() {
     chrome.tabs.query({ windowType: 'normal' }),
     chrome.tabGroups.query({}),
   ]);
-  const all = open
-    .filter((tab) => idInRange(tab.id, 0x7fffffff))
-    .sort((a, b) => a.windowId - b.windowId || a.index - b.index);
+  const all = open.filter((tab) => idInRange(tab.id, 0x7fffffff)).sort(tabOrder);
   for (const tab of all) {
     if (tab.active && !activeTabs.has(tab.windowId)) {
       activeTabs.set(tab.windowId, tab.id);

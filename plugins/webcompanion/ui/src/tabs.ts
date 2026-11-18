@@ -1,4 +1,4 @@
-import type { PluginBrowserSnapshot } from '@supadashboard/kit';
+import type { ControlConfig, PluginBrowserSnapshot } from '@supadashboard/kit';
 
 type Browser = Extract<PluginBrowserSnapshot, { kind: 'connected' }>;
 export type BrowserTab = Browser['tabs'][number];
@@ -9,6 +9,9 @@ type Window = {
   pinned: BrowserTab[];
   rows: (GroupRow | { kind: 'tab'; tab: BrowserTab })[];
 };
+
+export const tabOrientation = (options: ControlConfig['options']) =>
+  options?.tabOrientation === 'horizontal' ? 'horizontal' : 'vertical';
 
 export function tabWindows(browser: Browser | null): Window[] {
   if (!browser) {

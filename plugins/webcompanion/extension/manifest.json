@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "SupaDashboard WebCompanion",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "minimum_chrome_version": "116",
   "incognito": "not_allowed",
   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsM13KUJ3QVw4vjeTj/Vw30NNQCSNAcXiqeeP2t9rG11gMLGYeQBU/Mt7vpAtmhtYhL89BiATV2Q1lvngQHz8S+MEf5PhdRetbfyP8DDKu6XzixqkUmFpM1hCPR53HO0ZMUMVJci6/ZagkZwOwxolk7m0Yt8xjrURgFQHIuIIjUkCxooAqsEABgYIqHPtC4MtXfTvh5u+owhkpM1jJbKz9aTR0HpOQAwkB+hBTq6S/YccDahvFKW5f4HBnCsj3p+3xX3swGuPNmWhfZakQoHwsN/C41UYVXCfTNKrwnHTcudaS6GeEI8l8aSNNPGy6ksO9X+h0DfFKQ3FHMsIbDblRQIDAQAB",

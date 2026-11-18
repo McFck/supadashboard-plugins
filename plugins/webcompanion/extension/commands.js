@@ -1,4 +1,4 @@
-import { activeTab, ensure, mediaTab, selectTab } from './browser.js';
+import { activeTab, ensure, mediaTab, selectTab, tabOrder } from './browser.js';
 import { fields, idInRange, website } from './protocol.js';
 import { suspendMedia } from './suspend.js';
 
@@ -44,13 +44,13 @@ async function select(id, pointer) {
 
 async function cycle(tab, direction, pointer) {
   const [tabs, groups] = await Promise.all([
-    chrome.tabs.query({ windowId: tab.windowId }),
-    chrome.tabGroups.query({ windowId: tab.windowId, collapsed: true }),
+    chrome.tabs.query({ windowType: 'normal' }),
+    chrome.tabGroups.query({ collapsed: true }),
   ]);
   const collapsed = new Set(groups.map((group) => group.id));
   const visible = tabs
-    .filter((entry) => entry.id === tab.id || !collapsed.has(entry.groupId))
-    .sort((a, b) => a.index - b.index);
+    .filter((entry) => entry.active || !collapsed.has(entry.groupId))
+    .sort(tabOrder);
   const index = visible.findIndex((entry) => entry.id === tab.id);
   if (index === -1) {
     throw GONE;
@@ -58,6 +58,27 @@ async function cycle(tab, direction, pointer) {
   const target = visible[(index + direction + visible.length) % visible.length];
   if (target.id !== tab.id) {
     return select(target.id, pointer);
+  }
+  return true;
+}
+
+async function moveTab({ tab, anchor, side }) {
+  if (tab === anchor || (side !== 'before' && side !== 'after')) {
+    return false;
+  }
+  const [source, target] = await Promise.all([existingTab(tab), existingTab(anchor)]);
+  if (
+    source.windowId !== target.windowId ||
+    source.groupId !== target.groupId ||
+    source.pinned !== target.pinned
+  ) {
+    return false;
+  }
+  // The API takes the index after removing the source from the strip.
+  const boundary = target.index + Number(side === 'after');
+  const index = boundary - Number(source.index < boundary);
+  if (index !== source.index) {
+    await chrome.tabs.move(tab, { index });
   }
   return true;
 }
@@ -121,6 +142,7 @@ async function run(action, pointer) {
     case 'tab':
     case 'select_tab':
     case 'close_tab':
+    case 'move_tab':
     case 'group': {
       const command = tabCommands.then(async () => {
         switch (action.kind) {
@@ -130,6 +152,8 @@ async function run(action, pointer) {
             await existingTab(action.tab);
             await chrome.tabs.remove(action.tab);
             return true;
+          case 'move_tab':
+            return moveTab(action);
           case 'group':
             await chrome.tabGroups.update(action.group, { collapsed: action.collapsed });
             return true;

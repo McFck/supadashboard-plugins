@@ -4,6 +4,7 @@ import PairingSection from './PairingSection.svelte';
 import BrowserTouchpad from './BrowserTouchpad.svelte';
 import BrowserTabs from './BrowserTabs.svelte';
 import TouchpadEditor from './TouchpadEditor.svelte';
+import TabsEditor from './TabsEditor.svelte';
 import { browserActions } from './actions';
 import { webCompanion } from './webcompanion.svelte';
 
@@ -35,8 +36,9 @@ const plugin: Plugin = {
       title: 'Browser Tabs',
       icon: 'webcompanion-tabs',
       component: BrowserTabs,
+      editor: TabsEditor,
       size: { w: 2, h: 4 },
-      minSize: { w: 2, h: 2 },
+      minSize: { w: 2, h: 1 },
       maxSize: { w: 8, h: 8 },
       triggers: [],
       create: () => ({

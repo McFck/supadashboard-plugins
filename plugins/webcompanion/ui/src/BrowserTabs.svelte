@@ -1,7 +1,8 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { Button, Icon, type PluginBrowserAction } from '@supadashboard/kit';
-  import { tabWindows, type BrowserTab } from './tabs';
+  import { Button, Icon, type ControlConfig, type PluginBrowserAction } from '@supadashboard/kit';
+  import { tabOrientation, tabWindows, type BrowserTab } from './tabs';
+  import { TabGestures } from './tab-gestures.svelte';
   import { webCompanion } from './webcompanion.svelte';
 
   const colors = {
@@ -19,9 +20,21 @@
     webCompanion.snapshot.kind === 'connected' ? webCompanion.snapshot : null,
   );
   const windows = $derived(tabWindows(browser));
+  let { control }: { control?: ControlConfig } = $props();
+  const horizontal = $derived(tabOrientation(control?.options) === 'horizontal');
+  let viewport = $state<HTMLElement>();
+  let track = $state<HTMLElement>();
+  let gestures = $state<TabGestures>();
   let pending = $state<number | null>(null);
   const active = $derived(pending ?? browser?.activeTab);
   onMount(() => webCompanion.mount());
+  $effect(() => {
+    if (viewport && track) {
+      const actions = new TabGestures(viewport, track, horizontal, send);
+      gestures = actions;
+      return () => actions.destroy();
+    }
+  });
 
   async function select(tab: number) {
     pending = tab;
@@ -49,6 +62,7 @@
           alt=""
           width="18"
           height="18"
+          draggable={false}
           onerror={(event) => {
             event.currentTarget.setAttribute('hidden', '');
           }}
@@ -62,110 +76,126 @@
   <div
     class="tab-row"
     class:current={tab.id === active}
+    class:dragging={tab.id === gestures?.dragging}
+    data-drop={tab.id === gestures?.drop?.anchor ? gestures.drop.side : undefined}
+    data-tab-id={tab.id}
+    data-tab-lane={`${tab.window}:${tab.group ?? (tab.pinned ? 'pinned' : 'ungrouped')}`}
   >
     <Button
       variant="ghost"
-      size="sm"
+      size="lg"
       class="min-w-0 flex-1 justify-start gap-2"
+      data-tab-select
       title={tab.title}
       aria-pressed={tab.id === active}
+      aria-keyshortcuts={horizontal ? 'Alt+ArrowLeft Alt+ArrowRight' : 'Alt+ArrowUp Alt+ArrowDown'}
+      onkeydown={(event) => gestures?.key(event)}
       onclick={() => select(tab.id)}
     >
       {@render favicon(tab)}
       <span class="truncate">{tab.title || 'New tab'}</span>
     </Button>
-    <Button
-      variant="ghost"
-      size="icon-sm"
-      aria-label={`Close ${tab.title || 'tab'}`}
-      onclick={() => send({ kind: 'close_tab', tab: tab.id })}
-    >
-      <Icon
-        name="X"
-        size={15}
-      />
-    </Button>
+    {#if !tab.pinned}
+      <Button
+        variant="ghost"
+        size="icon"
+        class="min-w-12"
+        aria-label={`Close ${tab.title || 'tab'}`}
+        onclick={() => send({ kind: 'close_tab', tab: tab.id })}
+      >
+        <Icon
+          name="X"
+          size={15}
+        />
+      </Button>
+    {/if}
   </div>
 {/snippet}
 
 <div
+  bind:this={viewport}
   class="browser-tabs"
+  class:horizontal
   role="region"
   aria-label="Browser tabs"
 >
-  {#if !browser}
-    <span class="tab-empty">Offline</span>
-  {:else if windows.length === 0}
-    <span class="tab-empty">No tabs</span>
-  {/if}
-  {#each windows as window, index (window.id)}
-    <section aria-label={`Window ${index + 1}`}>
-      {#if windows.length > 1}
-        <h3>Window {index + 1}</h3>
-      {/if}
-      {#if window.pinned.length}
-        <div
-          class="pinned"
-          aria-label="Pinned tabs"
-          role="group"
-        >
-          {#each window.pinned as tab (tab.id)}
-            <Button
-              variant={tab.id === active ? 'secondary' : 'ghost'}
-              size="icon-sm"
-              title={tab.title}
-              aria-label={tab.title || 'Pinned tab'}
-              aria-pressed={tab.id === active}
-              onclick={() => select(tab.id)}
-            >
-              {@render favicon(tab)}
-            </Button>
-          {/each}
-        </div>
-      {/if}
-      {#each window.rows as row (row.kind === 'tab' ? `tab-${row.tab.id}` : `group-${row.group.id}`)}
-        {#if row.kind === 'tab'}
-          {@render tabRow(row.tab)}
-        {:else}
+  <div
+    bind:this={track}
+    class="track"
+  >
+    {#if !browser}
+      <span class="tab-empty">Offline</span>
+    {:else if windows.length === 0}
+      <span class="tab-empty">No tabs</span>
+    {/if}
+    {#each windows as window, index (window.id)}
+      <section aria-label={`Window ${index + 1}`}>
+        {#if windows.length > 1}
+          <h3>Window {index + 1}</h3>
+        {/if}
+        {#if window.pinned.length}
           <div
-            class="group"
-            style:border-inline-start-color={colors[row.group.color]}
+            class="pinned"
+            aria-label="Pinned tabs"
+            role="group"
           >
-            <Button
-              variant="ghost"
-              size="sm"
-              class="w-full justify-between"
-              aria-expanded={!row.group.collapsed}
-              onclick={() =>
-                send({ kind: 'group', group: row.group.id, collapsed: !row.group.collapsed })}
-            >
-              <span class="truncate">{row.group.title || 'Tab group'}</span>
-              <Icon
-                name={row.group.collapsed ? 'ChevronRight' : 'ChevronDown'}
-                size={15}
-              />
-            </Button>
-            {#each row.tabs as tab (tab.id)}
+            {#each window.pinned as tab (tab.id)}
               {@render tabRow(tab)}
             {/each}
           </div>
         {/if}
-      {/each}
-    </section>
-  {/each}
+        {#each window.rows as row (row.kind === 'tab' ? `tab-${row.tab.id}` : `group-${row.group.id}`)}
+          {#if row.kind === 'tab'}
+            {@render tabRow(row.tab)}
+          {:else}
+            <div
+              class="group"
+              style:border-inline-start-color={colors[row.group.color]}
+            >
+              <Button
+                variant="ghost"
+                size="lg"
+                class="group-header min-h-12 justify-between"
+                aria-expanded={!row.group.collapsed}
+                onclick={() =>
+                  send({ kind: 'group', group: row.group.id, collapsed: !row.group.collapsed })}
+              >
+                <span class="truncate">{row.group.title || 'Tab group'}</span>
+                <Icon
+                  name={row.group.collapsed ? 'ChevronRight' : 'ChevronDown'}
+                  size={15}
+                />
+              </Button>
+              {#each row.tabs as tab (tab.id)}
+                {@render tabRow(tab)}
+              {/each}
+            </div>
+          {/if}
+        {/each}
+      </section>
+    {/each}
+  </div>
 </div>
 
 <style>
   .browser-tabs {
-    display: grid;
-    align-content: start;
-    gap: 0.5rem;
+    width: 100%;
     height: 100%;
-    overflow-y: auto;
-    overscroll-behavior: contain;
-    scrollbar-width: thin;
-    scrollbar-color: color-mix(in srgb, currentColor 35%, transparent) transparent;
-    padding: 0.35rem;
+    overflow: clip;
+    touch-action: none;
+    user-select: none;
+  }
+  .track {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.25rem;
+  }
+  .horizontal .track {
+    width: max-content;
+    min-height: 100%;
+    flex-direction: row;
+    align-items: center;
   }
   section {
     display: grid;
@@ -178,16 +208,53 @@
     font-size: 0.78rem;
   }
   .pinned {
+    display: grid;
+    gap: 0.25rem;
+  }
+  .horizontal section,
+  .horizontal .group,
+  .horizontal .pinned {
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.125rem;
+    align-items: center;
+    gap: 0.25rem;
   }
   .tab-row {
+    position: relative;
     display: flex;
     align-items: center;
     border-radius: 0.4rem;
     min-width: 0;
     border-inline-start: 2px solid transparent;
+  }
+  .tab-row > :global(button) {
+    min-height: 48px;
+  }
+  .horizontal .tab-row {
+    width: clamp(9rem, 26vw, 12rem);
+    flex-shrink: 0;
+  }
+  .tab-row.dragging {
+    opacity: 0.55;
+  }
+  .tab-row[data-drop]::after {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto;
+    height: 3px;
+    border-radius: 2px;
+    background: currentColor;
+    pointer-events: none;
+  }
+  .tab-row[data-drop='after']::after {
+    inset: auto 0 0;
+  }
+  .horizontal .tab-row[data-drop]::after {
+    inset: 0 auto 0 0;
+    width: 3px;
+    height: auto;
+  }
+  .horizontal .tab-row[data-drop='after']::after {
+    inset: 0 0 0 auto;
   }
   .tab-row.current {
     border-inline-start-color: currentColor;
@@ -197,6 +264,12 @@
     min-width: 0;
     padding-inline-start: 0.2rem;
     border-inline-start: 2px solid;
+  }
+  .group > :global(.group-header) {
+    width: 100%;
+  }
+  .horizontal .group > :global(.group-header) {
+    width: auto;
   }
   .tab-initial {
     position: relative;

@@ -31,12 +31,11 @@
     return pixels;
   }
 
-  function scrollTarget() {
-    for (
-      let node = document.elementFromPoint(innerWidth / 2, innerHeight / 2);
-      node;
-      node = node.parentElement
-    ) {
+  const outline = globalThis.webcompanionOutline;
+
+  function scrollTarget(anchor) {
+    const [x, y] = anchor ?? [innerWidth / 2, innerHeight / 2];
+    for (let node = document.elementFromPoint(x, y); node; node = node.parentElement) {
       const { overflowX, overflowY } = getComputedStyle(node);
       if (
         (/^(auto|scroll)$/.test(overflowX) && node.scrollWidth > node.clientWidth) ||
@@ -56,8 +55,8 @@
     lastTick = 0;
     lastInput = -Infinity;
 
-    reset() {
-      this.target = scrollTarget();
+    reset(anchor) {
+      this.target = scrollTarget(anchor);
       this.x = axis();
       this.y = axis();
     }
@@ -73,7 +72,7 @@
         frame.hold === true ||
         ((dx || dy) && (!this.target?.isConnected || now - this.lastInput > IDLE_MS))
       ) {
-        this.reset();
+        this.reset(frame.outline === true ? outline.anchor() : undefined);
       }
       if (frame.hold === true || dx || dy) {
         this.lastInput = now;
@@ -168,9 +167,29 @@
     port = chrome.runtime.connect(chrome.runtime.id, { name: 'scroll' });
     port.onMessage.addListener((frame) => {
       reconnectDelay = 250;
+      if (frame?.kind === 'outline_watch') {
+        outline.watch(
+          frame.enabled === true
+            ? {
+                send: (view) => port.postMessage(view),
+                moving: () =>
+                  scroller.frame !== 0 &&
+                  Boolean(
+                    scroller.x.remaining ||
+                    scroller.y.remaining ||
+                    scroller.x.velocity ||
+                    scroller.y.velocity,
+                  ),
+              }
+            : undefined,
+        );
+        return;
+      }
       scroller.apply(frame);
+      outline.schedule();
     });
     port.onDisconnect.addListener(() => {
+      outline.watch();
       port = undefined;
       setTimeout(connect, reconnectDelay);
       reconnectDelay = Math.min(reconnectDelay * 2, 4000);
@@ -226,7 +245,11 @@
     }
     switch (message.kind) {
       case 'page':
-        respond(scroller.jump(message.input));
+        respond(
+          ['preview', 'clear_preview', 'press'].includes(message.input.kind)
+            ? outline.select(message.input)
+            : scroller.jump(message.input),
+        );
         return false;
       case 'media':
         media(message.input).then(respond, () => respond(false));

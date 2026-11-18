@@ -1,7 +1,9 @@
-import { activeTab, ensure, mediaTab, selectTab } from './browser.js';
+import { activeTab, ensure, isSelected, mediaTab, selectTab } from './browser.js';
+import { isSelection } from './outline-worker.js';
 import { fields, idInRange, website } from './protocol.js';
 
 const GONE = Symbol('Tab closed');
+const COVERED = Symbol('Element covered');
 
 async function existingTab(id) {
   return chrome.tabs.get(id).catch(() => {
@@ -15,6 +17,40 @@ async function page(tab, action) {
   }
   await ensure(tab);
   return (await chrome.tabs.sendMessage(tab.id, action, { frameId: 0 })) === true;
+}
+
+async function outline(action) {
+  const { input } = action;
+  if (!isSelection(input.selection) || !isSelected(input.selection.tab)) {
+    return false;
+  }
+  const tab = input.selection.tab;
+  if (input.kind !== 'press') {
+    return (
+      fields(input, 'kind', 'selection') &&
+      (await chrome.tabs.sendMessage(tab, action, { frameId: 0 })) === true
+    );
+  }
+  if (!fields(input, 'kind', 'selection', 'background') || typeof input.background !== 'boolean') {
+    return false;
+  }
+  const active = await activeTab(await chrome.tabs.query({ windowType: 'normal', active: true }));
+  if (active?.id !== tab || !isSelected(tab)) {
+    return false;
+  }
+  const response = await chrome.tabs.sendMessage(tab, action, { frameId: 0 });
+  if (fields(response, 'covered') && response.covered === true) {
+    throw COVERED;
+  }
+  if (!input.background) {
+    return response === true;
+  }
+  const url = fields(response, 'url') && website(response.url);
+  if (!url || !isSelected(tab)) {
+    return false;
+  }
+  await chrome.tabs.create({ windowId: active.windowId, url, active: false });
+  return true;
 }
 
 async function tabCommand(action) {
@@ -53,6 +89,9 @@ async function run(action) {
       return true;
     }
     case 'page':
+      if (['preview', 'clear_preview', 'press'].includes(action.input?.kind)) {
+        return outline(action);
+      }
       return page(
         await activeTab(await chrome.tabs.query({ windowType: 'normal', active: true })),
         action,
@@ -90,6 +129,6 @@ export async function reply({ id, action }) {
   try {
     return { kind: 'done', id, ok: await run(action) };
   } catch (error) {
-    return { kind: 'done', id, ok: false, gone: error === GONE };
+    return { kind: 'done', id, ok: false, gone: error === GONE, covered: error === COVERED };
   }
 }

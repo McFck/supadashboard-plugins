@@ -5,6 +5,11 @@ const injections = new Map();
 const activeTabs = new Map();
 let selectedWindow;
 let refresh = () => {};
+let outlineWatch;
+
+export function isSelected(id) {
+  return activeTabs.get(selectedWindow) === id;
+}
 
 export function selectTab({ id, windowId }) {
   activeTabs.set(windowId, id);
@@ -40,7 +45,10 @@ export async function ensure(tab) {
   let attempt = injections.get(tab.id);
   if (!attempt) {
     // Tabs already open at install time do not get the declared content script.
-    attempt = chrome.scripting.executeScript({ target: { tabId: tab.id }, files: ['page.js'] });
+    attempt = chrome.scripting.executeScript({
+      target: { tabId: tab.id },
+      files: ['outline.js', 'page.js'],
+    });
     injections.set(tab.id, attempt);
   }
   await attempt;
@@ -62,12 +70,18 @@ chrome.runtime.onConnect.addListener((port) => {
   }
   const page = { port, media: null };
   pages.set(id, page);
+  refresh();
   port.onMessage.addListener((message) => {
-    if (
-      pages.get(id) !== page ||
-      !fields(message, 'kind', 'media') ||
-      message.kind !== 'media_changed'
-    ) {
+    if (pages.get(id) !== page) {
+      return;
+    }
+    if (message?.kind === 'outline') {
+      if (isSelected(id)) {
+        outlineWatch?.receive(port, message);
+      }
+      return;
+    }
+    if (!fields(message, 'kind', 'media') || message.kind !== 'media_changed') {
       return;
     }
     const media = message.media;
@@ -86,6 +100,7 @@ chrome.runtime.onConnect.addListener((port) => {
   port.onDisconnect.addListener(() => {
     if (pages.get(id) === page) {
       pages.delete(id);
+      outlineWatch?.invalidate(id);
       refresh();
     }
   });
@@ -169,6 +184,7 @@ chrome.windows.onRemoved.addListener((id) => {
 chrome.tabs.onUpdated.addListener((id, change) => {
   if (change.status === 'loading') {
     injections.delete(id);
+    outlineWatch?.invalidate(id);
   }
   refresh();
 });
@@ -191,7 +207,7 @@ function removeTab(id) {
 chrome.tabs.onRemoved.addListener(removeTab);
 chrome.tabs.onReplaced.addListener((_added, removed) => removeTab(removed));
 
-export function observe(send, onError) {
+export function observe(send, onError, outline) {
   const events = [
     chrome.tabs.onCreated,
     chrome.tabs.onMoved,
@@ -217,10 +233,15 @@ export function observe(send, onError) {
     const heartbeat = heartbeatDue;
     heartbeatDue = false;
     try {
-      const state = JSON.stringify(await snapshot());
+      const update = await snapshot();
+      const state = JSON.stringify(update);
       if (!stopped && (heartbeat || state !== lastState)) {
         send(state);
         lastState = state;
+      }
+      if (!stopped) {
+        const id = update.state.activeTab;
+        outline.source(id, isSelected(id) ? pages.get(id)?.port : undefined);
       }
     } catch (error) {
       if (!stopped) {
@@ -237,6 +258,7 @@ export function observe(send, onError) {
     event.addListener(schedule);
   }
   refresh = schedule;
+  outlineWatch = outline;
   // Idle traffic keeps the MV3 worker connected.
   const heartbeat = setInterval(() => {
     heartbeatDue = true;
@@ -249,7 +271,9 @@ export function observe(send, onError) {
       stopped = true;
       if (refresh === schedule) {
         refresh = () => {};
+        outlineWatch = undefined;
       }
+      outline.enable(false);
       clearTimeout(timer);
       clearInterval(heartbeat);
       for (const event of events) {

@@ -17,6 +17,8 @@ class WebCompanion {
   private handle: Promise<number | null> | undefined;
   private watch: number | null = null;
   private stopping = Promise.resolve();
+  private outlineUsers = 0;
+  private outlineSync = Promise.resolve();
 
   mount() {
     this.users++;
@@ -24,6 +26,29 @@ class WebCompanion {
       this.start();
     }
     return () => this.destroy();
+  }
+
+  mountOutline() {
+    const unmount = this.mount();
+    this.outlineUsers++;
+    this.syncOutline();
+    return () => {
+      this.outlineUsers--;
+      this.syncOutline();
+      unmount();
+    };
+  }
+
+  private syncOutline() {
+    const handle = this.handle;
+    this.outlineSync = this.outlineSync
+      .then(async () => {
+        const watch = await handle;
+        if (watch != null && this.handle === handle) {
+          await pluginBrowser.outline(plugin, watch, this.outlineUsers > 0);
+        }
+      })
+      .catch((error: unknown) => this.error(error, 'Could not load page outline'));
   }
 
   private start() {
@@ -91,7 +116,7 @@ class WebCompanion {
     }
   }
 
-  async action(action: PluginBrowserAction) {
+  async action(action: PluginBrowserAction, report = true) {
     if (this.snapshot.kind !== 'connected') {
       return false;
     }
@@ -103,7 +128,9 @@ class WebCompanion {
         return true;
       }
     } catch (error) {
-      this.error(error, 'Browser command failed');
+      if (report) {
+        this.error(error, 'Browser command failed');
+      }
     }
     return false;
   }

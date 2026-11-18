@@ -1,5 +1,6 @@
 import { answer, credentialId, fields, hello, isHex } from './protocol.js';
 import { observe, scroll } from './browser.js';
+import { OutlineWatch } from './outline-worker.js';
 import { isCommand, reply } from './commands.js';
 
 const endpoint = 'ws://127.0.0.1:43822/browser';
@@ -86,14 +87,21 @@ function connect(mode, secret) {
         }
         return;
       }
+      const outline = new OutlineWatch((frame) => {
+        if (isOpen() && current.bufferedAmount < 256 * 1024) {
+          current.send(frame);
+        }
+      });
       phase = {
         kind: 'connected',
+        outline,
         observer: observe(
           (state) => current.send(state),
           (error) => {
             report(error);
             current.close();
           },
+          outline,
         ),
       };
       backoff = 500;
@@ -122,6 +130,12 @@ function connect(mode, secret) {
             });
         } else if (message?.kind === 'scroll') {
           scroll(message);
+        } else if (
+          fields(message, 'kind', 'enabled') &&
+          message.kind === 'outline' &&
+          typeof message.enabled === 'boolean'
+        ) {
+          phase.outline.enable(message.enabled);
         } else if (!isCommand(message)) {
           throw new Error('Invalid browser request');
         } else if (pending >= MAX_PENDING) {

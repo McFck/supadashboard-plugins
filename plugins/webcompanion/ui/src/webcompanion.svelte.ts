@@ -1,8 +1,14 @@
-import { pluginBrowser, toast, type PluginBrowserSnapshot } from '@supadashboard/kit';
+import {
+  ActionFailure,
+  pluginBrowser,
+  toast,
+  type PluginBrowserAction,
+  type PluginBrowserSnapshot,
+} from '@supadashboard/kit';
 
-const plugin = 'browser-remote';
+const plugin = 'webcompanion';
 
-class BrowserRemote {
+class WebCompanion {
   snapshot = $state<PluginBrowserSnapshot>({ kind: 'offline' });
   code = $state('');
   ready = $state(false);
@@ -38,7 +44,7 @@ class BrowserRemote {
       })
       .catch((error: unknown) => {
         if (this.handle === handle) {
-          this.error(error, 'Could not start Browser Remote');
+          this.error(error, 'Could not start WebCompanion');
         }
         return null;
       });
@@ -62,7 +68,7 @@ class BrowserRemote {
             await pluginBrowser.unwatch(plugin, id);
           }
         })
-        .catch((error: unknown) => this.error(error, 'Could not stop Browser Remote'));
+        .catch((error: unknown) => this.error(error, 'Could not stop WebCompanion'));
     }
   }
 
@@ -81,19 +87,38 @@ class BrowserRemote {
     }
   }
 
-  async activate(tab: number) {
+  async action(action: PluginBrowserAction, signal?: AbortSignal) {
     const snapshot = this.snapshot;
     if (snapshot.kind !== 'connected') {
-      return;
+      return false;
     }
     const handle = this.handle;
     try {
       const watch = await handle;
-      if (watch != null && this.handle === handle) {
-        await pluginBrowser.activate(plugin, watch, snapshot.revision, tab);
+      if (watch != null && this.handle === handle && !signal?.aborted) {
+        await pluginBrowser.action(plugin, watch, snapshot.revision, action);
+        return true;
       }
     } catch (error) {
-      this.error(error, 'Could not activate the tab');
+      if (!signal?.aborted) {
+        this.error(error, 'Browser command failed');
+      }
+    }
+    return false;
+  }
+
+  async open(url: string, destination: 'new' | 'current', signal?: AbortSignal) {
+    const watch = await this.handle;
+    if (signal?.aborted) {
+      return;
+    }
+    if (watch == null) {
+      throw new ActionFailure('WebCompanion is offline');
+    }
+    try {
+      await pluginBrowser.open(plugin, watch, url, destination);
+    } catch (error) {
+      throw new ActionFailure(typeof error === 'string' ? error : 'Could not open website');
     }
   }
 
@@ -102,4 +127,4 @@ class BrowserRemote {
   }
 }
 
-export const browserRemote = new BrowserRemote();
+export const webCompanion = new WebCompanion();

@@ -40,7 +40,7 @@ export async function answer(greeting, challenge, secret) {
     false,
     ['sign', 'verify'],
   );
-  const transcript = `browser-remote-v1:${greeting.mode}:${chrome.runtime.id}:${greeting.nonce}:${challenge.nonce}`;
+  const transcript = `supadashboard-browser-v2:${greeting.mode}:${chrome.runtime.id}:${greeting.nonce}:${challenge.nonce}`;
   const proof = Uint8Array.from(challenge.proof.match(/../g), (byte) => Number.parseInt(byte, 16));
   if (!(await crypto.subtle.verify('HMAC', key, proof, utf8.encode(`server:${transcript}`)))) {
     throw new Error('Bridge authentication failed');
@@ -55,7 +55,7 @@ export async function answer(greeting, challenge, secret) {
   };
 }
 
-function title(value) {
+export function title(value) {
   let bytes = 0;
   let result = '';
   for (const character of (value ?? '').toWellFormed()) {
@@ -69,34 +69,18 @@ function title(value) {
   return result;
 }
 
-function idInRange(value, max) {
+export function idInRange(value, max) {
   return Number.isInteger(value) && value >= 0 && value <= max;
 }
 
-export async function reply(message) {
-  const { kind, id, tab } = message ?? {};
-  const list = kind === 'tabs.list' && fields(message, 'kind', 'id');
-  const activate =
-    kind === 'tabs.activate' && fields(message, 'kind', 'id', 'tab') && idInRange(tab, 0x7fffffff);
-  if ((!list && !activate) || !idInRange(id, 0xffffffff)) {
-    throw new Error('Invalid tab request');
-  }
+export function website(value) {
   try {
-    if (list) {
-      const tabs = await chrome.tabs.query({ windowType: 'normal' });
-      return {
-        kind,
-        id,
-        tabs: tabs
-          .filter((item) => idInRange(item.id, 0x7fffffff))
-          .slice(0, 256)
-          .map((item) => ({ id: item.id, title: title(item.title), active: item.active })),
-      };
+    const url = new URL(value);
+    if (['https:', 'http:'].includes(url.protocol) && !url.username && !url.password) {
+      return url.href;
     }
-    // Changing the selected tab preserves the foreground application's focus.
-    await chrome.tabs.update(tab, { active: true });
-    return { kind, id };
   } catch {
-    return { kind: 'failed', id };
+    // Browser-internal URLs and missing icons may not parse as a website.
   }
+  return null;
 }

@@ -1,6 +1,6 @@
 {
-  "id": "browser-remote",
-  "version": "0.1.0",
+  "id": "webcompanion",
+  "version": "0.2.0",
   "api": 2,
   "permissions": {
     "browser": "cnojhdmglpjodgblffallbibdifemkop"

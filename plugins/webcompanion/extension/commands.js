@@ -1,9 +1,9 @@
-import { activeTab, ensure, isSelected, mediaTab, selectTab } from './browser.js';
-import { isSelection } from './outline-worker.js';
+import { activeTab, ensure, mediaTab, selectTab } from './browser.js';
 import { fields, idInRange, website } from './protocol.js';
+import { suspendMedia } from './suspend.js';
 
 const GONE = Symbol('Tab closed');
-const COVERED = Symbol('Element covered');
+let tabCommands = Promise.resolve();
 
 async function existingTab(id) {
   return chrome.tabs.get(id).catch(() => {
@@ -19,51 +19,85 @@ async function page(tab, action) {
   return (await chrome.tabs.sendMessage(tab.id, action, { frameId: 0 })) === true;
 }
 
-async function outline(action) {
-  const { input } = action;
-  if (!isSelection(input.selection) || !isSelected(input.selection.tab)) {
-    return false;
-  }
-  const tab = input.selection.tab;
-  if (input.kind !== 'press') {
-    return (
-      fields(input, 'kind', 'selection') &&
-      (await chrome.tabs.sendMessage(tab, action, { frameId: 0 })) === true
-    );
-  }
-  if (!fields(input, 'kind', 'selection', 'background') || typeof input.background !== 'boolean') {
-    return false;
-  }
-  const active = await activeTab(await chrome.tabs.query({ windowType: 'normal', active: true }));
-  if (active?.id !== tab || !isSelected(tab)) {
-    return false;
-  }
-  const response = await chrome.tabs.sendMessage(tab, action, { frameId: 0 });
-  if (fields(response, 'covered') && response.covered === true) {
-    throw COVERED;
-  }
-  if (!input.background) {
-    return response === true;
-  }
-  const url = fields(response, 'url') && website(response.url);
-  if (!url || !isSelected(tab)) {
-    return false;
-  }
-  await chrome.tabs.create({ windowId: active.windowId, url, active: false });
+async function fullscreen(windowId) {
+  const window = await chrome.windows.get(windowId);
+  await chrome.windows.update(windowId, {
+    state: window.state === 'fullscreen' ? 'normal' : 'fullscreen',
+  });
   return true;
 }
 
-async function tabCommand(action) {
-  await existingTab(action.tab);
-  try {
-    if (action.kind === 'activate') {
-      selectTab(await chrome.tabs.update(action.tab, { active: true }));
-    } else {
-      await chrome.tabs.remove(action.tab);
+const currentTab = async () =>
+  activeTab(await chrome.tabs.query({ windowType: 'normal', active: true }));
+
+async function cycle(tab, direction) {
+  const [tabs, groups] = await Promise.all([
+    chrome.tabs.query({ windowId: tab.windowId }),
+    chrome.tabGroups.query({ windowId: tab.windowId, collapsed: true }),
+  ]);
+  const collapsed = new Set(groups.map((group) => group.id));
+  const visible = tabs
+    .filter((entry) => entry.id === tab.id || !collapsed.has(entry.groupId))
+    .sort((a, b) => a.index - b.index);
+  const index = visible.findIndex((entry) => entry.id === tab.id);
+  if (index === -1) {
+    throw GONE;
+  }
+  const target = visible[(index + direction + visible.length) % visible.length];
+  if (target.id !== tab.id) {
+    selectTab(await chrome.tabs.update(target.id, { active: true }));
+  }
+  return true;
+}
+
+async function tabCommand(input) {
+  const tab = await currentTab();
+  switch (input) {
+    case 'new':
+      selectTab(await chrome.tabs.create({ windowId: tab?.windowId, active: true }));
+      return true;
+    case 'reopen': {
+      const [closed] = await chrome.sessions.getRecentlyClosed({ maxResults: 1 });
+      if (!closed?.tab?.sessionId || !tab) {
+        return false;
+      }
+      const { tab: restored } = await chrome.sessions.restore(closed.tab.sessionId);
+      if (restored && restored.windowId === tab.windowId) {
+        selectTab(restored);
+      }
+      return Boolean(restored);
     }
-  } catch (error) {
-    await existingTab(action.tab);
-    throw error;
+    case 'close':
+      if (!tab) {
+        return false;
+      }
+      await chrome.tabs.remove(tab.id);
+      return true;
+    case 'next':
+    case 'previous':
+      return tab ? cycle(tab, input === 'next' ? 1 : -1) : false;
+    default:
+      return false;
+  }
+}
+
+async function pageCommand(action) {
+  const tab = await currentTab();
+  if (!tab) {
+    return false;
+  }
+  switch (action.input.kind) {
+    case 'back':
+      await chrome.tabs.goBack(tab.id);
+      break;
+    case 'forward':
+      await chrome.tabs.goForward(tab.id);
+      break;
+    case 'reload':
+      await chrome.tabs.reload(tab.id);
+      break;
+    default:
+      return page(tab, action);
   }
   return true;
 }
@@ -72,12 +106,14 @@ async function run(action, pointer) {
   switch (action.kind) {
     case 'pointer':
       return pointer.dispatch(action);
-    case 'activate':
-    case 'close':
-      return tabCommand(action);
+    case 'tab': {
+      const command = tabCommands.then(() => tabCommand(action.input));
+      tabCommands = command.catch(() => {});
+      return command;
+    }
     case 'open': {
       const url = website(action.url);
-      const tab = await activeTab(await chrome.tabs.query({ windowType: 'normal', active: true }));
+      const tab = await currentTab();
       if (!url || !tab) {
         return false;
       }
@@ -91,13 +127,13 @@ async function run(action, pointer) {
       return true;
     }
     case 'page':
-      if (['preview', 'clear_preview', 'press'].includes(action.input?.kind)) {
-        return outline(action);
-      }
-      return page(
-        await activeTab(await chrome.tabs.query({ windowType: 'normal', active: true })),
-        action,
-      );
+      return pageCommand(action);
+    case 'window_fullscreen': {
+      const tab = await currentTab();
+      return tab ? fullscreen(tab.windowId) : false;
+    }
+    case 'suspend':
+      return suspendMedia(action.mode);
     case 'media': {
       const tabs = await chrome.tabs.query({ windowType: 'normal' });
       const player = mediaTab(tabs, await activeTab(tabs));
@@ -106,11 +142,7 @@ async function run(action, pointer) {
       }
       const tab = await existingTab(player.id);
       if (action.input.kind === 'fullscreen') {
-        const window = await chrome.windows.get(tab.windowId);
-        await chrome.windows.update(tab.windowId, {
-          state: window.state === 'fullscreen' ? 'normal' : 'fullscreen',
-        });
-        return true;
+        return fullscreen(tab.windowId);
       }
       return page(tab, action);
     }
@@ -131,6 +163,6 @@ export async function reply({ id, action }, pointer) {
   try {
     return { kind: 'done', id, ok: await run(action, pointer) };
   } catch (error) {
-    return { kind: 'done', id, ok: false, gone: error === GONE, covered: error === COVERED };
+    return { kind: 'done', id, ok: false, gone: error === GONE };
   }
 }

@@ -2,6 +2,7 @@ import type { PluginBrowserScrollFrame } from '@supadashboard/kit';
 
 type Point = { x: number; y: number; time: number };
 type Drag = { samples: Point[]; last: Point; dx: number; dy: number };
+const SCROLL_GAIN = 1.25;
 
 function clamp(value: number, limit: number) {
   return Math.max(-limit, Math.min(limit, value));
@@ -27,8 +28,8 @@ export class ScrollGesture {
     if (!drag || (x === drag.last.x && y === drag.last.y)) {
       return;
     }
-    drag.dx += drag.last.x - x;
-    drag.dy += drag.last.y - y;
+    drag.dx += (drag.last.x - x) * SCROLL_GAIN;
+    drag.dy += (drag.last.y - y) * SCROLL_GAIN;
     drag.last = { x, y, time };
     drag.samples.push(drag.last);
     drag.samples = drag.samples.filter((sample) => time - sample.time <= 80);
@@ -50,8 +51,8 @@ export class ScrollGesture {
       let vx = 0;
       let vy = 0;
       if (first && dt > 0 && time - drag.last.time < 50) {
-        vx = clamp(((first.x - drag.last.x) * 1000) / dt, 10_000);
-        vy = clamp(((first.y - drag.last.y) * 1000) / dt, 10_000);
+        vx = clamp(((first.x - drag.last.x) * SCROLL_GAIN * 1000) / dt, 10_000);
+        vy = clamp(((first.y - drag.last.y) * SCROLL_GAIN * 1000) / dt, 10_000);
         if (Math.hypot(vx, vy) <= 50) {
           vx = 0;
           vy = 0;

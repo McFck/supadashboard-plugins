@@ -31,7 +31,6 @@
     return pixels;
   }
 
-  const outline = globalThis.webcompanionOutline;
   const pointer = globalThis.webcompanionPointer;
 
   function scrollTarget(anchor) {
@@ -80,9 +79,7 @@
         frame.hold === true ||
         ((dx || dy) && (!this.target?.isConnected || now - this.lastInput > IDLE_MS))
       ) {
-        this.reset(
-          scoped ? pointer.anchor() : frame.outline === true ? outline.anchor() : undefined,
-        );
+        this.reset(scoped ? pointer.anchor() : undefined);
       }
       if (frame.hold === true || dx || dy) {
         this.lastInput = now;
@@ -102,7 +99,7 @@
     }
 
     jump(input) {
-      this.reset();
+      this.reset(pointer.anchor());
       this.lastInput = -Infinity;
       if (!this.target) {
         return false;
@@ -184,29 +181,9 @@
     port = chrome.runtime.connect(chrome.runtime.id, { name: 'scroll' });
     port.onMessage.addListener((frame) => {
       reconnectDelay = 250;
-      if (frame?.kind === 'outline_watch') {
-        outline.watch(
-          frame.enabled === true
-            ? {
-                send: (view) => port.postMessage(view),
-                moving: () =>
-                  scroller.frame !== 0 &&
-                  Boolean(
-                    scroller.x.remaining ||
-                    scroller.y.remaining ||
-                    scroller.x.velocity ||
-                    scroller.y.velocity,
-                  ),
-              }
-            : undefined,
-        );
-        return;
-      }
       scroller.apply(frame);
-      outline.schedule();
     });
     port.onDisconnect.addListener(() => {
-      outline.watch();
       port = undefined;
       setTimeout(connect, reconnectDelay);
       reconnectDelay = Math.min(reconnectDelay * 2, 4000);
@@ -214,13 +191,17 @@
     changed();
   }
 
+  let selectedMedia;
+
   function player() {
     const elements = [...document.querySelectorAll('video, audio')];
-    return (
-      elements.find((item) => !item.paused && !item.ended) ??
-      elements.find((item) => item.currentSrc) ??
-      elements[0]
-    );
+    const playing = elements.find((item) => !item.paused && !item.ended);
+    if (playing) {
+      selectedMedia = playing;
+    } else if (!selectedMedia?.isConnected) {
+      selectedMedia = elements.find((item) => item.currentSrc) ?? elements[0];
+    }
+    return selectedMedia;
   }
 
   function status() {
@@ -234,6 +215,14 @@
       return false;
     }
     switch (input.kind) {
+      case 'play':
+        if (element.paused || element.ended) {
+          await element.play();
+        }
+        break;
+      case 'pause':
+        element.pause();
+        break;
       case 'toggle':
         if (element.paused || element.ended) {
           await element.play();
@@ -265,11 +254,7 @@
         respond(pointer.input(message));
         return false;
       case 'page':
-        respond(
-          ['preview', 'clear_preview', 'press'].includes(message.input.kind)
-            ? outline.select(message.input)
-            : scroller.jump(message.input),
-        );
+        respond(scroller.jump(message.input));
         return false;
       case 'media':
         media(message.input).then(respond, () => respond(false));

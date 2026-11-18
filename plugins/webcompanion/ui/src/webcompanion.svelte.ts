@@ -11,44 +11,31 @@ const plugin = 'webcompanion';
 
 class WebCompanion {
   snapshot = $state<PluginBrowserSnapshot>({ kind: 'offline' });
-  code = $state('');
+  pairing = $state<{ code: string; expiresInMs: number } | null>(null);
   ready = $state(false);
+  pairingPending = $state(false);
   private users = 0;
   private handle: Promise<number | null> | undefined;
   private watch: number | null = null;
   private stopping = Promise.resolve();
-  private outlineUsers = 0;
-  private outlineSync = Promise.resolve();
+  private expiry: ReturnType<typeof setTimeout> | undefined;
+  private publish: ((snapshot: PluginBrowserSnapshot) => void) | undefined;
 
-  mount() {
+  mount(publish?: (snapshot: PluginBrowserSnapshot) => void) {
+    if (publish) {
+      this.publish = publish;
+      publish(this.snapshot);
+    }
     this.users++;
     if (this.users === 1) {
       this.start();
     }
-    return () => this.destroy();
-  }
-
-  mountOutline() {
-    const unmount = this.mount();
-    this.outlineUsers++;
-    this.syncOutline();
     return () => {
-      this.outlineUsers--;
-      this.syncOutline();
-      unmount();
+      if (publish) {
+        this.publish = undefined;
+      }
+      this.destroy();
     };
-  }
-
-  private syncOutline() {
-    const handle = this.handle;
-    this.outlineSync = this.outlineSync
-      .then(async () => {
-        const watch = await handle;
-        if (watch != null && this.handle === handle) {
-          await pluginBrowser.outline(plugin, watch, this.outlineUsers > 0);
-        }
-      })
-      .catch((error: unknown) => this.error(error, 'Could not load page outline'));
   }
 
   private start() {
@@ -57,8 +44,9 @@ class WebCompanion {
         pluginBrowser.watch(plugin, (snapshot) => {
           if (this.handle === handle) {
             this.snapshot = snapshot;
+            this.publish?.(snapshot);
             if (snapshot.kind === 'connected') {
-              this.code = '';
+              this.clearCode();
             }
           }
         }),
@@ -89,7 +77,7 @@ class WebCompanion {
     this.watch = null;
     this.ready = false;
     this.snapshot = { kind: 'offline' };
-    this.code = '';
+    this.clearCode();
     if (handle) {
       this.stopping = handle
         .then(async (id) => {
@@ -102,34 +90,44 @@ class WebCompanion {
   }
 
   async pair() {
+    if (this.pairingPending) {
+      return;
+    }
+    this.pairingPending = true;
     const handle = this.handle;
     try {
       const watch = await handle;
       if (watch != null && this.handle === handle) {
-        const code = await pluginBrowser.pair(plugin, watch);
+        const pairing = await pluginBrowser.pair(plugin, watch);
         if (this.handle === handle && this.snapshot.kind !== 'connected') {
-          this.code = code;
+          this.clearCode();
+          this.pairing = pairing;
+          this.expiry = setTimeout(() => this.clearCode(), pairing.expiresInMs);
         }
       }
     } catch (error) {
       this.error(error, 'Could not create pairing code');
+    } finally {
+      this.pairingPending = false;
     }
+  }
+
+  private clearCode() {
+    clearTimeout(this.expiry);
+    this.expiry = undefined;
+    this.pairing = null;
   }
 
   async action(action: PluginBrowserAction, report = true) {
     if (this.snapshot.kind !== 'connected') {
       return false;
     }
-    const handle = this.handle;
     try {
-      const watch = await handle;
-      if (watch != null && this.handle === handle) {
-        await pluginBrowser.action(plugin, watch, action);
-        return true;
-      }
+      await this.execute(action);
+      return true;
     } catch (error) {
       if (report) {
-        this.error(error, 'Browser command failed');
+        this.error(error instanceof Error ? error.message : error, 'Browser command failed');
       }
     }
     return false;
@@ -143,18 +141,16 @@ class WebCompanion {
     return true;
   };
 
-  async open(url: string, destination: 'new' | 'current', signal?: AbortSignal) {
-    const watch = await this.handle;
-    if (signal?.aborted) {
-      return;
-    }
-    if (watch == null) {
+  async execute(action: PluginBrowserAction) {
+    const handle = this.handle;
+    const watch = await handle;
+    if (watch == null || this.handle !== handle || this.snapshot.kind !== 'connected') {
       throw new ActionFailure('WebCompanion is offline');
     }
     try {
-      await pluginBrowser.action(plugin, watch, { kind: 'open', url, destination });
+      await pluginBrowser.action(plugin, watch, action);
     } catch (error) {
-      throw new ActionFailure(typeof error === 'string' ? error : 'Could not open website');
+      throw new ActionFailure(typeof error === 'string' ? error : 'Browser command failed');
     }
   }
 

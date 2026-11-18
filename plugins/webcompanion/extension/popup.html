@@ -3,21 +3,42 @@
   <head>
     <meta charset="utf-8" />
     <title>SupaDashboard WebCompanion</title>
+    <link
+      rel="stylesheet"
+      href="popup.css"
+    />
   </head>
   <body>
+    <header>
+      <h1>WebCompanion</h1>
+      <p role="status">Offline</p>
+    </header>
     <form>
       <label for="code">Pairing code</label>
-      <input
-        id="code"
-        name="code"
-        required
-        minlength="32"
-        maxlength="32"
-        autocomplete="off"
-        spellcheck="false"
-      />
-      <button type="submit">Pair</button>
-      <p role="status"></p>
+      <div class="field">
+        <div
+          class="cells"
+          aria-hidden="true"
+        >
+          <i></i><i></i><i></i><i></i><i></i><i></i>
+        </div>
+        <input
+          id="code"
+          name="code"
+          required
+          minlength="6"
+          maxlength="6"
+          inputmode="numeric"
+          autocomplete="one-time-code"
+          spellcheck="false"
+        />
+      </div>
+      <button
+        type="submit"
+        disabled
+      >
+        Pair
+      </button>
     </form>
     <script
       type="module"

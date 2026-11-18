@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount, untrack } from 'svelte';
-  import { Button } from '@supadashboard/kit';
+  import { Button, Icon } from '@supadashboard/kit';
   import { TouchpadController } from './touchpad.svelte';
   import { webCompanion } from './webcompanion.svelte';
 
@@ -53,11 +53,11 @@
   onclick={click}
 >
   <span class="pad-face">
-    <span
-      class="pointer"
-      aria-hidden="true">↖</span
-    >
-    Browser touchpad
+    <Icon
+      name="webcompanion-touchpad"
+      size={26}
+    />
+    Touchpad
   </span>
 </Button>
 
@@ -67,9 +67,5 @@
     gap: 0.25rem;
     justify-items: center;
     pointer-events: none;
-  }
-  .pointer {
-    font-size: 1.65rem;
-    line-height: 1;
   }
 </style>

@@ -1,11 +1,12 @@
 import { fields, idInRange, title, website } from './protocol.js';
+import { forgetSuspendedTab, mediaSuspended } from './suspend.js';
 
 const pages = new Map();
 const injections = new Map();
 const activeTabs = new Map();
 let selectedWindow;
+let lastMediaTab;
 let refresh = () => {};
-let outlineWatch;
 
 export function isSelected(id) {
   return activeTabs.get(selectedWindow) === id;
@@ -51,7 +52,7 @@ export async function ensure(tab) {
     // Tabs already open at install time do not get the declared content script.
     attempt = chrome.scripting.executeScript({
       target: { tabId: tab.id },
-      files: ['outline.js', 'pointer.js', 'page.js'],
+      files: ['pointer.js', 'page.js'],
     });
     injections.set(tab.id, attempt);
   }
@@ -79,12 +80,6 @@ chrome.runtime.onConnect.addListener((port) => {
     if (pages.get(id) !== page) {
       return;
     }
-    if (message?.kind === 'outline') {
-      if (isSelected(id)) {
-        outlineWatch?.receive(port, message);
-      }
-      return;
-    }
     if (!fields(message, 'kind', 'media') || message.kind !== 'media_changed') {
       return;
     }
@@ -99,24 +94,28 @@ chrome.runtime.onConnect.addListener((port) => {
       return;
     }
     page.media = media;
+    if (media?.paused === false) {
+      lastMediaTab = id;
+    }
     refresh();
   });
   port.onDisconnect.addListener(() => {
     if (pages.get(id) === page) {
       pages.delete(id);
-      outlineWatch?.invalidate(id);
       refresh();
     }
   });
 });
 
 export function mediaTab(tabs, active) {
-  if (pages.get(active?.id)?.media?.paused === false) {
+  if (pages.get(active?.id)?.media) {
     return active;
   }
   return (
     tabs.find((tab) => tab.audible && pages.get(tab.id)?.media?.paused === false) ??
-    (pages.get(active?.id)?.media ? active : undefined)
+    tabs.find((tab) => pages.get(tab.id)?.media?.paused === false) ??
+    tabs.find((tab) => tab.id === lastMediaTab && pages.get(tab.id)?.media) ??
+    tabs.find((tab) => pages.get(tab.id)?.media)
   );
 }
 
@@ -164,6 +163,7 @@ async function snapshot() {
       media: window
         ? { tab: player.id, ...status, fullscreen: window.state === 'fullscreen' }
         : null,
+      suspended: await mediaSuspended(),
     },
   };
 }
@@ -188,7 +188,7 @@ chrome.windows.onRemoved.addListener((id) => {
 chrome.tabs.onUpdated.addListener((id, change) => {
   if (change.status === 'loading') {
     injections.delete(id);
-    outlineWatch?.invalidate(id);
+    void forgetSuspendedTab(id, true).then(refresh, console.error);
   }
   refresh();
 });
@@ -208,10 +208,14 @@ function removeTab(id) {
   }
   refresh();
 }
-chrome.tabs.onRemoved.addListener(removeTab);
-chrome.tabs.onReplaced.addListener((_added, removed) => removeTab(removed));
+function removeClosedTab(id) {
+  removeTab(id);
+  void forgetSuspendedTab(id).then(refresh, console.error);
+}
+chrome.tabs.onRemoved.addListener(removeClosedTab);
+chrome.tabs.onReplaced.addListener((_added, removed) => removeClosedTab(removed));
 
-export function observe(send, onError, outline) {
+export function observe(send, onError) {
   const events = [
     chrome.tabs.onCreated,
     chrome.tabs.onMoved,
@@ -243,10 +247,6 @@ export function observe(send, onError, outline) {
         send(state);
         lastState = state;
       }
-      if (!stopped) {
-        const id = update.state.activeTab;
-        outline.source(id, isSelected(id) ? pages.get(id)?.port : undefined);
-      }
     } catch (error) {
       if (!stopped) {
         onError(error);
@@ -262,7 +262,6 @@ export function observe(send, onError, outline) {
     event.addListener(schedule);
   }
   refresh = schedule;
-  outlineWatch = outline;
   // Idle traffic keeps the MV3 worker connected.
   const heartbeat = setInterval(() => {
     heartbeatDue = true;
@@ -275,9 +274,7 @@ export function observe(send, onError, outline) {
       stopped = true;
       if (refresh === schedule) {
         refresh = () => {};
-        outlineWatch = undefined;
       }
-      outline.enable(false);
       clearTimeout(timer);
       clearInterval(heartbeat);
       for (const event of events) {

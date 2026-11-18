@@ -78,6 +78,7 @@
     class:current={tab.id === active}
     class:dragging={tab.id === gestures?.dragging}
     data-drop={tab.id === gestures?.drop?.anchor ? gestures.drop.side : undefined}
+    data-drop-axis={tab.id === gestures?.drop?.anchor ? gestures.drop.axis : undefined}
     data-tab-id={tab.id}
     data-tab-lane={`${tab.window}:${tab.group ?? (tab.pinned ? 'pinned' : 'ungrouped')}`}
   >
@@ -133,45 +134,47 @@
         {#if windows.length > 1}
           <h3>Window {index + 1}</h3>
         {/if}
-        {#if window.pinned.length}
-          <div
-            class="pinned"
-            aria-label="Pinned tabs"
-            role="group"
-          >
-            {#each window.pinned as tab (tab.id)}
-              {@render tabRow(tab)}
-            {/each}
-          </div>
-        {/if}
-        {#each window.rows as row (row.kind === 'tab' ? `tab-${row.tab.id}` : `group-${row.group.id}`)}
-          {#if row.kind === 'tab'}
-            {@render tabRow(row.tab)}
-          {:else}
+        <div class="window-tabs">
+          {#if window.pinned.length}
             <div
-              class="group"
-              style:border-inline-start-color={colors[row.group.color]}
+              class="pinned"
+              aria-label="Pinned tabs"
+              role="group"
             >
-              <Button
-                variant="ghost"
-                size="lg"
-                class="group-header min-h-12 justify-between"
-                aria-expanded={!row.group.collapsed}
-                onclick={() =>
-                  send({ kind: 'group', group: row.group.id, collapsed: !row.group.collapsed })}
-              >
-                <span class="truncate">{row.group.title || 'Tab group'}</span>
-                <Icon
-                  name={row.group.collapsed ? 'ChevronRight' : 'ChevronDown'}
-                  size={15}
-                />
-              </Button>
-              {#each row.tabs as tab (tab.id)}
+              {#each window.pinned as tab (tab.id)}
                 {@render tabRow(tab)}
               {/each}
             </div>
           {/if}
-        {/each}
+          {#each window.rows as row (row.kind === 'tab' ? `tab-${row.tab.id}` : `group-${row.group.id}`)}
+            {#if row.kind === 'tab'}
+              {@render tabRow(row.tab)}
+            {:else}
+              <div
+                class="group"
+                style:border-inline-start-color={colors[row.group.color]}
+              >
+                <Button
+                  variant="ghost"
+                  size="lg"
+                  class="group-header min-h-12 justify-between"
+                  aria-expanded={!row.group.collapsed}
+                  onclick={() =>
+                    send({ kind: 'group', group: row.group.id, collapsed: !row.group.collapsed })}
+                >
+                  <span class="truncate">{row.group.title || 'Tab group'}</span>
+                  <Icon
+                    name={row.group.collapsed ? 'ChevronRight' : 'ChevronDown'}
+                    size={15}
+                  />
+                </Button>
+                {#each row.tabs as tab (tab.id)}
+                  {@render tabRow(tab)}
+                {/each}
+              </div>
+            {/if}
+          {/each}
+        </div>
       </section>
     {/each}
   </div>
@@ -185,6 +188,9 @@
     touch-action: none;
     user-select: none;
   }
+  .browser-tabs.horizontal {
+    container-type: size;
+  }
   .track {
     display: flex;
     flex-direction: column;
@@ -193,9 +199,8 @@
   }
   .horizontal .track {
     width: max-content;
-    min-height: 100%;
+    height: 100%;
     flex-direction: row;
-    align-items: center;
   }
   section {
     display: grid;
@@ -207,16 +212,32 @@
     padding: 0.25rem 0.5rem;
     font-size: 0.78rem;
   }
+  .window-tabs,
   .pinned {
     display: grid;
     gap: 0.25rem;
   }
-  .horizontal section,
+  .horizontal section {
+    display: flex;
+    flex-direction: column;
+  }
+  .horizontal .window-tabs {
+    flex: 1;
+    min-height: 0;
+  }
+  .horizontal .window-tabs,
   .horizontal .group,
   .horizontal .pinned {
-    display: flex;
-    align-items: center;
-    gap: 0.25rem;
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-rows: repeat(auto-fill, minmax(min(100%, 4.5rem), 1fr));
+    grid-auto-columns: max-content;
+    gap: 0.375rem;
+  }
+  .horizontal .group,
+  .horizontal .pinned {
+    grid-row: 1 / -1;
+    min-height: 0;
   }
   .tab-row {
     position: relative;
@@ -230,8 +251,13 @@
     min-height: 48px;
   }
   .horizontal .tab-row {
-    width: clamp(9rem, 26vw, 12rem);
-    flex-shrink: 0;
+    width: clamp(10rem, 45cqw, 20rem);
+  }
+  .horizontal .tab-row > :global(button) {
+    align-self: stretch;
+    height: auto;
+    min-height: 0;
+    font-size: 1rem;
   }
   .tab-row.dragging {
     opacity: 0.55;
@@ -248,12 +274,12 @@
   .tab-row[data-drop='after']::after {
     inset: auto 0 0;
   }
-  .horizontal .tab-row[data-drop]::after {
+  .tab-row[data-drop-axis='x']::after {
     inset: 0 auto 0 0;
     width: 3px;
     height: auto;
   }
-  .horizontal .tab-row[data-drop='after']::after {
+  .tab-row[data-drop-axis='x'][data-drop='after']::after {
     inset: 0 0 0 auto;
   }
   .tab-row.current {

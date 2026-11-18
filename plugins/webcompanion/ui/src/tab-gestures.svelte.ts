@@ -3,13 +3,14 @@ import { KineticScroll, type PluginBrowserAction } from '@supadashboard/kit';
 type Move = Extract<PluginBrowserAction, { kind: 'move_tab' }>;
 type Point = { x: number; y: number };
 type Item = { id: number; lane: string; node: HTMLElement };
-type Drop = { anchor: number; side: Move['side'] };
+type Drop = Pick<Move, 'anchor' | 'side'> & { axis: 'x' | 'y' };
 type Gesture =
   | { kind: 'idle' }
   | { kind: 'press'; id: number; source: Item; origin: Point }
   | { kind: 'reorder'; id: number; source: Item; point: Point };
 
-const pressSlop = 8;
+// Small touch movements during a hold must leave the tab press in place.
+const pressSlop = 16;
 const row = '[data-tab-id]';
 const point = ({ clientX, clientY }: PointerEvent) => ({ x: clientX, y: clientY });
 
@@ -56,7 +57,7 @@ export class TabGestures {
     viewport.addEventListener('pointerup', this.#up, options);
     viewport.addEventListener('pointercancel', this.#cancel, options);
     viewport.addEventListener('lostpointercapture', this.#lostCapture, options);
-    viewport.addEventListener('pointerleave', this.#cancel, { signal: this.#lifetime.signal });
+    viewport.addEventListener('pointerleave', this.#leave, { signal: this.#lifetime.signal });
     viewport.addEventListener('click', this.#click, options);
     viewport.addEventListener('contextmenu', this.#contextMenu, options);
     viewport.addEventListener('focusin', this.#focus, options);
@@ -82,10 +83,7 @@ export class TabGestures {
       return;
     }
     event.preventDefault();
-    const lane = [...this.viewport.querySelectorAll(row)].flatMap((node) => {
-      const tab = item(node);
-      return tab?.lane === source.lane ? [tab] : [];
-    });
+    const lane = this.#lane(source);
     const forward = event.key === next;
     const target = lane[lane.findIndex(({ id }) => id === source.id) + (forward ? 1 : -1)];
     if (target) {
@@ -151,23 +149,79 @@ export class TabGestures {
   };
 
   #locate(gesture: Extract<Gesture, { kind: 'reorder' }>) {
-    const { x, y } = gesture.point;
-    const target = item(document.elementFromPoint(x, y));
-    if (
-      !target ||
-      !this.viewport.contains(target.node) ||
-      target.lane !== gesture.source.lane ||
-      target.id === gesture.source.id
-    ) {
+    const {
+      source,
+      point: { x, y },
+    } = gesture;
+    const viewport = this.viewport.getBoundingClientRect();
+    if (x < viewport.left || x >= viewport.right || y < viewport.top || y >= viewport.bottom) {
       this.drop = undefined;
       return;
     }
-    const box = target.node.getBoundingClientRect();
-    const before = this.horizontal ? x < box.left + box.width / 2 : y < box.top + box.height / 2;
-    const side = before ? 'before' : 'after';
-    if (this.drop?.anchor !== target.id || this.drop.side !== side) {
-      this.drop = { anchor: target.id, side };
+    const hit = document.elementFromPoint(x, y);
+    if (!this.viewport.contains(hit)) {
+      this.drop = undefined;
+      return;
     }
+    const hovered = item(hit);
+    const drop = hovered
+      ? this.#insertion(hovered, gesture.point)
+      : this.#nearest(gesture, viewport);
+    if (!drop || drop.anchor === source.id || (hovered && hovered.lane !== source.lane)) {
+      this.drop = undefined;
+    } else if (
+      this.drop?.anchor !== drop.anchor ||
+      this.drop.side !== drop.side ||
+      this.drop.axis !== drop.axis
+    ) {
+      this.drop = drop;
+    }
+  }
+
+  #insertion(tab: Item, { x, y }: Point, edge?: Move['side']): Drop {
+    const box = tab.node.getBoundingClientRect();
+    const parent = tab.node.parentElement;
+    const singleRow = parent && !getComputedStyle(parent).gridTemplateRows.trim().includes(' ');
+    const axis = this.horizontal && singleRow ? 'x' : 'y';
+    const before = axis === 'x' ? x < box.left + box.width / 2 : y < box.top + box.height / 2;
+    return { anchor: tab.id, axis, side: edge ?? (before ? 'before' : 'after') };
+  }
+
+  #lane(source: Item) {
+    return [...this.viewport.querySelectorAll(row)].flatMap((node) => {
+      const tab = item(node);
+      return tab?.lane === source.lane ? [tab] : [];
+    });
+  }
+
+  #nearest({ source, point: { x, y } }: Extract<Gesture, { kind: 'reorder' }>, viewport: DOMRect) {
+    const lane = this.#lane(source);
+    let target: Item | undefined;
+    let distance = Infinity;
+    for (const tab of lane) {
+      const box = tab.node.getBoundingClientRect();
+      const left = Math.max(box.left, viewport.left);
+      const right = Math.min(box.right, viewport.right);
+      const top = Math.max(box.top, viewport.top);
+      const bottom = Math.min(box.bottom, viewport.bottom);
+      if (right <= left || bottom <= top) {
+        continue;
+      }
+      if (this.horizontal && tab === lane[0] && x < left) {
+        return this.#insertion(tab, { x, y }, 'before');
+      }
+      if (this.horizontal && tab === lane.at(-1) && x >= right) {
+        return this.#insertion(tab, { x, y }, 'after');
+      }
+      const dx = Math.max(0, left - x, x - right);
+      const dy = Math.max(0, top - y, y - bottom);
+      const gap = dx ** 2 + dy ** 2;
+      if (gap < distance) {
+        target = tab;
+        distance = gap;
+      }
+    }
+    return target && this.#insertion(target, { x, y });
   }
 
   #edgeScroll = () => {
@@ -197,12 +251,9 @@ export class TabGestures {
     if (gesture.kind === 'idle' || gesture.id !== event.pointerId) {
       return;
     }
-    if (gesture.kind === 'reorder') {
-      gesture.point = point(event);
-      this.#locate(gesture);
-      if (this.drop && gesture.source.node.isConnected) {
-        this.send({ kind: 'move_tab', tab: gesture.source.id, ...this.drop });
-      }
+    if (gesture.kind === 'reorder' && this.drop && gesture.source.node.isConnected) {
+      const { anchor, side } = this.drop;
+      this.send({ kind: 'move_tab', tab: gesture.source.id, anchor, side });
     }
     this.#reset();
   };
@@ -210,6 +261,12 @@ export class TabGestures {
   #cancel = (event: PointerEvent) => {
     if (this.#gesture.kind !== 'idle' && this.#gesture.id === event.pointerId) {
       this.#reset();
+    }
+  };
+
+  #leave = (event: PointerEvent) => {
+    if (this.#gesture.kind === 'press') {
+      this.#cancel(event);
     }
   };
 

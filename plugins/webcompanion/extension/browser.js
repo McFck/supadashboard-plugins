@@ -28,7 +28,11 @@ export async function activeTab(tabs) {
 }
 
 export function scroll(frame) {
-  const page = pages.get(activeTabs.get(selectedWindow));
+  const tab = activeTabs.get(selectedWindow);
+  if (frame.tab != null && frame.tab !== tab) {
+    return;
+  }
+  const page = pages.get(tab);
   if (page) {
     try {
       page.port.postMessage(frame);

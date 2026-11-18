@@ -1,13 +1,13 @@
-import type { PluginBrowserAction } from '@supadashboard/kit';
+import type { PluginBrowserAction, PluginBrowserScrollFrame } from '@supadashboard/kit';
+import { ScrollGesture } from './scroll-gesture';
 
 type Action = Extract<PluginBrowserAction, { kind: 'pointer' }>;
 type Input = Action['input'];
-type Motion = Extract<Input, { dx: number }>;
 type Point = { x: number; y: number };
 type Gesture =
-  | { kind: 'idle' | 'spent' }
+  | { kind: 'idle' | 'spent' | 'scroll' }
   | { kind: 'aim'; origin: Point }
-  | { kind: 'move' | 'drag' | 'scroll'; last: Point };
+  | { kind: 'move' | 'drag'; last: Point };
 
 const bounded = (delta: number) => Math.max(-2048, Math.min(2048, delta));
 const point = ({ clientX, clientY }: PointerEvent) => ({ x: clientX, y: clientY });
@@ -16,6 +16,7 @@ export class TouchpadController {
   private readonly lifetime = new AbortController();
   private readonly fingers = new Map<number, Point>();
   private readonly queue: Action[] = [];
+  private readonly scroll: ScrollGesture;
   private gesture: Gesture = { kind: 'idle' };
   private tab: number | null = null;
   private hold: ReturnType<typeof setTimeout> | undefined;
@@ -25,7 +26,9 @@ export class TouchpadController {
   constructor(
     private pad: HTMLElement,
     private send: (action: Action) => Promise<boolean>,
+    private sendScroll: (frame: PluginBrowserScrollFrame) => boolean,
   ) {
+    this.scroll = new ScrollGesture((frame) => this.scrollFrame(frame));
     const options = { signal: this.lifetime.signal };
     pad.addEventListener('pointerdown', this.down, options);
     pad.addEventListener('pointermove', this.move, options);
@@ -86,12 +89,15 @@ export class TouchpadController {
         this.command({ kind: 'up' });
       }
       const centre = this.centre();
-      if (centre) {
-        this.gesture = { kind: 'scroll', last: centre };
+      if (centre && this.scroll.start(centre.x, centre.y, event.timeStamp)) {
+        this.gesture = { kind: 'scroll' };
+      } else {
+        this.gesture = { kind: 'spent' };
       }
       return;
     }
     this.gesture = { kind: 'aim', origin: here };
+    this.scrollFrame({ phase: 'hold' });
     this.command({ kind: 'begin' });
     this.hold = setTimeout(() => {
       if (this.gesture.kind === 'aim') {
@@ -111,18 +117,17 @@ export class TouchpadController {
     if (gesture.kind === 'scroll') {
       const centre = this.centre();
       if (centre) {
-        this.motion('wheel', gesture.last, centre, -2);
-        gesture.last = centre;
+        this.scroll.move(centre.x, centre.y, event.timeStamp);
       }
     } else if (
       gesture.kind === 'aim' &&
       Math.hypot(here.x - gesture.origin.x, here.y - gesture.origin.y) >= 6
     ) {
       clearTimeout(this.hold);
-      this.motion('move', gesture.origin, here, 2);
+      this.motion(gesture.origin, here);
       this.gesture = { kind: 'move', last: here };
     } else if (gesture.kind === 'move' || gesture.kind === 'drag') {
-      this.motion('move', gesture.last, here, 2);
+      this.motion(gesture.last, here);
       gesture.last = here;
     }
   };
@@ -138,6 +143,8 @@ export class TouchpadController {
       this.command({ kind: 'click' });
     } else if (this.gesture.kind === 'drag') {
       this.command({ kind: 'up' });
+    } else if (this.gesture.kind === 'scroll') {
+      this.scroll.finish(event.timeStamp);
     }
     this.gesture = this.fingers.size ? { kind: 'spent' } : { kind: 'idle' };
   };
@@ -155,15 +162,20 @@ export class TouchpadController {
     }
   }
 
-  private motion(kind: Motion['kind'], from: Point, to: Point, gain: number) {
-    const dx = bounded(Math.round((to.x - from.x) * gain));
-    const dy = bounded(Math.round((to.y - from.y) * gain));
+  private motion(from: Point, to: Point) {
+    const dx = bounded(Math.round((to.x - from.x) * 2));
+    const dy = bounded(Math.round((to.y - from.y) * 2));
     if (dx || dy) {
-      this.command({ kind, dx, dy });
+      this.command({ kind: 'move', dx, dy });
     }
   }
 
+  private scrollFrame(frame: PluginBrowserScrollFrame) {
+    return this.tab !== null && this.sendScroll({ ...frame, tab: this.tab });
+  }
+
   private reset() {
+    this.scroll.finish();
     clearTimeout(this.hold);
     cancelAnimationFrame(this.frame);
     this.frame = 0;

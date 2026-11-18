@@ -15,8 +15,11 @@
       return;
     }
     const unmount = webCompanion.mount();
-    const controller = new TouchpadController(pad, (action) =>
-      webCompanion.action(action, action.input.kind === 'click' || action.input.kind === 'down'),
+    const controller = new TouchpadController(
+      pad,
+      (action) =>
+        webCompanion.action(action, action.input.kind === 'click' || action.input.kind === 'down'),
+      webCompanion.scroll,
     );
     touch = controller;
     return () => {

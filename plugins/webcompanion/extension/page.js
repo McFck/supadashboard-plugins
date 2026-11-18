@@ -32,6 +32,7 @@
   }
 
   const outline = globalThis.webcompanionOutline;
+  const pointer = globalThis.webcompanionPointer;
 
   function scrollTarget(anchor) {
     const [x, y] = anchor ?? [innerWidth / 2, innerHeight / 2];
@@ -54,6 +55,7 @@
     frame = 0;
     lastTick = 0;
     lastInput = -Infinity;
+    pointerScroll = false;
 
     reset(anchor) {
       this.target = scrollTarget(anchor);
@@ -68,11 +70,19 @@
       const dx = clamp(frame.dx, 32768);
       const dy = clamp(frame.dy, 32768);
       const now = performance.now();
+      const scoped = frame.tab != null;
+      if (frame.hold === true) {
+        this.pointerScroll = scoped;
+      } else if (scoped !== this.pointerScroll) {
+        return;
+      }
       if (
         frame.hold === true ||
         ((dx || dy) && (!this.target?.isConnected || now - this.lastInput > IDLE_MS))
       ) {
-        this.reset(frame.outline === true ? outline.anchor() : undefined);
+        this.reset(
+          scoped ? pointer.anchor() : frame.outline === true ? outline.anchor() : undefined,
+        );
       }
       if (frame.hold === true || dx || dy) {
         this.lastInput = now;
@@ -156,6 +166,13 @@
   }
 
   const scroller = new Scroller();
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden && scroller.pointerScroll) {
+      scroller.reset();
+      scroller.pointerScroll = false;
+      scroller.lastInput = -Infinity;
+    }
+  });
   let port;
   let reconnectDelay = 250;
 
@@ -244,8 +261,8 @@
       return false;
     }
     switch (message.kind) {
-      case 'pointer_position':
-        respond(globalThis.webcompanionPointer(message));
+      case 'pointer_input':
+        respond(pointer.input(message));
         return false;
       case 'page':
         respond(

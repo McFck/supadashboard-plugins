@@ -72,7 +72,7 @@ class BrowserRemote {
       const watch = await handle;
       if (watch != null && this.handle === handle) {
         const code = await pluginBrowser.pair(plugin, watch);
-        if (this.handle === handle && this.snapshot.kind === 'offline') {
+        if (this.handle === handle && this.snapshot.kind !== 'connected') {
           this.code = code;
         }
       }

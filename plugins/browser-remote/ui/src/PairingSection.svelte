@@ -8,9 +8,13 @@
 
 <Section title="Connection">
   <Row label="Status">
-    <span>{browserRemote.snapshot.kind === 'connected' ? 'Connected' : 'Offline'}</span>
+    {#if browserRemote.snapshot.kind === 'repair'}
+      <span>Pair the browser again</span>
+    {:else}
+      <span>{browserRemote.snapshot.kind === 'connected' ? 'Connected' : 'Offline'}</span>
+    {/if}
   </Row>
-  {#if browserRemote.snapshot.kind === 'offline'}
+  {#if browserRemote.snapshot.kind !== 'connected'}
     <Row
       label="Pair"
       for="browser-pair"

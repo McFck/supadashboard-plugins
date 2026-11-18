@@ -1,4 +1,4 @@
-import { answer, fields, hello, isHex, reply } from './protocol.js';
+import { answer, credentialId, fields, hello, isHex, reply } from './protocol.js';
 
 const endpoint = 'ws://127.0.0.1:43822/browser-remote';
 const wake = 'browser-remote-reconnect';
@@ -29,7 +29,18 @@ function connect(mode, secret) {
     const deadline = setTimeout(() => current.close(), 4000);
     const send = (value) => current.send(JSON.stringify(value));
 
-    current.onopen = () => send(greeting);
+    current.onopen = async () => {
+      try {
+        if (mode === 'auth') {
+          send({ ...greeting, keyId: await credentialId(secret) });
+        } else {
+          send(greeting);
+        }
+      } catch (error) {
+        reject(error);
+        current.close();
+      }
+    };
     current.onclose = () => {
       clearTimeout(deadline);
       reject(new Error('Browser Remote connection closed'));
@@ -57,19 +68,27 @@ function connect(mode, secret) {
               send({ proof });
               break;
             }
-            case 'ready':
+            case 'ready': {
               if (!fields(message, 'kind') || message.kind !== 'ready') {
                 throw new Error('Bridge refused authentication');
               }
               clearTimeout(deadline);
               if (mode === 'pair') {
-                await chrome.storage.local.set({ credential: phase.credential });
+                const credential = phase.credential;
                 await chrome.alarms.create(wake, { periodInMinutes: 1 });
+                await chrome.storage.local.set({ credential });
+                if (socket === current) {
+                  current.onclose = null;
+                  current.close();
+                  resolve(await connect('auth', credential));
+                }
+                break;
               }
               phase = { kind: 'connected' };
               backoff = 500;
               resolve();
               break;
+            }
             case 'connected':
               send(await reply(message));
               break;

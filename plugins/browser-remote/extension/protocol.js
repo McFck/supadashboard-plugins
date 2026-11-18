@@ -21,6 +21,10 @@ export function hello(mode) {
   return { mode, nonce: encodeHex(crypto.getRandomValues(new Uint8Array(16))) };
 }
 
+export async function credentialId(secret) {
+  return encodeHex(new Uint8Array(await crypto.subtle.digest('SHA-256', utf8.encode(secret))));
+}
+
 export async function answer(greeting, challenge, secret) {
   if (
     !fields(challenge, 'nonce', 'proof') ||
@@ -55,7 +59,8 @@ function title(value) {
   let bytes = 0;
   let result = '';
   for (const character of (value ?? '').toWellFormed()) {
-    bytes += utf8.encode(character).length;
+    // JSON escapes can cost more bytes than the characters they represent.
+    bytes += utf8.encode(JSON.stringify(character)).length - 2;
     if (bytes > 256) {
       break;
     }

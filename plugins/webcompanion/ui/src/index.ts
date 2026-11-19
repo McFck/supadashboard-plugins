@@ -36,7 +36,7 @@ const plugin: Plugin = {
       }),
     });
     api.registerControl({
-      type: 'browserRemoteTabs',
+      type: 'webcompanionTabs',
       title: 'Browser Tabs',
       icon: 'webcompanion-tabs',
       component: BrowserTabs,

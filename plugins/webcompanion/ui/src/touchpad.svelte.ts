@@ -23,7 +23,6 @@ export class TouchpadController {
   private gesture: Gesture = { kind: 'idle' };
   private tab: number | null = null;
   private hold: ReturnType<typeof setTimeout> | undefined;
-  private frame = 0;
   private busy = false;
 
   constructor(
@@ -213,8 +212,6 @@ export class TouchpadController {
   private reset() {
     this.scroll.finish();
     clearTimeout(this.hold);
-    cancelAnimationFrame(this.frame);
-    this.frame = 0;
     const needsRelease =
       this.gesture.kind === 'drag' ||
       this.queue.some(({ input }) => input.kind === 'up' || input.kind === 'cancel');
@@ -249,22 +246,8 @@ export class TouchpadController {
     } else {
       this.queue.push({ kind: 'pointer', tab: this.tab, input });
     }
-    if (input.kind === 'move') {
-      this.schedule();
-    } else {
-      cancelAnimationFrame(this.frame);
-      this.frame = 0;
-      void this.flush();
-    }
-  }
-
-  private schedule() {
-    if (!this.frame && !this.busy) {
-      this.frame = requestAnimationFrame(() => {
-        this.frame = 0;
-        void this.flush();
-      });
-    }
+    // The remote cursor can move immediately. Only coalesce while a command is in flight.
+    void this.flush();
   }
 
   private async flush() {

@@ -1,7 +1,6 @@
 // Discord's local RPC over the host's framed pipe: handshake, request/reply by nonce, ping, and a bounded queue of
 // dispatches that arrive between a request and its reply.
-import { pluginPipe, type PluginPipeEvent } from '@supadashboard/kit';
-import { isRecord } from './model';
+import { isRecord, pluginPipe, type PluginPipeEvent } from '@supadashboard/kit';
 
 const PLUGIN = 'discord';
 const EVENT_QUEUE = 512;

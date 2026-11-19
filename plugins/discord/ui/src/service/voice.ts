@@ -1,5 +1,6 @@
 // The voice view model: pure transitions over Discord's snapshots and dispatches.
-import { isRecord, readMember, readSelected, type Channel, type Member, type User } from './model';
+import { isRecord } from '@supadashboard/kit';
+import { readMember, readSelected, type Channel, type Member, type User } from './model';
 
 export type VoiceState = {
   user?: User;

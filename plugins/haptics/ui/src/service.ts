@@ -1,9 +1,15 @@
 // The haptics service, run by the dashboard owner: one persistent `adb shell` to the tablet, reconnected while
 // enabled, with tablet lock on sleep and Artemis launch on resume or reconnect.
-import { emitPluginEvent, pluginProcess, toast, type PluginProcessEvent } from '@supadashboard/kit';
+import {
+  emitPluginEvent,
+  isRecord,
+  pluginProcess,
+  toast,
+  type PluginProcessEvent,
+} from '@supadashboard/kit';
 import { adbCandidates, parseDevices, pickDevice, powerOffArgs, validSerial } from './adb';
 import { enableUsbTethering, openArtemis, type Tablet } from './artemis';
-import type { HapticsConfig, PulseKind } from './haptics';
+import { isPulseKind, STRENGTHS, type HapticsConfig } from './haptics';
 import { Limiter, pulseMillis } from './pulse';
 
 const PLUGIN = 'haptics';
@@ -12,13 +18,54 @@ const LAUNCH_DEBOUNCE_MS = 8000;
 const sameDevice = (a: HapticsConfig, b: HapticsConfig) =>
   a.enabled === b.enabled && a.adbPath === b.adbPath && a.serial === b.serial;
 
-const valid = (config: HapticsConfig) =>
-  (config.adbPath?.length ?? 0) <= 1024 && (!config.serial || validSerial(config.serial));
+const optionalText = (value: unknown): value is string | undefined =>
+  value === undefined || (typeof value === 'string' && value.length <= 1024);
+
+/** The settings a window sends; anything else is rejected before it reaches adb. */
+function readConfig(raw: unknown): HapticsConfig {
+  const strength = isRecord(raw) ? STRENGTHS.find((known) => known === raw.strength) : undefined;
+  if (
+    !isRecord(raw) ||
+    !strength ||
+    !optionalText(raw.adbPath) ||
+    !optionalText(raw.serial) ||
+    (raw.serial !== undefined && !validSerial(raw.serial)) ||
+    typeof raw.artemisHost !== 'string' ||
+    typeof raw.artemisApp !== 'string' ||
+    raw.artemisHost.length > 1024 ||
+    raw.artemisApp.length > 1024 ||
+    ![raw.enabled, raw.lockWithPc, raw.artemis, raw.usbTethering].every(
+      (flag) => typeof flag === 'boolean',
+    )
+  ) {
+    throw new Error('Invalid haptics settings');
+  }
+  return {
+    enabled: raw.enabled === true,
+    adbPath: raw.adbPath,
+    serial: raw.serial,
+    strength,
+    lockWithPc: raw.lockWithPc === true,
+    artemis: raw.artemis === true,
+    artemisHost: raw.artemisHost,
+    artemisApp: raw.artemisApp,
+    usbTethering: raw.usbTethering === true,
+  };
+}
+
+/** The tablet found over ADB, and the interactive vibration shell that belongs to it. */
+type Link =
+  | { kind: 'none' }
+  | { kind: 'found'; tablet: Tablet }
+  | { kind: 'open'; tablet: Tablet; shell: number };
+
+const sameTablet = (a: Tablet | undefined, b: Tablet | undefined) =>
+  a?.serial === b?.serial && a?.adb === b?.adb;
+const linkedTablet = (link: Link) => (link.kind === 'none' ? undefined : link.tablet);
 
 export class HapticsService {
   private config: HapticsConfig | undefined;
-  private shell: number | undefined;
-  private tablet: Tablet | undefined;
+  private link: Link = { kind: 'none' };
   private armed: Tablet | undefined;
   private disposed = false;
   private syncing = false;
@@ -31,18 +78,15 @@ export class HapticsService {
 
   /** Applies the settings; true when a tablet is connected. */
   configure = (params: unknown) => {
-    const next = params as HapticsConfig;
-    if (!valid(next)) {
-      throw new Error('Invalid haptics settings');
-    }
+    const next = readConfig(params);
     return this.enqueue(async () => {
       const previous = this.config;
       if (previous && !sameDevice(previous, next)) {
+        await this.drop();
         this.setTablet(undefined);
         this.lastRecoveryLaunch = undefined;
         this.transportLost = false;
         await this.armPowerOff();
-        await this.drop();
       }
       this.config = next;
       await this.connectAndArm(previous);
@@ -50,18 +94,15 @@ export class HapticsService {
     });
   };
 
-  tabletReady = () => this.tablet !== undefined;
+  tabletReady = () => this.link.kind !== 'none';
 
   launchArtemis = () =>
     this.enqueue(async () => {
-      if (!this.config?.artemis || !this.tablet || this.disposed) {
+      const tablet = linkedTablet(this.link);
+      if (!this.config?.artemis || !tablet || this.disposed) {
         throw new Error('Artemis unavailable');
       }
-      const failure = await openArtemis(
-        this.tablet,
-        this.config.artemisHost,
-        this.config.artemisApp,
-      );
+      const failure = await openArtemis(tablet, this.config.artemisHost, this.config.artemisApp);
       if (failure) {
         throw new Error(failure);
       }
@@ -71,26 +112,26 @@ export class HapticsService {
   resume = () => this.enqueue(() => this.connectAndArm(this.config, true));
 
   pulse = (params: unknown) => {
-    const { kind } = params as { kind: PulseKind };
-    const shell = this.shell;
-    const ms = pulseMillis(kind, this.config?.strength ?? 'medium');
-    if (shell === undefined || !this.limiter.admit(Date.now(), ms)) {
+    const kind = isRecord(params) ? params.kind : undefined;
+    if (!isPulseKind(kind)) {
       return;
     }
-    pluginProcess.write(PLUGIN, shell, `cmd vibrator_manager synced oneshot ${ms}\n`).catch(() => {
-      if (this.shell === shell) {
-        this.shell = undefined;
-        this.transportLost = true;
-      }
-    });
+    const link = this.link;
+    const ms = pulseMillis(kind, this.config?.strength ?? 'medium');
+    if (link.kind !== 'open' || !this.limiter.admit(Date.now(), ms)) {
+      return;
+    }
+    pluginProcess
+      .write(PLUGIN, link.shell, `cmd vibrator_manager synced oneshot ${ms}\n`)
+      .catch(() => this.shellLost(link.shell));
   };
 
   destroy() {
     this.disposed = true;
     clearInterval(this.timer);
     void this.enqueue(async () => {
-      this.setTablet(undefined);
       await this.drop();
+      this.setTablet(undefined);
       await this.armPowerOff();
     }).catch(console.warn);
   }
@@ -102,10 +143,17 @@ export class HapticsService {
   }
 
   private async drop() {
-    const shell = this.shell;
-    this.shell = undefined;
-    if (shell !== undefined) {
-      await pluginProcess.kill(PLUGIN, shell).catch(() => {});
+    const link = this.link;
+    if (link.kind === 'open') {
+      this.link = { kind: 'found', tablet: link.tablet };
+      await pluginProcess.kill(PLUGIN, link.shell).catch(() => {});
+    }
+  }
+
+  private shellLost(shell: number) {
+    if (this.link.kind === 'open' && this.link.shell === shell) {
+      this.link = { kind: 'found', tablet: this.link.tablet };
+      this.transportLost = true;
     }
   }
 
@@ -126,26 +174,28 @@ export class HapticsService {
     if (!config?.enabled || this.disposed) {
       return;
     }
-    const oldTablet = this.tablet;
+    const oldTablet = linkedTablet(this.link);
     const transportLost = this.transportLost;
     this.transportLost = false;
-    if (this.shell === undefined || resumed) {
-      this.setTablet(await this.findTablet(config));
+    if (this.link.kind !== 'open' || resumed) {
+      const found = await this.findTablet(config);
+      // A shell belongs to one tablet; it goes before the tablet changes.
+      if (!sameTablet(found, oldTablet)) {
+        await this.drop();
+      }
+      this.setTablet(found);
     }
     if (this.disposed) {
       return;
     }
     // Locking only needs an ADB transport. The interactive vibration shell can fail independently.
     await this.armPowerOff();
-    const tablet = this.tablet;
+    const tablet = linkedTablet(this.link);
     if (!tablet || this.disposed) {
       await this.drop();
       return;
     }
-    const connected = oldTablet?.serial !== tablet.serial || oldTablet.adb !== tablet.adb;
-    if (connected && oldTablet) {
-      await this.drop();
-    }
+    const connected = !sameTablet(oldTablet, tablet);
     const launch = config.artemis && (connected || transportLost || resumed || !previous?.artemis);
     const tether = config.artemis && config.usbTethering && (launch || !previous?.usbTethering);
     if (tether) {
@@ -170,7 +220,7 @@ export class HapticsService {
       }
       this.report(failure);
     }
-    if (this.shell === undefined && !this.disposed) {
+    if (this.link.kind === 'found' && !this.disposed) {
       await this.startShell(tablet);
     }
   }
@@ -195,16 +245,16 @@ export class HapticsService {
     const onEvent = (event: PluginProcessEvent) => {
       if (event.kind === 'exited') {
         exited = true;
-        if (handle !== undefined && this.shell === handle) {
-          this.shell = undefined;
-          this.transportLost = true;
+        if (handle !== undefined) {
+          this.shellLost(handle);
         }
       }
     };
     try {
       handle = await pluginProcess.spawn(PLUGIN, adb, ['-s', serial, 'shell'], onEvent);
-      if (!exited) {
-        this.shell = handle;
+      const link = this.link;
+      if (!exited && link.kind === 'found' && sameTablet(link.tablet, { adb, serial })) {
+        this.link = { kind: 'open', tablet: link.tablet, shell: handle };
       }
     } catch (error) {
       // The transport may have gone away after `adb devices`; the next poll checks it again.
@@ -212,9 +262,14 @@ export class HapticsService {
     }
   }
 
+  /** Callers drop the shell first when the tablet changes. */
   private setTablet(tablet: Tablet | undefined) {
     const changed = this.tabletReady() !== (tablet !== undefined);
-    this.tablet = tablet;
+    if (!tablet) {
+      this.link = { kind: 'none' };
+    } else if (!sameTablet(tablet, linkedTablet(this.link))) {
+      this.link = { kind: 'found', tablet };
+    }
     if (changed) {
       void emitPluginEvent(PLUGIN, 'tablet-ready', this.tabletReady()).catch(console.warn);
     }
@@ -229,7 +284,7 @@ export class HapticsService {
 
   /** The lock runs as its own adb call: it returns only once the tablet ran the key. */
   private async armPowerOff() {
-    const tablet = this.tablet;
+    const tablet = linkedTablet(this.link);
     const args = powerOffArgs(this.config?.lockWithPc === true, tablet?.serial);
     if (tablet && args) {
       if (tablet.adb !== this.armed?.adb || tablet.serial !== this.armed.serial) {

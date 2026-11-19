@@ -13,10 +13,18 @@
   }
 </script>
 
-<fieldset class="grid gap-2">
-  <legend>Background</legend>
+<section
+  class="grid gap-3"
+  aria-labelledby="touchpad-background"
+>
+  <h3
+    id="touchpad-background"
+    class="section-label"
+  >
+    Background
+  </h3>
   <ColorField
     value={background}
     onchange={change}
   />
-</fieldset>
+</section>

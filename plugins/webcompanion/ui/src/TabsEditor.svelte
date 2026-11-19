@@ -13,7 +13,7 @@
   }
 </script>
 
-<div class="grid gap-2">
+<div class="grid gap-1.5">
   <Label for="browser-tabs-orientation">Orientation</Label>
   <Choice
     id="browser-tabs-orientation"

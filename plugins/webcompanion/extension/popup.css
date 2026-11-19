@@ -1,49 +1,96 @@
+/* SupaDashboard's dark palette (app.css) so the popup reads as part of the app. */
 :root {
   color-scheme: dark;
   font:
-    14px system-ui,
+    14px/20px 'Segoe UI',
+    system-ui,
     sans-serif;
-  background: #181a20;
-  color: #f1f2f5;
+  background: #171412;
+  color: #f2ece6;
 }
 
 body {
-  width: 16rem;
+  box-sizing: border-box;
+  width: 240px;
   margin: 0;
-  padding: 1rem;
+  padding: 16px;
 }
 
 header {
-  margin-bottom: 1rem;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  column-gap: 10px;
+  margin-bottom: 16px;
+}
+
+.mark {
+  grid-row: span 2;
+  width: 36px;
+  height: 36px;
 }
 
 h1 {
-  margin: 0 0 0.5rem;
-  font-size: 1rem;
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
 }
 
 [role='status'] {
-  display: inline-block;
+  display: flex;
+  align-items: center;
+  gap: 6px;
   margin: 0;
-  padding: 0.2rem 0.5rem;
-  border-radius: 1rem;
-  background: #292d39;
-  color: #d9ddec;
-  font-size: 0.8rem;
+  color: #a39a91;
+  font-size: 12px;
+  line-height: 16px;
+}
+
+[role='status']::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.5;
 }
 
 [role='status'][data-state='paired'] {
-  background: #27395d;
-  color: #cbdcff;
+  color: #3cc7c0;
+}
+
+[role='status'][data-state='paired']::before {
+  opacity: 1;
+  box-shadow: 0 0 6px #3cc7c0;
+}
+
+[role='status']:is(
+  [data-state='code'],
+  [data-state='expired'],
+  [data-state='auth'],
+  [data-state='update'],
+  [data-state='dashboard_update'],
+  [data-state='storage']
+) {
+  color: #ff5c52;
 }
 
 form {
   display: grid;
-  gap: 0.625rem;
+  gap: 10px;
 }
 
 form[hidden] {
   display: none;
+}
+
+label {
+  color: #a39a91;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 16px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
 }
 
 .field {
@@ -53,14 +100,18 @@ form[hidden] {
 .cells {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
-  gap: 0.25rem;
+  gap: 5px;
 }
 
 .cells i {
-  height: 2.6rem;
-  border: 1px solid #414754;
-  border-radius: 0.35rem;
-  background: #20232b;
+  height: 44px;
+  border: 1px solid rgb(255 236 220 / 11%);
+  border-radius: 10px;
+  background: #26211e;
+}
+
+.field:focus-within .cells i {
+  border-color: rgb(239 74 67 / 55%);
 }
 
 input {
@@ -69,31 +120,32 @@ input {
   box-sizing: border-box;
   width: 100%;
   border: 0;
-  border-radius: 0.35rem;
-  padding-left: 0.93rem;
+  padding-left: 10px;
   background: transparent;
   color: inherit;
   font:
-    1.25rem ui-monospace,
+    600 20px Consolas,
+    ui-monospace,
     monospace;
-  letter-spacing: 1.9rem;
+  letter-spacing: 24.5px;
+  outline: none;
 }
 
 button {
-  min-height: 2.25rem;
+  min-height: 40px;
   border: 0;
-  border-radius: 0.35rem;
-  background: #abc2ff;
-  color: #17213c;
+  border-radius: 10px;
+  background: #d42c26;
+  color: #fff;
   font: inherit;
   font-weight: 600;
 }
 
 button:disabled {
-  opacity: 0.5;
+  opacity: 0.4;
 }
 
 :focus-visible {
-  outline: 2px solid #abc2ff;
+  outline: 2px solid #ef4a43;
   outline-offset: 2px;
 }

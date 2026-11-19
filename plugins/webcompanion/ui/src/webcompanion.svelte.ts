@@ -12,11 +12,11 @@ const plugin = 'webcompanion';
 class WebCompanion {
   snapshot = $state<PluginBrowserSnapshot>({ kind: 'offline' });
   pairing = $state<{ code: string; expiresInMs: number } | null>(null);
-  ready = $state(false);
   pairingPending = $state(false);
+  private watch = $state<number | null>(null);
+  readonly ready = $derived(this.watch !== null);
   private users = 0;
   private handle: Promise<number | null> | undefined;
-  private watch: number | null = null;
   private stopping = Promise.resolve();
   private expiry: ReturnType<typeof setTimeout> | undefined;
   private publish: ((snapshot: PluginBrowserSnapshot) => void) | undefined;
@@ -54,7 +54,6 @@ class WebCompanion {
       .then((id) => {
         if (this.handle === handle) {
           this.watch = id;
-          this.ready = true;
         }
         return id;
       })
@@ -75,7 +74,6 @@ class WebCompanion {
     const handle = this.handle;
     this.handle = undefined;
     this.watch = null;
-    this.ready = false;
     this.snapshot = { kind: 'offline' };
     this.clearCode();
     if (handle) {

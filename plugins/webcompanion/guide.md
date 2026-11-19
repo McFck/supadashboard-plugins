@@ -5,9 +5,8 @@ It has two parts: this plugin and the WebCompanion browser extension.
 ## 1. Install
 
 1. Install this plugin from the Market.
-2. Install the WebCompanion extension from the [Chrome Web Store](https://chromewebstore.google.com/detail/supadashboard-webcompanion/TODO). In Edge, allow extensions from other stores when asked.
-3. Without the store: download the [extension folder](https://github.com/McFck/supadashboard-plugins/tree/main/plugins/webcompanion/extension), open `chrome://extensions`, turn on **Developer mode**, click **Load unpacked** and pick the folder.
-4. Pin the extension: click the puzzle icon in the browser toolbar, then the pin next to **SupaDashboard WebCompanion**.
+2. Download the [extension folder](https://github.com/McFck/supadashboard-plugins/tree/main/plugins/webcompanion/extension), open `chrome://extensions`, turn on **Developer mode**, click **Load unpacked** and pick the folder.
+3. Pin the extension: click the puzzle icon in the browser toolbar, then the pin next to **SupaDashboard WebCompanion**.
 
 ## 2. Pair
 

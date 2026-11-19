@@ -123,7 +123,6 @@
     background: var(--destructive);
     opacity: 1;
   }
-  /* The slot look of shadcn's InputOTP: joined slots, outer corners rounded, a separator between groups. */
   .otp {
     position: relative;
     display: flex;

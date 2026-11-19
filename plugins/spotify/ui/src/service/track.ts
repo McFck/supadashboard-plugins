@@ -1,4 +1,5 @@
 import { isRecord } from '@supadashboard/kit';
+import { validText } from './api';
 
 export interface Track {
   artist: string;
@@ -9,10 +10,8 @@ export interface Track {
   durationMs: number;
 }
 
-const validText = (value: string) => [...value].length <= 256 && !/\p{Cc}/u.test(value);
-
 /** The trimmed track a lyrics call names, or null when it is not a valid one. */
-export function readTrack(raw: unknown): { track: Track; offsetMs: number } | null {
+export function readTrack(raw: unknown): Track | null {
   if (
     !isRecord(raw) ||
     typeof raw.artist !== 'string' ||
@@ -32,10 +31,9 @@ export function readTrack(raw: unknown): { track: Track; offsetMs: number } | nu
     duration: Math.floor((raw.durationMs + 500) / 1000),
     durationMs: raw.durationMs,
   };
-  if (!track.artist || !track.title || ![track.artist, track.title, track.album].every(validText)) {
+  const texts = [track.artist, track.title, track.album];
+  if (!track.artist || !track.title || !texts.every((text) => validText(text, 256))) {
     return null;
   }
-  const offsetMs =
-    typeof raw.offsetMs === 'number' && Number.isInteger(raw.offsetMs) ? raw.offsetMs : 0;
-  return { track, offsetMs };
+  return track;
 }

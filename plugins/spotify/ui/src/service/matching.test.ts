@@ -18,7 +18,7 @@ function track(artist: string, title: string, album: string, durationMs: number)
   if (!read) {
     throw new Error('invalid track');
   }
-  return read.track;
+  return read;
 }
 const firstLine = (view: ReturnType<typeof pick>) =>
   view.kind === 'synced' ? view.lines[0].atMs : null;

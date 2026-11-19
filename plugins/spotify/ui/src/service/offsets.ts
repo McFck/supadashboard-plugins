@@ -1,9 +1,8 @@
-import { pluginStorage } from '@supadashboard/kit';
+import { isRecord, pluginStorage } from '@supadashboard/kit';
+import { SONG_OFFSET_LIMIT_MS } from '../lyrics';
 import { cacheKey } from './lyrics-cache';
 import type { Track } from './track';
 
-/** Largest offset either way (ms), the tile slider's range. */
-const LIMIT_MS = 10_000;
 /** Songs kept; setting one more forgets the one set longest ago. */
 const MAX_ENTRIES = 500;
 const VERSION = 1;
@@ -18,25 +17,31 @@ const valid = (key: unknown, offsetMs: unknown): offsetMs is number =>
   typeof offsetMs === 'number' &&
   Number.isInteger(offsetMs) &&
   offsetMs !== 0 &&
-  Math.abs(offsetMs) <= LIMIT_MS;
+  Math.abs(offsetMs) <= SONG_OFFSET_LIMIT_MS;
 
 function limited(entries: Entries) {
   return entries.slice(Math.max(0, entries.length - MAX_ENTRIES));
 }
 
-/** The saved offsets without the entries no build of this store writes. An unreadable file is kept as `.bad`. */
+/**
+ * The saved offsets without the entries no build of this store writes. An unreadable file is kept as `.bad`; a
+ * file from a newer version is kept as it is and fails every call, so this build never writes over it.
+ */
 async function load(): Promise<Entries> {
   const text = await pluginStorage.read('spotify', FILE);
   if (text === null) {
     return [];
   }
-  let stored: { version?: unknown; entries?: unknown } | null = null;
+  let stored: unknown;
   try {
     stored = JSON.parse(text);
   } catch {
     // Handled below like any other unreadable file.
   }
-  if (stored?.version !== VERSION || !Array.isArray(stored.entries)) {
+  if (isRecord(stored) && typeof stored.version === 'number' && stored.version > VERSION) {
+    throw new Error('Lyrics offsets from a newer version');
+  }
+  if (!isRecord(stored) || stored.version !== VERSION || !Array.isArray(stored.entries)) {
     await pluginStorage.write('spotify', `${FILE}.bad`, text);
     return [];
   }
@@ -89,7 +94,7 @@ export class LyricsOffsets {
   }
 
   async set(track: Track, offsetMs: number): Promise<void> {
-    if (!Number.isInteger(offsetMs) || Math.abs(offsetMs) > LIMIT_MS) {
+    if (!Number.isInteger(offsetMs) || Math.abs(offsetMs) > SONG_OFFSET_LIMIT_MS) {
       throw new Error('Invalid lyrics offset');
     }
     const key = await cacheKey(track);

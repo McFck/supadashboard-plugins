@@ -5,8 +5,11 @@ import { LyricsHub } from './lyrics-hub';
 import { LyricsOffsets } from './offsets';
 import { readTrack } from './track';
 
-const LIKE_OPS: unknown[] = ['like', 'unlike', 'dislike'];
-const SHUFFLE_MODES: unknown[] = ['on', 'off', 'toggle'];
+const LIKE_OPS: readonly LikeOp[] = ['like', 'unlike', 'dislike'];
+const SHUFFLE_MODES: readonly ShuffleMode[] = ['on', 'off', 'toggle'];
+
+const isOneOf = <T extends string>(values: readonly T[], value: unknown): value is T =>
+  values.some((known) => known === value);
 
 function track(params: unknown) {
   const read = readTrack(params);
@@ -59,23 +62,26 @@ export function provideSpotify(): () => void {
     logout: () => running().operation({ kind: 'logout' }),
     command(params) {
       const op = isRecord(params) ? params.op : undefined;
-      if (!LIKE_OPS.includes(op)) {
+      if (!isOneOf(LIKE_OPS, op)) {
         throw new Error('Unknown Spotify command');
       }
-      return running().operation({ kind: 'command', op: op as LikeOp });
+      return running().operation({ kind: 'command', op });
     },
     shuffle(params) {
       const mode = isRecord(params) ? params.mode : undefined;
-      if (!SHUFFLE_MODES.includes(mode)) {
+      if (!isOneOf(SHUFFLE_MODES, mode)) {
         throw new Error('Unknown shuffle mode');
       }
-      return running().operation({ kind: 'shuffle', mode: mode as ShuffleMode });
+      return running().operation({ kind: 'shuffle', mode });
     },
-    'lyrics-get': (params) => lyrics.get(track(params).track),
-    'lyrics-offset-get': (params) => offsets.get(track(params).track),
+    'lyrics-get': (params) => lyrics.get(track(params)),
+    'lyrics-offset-get': (params) => offsets.get(track(params)),
     'lyrics-offset-set'(params) {
-      const { track: read, offsetMs } = track(params);
-      return offsets.set(read, offsetMs);
+      const offsetMs = isRecord(params) ? params.offsetMs : undefined;
+      if (typeof offsetMs !== 'number') {
+        throw new Error('Invalid lyrics offset');
+      }
+      return offsets.set(track(params), offsetMs);
     },
   };
   const dispose = providePlugin('spotify', service);

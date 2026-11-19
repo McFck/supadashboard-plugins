@@ -16,12 +16,16 @@ function records(body: string, many: boolean) {
   } catch {
     throw new Error('Invalid lyrics response');
   }
-  const read = (many ? parsed : [parsed]) as unknown[];
-  const result = Array.isArray(read) ? read.map(readRecord) : [];
-  if (!Array.isArray(read) || result.includes(null)) {
-    throw new Error('Invalid lyrics response');
+  const read: unknown = many ? parsed : [parsed];
+  const result: LrclibRecord[] = [];
+  for (const raw of Array.isArray(read) ? read : [null]) {
+    const record = readRecord(raw);
+    if (!record) {
+      throw new Error('Invalid lyrics response');
+    }
+    result.push(record);
   }
-  return result as LrclibRecord[];
+  return result;
 }
 
 /** LRCLIB lookups, one at a time with spacing; a 429 cooldown carries over to the next track. */
@@ -42,7 +46,9 @@ export class LrclibClient {
       const response = await pluginHttp('spotify', {
         method: 'GET',
         url,
-        headers: { 'User-Agent': `SupaDashboard/${manifest.version}` },
+        headers: {
+          'User-Agent': `SupaDashboard/${manifest.version} (https://github.com/McFck/supadashboard-plugins)`,
+        },
       });
       if (response.status !== 429) {
         return response;

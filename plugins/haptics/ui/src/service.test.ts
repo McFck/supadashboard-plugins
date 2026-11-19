@@ -4,8 +4,16 @@ import { HapticsService } from './service';
 import { DEFAULTS, toConfig } from './settings';
 
 vi.mock('@supadashboard/kit', () => ({
+  isRecord: (value: unknown) =>
+    typeof value === 'object' && value !== null && !Array.isArray(value),
   emitPluginEvent: vi.fn().mockResolvedValue(undefined),
-  pluginProcess: { run: vi.fn(), spawn: vi.fn(), onPowerOff: vi.fn() },
+  pluginProcess: {
+    run: vi.fn(),
+    spawn: vi.fn(),
+    onPowerOff: vi.fn(),
+    write: vi.fn(),
+    kill: vi.fn(),
+  },
   toast: { error: vi.fn() },
 }));
 
@@ -80,6 +88,26 @@ it('launches on wake with ADB still connected and on a fast replug with the same
     expect(launches()).toBe(3);
   } finally {
     replug();
+    service.destroy();
+  }
+});
+
+it('rejects unknown strengths and pulse kinds before they reach the tablet shell', async () => {
+  vi.mocked(pluginProcess.run).mockResolvedValue({
+    code: 0,
+    stdout: 'List of devices attached\nTABLET\tdevice\n',
+  });
+  vi.mocked(pluginProcess.spawn).mockResolvedValue(1);
+  vi.mocked(pluginProcess.write).mockResolvedValue(undefined);
+  const service = new HapticsService();
+  const config = toConfig({ ...DEFAULTS, enabled: true, adbPath: 'adb.exe' });
+  try {
+    expect(() => service.configure({ ...config, strength: 'huge' })).toThrow('Invalid');
+    await service.configure(config);
+    service.pulse({ kind: 'nope' });
+    service.pulse(null);
+    expect(pluginProcess.write).not.toHaveBeenCalled();
+  } finally {
     service.destroy();
   }
 });

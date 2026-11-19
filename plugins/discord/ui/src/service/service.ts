@@ -1,11 +1,13 @@
-// The Discord service the dashboard owner provides: `subscribe`/`unsubscribe` start and stop the connection and
-// `plugin://discord/state` events follow it, `authorize`, `logout` and `voice` act on it.
-import { emitPluginEvent, type PluginService } from '@supadashboard/kit';
+// `subscribe`/`unsubscribe` start and stop the connection, `plugin://discord/state` events follow it, and
+// `authorize`, `logout` and `voice` act on it.
+import { emitPluginEvent, isRecord, type PluginService } from '@supadashboard/kit';
 import type { VoiceCommand } from './actions';
 import { Client } from './client';
-import { isRecord, validId } from './model';
+import { validId } from './model';
 
 const COMMANDS: VoiceCommand[] = ['toggleMute', 'toggleDeaf', 'leave', 'rejoin'];
+const isCommand = (value: unknown): value is VoiceCommand =>
+  COMMANDS.some((known) => known === value);
 
 export function createDiscordService() {
   // ponytail: calls carry no window label, so this counts subscribe/unsubscribe pairs; a window that subscribes
@@ -57,10 +59,10 @@ export function createDiscordService() {
     },
     async voice(params) {
       const command = isRecord(params) ? params.command : undefined;
-      if (!COMMANDS.some((known) => known === command)) {
+      if (!isCommand(command)) {
         throw new Error('Unknown Discord command');
       }
-      await running().operate({ kind: 'voice', command: command as VoiceCommand });
+      await running().operate({ kind: 'voice', command });
       return null;
     },
   };

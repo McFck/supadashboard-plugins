@@ -2,10 +2,6 @@ import { between, type Random } from './random';
 
 const PARTIALS = 3;
 
-/**
- * Wheel squeal, synthesised because no free recording fits: a few detuned high partials with a slow shared
- * vibrato. One voice serves curve squeal (15 to 45 km/h) and brake squeal (below 8 km/h), which never overlap.
- */
 export class Squeal {
   private readonly partials: OscillatorNode[];
   private readonly vibrato: OscillatorNode;
@@ -30,7 +26,6 @@ export class Squeal {
     for (const node of [this.vibrato, ...this.partials]) node.start();
   }
 
-  /** New pitches for the next squeal, so successive ones differ. */
   retune(random: Random, low: number, high: number, when: number) {
     const base = between(random, low, high);
     this.partials.forEach((partial, index) => {

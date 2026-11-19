@@ -3,22 +3,15 @@ import { fromDb, hvacSteps } from './levels';
 import type { Section, TrainProfile } from './manifest';
 import { seeded, type Random } from './random';
 
-/** The train sits this far under a voice cue, so announcements stay clear without the cabin vanishing. */
 const DUCK_DB = -5;
 /** Chrome adds automatic make-up gain after the limiter (about +3 dB at these settings); the trim allows for it. */
 const TRIM_DB = -6;
 const STANDING_DB = -12;
 const HVAC_PLAN_SECONDS = 2 * 60 * 60;
-/** Incommensurate drift periods: the combined pattern does not repeat for hours. */
 const DRIFT_PERIODS = [97, 151, 223];
 
 type Clips = ReadonlyMap<string, AudioBuffer>;
 
-/**
- * The fixed part of one train's sound: buses, the tunnel/open space, the voice duck and limiter, slow drift,
- * and the beds that run whenever the graph exists (standing cabin, HVAC cycle, rolling per section, body
- * rumble). Everything is native Web Audio; the owner only moves parameter targets.
- */
 export class TrainGraph {
   readonly train: GainNode;
   readonly events: GainNode;
@@ -61,7 +54,6 @@ export class TrainGraph {
     this.train = this.gain(1, this.lowShelf);
     this.platform = this.gain(0, this.duck);
     this.events = this.gain(1, this.train);
-    // A short slapback off the tunnel walls, heard on the transients only.
     const delay = this.node(context.createDelay(0.1));
     delay.delayTime.value = 0.035;
     const feedback = this.gain(0.25, delay);
@@ -123,7 +115,6 @@ export class TrainGraph {
     return node;
   }
 
-  /** Adds a slow oscillator to a parameter, scaled to `depth` in the parameter's units. */
   private modulate(lfo: OscillatorNode, depth: number, param: AudioParam) {
     const scale = this.gain(depth);
     lfo.connect(scale);
@@ -147,7 +138,6 @@ export class TrainGraph {
     return bed;
   }
 
-  /** Schedules the compressor cycle hours ahead on the audio clock; extends itself as time passes. */
   planHvac(now: number) {
     if (this.hvacUntil > now + 600) return;
     const { levelDb, cutoff, cycleSeconds } = this.profile.hvac;
@@ -168,7 +158,6 @@ export class TrainGraph {
     for (const bed of Object.values(this.rolling)) bed.setRate(rate, when);
   }
 
-  /** Tunnel: more low end, duller top, slapback on transients. Open: flat. */
   setSpace(section: Section, when: number, tau: number) {
     const tunnel = section === 'tunnel';
     this.lowShelf.gain.setTargetAtTime(tunnel ? 3 : 0, when, tau);
@@ -179,7 +168,6 @@ export class TrainGraph {
       gain.gain.setTargetAtTime(name === bed ? 1 : 0, when, tau);
   }
 
-  /** Lowers the train under a voice cue; overlapping cues extend one duck. */
   duckFor(when: number, seconds: number) {
     this.duckUntil = Math.max(this.duckUntil, when + seconds);
     this.duck.gain.cancelScheduledValues(when);

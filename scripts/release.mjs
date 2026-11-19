@@ -5,7 +5,7 @@
 //                                               their files under their release asset names
 //   node scripts/release.mjs --publish          CI: releases every plugin version without a tag, then rebuilds the
 //                                               signed catalogue-v2 from the latest release of every plugin
-// A release holds one asset, `<id>-<version>.sdplugin`; the older tag `catalogue` stays frozen for old app versions.
+// The `catalogue` release tag stays frozen for app versions that predate catalogue-v2.
 import { execFileSync } from 'node:child_process';
 import crypto from 'node:crypto';
 import fs from 'node:fs';
@@ -47,7 +47,6 @@ function entry(id, published, file) {
   };
 }
 
-/** Writes catalogue.json into `folder` and signs it when the key is set. */
 function writeCatalogue(folder, plugins) {
   const file = path.join(folder, 'catalogue.json');
   fs.writeFileSync(
@@ -60,7 +59,6 @@ function writeCatalogue(folder, plugins) {
   return file;
 }
 
-/** Packs dist/<id> and returns the .sdplugin path. */
 function pack(id) {
   const folder = path.join(dist, id);
   const { version } = json(path.join(folder, 'plugin.json'));
@@ -86,7 +84,7 @@ function tagged(name) {
     gh('release', 'view', name, '--json', 'tagName');
     return true;
   } catch {
-    // `gh release view` fails exactly when the release does not exist.
+    // Read as missing; when gh failed for another reason, the `release create` that follows fails loudly.
     return false;
   }
 }
@@ -119,7 +117,6 @@ function releaseMissing() {
   }
 }
 
-/** The newest v2 release of a plugin as a catalogue entry, its .sdplugin downloaded and hashed. */
 function latest(id, releases, work) {
   const pick = newest(id, releases, (tagName) =>
     JSON.parse(gh('release', 'view', tagName, '--json', 'assets')).assets.map((a) => a.name),
@@ -145,7 +142,7 @@ function publish() {
       '--paginate',
       `repos/${REPO}/releases`,
       '--jq',
-      '.[] | {tagName: .tag_name, publishedAt: .published_at}',
+      '.[] | {tagName: .tag_name, publishedAt: .published_at, draft: .draft}',
     ],
     { encoding: 'utf8' },
   )

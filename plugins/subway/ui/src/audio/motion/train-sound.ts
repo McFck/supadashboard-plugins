@@ -10,7 +10,7 @@ import { Squeal } from './squeal';
 import { TrainGraph } from './train-graph';
 import { VvvfMotor } from './vvvf';
 
-/** Joint hits are queued this far ahead on the audio clock; the run ticks every 50 ms while moving. */
+/** Seconds of audio-clock lookahead; the run ticks every 50 ms while moving. */
 const LOOKAHEAD_SECONDS = 0.25;
 const BODY_DB = -16;
 const RELEASE_DB = -18;
@@ -30,10 +30,8 @@ interface Segment {
   random: Random;
   layout: TrackLayout & { points: number[] };
   joints: ReturnType<typeof createJointScheduler>;
-  /** Progress window of a squealing curve, if this segment has one. */
   curve?: readonly [number, number];
   brakeSqueal: boolean;
-  /** Approach speed at which the train runs over the points before the platform. */
   approachPoints?: number;
 }
 
@@ -45,7 +43,6 @@ interface Previous {
   platform: boolean;
 }
 
-/** Every clip one train needs up front; platform air loads per station kind (see PlatformAir). */
 function trainClips(profile: TrainProfile): string[] {
   const { beds, pools, motor } = profile;
   return [
@@ -61,7 +58,6 @@ function trainClips(profile: TrainProfile): string[] {
   ].filter((clip): clip is string => !!clip);
 }
 
-/** Two seconds of white noise for rumble and thumps, generated once per train. */
 function noiseBuffer(context: BaseAudioContext) {
   const buffer = context.createBuffer(1, context.sampleRate * 2, context.sampleRate);
   const data = buffer.getChannelData(0);
@@ -69,11 +65,6 @@ function noiseBuffer(context: BaseAudioContext) {
   return buffer;
 }
 
-/**
- * One train's movement and cabin sound, driven by run snapshots. Levels follow speed and effort; wheel hits,
- * points, squeal, releases and the platform air are scheduled on the audio clock. After a pause, a catch-up
- * or a line change it snaps: levels jump to the new state and no event plays for the skipped time.
- */
 export class TrainSound {
   private readonly graph: TrainGraph;
   private readonly motor: VvvfMotor | BveMotor;
@@ -159,7 +150,6 @@ export class TrainSound {
     return buffer;
   }
 
-  /** The next update jumps to its state, as after the context was suspended or the page was away. */
   resync() {
     this.stale = true;
   }
@@ -228,7 +218,6 @@ export class TrainSound {
       layout,
       joints,
       curve: random() < track.curveShare ? this.curveWindow(random) : undefined,
-      // Squeal at a stop varies visit to visit; the track itself (joints, points, curves) does not.
       brakeSqueal: this.random() < track.brakeSquealChance,
       approachPoints:
         arrivesTerminus || random() < track.pointsChance ? between(random, 22, 38) : undefined,
@@ -240,7 +229,6 @@ export class TrainSound {
     return [start, start + between(random, 0.08, 0.25)] as const;
   }
 
-  /** A cluster of four to eight heavier hits a few metres apart, starting at `from`. */
   private addPoints(points: number[], from: number, random: Random) {
     let at = from;
     const count = Math.round(between(random, 4, 8));
@@ -284,7 +272,6 @@ export class TrainSound {
     this.squeal.set(level, now, level > 0 ? 0.25 : 0.12);
   }
 
-  /** One-off sounds on real changes of state; never after a snap. */
   private edges(previous: Previous, snapshot: RunSnapshot, section: Section, now: number) {
     const { speed, power, brake } = snapshot;
     const events = this.graph.events;
@@ -310,21 +297,6 @@ export class TrainSound {
       );
       this.segment.approachPoints = undefined;
     }
-  }
-
-  stats() {
-    const value = (param: AudioParam) => Math.round(param.value * 1000) / 1000;
-    return {
-      train: this.profile.id,
-      section: this.previous?.section,
-      oneShots: this.shots.count,
-      rolling: value(this.graph.rollingGain.gain),
-      body: value(this.graph.body.gain),
-      hvac: value(this.graph.hvac.gain),
-      platform: value(this.graph.platform.gain),
-      duck: value(this.graph.duck.gain),
-      effort: { ...this.effort },
-    };
   }
 
   dispose() {

@@ -1,6 +1,5 @@
-// The plugin's own settings: a store file of its own, so settings.json is untouched.
 import { load, type Store } from '@tauri-apps/plugin-store';
-import { storeIsReadable } from '@supadashboard/kit';
+import { isRecord, storeIsReadable } from '@supadashboard/kit';
 import { STRENGTHS, type HapticsConfig, type Strength } from './haptics';
 
 export type HapticsSettings = {
@@ -31,7 +30,7 @@ export const DEFAULTS: HapticsSettings = {
 };
 
 export function normalizeSettings(raw: unknown): HapticsSettings {
-  const value = raw && typeof raw === 'object' ? (raw as Partial<HapticsSettings>) : {};
+  const value: Record<string, unknown> = isRecord(raw) ? raw : {};
   const text = (field: unknown) => (typeof field === 'string' ? field.trim().slice(0, 1024) : '');
   return {
     enabled: value.enabled === true,

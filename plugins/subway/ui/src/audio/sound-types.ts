@@ -35,7 +35,7 @@ export interface ResolvedCue extends RuntimeCue {
   gain: number;
   role?: CueRole;
   url: string;
-  /** Effects play at one shared level; this offsets one door part from it, in dB. */
+  /** Offset from the shared effect level, in dB. */
   trimDb?: number;
 }
 
@@ -46,7 +46,7 @@ export interface TimedCue {
 }
 
 export interface DoorSequencePlan {
-  events: Array<{ part: string; at: number; cue: ResolvedCue }>;
+  events: ReadonlyArray<{ part: string; at: number; cue: ResolvedCue }>;
   end: number;
   open_end?: number;
   close_end?: number;

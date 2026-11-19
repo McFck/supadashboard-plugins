@@ -16,9 +16,7 @@ import {
 } from './run-state';
 
 export interface RunSnapshot {
-  /** True before the first departure, distinct from a later visit to the same stop. */
   initialStop?: boolean;
-  /** Actual departure + cruise budget, so the LCD cycle also fits a shortened simulation. */
   screenRunDurationMs?: number;
   station: string;
   next: string;
@@ -54,16 +52,21 @@ export function createRunState(
   finiteTime(now);
   const line = lineFor(lines, options.lineId ?? 'yamanote');
   const stationCode = options.stationCode ?? line.stations[0]?.code;
-  if (!stationCode || !line.stations.some((station) => station.code === stationCode))
+  if (!stationCode || !line.stations.some((station) => station.code === stationCode)) {
     throw new Error(`Unknown station for ${line.id}: ${stationCode}`);
+  }
   const direction = options.direction ?? line.directions[0]?.id;
-  if (!direction || !line.directions.some((item) => item.id === direction))
+  if (!direction || !line.directions.some((item) => item.id === direction)) {
     throw new Error(`Unknown direction for ${line.id}: ${direction}`);
+  }
   const multiplier = options.multiplier ?? 1;
-  if (![0.5, 1, 2].includes(multiplier)) throw new Error('Run speed must be 0.5, 1, or 2');
+  if (![0.5, 1, 2].includes(multiplier)) {
+    throw new Error('Run speed must be 0.5, 1, or 2');
+  }
   const dwellSeconds = options.dwellSeconds ?? 15;
-  if (!Number.isFinite(dwellSeconds) || dwellSeconds < 0)
+  if (!Number.isFinite(dwellSeconds) || dwellSeconds < 0) {
     throw new Error('Dwell must be a non-negative finite duration');
+  }
   return {
     lineId: line.id,
     direction,
@@ -99,15 +102,20 @@ export function reduceRun(
   finiteTime(now);
   const effects: RunEffect[] = [];
   let current = state;
-  if (command.type === 'tick')
+  if (command.type === 'tick') {
     return { state: advance(current, now, lines, plans, effects), effects };
+  }
   if (command.type === 'pause') {
-    if (current.pausedAt !== null) return { state: current, effects };
+    if (current.pausedAt !== null) {
+      return { state: current, effects };
+    }
     current = advance(current, now, lines, plans, effects);
     return { state: { ...current, pausedAt: now, lastTickAt: now }, effects };
   }
   if (command.type === 'resume') {
-    if (current.pausedAt === null) return { state: current, effects };
+    if (current.pausedAt === null) {
+      return { state: current, effects };
+    }
     return { state: catchUp(current, now, lines, plans), effects };
   }
   if (command.type === 'emergency' || command.type === 'suspend') {
@@ -123,16 +131,20 @@ export function reduceRun(
       effects,
     };
   }
-  if (command.type === 'resume-service')
+  if (command.type === 'resume-service') {
     return { state: resumeService(current, now, lines, plans, effects), effects };
-  if (command.type === 'set-immersion')
+  }
+  if (command.type === 'set-immersion') {
     return { state: { ...current, immersion: command.enabled }, effects };
+  }
   if (command.type === 'configure') {
     const line = lineFor(lines, command.lineId);
-    if (!line.directions.some((item) => item.id === command.direction))
+    if (!line.directions.some((item) => item.id === command.direction)) {
       throw new Error(`Unknown direction for ${line.id}: ${command.direction}`);
-    if (!line.stations.some((item) => item.code === command.stationCode))
+    }
+    if (!line.stations.some((item) => item.code === command.stationCode)) {
       throw new Error(`Unknown station for ${line.id}: ${command.stationCode}`);
+    }
     current = {
       ...current,
       lineId: line.id,
@@ -155,8 +167,9 @@ export function reduceRun(
     return { state: current, effects };
   }
   if (command.type === 'set-speed') {
-    if (![0.5, 1, 2].includes(command.multiplier))
+    if (![0.5, 1, 2].includes(command.multiplier)) {
       throw new Error('Run speed must be 0.5, 1, or 2');
+    }
     return { state: { ...current, nextMultiplier: command.multiplier }, effects };
   }
   if (command.type === 'start') {
@@ -166,8 +179,9 @@ export function reduceRun(
       current.incident ||
       current.active ||
       !stepStation(line, current.stationCode, current.direction)
-    )
+    ) {
       return { state: current, effects };
+    }
     const started = {
       ...current,
       active: true,
@@ -192,8 +206,8 @@ export function snapshotRun(
   const line = lineFor(lines, state.lineId);
   const at = activeNow(state, now);
   const motion = snapshotMotion(state, at);
-  const station = line.stations.find((item) => item.code === state.stationCode)!;
-  const side = station.doorByDirection[state.direction]?.side ?? 'unknown';
+  const station = line.stations.find((item) => item.code === state.stationCode);
+  const side = station?.doorByDirection[state.direction]?.side ?? 'unknown';
   const hasCommittedArrival =
     state.phase === 'arriving' || state.incident?.resume.phase === 'arriving';
   const next = hasCommittedArrival
@@ -246,7 +260,9 @@ export function snapshotRun(
 }
 
 export function nextRunWake(state: SubwayRunState, now: number): number | null {
-  if (state.pausedAt !== null) return null;
+  if (state.pausedAt !== null) {
+    return null;
+  }
   if (state.incident) {
     const cueDeadline = state.pendingCues[0]?.at ?? Number.POSITIVE_INFINITY;
     const brakeDeadline =
@@ -256,7 +272,8 @@ export function nextRunWake(state: SubwayRunState, now: number): number | null {
     const wakeAt = Math.min(cueDeadline, brakeDeadline);
     return Number.isFinite(wakeAt) ? wakeAt : null;
   }
-  if (['departing', 'cruising', 'approaching'].includes(state.phase))
+  if (['departing', 'cruising', 'approaching'].includes(state.phase)) {
     return Math.min(now + 50, state.phaseDeadline ?? now + 50);
+  }
   return dueDeadline(state);
 }

@@ -1,4 +1,3 @@
-// Which lyric line is being sung: the player's extrapolated position against the LRC timestamps.
 import { isRecord, progressAt, type NowPlayingSession } from '@supadashboard/kit';
 import type { LyricLine } from './lyrics';
 

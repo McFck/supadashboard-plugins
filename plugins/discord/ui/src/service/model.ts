@@ -1,4 +1,6 @@
-// Discord RPC payloads reduced to the views the dashboard shows. Everything from the pipe is validated here.
+// Every Discord RPC payload from the pipe is validated here.
+import { isRecord } from '@supadashboard/kit';
+
 export type Channel = {
   id: string;
   name: string;
@@ -15,14 +17,14 @@ export type Member = User & {
   deafened: boolean;
 };
 
-type Json = Record<string, unknown>;
-export const isRecord = (value: unknown): value is Json =>
-  typeof value === 'object' && value !== null && !Array.isArray(value);
-
 export const validId = (id: unknown): id is string =>
   typeof id === 'string' && /^[0-9]{17,20}$/.test(id);
+export const validAvatar = (hash: unknown): hash is string =>
+  typeof hash === 'string' && /^(a_)?[0-9a-f]{32}$/.test(hash);
+export const validDiscriminator = (value: unknown): value is string =>
+  typeof value === 'string' && /^[0-9]{1,4}$/.test(value);
 
-const optionalString = (value: unknown) =>
+const optionalString = (value: unknown): value is string | null | undefined =>
   value === null || value === undefined || typeof value === 'string';
 
 function cleanName(value: string) {
@@ -58,7 +60,13 @@ function readRpcUser(raw: unknown): RpcUser | undefined {
   ) {
     return undefined;
   }
-  return raw as RpcUser;
+  return {
+    id: raw.id,
+    username: raw.username,
+    global_name: raw.global_name,
+    avatar: raw.avatar,
+    discriminator: raw.discriminator,
+  };
 }
 
 function userView(user: RpcUser): User | undefined {
@@ -71,7 +79,6 @@ export function readUser(raw: unknown): User | undefined {
   return user && userView(user);
 }
 
-const validAvatar = (hash: string) => /^(a_)?[0-9a-f]{32}$/.test(hash);
 const flags = ['mute', 'deaf', 'self_mute', 'self_deaf', 'suppress'] as const;
 
 export function readMember(data: unknown): Member | undefined {
@@ -86,7 +93,7 @@ export function readMember(data: unknown): Member | undefined {
     !view ||
     !optionalString(data.nick) ||
     !flags.every((flag) => typeof voice[flag] === 'boolean') ||
-    !/^[0-9]{1,4}$/.test(user.discriminator)
+    !validDiscriminator(user.discriminator)
   ) {
     return undefined;
   }

@@ -8,9 +8,8 @@ interface Bounds {
 const LOAD_TIMEOUT_MS = 15_000;
 const INK_SCALE = 4;
 
-// Raster ink bounds of an SVG, excluding viewport whitespace (WPF SvgPresenter measures the drawing).
-// willReadFrequently keeps this large scratch canvas off the GPU: as the renderer's first accelerated canvas it
-// cost the GPU process about 130 MiB at start-up.
+// Ink bounds match WPF SvgPresenter, which measures the drawing, not the viewport. willReadFrequently keeps
+// this scratch canvas off the GPU; as the first accelerated canvas it cost the GPU process about 130 MiB.
 function inkBounds(image: HTMLImageElement): Bounds | undefined {
   const canvas = document.createElement('canvas');
   canvas.width = Math.ceil(image.naturalWidth * INK_SCALE);
@@ -43,7 +42,6 @@ function inkBounds(image: HTMLImageElement): Bounds | undefined {
   };
 }
 
-// Images are requested by `acquire()`, never at import. Every request settles (load, error or timeout).
 export class ImageSet {
   private readonly images = new Map<string, HTMLImageElement>();
   private readonly bounds = new Map<string, Bounds>();
@@ -56,12 +54,10 @@ export class ImageSet {
     private readonly trimmed: (name: string) => boolean = () => false,
   ) {}
 
-  // Counts settled requests; renderers key their caches on it so late images repaint.
   get revision(): number {
     return this.settled;
   }
 
-  // Calls `listener` whenever a request settles, so the owner can prepare a new frame.
   subscribe(listener: () => void): () => void {
     this.listeners.add(listener);
     return () => this.listeners.delete(listener);
@@ -121,7 +117,6 @@ export class ImageSet {
     });
   }
 
-  // Fits the image (or its ink bounds) centered in the box. Draws nothing until the image has loaded.
   draw(
     ctx: CanvasRenderingContext2D,
     name: string,

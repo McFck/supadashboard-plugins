@@ -20,14 +20,19 @@ export function applyIncident(
   plans: SubwayCuePlans,
   effects: RunEffect[],
 ): SubwayRunState {
-  if (state.incident) return state;
+  if (state.incident) {
+    return state;
+  }
   const motion = snapshotMotion(state, now);
   const resume = copyTimeline(state);
   const doorsBefore = state.doors;
   const phase = kind === 'emergency' ? 'emergency' : 'suspended';
   pushPhase(effects, state, phase);
-  if (kind === 'emergency') effects.push({ type: 'emergency', generation: state.generation });
-  else effects.push({ type: 'suspended', generation: state.generation });
+  if (kind === 'emergency') {
+    effects.push({ type: 'emergency', generation: state.generation });
+  } else {
+    effects.push({ type: 'suspended', generation: state.generation });
+  }
   const emergencyPlanKey =
     state.segment?.planKey ??
     segmentPlanKey(state.lineId, state.stationCode, state.stationCode, state.direction);
@@ -57,7 +62,6 @@ export function applyIncident(
   return withDueCues(incidentState, now, effects);
 }
 
-/** Only valid once the brake has finished; returns the state unchanged otherwise. */
 export function resumeService(
   state: SubwayRunState,
   now: number,
@@ -65,7 +69,9 @@ export function resumeService(
   plans: SubwayCuePlans,
   effects: RunEffect[],
 ): SubwayRunState {
-  if (!state.incident || state.incident.brakeMs > 0) return state;
+  if (!state.incident || state.incident.brakeMs > 0) {
+    return state;
+  }
   const incident = state.incident;
   const duration = Math.max(0, now - incident.startedAt);
   const timeline = shiftedTimeline(incident.resume, duration);
@@ -107,6 +113,8 @@ export function resumeService(
       };
     }
   }
-  if (!resumedAtDestination) pushPhase(effects, { ...current, phase: state.phase }, current.phase);
+  if (!resumedAtDestination) {
+    pushPhase(effects, { ...current, phase: state.phase }, current.phase);
+  }
   return { ...current, lastTickAt: now };
 }

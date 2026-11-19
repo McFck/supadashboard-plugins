@@ -30,7 +30,6 @@ export function project(snapshot: RunSnapshot): Record<ProjectionKey, string | n
   };
 }
 
-/** The snapshot fields whose change must be published at once; the numeric ones are throttled. */
 export function discreteKey(snapshot: RunSnapshot): string {
   return [
     snapshot.station,
@@ -52,7 +51,7 @@ export function eventFor(effect: Exclude<RunEffect, { type: 'play-cue' }>): {
   parameter?: string;
   payload: unknown;
 } {
-  if (effect.type === 'departed')
+  if (effect.type === 'departed') {
     return {
       id: 'subway.departed',
       parameter: effect.from,
@@ -64,7 +63,8 @@ export function eventFor(effect: Exclude<RunEffect, { type: 'play-cue' }>): {
         generation: effect.generation,
       },
     };
-  if (effect.type === 'arrived')
+  }
+  if (effect.type === 'arrived') {
     return {
       id: 'subway.arrived',
       parameter: effect.to,
@@ -76,12 +76,14 @@ export function eventFor(effect: Exclude<RunEffect, { type: 'play-cue' }>): {
         generation: effect.generation,
       },
     };
-  if (effect.type === 'state-changed')
+  }
+  if (effect.type === 'state-changed') {
     return {
       id: 'subway.stateChanged',
       parameter: effect.state,
       payload: { generation: effect.generation },
     };
+  }
   return {
     id: effect.type === 'emergency' ? 'subway.emergency' : 'subway.suspended',
     payload: { generation: effect.generation },

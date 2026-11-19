@@ -5,7 +5,6 @@
   import Volume2 from '@lucide/svelte/icons/volume-2';
   import { onDestroy } from 'svelte';
   import { ContentTile, Icon, type ControlConfig } from '@supadashboard/kit';
-  import type { VoiceMember } from '../discord';
   import { pack } from '../pack';
   import { VoiceTileController } from './voice-tile.svelte';
 
@@ -34,44 +33,19 @@
   const gap = $derived(Math.round(Math.min(8, Math.max(4, short * 0.035))));
   const channel = $derived(voice.view.state === 'inVoice' ? voice.view.channel : undefined);
   const HEADER_HEIGHT = 16;
-  const members = $derived(voice.view.state === 'inVoice' ? voice.view.members : []);
   const grid = $derived(
     pack(
-      members.length,
+      voice.members.length,
       pixelWidth - 2 * pad,
       pixelHeight - 2 * pad - (channel ? HEADER_HEIGHT + gap : 0),
       gap,
     ),
   );
-  const shown = $derived(grid.overflow ? members.slice(0, grid.cols * grid.rows - 1) : members);
-  const status = $derived.by(() => {
-    switch (voice.view.state) {
-      case 'absent':
-        return 'Not running';
-      case 'needsAuth':
-        return 'Set up Discord in Plugins';
-      case 'authorizing':
-        return 'Waiting for Discord';
-      case 'connecting':
-        return 'Connecting';
-      case 'idle':
-        return 'Not in voice';
-      case 'inVoice':
-        return members.length ? '' : 'Empty channel';
-    }
-  });
-
-  // Avatars smaller than this (px) get no status badge: it would be an unreadable dot. The name still says it.
+  const shown = $derived(
+    grid.overflow ? voice.members.slice(0, grid.cols * grid.rows - 1) : voice.members,
+  );
+  // Avatars smaller than this (px) get no status badge, which would be an unreadable dot. The name still says it.
   const BADGE_MIN = 34;
-
-  const describe = (member: VoiceMember) =>
-    [
-      member.name,
-      member.speaking && 'speaking',
-      member.deafened ? 'deafened' : member.muted && 'muted',
-    ]
-      .filter(Boolean)
-      .join(', ');
 </script>
 
 <ContentTile
@@ -120,7 +94,7 @@
         </div>
       {/if}
       <div class="grid min-h-0 min-w-0 place-items-center">
-        {#if status}
+        {#if voice.status}
           <div class="flex flex-col items-center gap-1.5 text-muted-foreground">
             <span class="opacity-60">
               <Icon
@@ -128,7 +102,7 @@
                 size={Math.round(Math.min(36, Math.max(22, short * 0.22)))}
               />
             </span>
-            <span class="text-center text-xs text-balance">{status}</span>
+            <span class="text-center text-xs text-balance">{voice.status}</span>
           </div>
         {:else}
           <div
@@ -143,7 +117,7 @@
               {@const src = voice.src(member)}
               <div
                 role="img"
-                aria-label={describe(member)}
+                aria-label={voice.describe(member)}
                 data-member={member.id}
                 class="avatar"
                 class:speaking={member.speaking}
@@ -246,7 +220,6 @@
     color: #a1a4ad;
     font-size: calc(var(--size) * 0.3);
   }
-  /* Discord's muted/deafened mark: red on a dark disc cut out of the avatar's corner, above the ring. */
   .badge {
     position: absolute;
     right: 0;

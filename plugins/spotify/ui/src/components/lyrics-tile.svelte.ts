@@ -1,4 +1,3 @@
-// One lyrics tile: Spotify's session, its lyrics, the sung line and the follow scroll that keeps it in view.
 import { untrack } from 'svelte';
 import { prefersReducedMotion } from 'svelte/motion';
 import { type NowPlayingSession, nativeSessions, KineticScroll } from '@supadashboard/kit';
@@ -103,7 +102,7 @@ export class LyricsTileController {
       return;
     }
     const { artist, title, album } = session;
-    // The native side takes whole milliseconds.
+    // The lyrics service takes whole milliseconds.
     const track = { artist, title, album, durationMs: Math.round(durationMs) };
     void Promise.all([getLyrics(track), getSongOffset(track)]).then(([view, offsetMs]) => {
       if (mine === this.#epoch) {

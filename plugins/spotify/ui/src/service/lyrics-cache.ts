@@ -1,4 +1,4 @@
-import { pluginStorage } from '@supadashboard/kit';
+import { isRecord, pluginStorage } from '@supadashboard/kit';
 import { readLyricsView, type LyricsView } from '../lyrics';
 import type { Track } from './track';
 
@@ -28,14 +28,17 @@ export async function readCache(key: string, now: number): Promise<LyricsView | 
   if (text === null || text.length > MAX_BYTES) {
     return null;
   }
-  let entry: { version?: unknown; fetchedAt?: unknown; result?: unknown };
+  let entry: unknown;
   try {
     entry = JSON.parse(text);
   } catch {
     return null;
   }
-  const result = readLyricsView(entry?.result);
-  const { version, fetchedAt } = entry ?? {};
+  if (!isRecord(entry)) {
+    return null;
+  }
+  const result = readLyricsView(entry.result);
+  const { version, fetchedAt } = entry;
   if (
     !result ||
     typeof version !== 'number' ||

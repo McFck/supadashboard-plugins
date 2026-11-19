@@ -1,7 +1,5 @@
-// Pure helpers of scripts/release.mjs: the .sdplugin reader and the choice of a plugin's newest release.
 export const API = 2;
 
-/** Entries of a ustar archive by name (the layout plugin-tools/release.mjs writes). Throws on malformed input. */
 export function untar(bytes) {
   const files = new Map();
   for (let at = 0; ;) {
@@ -33,14 +31,11 @@ function compare(a, b) {
   return a.parts.reduce((d, p, i) => d || p - b.parts[i], 0);
 }
 
-/**
- * The newest release of `id` (tag `<id>-v<semver>`) that has the asset `<id>-<version>.sdplugin`, as
- * {release, version, asset}; releases without it (v1 loose assets) are skipped. `assets(tagName)` lists asset names.
- */
+/** Skips drafts and v1 releases, which hold loose assets instead of `<id>-<version>.sdplugin`. */
 export function newest(id, releases, assets) {
   const prefix = `${id}-v`;
   return releases
-    .filter((r) => r.tagName.startsWith(prefix))
+    .filter((r) => !r.draft && r.tagName.startsWith(prefix))
     .map((release) => {
       const version = release.tagName.slice(prefix.length);
       const m = SEMVER.exec(version);

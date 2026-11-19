@@ -1,6 +1,6 @@
 export type Random = () => number;
 
-/** FNV-1a 32-bit over UTF-16 code units: a seed for sound variety, never an identity. */
+/** FNV-1a 32-bit over UTF-16 code units. */
 export function hashSeed(text: string): number {
   let hash = 0x811c9dc5;
   for (let index = 0; index < text.length; index++) {
@@ -9,7 +9,6 @@ export function hashSeed(text: string): number {
   return hash;
 }
 
-/** mulberry32: deterministic per seed, so the same segment sounds the same lap after lap. */
 export function seeded(seed: number): Random {
   let state = seed >>> 0 || 0x9e3779b9;
   return () => {
@@ -25,10 +24,6 @@ export function between(random: Random, low: number, high: number): number {
   return low + (high - low) * random();
 }
 
-/**
- * Draws indexes into a pool of `size` items without repeating any of the last `avoid` draws, so a one-shot
- * never plays the same sample twice in a row. `avoid` shrinks to fit small pools.
- */
 export function createPicker(size: number, random: Random, avoid = 2): () => number {
   const recent: number[] = [];
   const memory = Math.max(0, Math.min(avoid, size - 1));

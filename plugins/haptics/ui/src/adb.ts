@@ -1,4 +1,3 @@
-// Choosing the adb program and the tablet: the pure parts.
 export type Device = { serial: string; state: string };
 
 /** Lines of `adb devices` after the header: `<serial>\t<state>`. */
@@ -30,8 +29,8 @@ export function powerOffArgs(lockWithPc: boolean, serial?: string): string[] | n
 }
 
 /**
- * Programs to try in order: the override, else an installed SDK's platform-tools, else adb on PATH. The host
- * expands `%VAR%` (an unset one fails to start), so the first that runs `adb devices` wins.
+ * Programs to try in order: the override, an installed SDK's platform-tools, then adb on PATH. The host expands
+ * `%VAR%` and an unset one fails to start, so the first that runs `adb devices` wins.
  */
 export const adbCandidates = (override?: string) =>
   override

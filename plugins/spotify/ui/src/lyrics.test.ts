@@ -3,7 +3,7 @@ import { readLyricsView, readSongOffset } from './lyrics';
 
 const synced = (lines: unknown) => ({ kind: 'synced', lines });
 
-it('accepts the views the native side sends', () => {
+it('accepts the views the service sends', () => {
   const lines = [
     { atMs: 0, text: '' },
     { atMs: 1200, text: 'First' },
@@ -38,7 +38,7 @@ it('rejects payloads that would break line sync or flood the tile', () => {
   }
 });
 
-it('reads a saved song offset only when the native store could have written it', () => {
+it('reads a saved song offset only when the offsets store could have written it', () => {
   expect(readSongOffset(-10_000)).toBe(-10_000);
   for (const raw of [10_001, 1.5, Number.NaN, '100', null]) {
     expect(readSongOffset(raw)).toBe(0);

@@ -5,7 +5,7 @@ import { drawFittedCentered } from './text';
 const SANS = '"Microsoft Sans Serif", "MS UI Gothic", Arial, sans-serif';
 const LATIN = 'Arial, Helvetica, sans-serif';
 
-/** Black letter squeezed horizontally to `width` (64-unit symbol space), as the source theme draws it. */
+/** `width` is in the 64-unit symbol space. */
 function letter(
   ctx: CanvasRenderingContext2D,
   value: string,
@@ -86,7 +86,7 @@ function drawLetterBox(ctx: CanvasRenderingContext2D, icon: PaintedIcon): void {
   letter(ctx, icon.letter ?? '', 44, 34, 52, 400);
 }
 
-/** Outlined square sign; the border is 2px at every size, so it is drawn in pixel space. */
+/** The border is 2px at every size, so it is drawn in pixel space. */
 function drawSquare(
   ctx: CanvasRenderingContext2D,
   icon: PaintedIcon,
@@ -119,7 +119,6 @@ function drawSolid(ctx: CanvasRenderingContext2D, icon: PaintedIcon): void {
   }
 }
 
-/** Draws a line symbol into the `size` square at (x, y). */
 export function drawIcon(
   ctx: CanvasRenderingContext2D,
   icon: PaintedIcon,

@@ -13,9 +13,10 @@ export interface SubwayEditorPreview {
 
 async function readJson(url: string, signal: AbortSignal): Promise<unknown> {
   const response = await fetch(url, { signal });
-  if (!response.ok)
+  if (!response.ok) {
     throw new Error(`Subway preview asset unavailable (${response.status}): ${url}`);
-  return response.json() as Promise<unknown>;
+  }
+  return response.json();
 }
 
 function selectedLine(config: Readonly<Record<string, unknown>>): string {
@@ -33,7 +34,9 @@ export async function loadSubwayEditorPreview(
     readJson(`${base}/pack.json`, signal),
     lineId === 'yamanote' ? e235Images.acquire() : Promise.resolve(),
   ]);
-  if (signal.aborted) throw new DOMException('Subway preview cancelled', 'AbortError');
+  if (signal.aborted) {
+    throw new DOMException('Subway preview cancelled', 'AbortError');
+  }
   const line = normalizeSubwayLine(rawLine, rawPack);
   const direction =
     typeof config.direction === 'string' &&
@@ -61,8 +64,6 @@ export async function loadSubwayEditorPreview(
   });
 }
 
-// Nothing runs in the editor, so each view is previewed in the phase that shows it: Display at the platform,
-// Map at rest on the route map, Run in motion.
 const VIEW_STATES: Readonly<Record<string, RunSnapshot['state']>> = {
   display: 'approaching',
   map: 'stopped',

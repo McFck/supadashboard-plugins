@@ -11,7 +11,13 @@ type Entry = { key: string; at: number; result: { view: LyricsView } | { error: 
 
 const seconds = () => Math.floor(Date.now() / 1000);
 
-/** Lyrics lookups for both windows: one queue, a short memory of results, and the disk cache. */
+function unwrap({ result }: Entry): LyricsView {
+  if ('error' in result) {
+    throw result.error;
+  }
+  return result.view;
+}
+
 export class LyricsHub {
   private entries: Entry[] = [];
   private queue: Promise<unknown> = Promise.resolve();
@@ -37,7 +43,7 @@ export class LyricsHub {
       return entry.result.view.kind === 'none' ? age < NEGATIVE_TTL : true;
     });
     if (known) {
-      return this.unwrap(known);
+      return unwrap(known);
     }
     let result: Entry['result'];
     const cached = await readCache(key, now);
@@ -60,13 +66,6 @@ export class LyricsHub {
     }
     const entry = { key, at: now, result };
     this.entries.push(entry);
-    return this.unwrap(entry);
-  }
-
-  private unwrap({ result }: Entry): LyricsView {
-    if ('error' in result) {
-      throw result.error;
-    }
-    return result.view;
+    return unwrap(entry);
   }
 }

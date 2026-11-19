@@ -1,5 +1,5 @@
-// The voice view model: pure transitions over Discord's snapshots and dispatches.
-import { isRecord, readMember, readSelected, type Channel, type Member, type User } from './model';
+import { isRecord } from '@supadashboard/kit';
+import { readMember, readSelected, type Channel, type Member, type User } from './model';
 
 export type VoiceState = {
   user?: User;
@@ -47,7 +47,7 @@ export function applyEvent(state: VoiceState, event: string, data: unknown): Voi
   if (!isRecord(data) || (event !== 'VOICE_SETTINGS_UPDATE' && !state.channel)) {
     return state;
   }
-  // A dispatch for another channel than ours is stale.
+  // A dispatch for another channel is stale.
   if (typeof data.channel_id === 'string' && state.channel?.id !== data.channel_id) {
     return state;
   }
@@ -87,7 +87,6 @@ export function applyEvent(state: VoiceState, event: string, data: unknown): Voi
   }
 }
 
-/** The `VoiceView` the dashboard windows receive. */
 export function voiceView(state: VoiceState) {
   if (!state.user) {
     return { state: 'needsAuth' };
@@ -113,7 +112,6 @@ const CHANNEL_EVENTS = [
 
 export type Subscription = { cmd: 'SUBSCRIBE' | 'UNSUBSCRIBE'; event: string; channelId: string };
 
-/** The commands that move the per-channel event subscriptions from `old` to `next`. */
 export function subscriptions(old?: Channel, next?: Channel): Subscription[] {
   if (old?.id === next?.id) {
     return [];

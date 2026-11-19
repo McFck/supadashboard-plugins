@@ -1,6 +1,6 @@
 import { seeded } from './random';
 
-/** Metres. The listener sits at the centre of a car; bogie centres and wheelbase set the joint rhythm. */
+/** Metres. */
 export interface CarGeometry {
   length: number;
   bogieCentres: number;
@@ -8,12 +8,10 @@ export interface CarGeometry {
 }
 
 export interface TrackLayout {
-  /** Fixed per segment, so a segment sounds the same lap after lap and segments differ from each other. */
   seed: number;
-  /** Mean joint spacing in metres; actual gaps vary from half to one and a half of it. */
+  /** Mean spacing in metres; gaps vary from 0.5 to 1.5 times it. */
   spacing: number;
   car: CarGeometry;
-  /** Odometer positions of points (switches): heavier hits on top of the regular joints. */
   points: readonly number[];
 }
 
@@ -25,7 +23,6 @@ export interface JointHit {
 }
 
 const MIN_KMH = 5;
-/** Below this the two axles of a bogie blur into one soft clunk. */
 const SINGLE_AXLE_KMH = 15;
 const NEIGHBOUR_GAIN = 10 ** (-8 / 20);
 const POINTS_GAIN = 10 ** (4 / 20);
@@ -36,7 +33,7 @@ interface Axle {
   lead: boolean;
 }
 
-/** Axle positions relative to the listener, front positive: this car's two bogies and the neighbours' near ones. */
+/** Front positive. */
 function axles(car: CarGeometry): Axle[] {
   const half = car.wheelbase / 2;
   const bogies = [
@@ -56,7 +53,6 @@ function jointAt(layout: TrackLayout, index: number): number {
   return (index + jitter * 0.5) * layout.spacing;
 }
 
-/** Hits whose axle passes a joint at an odometer position in `[from, to)`, with that position. */
 function hitsBetween(layout: TrackLayout, from: number, to: number, speedKmh: number) {
   const reach = layout.car.length + layout.car.wheelbase;
   const wheels = axles(layout.car).filter((axle) => speedKmh >= SINGLE_AXLE_KMH || axle.lead);
@@ -78,11 +74,6 @@ function hitsBetween(layout: TrackLayout, from: number, to: number, speedKmh: nu
   return hits.sort((a, b) => a.at - b.at);
 }
 
-/**
- * Hands out each wheel hit exactly once as the odometer advances: every call covers the track from where the
- * last one stopped to `lookahead` seconds ahead. After a jump (catch-up, a stalled timer) the skipped track is
- * dropped instead of played late, and nothing plays below walking pace.
- */
 export function createJointScheduler(layout: TrackLayout) {
   let until = Number.NEGATIVE_INFINITY;
   return {

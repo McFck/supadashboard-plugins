@@ -1,6 +1,6 @@
-Shows who is in your Discord voice channel and lets dashboard buttons mute, deafen, leave and rejoin. It talks to the **Discord desktop app** on this PC, so Discord has to be running here; the browser version does not work.
+Shows who is in your Discord voice channel and lets dashboard buttons mute, deafen, leave and rejoin. It talks to the **Discord desktop app** on this PC. The browser version does not work.
 
-Connecting needs a free Discord application of your own. It takes about five minutes, once, and only links SupaDashboard to your own Discord.
+Connecting needs a free Discord application of your own.
 
 ## 1. Create a Discord application
 
@@ -15,11 +15,11 @@ Connecting needs a free Discord application of your own. It takes about five min
 
 1. Paste the Client ID into **Client ID** in the Connection section of this page.
 2. Click **Connect**. Discord opens an authorization window: click **Authorize**.
-3. Status changes to **Connected as** your name. From now on SupaDashboard reconnects by itself whenever Discord starts.
+3. Status changes to **Connected as** your name. SupaDashboard reconnects whenever Discord starts.
 
 ## 3. Use it
 
-- In **Layout**, add the **Voice channel** widget: it shows everyone in your channel and who is speaking, muted or deafened.
+- In **Layout**, add the **Voice channel** widget. It shows everyone in your channel and who is speaking, muted or deafened.
 - Give any button the **Toggle mute**, **Toggle deafen**, **Leave channel** or **Rejoin last channel** action.
 - Use the `discord.muted`, `discord.deafened` and `discord.inChannel` variables to change how a button looks while you are muted, deafened or in a channel.
 

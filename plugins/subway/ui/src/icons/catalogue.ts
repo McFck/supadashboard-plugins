@@ -17,7 +17,6 @@ function icon(value: IconDef): IconDef {
   return Object.freeze({ ...value });
 }
 
-/** Every line symbol the displays and the dev gallery can draw. Throws at import when the data is inconsistent. */
 export const ICON_CATALOGUE: readonly IconDef[] = Object.freeze(
   (data.icons as IconDef[]).map((entry, index, list) => {
     if (list.findIndex((other) => other.id === entry.id) !== index) fail(entry.id, 'duplicate id');
@@ -31,7 +30,6 @@ export function findIcon(id: string): IconDef | undefined {
   return byId.get(id);
 }
 
-/** For ids that data files reference: an unknown one is a data error, not something to draw around. */
 export function iconFor(id: string): IconDef {
   const found = byId.get(id);
   if (!found) fail(id, 'is not in the catalogue');

@@ -20,7 +20,7 @@ import guide from '../../guide.md?raw';
 import market from '../../market.json';
 import './plugin.css';
 
-/** Mirrors the Web API and the media session into variables; the last error toast is kept across owners. */
+/** The last error toast is kept across owners. */
 function followSpotify(api: PluginApi) {
   let lastError: string | undefined;
   const set = (values: Record<string, boolean | string>) => {
@@ -71,6 +71,77 @@ function followSpotify(api: PluginApi) {
   };
 }
 
+function registerActions(api: PluginApi) {
+  for (const [op, title] of [
+    ['like', 'Like song'],
+    ['unlike', 'Unlike song'],
+    ['dislike', 'Dislike song'],
+  ] as const) {
+    api.registerAction({
+      id: `spotify.${op}`,
+      title,
+      bindableVariable: () => 'spotify.liked',
+      run: ownerAction('Spotify', () => spotifyCommand(op)),
+    });
+  }
+  for (const [op, title, modes, initial] of [
+    [
+      'shuffle',
+      'Shuffle',
+      [
+        ['on', 'On'],
+        ['off', 'Off'],
+        ['toggle', 'Toggle'],
+      ],
+      'toggle',
+    ],
+    [
+      'repeat',
+      'Repeat',
+      [
+        ['off', 'Off'],
+        ['context', 'Playlist'],
+        ['track', 'Song'],
+        ['cycle', 'Cycle'],
+      ],
+      'cycle',
+    ],
+  ] as const) {
+    api.registerAction({
+      id: `spotify.${op}`,
+      title,
+      bindableVariable: () => `spotify.${op}`,
+      params: [
+        {
+          key: 'mode',
+          label: 'Mode',
+          type: 'select',
+          default: initial,
+          suggestions: modes.map(([value, label]) => ({ value, label })),
+        },
+      ],
+      run: ownerAction('Spotify', (args) =>
+        spotifyTransport(`${op}:${String(args.mode ?? initial)}`),
+      ),
+    });
+  }
+}
+
+function registerVariables(api: PluginApi) {
+  for (const field of ['liked', 'shuffle', 'connected', 'repeat'] as const) {
+    api.registerVariable({
+      id: `spotify.${field}`,
+      name: `spotify.${field}`,
+      type: field === 'repeat' || field === 'shuffle' ? 'string' : 'boolean',
+      initialValue: field === 'repeat' || field === 'shuffle' ? 'off' : false,
+      ...(field === 'shuffle' ? { options: ['off', 'shuffle', 'smart'] } : {}),
+      ...(field === 'repeat' ? { options: ['off', 'context', 'track'] } : {}),
+      persistent: false,
+      readOnly: true,
+    });
+  }
+}
+
 const spotifyPlugin: Plugin = {
   id: 'spotify',
   ...market,
@@ -86,7 +157,7 @@ const spotifyPlugin: Plugin = {
     api.registerMediaSource({
       id: 'spotify',
       title: 'Spotify',
-      // The native side matches Windows media sessions by app id; "spotify" picks the desktop app.
+      // The app matches Windows media sessions by app id; "spotify" picks the desktop app.
       command: (command, sessionId) =>
         invoke('media_command', { target: 'spotify', command, sessionId }),
     });
@@ -113,71 +184,8 @@ const spotifyPlugin: Plugin = {
         variants: [{ id: 'state-1', label: '' }],
       }),
     });
-    for (const [op, title] of [
-      ['like', 'Like song'],
-      ['unlike', 'Unlike song'],
-      ['dislike', 'Dislike song'],
-    ] as const) {
-      api.registerAction({
-        id: `spotify.${op}`,
-        title,
-        bindableVariable: () => 'spotify.liked',
-        run: ownerAction('Spotify', () => spotifyCommand(op)),
-      });
-    }
-    for (const [op, title, modes, initial] of [
-      [
-        'shuffle',
-        'Shuffle',
-        [
-          ['on', 'On'],
-          ['off', 'Off'],
-          ['toggle', 'Toggle'],
-        ],
-        'toggle',
-      ],
-      [
-        'repeat',
-        'Repeat',
-        [
-          ['off', 'Off'],
-          ['context', 'Playlist'],
-          ['track', 'Song'],
-          ['cycle', 'Cycle'],
-        ],
-        'cycle',
-      ],
-    ] as const) {
-      api.registerAction({
-        id: `spotify.${op}`,
-        title,
-        bindableVariable: () => `spotify.${op}`,
-        params: [
-          {
-            key: 'mode',
-            label: 'Mode',
-            type: 'select',
-            default: initial,
-            suggestions: modes.map(([value, label]) => ({ value, label })),
-          },
-        ],
-        run: ownerAction('Spotify', (args) =>
-          spotifyTransport(`${op}:${String(args.mode ?? initial)}`),
-        ),
-      });
-    }
-    for (const field of ['liked', 'shuffle', 'connected', 'repeat'] as const) {
-      api.registerVariable({
-        id: `spotify.${field}`,
-        name: `spotify.${field}`,
-        type: field === 'repeat' || field === 'shuffle' ? 'string' : 'boolean',
-        initialValue: field === 'repeat' || field === 'shuffle' ? 'off' : false,
-        ...(field === 'shuffle' ? { options: ['off', 'shuffle', 'smart'] } : {}),
-        ...(field === 'repeat' ? { options: ['off', 'context', 'track'] } : {}),
-        persistent: false,
-        readOnly: true,
-      });
-    }
+    registerActions(api);
+    registerVariables(api);
     whileOwner(provideSpotify);
     whileOwner(followSpotify(api));
   },

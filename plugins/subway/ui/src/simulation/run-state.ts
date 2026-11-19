@@ -45,7 +45,6 @@ export interface RunTimeline {
   segment: RunSegment | null;
   pendingCues: readonly ScheduledCue[];
   loopArrivalsRemaining: number;
-  /** Completed laps (loop line) and terminus turn-backs (other lines) since the run started. */
   laps: number;
 }
 
@@ -122,10 +121,14 @@ export function segmentPlanKey(
 
 export function lineFor(lines: readonly LineDefinition[], id: string): LineDefinition {
   const line = lines.find((item) => item.id === id);
-  if (!line) throw new Error(`Unknown Subway line: ${id}`);
+  if (!line) {
+    throw new Error(`Unknown Subway line: ${id}`);
+  }
   return line;
 }
 
 export function finiteTime(now: number): void {
-  if (!Number.isFinite(now)) throw new Error('Subway clock must return a finite time');
+  if (!Number.isFinite(now)) {
+    throw new Error('Subway clock must return a finite time');
+  }
 }

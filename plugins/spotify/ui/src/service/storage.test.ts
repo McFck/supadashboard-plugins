@@ -1,9 +1,15 @@
 import { beforeEach, expect, it, vi } from 'vitest';
+import type { PluginService } from '@supadashboard/kit';
 
 type Stored = { text: string; modified: number };
+const provided = vi.hoisted((): { service?: PluginService } => ({}));
 const files = vi.hoisted(() => new Map<string, Stored>());
 vi.mock('@supadashboard/kit', async (original) => ({
   ...(await original<object>()),
+  providePlugin: (_id: string, service: PluginService) => {
+    provided.service = service;
+    return () => {};
+  },
   pluginStorage: {
     read: async (_plugin: string, path: string) => files.get(path)?.text ?? null,
     write: async (_plugin: string, path: string, text: string) => {
@@ -23,6 +29,16 @@ vi.mock('@supadashboard/kit', async (original) => ({
 
 const { NEGATIVE_TTL, cacheKey, readCache, writeCache } = await import('./lyrics-cache');
 const { LyricsOffsets, withOffset } = await import('./offsets');
+const { provideSpotify } = await import('./index');
+
+async function serviceUnderTest() {
+  provideSpotify();
+  const service = provided.service;
+  if (!service) {
+    throw new Error('service not provided');
+  }
+  return service;
+}
 
 const entry = (version: number, result: object, fetchedAt = 100) =>
   JSON.stringify({ version, fetchedAt, result });
@@ -103,4 +119,25 @@ it('keeps offsets saved by the native plugin and never writes over an unreadable
   put('lyrics-offsets.json', 'broken');
   expect(await new LyricsOffsets().get(song)).toBe(0);
   expect(files.get('lyrics-offsets.json.bad')?.text).toBe('broken');
+});
+
+it('never writes over an offsets file from a newer version', async () => {
+  const newer = JSON.stringify({ version: 2, entries: [] });
+  put('lyrics-offsets.json', newer);
+  const offsets = new LyricsOffsets();
+  await expect(offsets.set(song, 500)).rejects.toThrow();
+  await expect(offsets.get(song)).rejects.toThrow();
+  expect(files.get('lyrics-offsets.json')?.text).toBe(newer);
+  expect(files.has('lyrics-offsets.json.bad')).toBe(false);
+});
+
+it('rejects a non-integer offset instead of erasing the saved one', async () => {
+  const service = await serviceUnderTest();
+  const call = { artist: song.artist, title: song.title, album: '', durationMs: song.durationMs };
+  await service['lyrics-offset-set']({ ...call, offsetMs: 1500 });
+  await expect(async () =>
+    service['lyrics-offset-set']({ ...call, offsetMs: 1500.5 }),
+  ).rejects.toThrow();
+  await expect(async () => service['lyrics-offset-set']({ ...call })).rejects.toThrow();
+  expect(await service['lyrics-offset-get'](call)).toBe(1500);
 });

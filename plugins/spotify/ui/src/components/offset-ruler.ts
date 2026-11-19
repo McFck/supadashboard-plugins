@@ -1,5 +1,4 @@
-// The song offset's ruler: the scale scrolls under a fixed needle with the lyrics' own kinetic scroll, snapping to
-// 0.1 s. Values only change when a step is crossed, so a frame does one transform write and nothing reactive.
+// Values change only when a 0.1 s step is crossed, so a frame does one transform write and nothing reactive.
 import { SONG_OFFSET_LIMIT_MS } from '../lyrics';
 import { KineticScroll } from '@supadashboard/kit';
 

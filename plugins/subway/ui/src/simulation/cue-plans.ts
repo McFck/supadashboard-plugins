@@ -12,12 +12,13 @@ export function buildCuePlans(
   const plans: Record<string, SegmentCuePlan> = {};
   for (const line of lines) {
     const bundle = assets.lines[line.id];
-    if (!bundle) throw new Error(`Missing Subway asset bundle: ${line.id}`);
-    for (const station of line.stations)
+    if (!bundle) {
+      throw new Error(`Missing Subway asset bundle: ${line.id}`);
+    }
+    for (const station of line.stations) {
       for (const direction of line.directions) {
         const next = stepStation(line, station.code, direction.id);
-        // The plan from a station to itself serves a train standing there, such as an emergency stop.
-        for (const target of next ? [next, station] : [station])
+        for (const target of next ? [next, station] : [station]) {
           plans[segmentPlanKey(line.id, station.code, target.code, direction.id)] =
             buildSegmentCuePlan(
               bundle,
@@ -30,7 +31,9 @@ export function buildCuePlans(
               base,
               assets.doorSequence,
             );
+        }
       }
+    }
   }
   return Object.freeze(plans);
 }

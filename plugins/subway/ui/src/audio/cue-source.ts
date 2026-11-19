@@ -1,6 +1,6 @@
 import type { ResolvedCue } from './sound-types';
 
-/** Plays one cue region. Recorded cues carry their recording's background noise; fade it so it never switches. */
+/** Recorded cues carry background noise; the fade keeps it from switching on and off. */
 export function playCueSource(
   context: BaseAudioContext,
   destination: AudioNode,

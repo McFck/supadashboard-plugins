@@ -1,5 +1,3 @@
-// Letterboxes a design-sized drawing into the canvas; `paint` draws in design coordinates and
-// returns whether it needs animation frames.
 export function paintFitted(
   ctx: CanvasRenderingContext2D,
   width: number,

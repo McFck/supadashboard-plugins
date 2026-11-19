@@ -3,7 +3,6 @@ import { between, createPicker, type Random } from './random';
 const FADE_SECONDS = 3;
 const SLOTS = 8;
 const POINTS = 64;
-// Equal-power crossfade: the two regions are uncorrelated recordings, so their powers add.
 const RISE = Float32Array.from({ length: POINTS }, (_, i) =>
   Math.sin(((i / (POINTS - 1)) * Math.PI) / 2),
 );
@@ -12,17 +11,10 @@ const FALL = RISE.slice().reverse();
 export interface BedOptions {
   shortest?: number;
   longest?: number;
-  /** Highest playback rate the bed will be driven at, so a region never runs off the buffer's end. */
   maxRate?: number;
 }
 
-/**
- * Plays a recording as an endless bed of random regions with crossfades, never the same region twice in a
- * row, so it has no audible period. Two regions are always scheduled: when one ends, the one after next is
- * queued, so it needs no timer. The caller owns the level; `stop` ends every region at a given time.
- */
 export class BedShuffler {
-  /** Each scheduled region with the time it is due to end. */
   private readonly live = new Map<AudioBufferSourceNode, number>();
   private readonly pick: () => number;
   private readonly shortest: number;

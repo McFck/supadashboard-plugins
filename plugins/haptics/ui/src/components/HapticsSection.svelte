@@ -1,119 +1,25 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
-  import {
-    toast,
-    Button,
-    Input,
-    Switch,
-    Choice,
-    Row,
-    Section,
-    onPluginEvent,
-  } from '@supadashboard/kit';
-  import { configureHaptics, launchArtemis, STRENGTHS, tabletReady } from '../haptics';
-  import {
-    DEFAULTS,
-    loadSettings,
-    normalizeSettings,
-    saveSettings,
-    toConfig,
-    type HapticsSettings,
-  } from '../settings';
+  import { onDestroy } from 'svelte';
+  import { Button, Input, Switch, Choice, Row, Section } from '@supadashboard/kit';
+  import { STRENGTHS } from '../haptics';
+  import { HapticsSectionController } from './haptics-section.svelte';
 
-  let settings = $state<HapticsSettings>({ ...DEFAULTS });
-  let loaded = $state(false);
-  let connected = $state(false);
-  let saving = $state(false);
-  let launching = $state(false);
-  const artemisUnavailable = $derived(!loaded || !settings.enabled || !connected || saving);
+  const section = new HapticsSectionController();
+  onDestroy(() => section.destroy());
+  const settings = $derived(section.settings);
+  const loaded = $derived(section.loaded);
+  const saving = $derived(section.saving);
+  const artemisUnavailable = $derived(!loaded || !settings.enabled || !section.connected || saving);
   const strengthOptions = STRENGTHS.map((value) => ({
     value,
     label: value[0].toUpperCase() + value.slice(1),
   }));
+  const { apply } = section;
 
   function chooseStrength(value: string) {
     const strength = STRENGTHS.find((option) => option === value);
-    // Choice has no disabled state; saving before the file was read would overwrite it with defaults.
-    if (loaded && strength) {
+    if (strength) {
       void apply({ strength });
-    }
-  }
-
-  onMount(() => {
-    let active = true;
-    async function refreshTablet() {
-      const ready = await tabletReady();
-      if (active) {
-        connected = ready;
-      }
-    }
-    const listeners = [
-      onPluginEvent('haptics', 'tablet-ready', (ready) => {
-        if (active) {
-          connected = ready === true;
-        }
-      }),
-      onPluginEvent('haptics', 'ready', () => void refreshTablet().catch(console.warn)),
-      onPluginEvent('haptics', 'connection-error', (failure) => {
-        if (active && typeof failure === 'string') {
-          toast.error(failure);
-        }
-      }),
-    ];
-    void Promise.all(listeners).then(refreshTablet).catch(console.warn);
-    loadSettings()
-      .then((saved) => {
-        if (!active) {
-          return;
-        }
-        settings = saved;
-        loaded = true;
-      })
-      .catch(() => toast.error('Android settings unavailable'));
-    return () => {
-      active = false;
-      for (const listener of listeners) {
-        void listener.then((stop) => stop()).catch(console.warn);
-      }
-    };
-  });
-
-  async function apply(change: Partial<HapticsSettings>) {
-    if (saving) {
-      return;
-    }
-    saving = true;
-    const next = normalizeSettings({ ...settings, ...change });
-    try {
-      await saveSettings(next);
-      settings = next;
-    } catch (error) {
-      console.error(error);
-      toast.error('Could not save Android settings');
-      saving = false;
-      return;
-    }
-    try {
-      connected = await configureHaptics(toConfig(next));
-      if (next.enabled && !connected) {
-        toast.error('No tablet found');
-      }
-    } catch (error) {
-      console.error(error);
-      toast.error('Could not apply Android settings');
-    } finally {
-      saving = false;
-    }
-  }
-
-  async function launch() {
-    launching = true;
-    try {
-      await launchArtemis();
-    } catch (error) {
-      toast.error(error instanceof Error ? error.message : 'Could not launch Artemis');
-    } finally {
-      launching = false;
     }
   }
 </script>
@@ -236,8 +142,8 @@
     <Button
       size="sm"
       variant="outline"
-      disabled={artemisUnavailable || !settings.artemis || launching}
-      onclick={launch}
+      disabled={artemisUnavailable || !settings.artemis || section.launching}
+      onclick={() => section.launch()}
     >
       Launch Artemis
     </Button>

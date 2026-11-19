@@ -2,18 +2,22 @@
   import { onMount } from 'svelte';
   import { toast, Button, Input, Row, Section } from '@supadashboard/kit';
   import { spotifyAuthorize, spotifyLogout, subscribeSpotify, type SpotifyView } from '../spotify';
+  import { errorTitle } from '../service/api';
 
   let view = $state<SpotifyView>({ state: 'needsAuth' });
   let clientId = $state('');
   let busy = $state(false);
   const connected = $derived(view.state === 'ready');
-  const status = $derived(
-    view.state === 'ready'
-      ? `Connected as ${view.user}`
-      : view.state === 'connecting'
-        ? 'Connecting'
-        : 'Not connected',
-  );
+  const status = $derived.by(() => {
+    switch (view.state) {
+      case 'ready':
+        return `Connected as ${view.user}`;
+      case 'connecting':
+        return 'Connecting';
+      default:
+        return 'Not connected';
+    }
+  });
   const trimmed = $derived(clientId.trim());
 
   onMount(() => {
@@ -35,9 +39,7 @@
     try {
       await job();
     } catch (error) {
-      toast.error(
-        typeof error === 'string' ? error : error instanceof Error ? error.message : failure,
-      );
+      toast.error(errorTitle(error, failure));
     } finally {
       busy = false;
     }

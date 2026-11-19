@@ -5,7 +5,8 @@ import { createHankyu1300Renderer } from '../display/hankyu-1300/renderer';
 import { createYamanoteRenderer } from '../display/e235/renderer';
 import { e235Images } from '../display/e235/images';
 import { e235WallClock } from '../display/e235/schedule';
-import { displayLanguages, normalizeCarNumber } from '../simulation/config';
+import { carNumber, displayLanguages } from '../simulation/config';
+import { lineFactsFor } from '../data/load';
 import { scheduleScreen, type ScreenConfig } from './screens';
 import type { SubwaySceneState } from '../simulation/scene-state';
 import type { PreparedFrame, SubwayScreen } from './contracts';
@@ -15,10 +16,6 @@ export type SubwaySceneData = SubwaySceneState & { visibleElapsed: number; wallM
 
 const BACKGROUND = '#10171b';
 
-/**
- * The renderers centre their LCD at its own ratio; where the canvas is wider or taller, the LCD's outermost
- * pixel columns or rows are stretched into the spare room so the display runs edge to edge without bars.
- */
 function extendEdges(ctx: CanvasRenderingContext2D, width: number, height: number, aspect: number) {
   const w = Math.min(width, height * aspect),
     h = w / aspect;
@@ -27,9 +24,8 @@ function extendEdges(ctx: CanvasRenderingContext2D, width: number, height: numbe
   if (x < 0.5 && y < 0.5) {
     return;
   }
-  // Work in whole backing pixels: the LCD's edge pixels are antialiased where it sits on a fraction, and a
-  // stretch that starts mid-pixel would blend over them into a visible seam. Sources sit one pixel inside the
-  // fully covered LCD, and smoothing is off so the copy is exact.
+  // Whole backing pixels: a stretch starting mid-pixel blends over the antialiased LCD edge into a seam.
+  // Sources sit one pixel inside the fully covered LCD, and smoothing is off so the copy is exact.
   const { a: sx, d: sy } = ctx.getTransform();
   const canvas = ctx.canvas;
   ctx.save();
@@ -51,8 +47,6 @@ function extendEdges(ctx: CanvasRenderingContext2D, width: number, height: numbe
       canvas.height,
     );
   } else {
-    // Text runs close to the LCD's top and bottom edges, so a row would smear it; its corner pixel is the
-    // background there.
     const top = Math.ceil(y * sy),
       bottom = Math.floor((y + h) * sy);
     ctx.drawImage(canvas, 1, top + 1, 1, 1, 0, 0, canvas.width, top);
@@ -61,13 +55,9 @@ function extendEdges(ctx: CanvasRenderingContext2D, width: number, height: numbe
   ctx.restore();
 }
 
-export function sceneLanguages(source: SubwaySceneState): string[] {
-  const raw = source.config.displayLanguages ?? source.config.languages;
-  if (Array.isArray(raw)) {
-    return raw.filter((item): item is string => typeof item === 'string');
-  }
+export function sceneLanguages(source: SubwaySceneState): readonly string[] {
   return displayLanguages(
-    typeof raw === 'string' ? raw : source.line.id === 'sakaisuji' ? 'ja-kana' : 'ja-en',
+    source.config.displayLanguages ?? lineFactsFor(source.line.id)?.displayLanguages[0],
   );
 }
 
@@ -83,7 +73,7 @@ export function prepareFrame(
   const config: ScreenConfig = {
     line,
     languages: sceneLanguages(data),
-    currentCar: normalizeCarNumber(data.config.carNumber, line.carCount),
+    currentCar: carNumber(data.config.carNumber, line.carCount) ?? 1,
     clock: wall?.label,
     manualView: view === 'map' || view === 'cab' ? 'map' : 'display',
   };
@@ -115,7 +105,6 @@ export function prepareFrame(
     line,
     schedule,
     fill,
-    // Late images repaint through the revision; nothing polls for them.
     revision: `${
       line.id === 'yamanote'
         ? `${schedule.invalidationKey}|${e235Images.revision}`
@@ -128,7 +117,6 @@ export function prepareFrame(
 export const createSubwayScene: AppletSceneFactory<
   PreparedFrame | undefined
 > = (): AppletSceneRenderer<PreparedFrame | undefined> => {
-  // A display's renderer (and its layer cache) exists only once its line is shown.
   const opened: { dispose(): void }[] = [];
   const once = <T extends { dispose(): void }>(create: () => T) => {
     let renderer: T | undefined;

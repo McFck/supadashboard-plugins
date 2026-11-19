@@ -1,4 +1,3 @@
-// The current song's own sync offset: a double tap opens its slider, which previews live and saves on release.
 import { toast } from '@supadashboard/kit';
 import { setSongOffset, type LyricsTrack } from '../lyrics';
 

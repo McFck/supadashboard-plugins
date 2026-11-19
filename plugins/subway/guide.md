@@ -1,4 +1,4 @@
-A Japanese-style passenger information display for your dashboard: a train runs its line, announces stations and shows the route map. Nothing needs to be set up.
+A Japanese-style passenger information display for your dashboard. A train runs its line, announces stations and shows the route map. Nothing needs to be set up.
 
 ## Use it
 

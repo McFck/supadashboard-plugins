@@ -6,10 +6,7 @@ export const clamp = (value: number, low: number, high: number) =>
 
 export const fromDb = (db: number) => 10 ** (db / 20);
 
-/**
- * Linear interpolation through sparse points, never negative. Beyond the ends the outer segment extends, as
- * the 13000 pack's tables were tuned with (its pitch curves stop short of the top speed).
- */
+/** Beyond the ends the outer segment extends; the 13000 pack's pitch curves stop short of the top speed. */
 export function curve(points: Curve, x: number): number {
   if (!points.length) return 0;
   if (points.length === 1) return points[0][1];
@@ -20,7 +17,6 @@ export function curve(points: Curve, x: number): number {
   return x1 === x0 ? y1 : Math.max(0, y0 + ((y1 - y0) * (x - x0)) / (x1 - x0));
 }
 
-/** Rolling bed by speed: linear level, a narrow pitch band (wide shifts sound fake), a brightening lowpass. */
 export function rollingLevels(speedKmh: number) {
   const fraction = clamp(speedKmh / 60, 0, 1.2);
   const fadeIn = clamp((speedKmh - 1) / 6, 0, 1);
@@ -36,13 +32,9 @@ export interface Effort {
   brake: number;
 }
 
-/** A full 0..1 effort change takes this long, like a jerk-limited controller; tune by ear. */
+/** Seconds for a full 0..1 effort change. */
 const EFFORT_SECONDS = 0.6;
 
-/**
- * Traction and brake effort build and decay instead of switching, and one reaches zero before the other
- * builds. A long gap (a stalled timer) moves at most a quarter second's worth.
- */
 export function slewEffort(current: Effort, target: Effort, seconds: number): Effort {
   const step = clamp(seconds, 0, 0.25) / EFFORT_SECONDS;
   const move = (from: number, to: number) =>
@@ -52,10 +44,7 @@ export function slewEffort(current: Effort, target: Effort, seconds: number): Ef
   return { power: move(current.power, target.power), brake: move(current.brake, target.brake) };
 }
 
-/**
- * Where the train is: the station's own section while standing, and the segment's sections either side of a
- * portal (or the midpoint) while running. Portals are keyed in line order and mirrored for the other direction.
- */
+/** Portals are keyed in line order and mirrored for the other direction. */
 export function sectionAt(
   sections: TrainProfile['sections'],
   from: string,
@@ -75,7 +64,6 @@ export interface HvacStep {
   running: boolean;
 }
 
-/** The air-conditioning compressor cycles on and off for a few minutes at a time from `from` to `until`. */
 export function hvacSteps(
   random: Random,
   from: number,

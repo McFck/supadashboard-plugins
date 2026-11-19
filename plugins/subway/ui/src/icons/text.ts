@@ -1,4 +1,3 @@
-/** Centred single-line text that shrinks (never below `min`) to fit `width`. */
 export function drawFittedCentered(
   ctx: CanvasRenderingContext2D,
   value: string,

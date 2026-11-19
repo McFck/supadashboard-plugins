@@ -33,8 +33,9 @@ export function scheduleCues(
 ): ScheduledCue[] {
   return items
     .map((item, index) => {
-      if (!Number.isFinite(item.at) || item.at < 0)
+      if (!Number.isFinite(item.at) || item.at < 0) {
         throw new Error(`Invalid Subway cue time: ${item.part}`);
+      }
       validateCue(item.cue, item.part);
       return { ...item, id: `${idPrefix}:${index}:${item.cue.file}`, at: start + item.at * 1000 };
     })
@@ -44,23 +45,27 @@ export function scheduleCues(
 export function cueQueueEnd(items: readonly TimedCue[]): number {
   return items.reduce((end, item) => {
     validateCue(item.cue, item.part);
-    if (!Number.isFinite(item.at) || item.at < 0)
+    if (!Number.isFinite(item.at) || item.at < 0) {
       throw new Error(`Invalid Subway cue time: ${item.part}`);
+    }
     return Math.max(end, item.at + item.cue.duration);
   }, 0);
 }
 
 export function validateDoorPlan(plan: DoorSequencePlan, action: string): void {
-  if (!plan || !Number.isFinite(plan.end) || plan.end < 0)
+  if (!plan || !Number.isFinite(plan.end) || plan.end < 0) {
     throw new Error(`Invalid Subway ${action} plan`);
+  }
   for (const event of plan.events) {
-    if (!Number.isFinite(event.at) || event.at < 0)
+    if (!Number.isFinite(event.at) || event.at < 0) {
       throw new Error(`Invalid Subway ${action} cue time`);
+    }
     validateCue(event.cue, event.part);
   }
   for (const value of [plan.open_end, plan.close_end, plan.departure_melody_end]) {
-    if (value !== undefined && (!Number.isFinite(value) || value < 0))
+    if (value !== undefined && (!Number.isFinite(value) || value < 0)) {
       throw new Error(`Invalid Subway ${action} anchor`);
+    }
   }
 }
 
@@ -73,10 +78,13 @@ export function withDueCues(
     (state.incident && state.phase !== 'emergency') ||
     state.pausedAt !== null ||
     !state.pendingCues.length
-  )
+  ) {
     return state;
+  }
   const due = state.pendingCues.filter((cue) => cue.at <= now);
-  if (!due.length) return state;
+  if (!due.length) {
+    return state;
+  }
   effects.push(
     ...due.map((item) => ({
       type: 'play-cue' as const,

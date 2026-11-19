@@ -102,8 +102,9 @@ export function buildDirectionDetails(
   carCount: number,
   evidence: readonly SideEvidence[] = [],
 ): StationDirectionDetails {
-  if (!Number.isInteger(carCount) || carCount < 1 || carCount > 20)
+  if (!Number.isInteger(carCount) || carCount < 1 || carCount > 20) {
     throw new Error(`Invalid formation car count: ${carCount}`);
+  }
   if (
     !directions.length ||
     new Set(directions).size !== directions.length ||
@@ -113,8 +114,9 @@ export function buildDirectionDetails(
   }
   const evidenceByDirection = new Map<string, SideEvidence[]>();
   for (const item of evidence) {
-    if (!directions.includes(item.direction))
+    if (!directions.includes(item.direction)) {
       throw new Error(`Unknown door-side direction: ${item.direction}`);
+    }
     if (!['left', 'right', 'both'].includes(item.side) || !item.source.trim()) {
       throw new Error(`Invalid door-side evidence for ${item.direction}`);
     }

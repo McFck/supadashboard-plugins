@@ -1,4 +1,3 @@
-// Pulse length and the rate limit: a flick must not queue seconds of buzzing.
 import type { PulseKind, Strength } from './haptics';
 
 /** Pause after a pulse; the motor needs it to spin down and `cmd` needs time to start. */
@@ -11,7 +10,7 @@ const SCALE: Record<Strength, number> = { light: 0.6, medium: 1, strong: 1.6 };
 export const pulseMillis = (kind: PulseKind, strength: Strength) =>
   Math.round(BASE[kind] * SCALE[strength]);
 
-/** Drops a pulse while the previous one is still playing. */
+/** Drops a pulse while the previous one plays, so a flick cannot queue seconds of buzzing. */
 export class Limiter {
   private freeAt = 0;
 

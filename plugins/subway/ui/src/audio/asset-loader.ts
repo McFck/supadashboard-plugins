@@ -25,9 +25,12 @@ export const SUBWAY_ASSET_BASE = 'http://plugin.localhost/subway/assets/';
 
 function normalizedBase(base = SUBWAY_ASSET_BASE): URL {
   const root = new URL(base);
-  if (!root.pathname.endsWith('/')) root.pathname += '/';
-  if (!root.href.startsWith(SUBWAY_ASSET_BASE))
+  if (!root.pathname.endsWith('/')) {
+    root.pathname += '/';
+  }
+  if (!root.href.startsWith(SUBWAY_ASSET_BASE)) {
     throw new Error(`Subway assets must stay under ${SUBWAY_ASSET_BASE}`);
+  }
   return root;
 }
 
@@ -42,14 +45,23 @@ export function resolveAssetUrl(file: string, base: string): string {
   }
   const root = normalizedBase(base);
   const url = new URL(file.split('/').map(encodeURIComponent).join('/'), root);
-  if (url.origin !== root.origin || !url.pathname.startsWith(root.pathname))
+  if (url.origin !== root.origin || !url.pathname.startsWith(root.pathname)) {
     throw new Error(`Subway asset leaves its base path: ${file}`);
+  }
   return url.href;
 }
 
-export function cueIndex(manifest: RuntimeCueManifest): Map<string, RuntimeCue> {
-  if (manifest.version !== 1 || !Array.isArray(manifest.cues))
+const cueIndexes = new WeakMap<RuntimeCueManifest, ReadonlyMap<string, RuntimeCue>>();
+
+/** The validated cues of a catalogue by file, built once per catalogue object. */
+export function cueIndex(manifest: RuntimeCueManifest): ReadonlyMap<string, RuntimeCue> {
+  const known = cueIndexes.get(manifest);
+  if (known) {
+    return known;
+  }
+  if (manifest.version !== 1 || !Array.isArray(manifest.cues)) {
     throw new Error('Unsupported Subway cue catalogue');
+  }
   const result = new Map<string, RuntimeCue>();
   for (const cue of manifest.cues) {
     if (
@@ -66,33 +78,44 @@ export function cueIndex(manifest: RuntimeCueManifest): Map<string, RuntimeCue> 
     ) {
       throw new Error(`Invalid or duplicate Subway cue: ${cue.file}`);
     }
-    if (!cue.gainByRole || typeof cue.gainByRole !== 'object')
+    if (!cue.gainByRole || typeof cue.gainByRole !== 'object') {
       throw new Error(`Missing Subway cue gains: ${cue.file}`);
+    }
     for (const gain of Object.values(cue.gainByRole)) {
-      if (typeof gain !== 'number' || !Number.isFinite(gain) || gain < 0 || gain > 4)
+      if (typeof gain !== 'number' || !Number.isFinite(gain) || gain < 0 || gain > 4) {
         throw new Error(`Invalid Subway cue gain: ${cue.file}`);
+      }
     }
     result.set(cue.file, cue);
   }
+  cueIndexes.set(manifest, result);
   return result;
 }
 
 function fetchJson<T>(url: string): Promise<T> {
   return fetch(url).then((response) => {
-    if (!response.ok) throw new Error(`Subway asset request failed (${response.status}): ${url}`);
+    if (!response.ok) {
+      throw new Error(`Subway asset request failed (${response.status}): ${url}`);
+    }
     return response.json() as Promise<T>;
   });
 }
 
 function loadScript(url: string, available: () => boolean): Promise<void> {
-  if (available()) return Promise.resolve();
+  if (available()) {
+    return Promise.resolve();
+  }
   const existing = scriptPromises.get(url);
-  if (existing) return existing;
-  if (typeof document === 'undefined')
+  if (existing) {
+    return existing;
+  }
+  if (typeof document === 'undefined') {
     return Promise.reject(new Error('Subway scripts require a browser document'));
+  }
   const inDom = [...document.scripts].find((script) => script.src === url);
-  if (inDom?.dataset.subwayLoaded === 'true')
+  if (inDom?.dataset.subwayLoaded === 'true') {
     return Promise.reject(new Error(`Subway script did not expose its API: ${url}`));
+  }
   const promise = new Promise<void>((resolve, reject) => {
     const script = inDom ?? document.createElement('script');
     script.addEventListener(
@@ -144,7 +167,9 @@ export async function loadSubwayAssets(base?: string): Promise<LoadedSubwayAsset
         lines[id] = { line: lineFiles[index * 2], pack: lineFiles[index * 2 + 1] };
       });
       const doorSequence = globals().DoorSequence;
-      if (!doorSequence) throw new Error('Subway door planner is unavailable');
+      if (!doorSequence) {
+        throw new Error('Subway door planner is unavailable');
+      }
       return { catalogue, lines: Object.freeze(lines), doorSequence };
     })().catch((error) => {
       bundlePromises.delete(key);
@@ -169,7 +194,9 @@ export async function loadSubwayMotion(base?: string): Promise<LoadedSubwayMotio
     manifest,
     urlFor: (clip) => {
       const entry = manifest.clips[clip];
-      if (!entry) throw new Error(`Unknown Subway motion clip: ${clip}`);
+      if (!entry) {
+        throw new Error(`Unknown Subway motion clip: ${clip}`);
+      }
       return resolveAssetUrl(entry.file, root);
     },
   };

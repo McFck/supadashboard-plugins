@@ -1,18 +1,17 @@
 import type { PluginBrowserScrollFrame } from '@supadashboard/kit';
+import { clamp } from './gesture';
 
+type WithoutTab<Frame> = Frame extends unknown ? Omit<Frame, 'tab'> : never;
+export type ScrollInput = WithoutTab<PluginBrowserScrollFrame>;
 type Point = { x: number; y: number; time: number };
 type Drag = { samples: Point[]; last: Point; dx: number; dy: number };
 const SCROLL_GAIN = 2.1;
-
-function clamp(value: number, limit: number) {
-  return Math.max(-limit, Math.min(limit, value));
-}
 
 export class ScrollGesture {
   private drag: Drag | undefined;
   private frame = 0;
 
-  constructor(private send: (frame: PluginBrowserScrollFrame) => boolean) {}
+  constructor(private send: (frame: ScrollInput) => boolean) {}
 
   start(x: number, y: number, time: number) {
     if (!this.send({ phase: 'hold' })) {

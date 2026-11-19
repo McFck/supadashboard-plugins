@@ -1,8 +1,9 @@
-import type { PluginBrowserAction, PluginBrowserScrollFrame } from '@supadashboard/kit';
-import { ScrollGesture } from './scroll-gesture';
+import type { PluginBrowserScrollFrame } from '@supadashboard/kit';
+import { clamp, HOLD_MS, point } from './gesture';
+import { PointerQueue, type PointerAction } from './pointer-queue';
+import { ScrollGesture, type ScrollInput } from './scroll-gesture';
 
-type Action = Extract<PluginBrowserAction, { kind: 'pointer' }>;
-type Input = Action['input'];
+type Input = PointerAction['input'];
 type Point = { x: number; y: number };
 type Direction = 'next' | 'previous';
 type Gesture =
@@ -12,25 +13,22 @@ type Gesture =
   | { kind: 'swipe'; originX: number; x: number }
   | { kind: 'move' | 'drag'; last: Point };
 
-const bounded = (delta: number) => Math.max(-2048, Math.min(2048, delta));
-const point = ({ clientX, clientY }: PointerEvent) => ({ x: clientX, y: clientY });
-
 export class TouchpadController {
   private readonly lifetime = new AbortController();
   private readonly fingers = new Map<number, Point>();
-  private readonly queue: Action[] = [];
+  private readonly pointer: PointerQueue;
   private readonly scroll: ScrollGesture;
   private gesture: Gesture = { kind: 'idle' };
   private tab: number | null = null;
   private hold: ReturnType<typeof setTimeout> | undefined;
-  private busy = false;
 
   constructor(
     private pad: HTMLElement,
-    private send: (action: Action) => Promise<boolean>,
+    send: (action: PointerAction) => Promise<boolean>,
     private sendScroll: (frame: PluginBrowserScrollFrame) => boolean,
     private switchTab: (direction: Direction) => void,
   ) {
+    this.pointer = new PointerQueue(send);
     this.scroll = new ScrollGesture((frame) => this.scrollFrame(frame));
     const options = { signal: this.lifetime.signal };
     pad.addEventListener('pointerdown', this.down, options);
@@ -110,7 +108,7 @@ export class TouchpadController {
         this.gesture = { kind: 'drag', last: this.gesture.origin };
         this.command({ kind: 'down' });
       }
-    }, 400);
+    }, HOLD_MS);
   };
 
   private move = (event: PointerEvent) => {
@@ -198,23 +196,21 @@ export class TouchpadController {
   }
 
   private motion(from: Point, to: Point) {
-    const dx = bounded(Math.round((to.x - from.x) * 2));
-    const dy = bounded(Math.round((to.y - from.y) * 2));
+    const dx = clamp(Math.round((to.x - from.x) * 2), 2048);
+    const dy = clamp(Math.round((to.y - from.y) * 2), 2048);
     if (dx || dy) {
       this.command({ kind: 'move', dx, dy });
     }
   }
 
-  private scrollFrame(frame: PluginBrowserScrollFrame) {
+  private scrollFrame(frame: ScrollInput) {
     return this.tab !== null && this.sendScroll({ ...frame, tab: this.tab });
   }
 
   private reset() {
     this.scroll.finish();
     clearTimeout(this.hold);
-    const needsRelease =
-      this.gesture.kind === 'drag' ||
-      this.queue.some(({ input }) => input.kind === 'up' || input.kind === 'cancel');
+    this.pointer.cancel(this.tab, this.gesture.kind === 'drag');
     this.gesture = { kind: 'idle' };
     const ids = [...this.fingers.keys()];
     this.fingers.clear();
@@ -223,48 +219,11 @@ export class TouchpadController {
         this.pad.releasePointerCapture(id);
       }
     }
-    this.queue.length = 0;
-    if (needsRelease && this.tab !== null) {
-      this.queue.push({ kind: 'pointer', tab: this.tab, input: { kind: 'cancel' } });
-      void this.flush();
-    }
   }
 
   private command(input: Input) {
-    if (this.tab === null) {
-      return;
-    }
-    const previous = this.queue.at(-1);
-    if (
-      'dx' in input &&
-      previous?.tab === this.tab &&
-      'dx' in previous.input &&
-      input.kind === previous.input.kind
-    ) {
-      previous.input.dx = bounded(previous.input.dx + input.dx);
-      previous.input.dy = bounded(previous.input.dy + input.dy);
-    } else {
-      this.queue.push({ kind: 'pointer', tab: this.tab, input });
-    }
-    void this.flush();
-  }
-
-  private async flush() {
-    if (this.busy) {
-      return;
-    }
-    const action = this.queue.shift();
-    if (!action) {
-      return;
-    }
-    this.busy = true;
-    try {
-      await this.send(action);
-    } finally {
-      this.busy = false;
-      if (this.queue.length) {
-        void this.flush();
-      }
+    if (this.tab !== null) {
+      this.pointer.push(this.tab, input);
     }
   }
 }

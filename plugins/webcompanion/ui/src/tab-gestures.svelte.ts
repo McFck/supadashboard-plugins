@@ -1,24 +1,15 @@
 import { KineticScroll, type PluginBrowserAction } from '@supadashboard/kit';
+import { HOLD_MS, point } from './gesture';
+import { dropAt, item, laneOf, type Drop, type Item } from './tab-drop';
 
 type Move = Extract<PluginBrowserAction, { kind: 'move_tab' }>;
 type Point = { x: number; y: number };
-type Item = { id: number; lane: string; node: HTMLElement };
-type Drop = Pick<Move, 'anchor' | 'side'> & { axis: 'x' | 'y' };
 type Gesture =
   | { kind: 'idle' }
   | { kind: 'press'; id: number; source: Item; origin: Point }
   | { kind: 'reorder'; id: number; source: Item; point: Point };
 
 const holdSlopPx = 16;
-const row = '[data-tab-id]';
-const point = ({ clientX, clientY }: PointerEvent) => ({ x: clientX, y: clientY });
-
-function item(node: Element | null) {
-  const tile = node?.closest(row);
-  if (tile instanceof HTMLElement && tile.dataset.tabId && tile.dataset.tabLane) {
-    return { id: Number(tile.dataset.tabId), lane: tile.dataset.tabLane, node: tile };
-  }
-}
 
 export class TabGestures {
   dragging = $state<number | null>(null);
@@ -82,7 +73,7 @@ export class TabGestures {
       return;
     }
     event.preventDefault();
-    const lane = this.#lane(source);
+    const lane = laneOf(this.viewport, source);
     const forward = event.key === next;
     const target = lane[lane.findIndex(({ id }) => id === source.id) + (forward ? 1 : -1)];
     if (target) {
@@ -120,7 +111,7 @@ export class TabGestures {
         this.dragging = source.id;
         this.#suppressClick = true;
       }
-    }, 400);
+    }, HOLD_MS);
   };
 
   #move = (event: PointerEvent) => {
@@ -147,80 +138,15 @@ export class TabGestures {
     }
   };
 
-  #locate(gesture: Extract<Gesture, { kind: 'reorder' }>) {
-    const {
-      source,
-      point: { x, y },
-    } = gesture;
-    const viewport = this.viewport.getBoundingClientRect();
-    if (x < viewport.left || x >= viewport.right || y < viewport.top || y >= viewport.bottom) {
-      this.drop = undefined;
-      return;
-    }
-    const hit = document.elementFromPoint(x, y);
-    if (!this.viewport.contains(hit)) {
-      this.drop = undefined;
-      return;
-    }
-    const hovered = item(hit);
-    const drop = hovered
-      ? this.#insertion(hovered, gesture.point)
-      : this.#nearest(gesture, viewport);
-    if (!drop || drop.anchor === source.id || (hovered && hovered.lane !== source.lane)) {
-      this.drop = undefined;
-    } else if (
-      this.drop?.anchor !== drop.anchor ||
-      this.drop.side !== drop.side ||
-      this.drop.axis !== drop.axis
+  #locate({ source, point }: Extract<Gesture, { kind: 'reorder' }>) {
+    const drop = dropAt(this.viewport, source, point, this.horizontal);
+    if (
+      drop?.anchor !== this.drop?.anchor ||
+      drop?.side !== this.drop?.side ||
+      drop?.axis !== this.drop?.axis
     ) {
       this.drop = drop;
     }
-  }
-
-  #insertion(tab: Item, { x, y }: Point, edge?: Move['side']): Drop {
-    const box = tab.node.getBoundingClientRect();
-    const parent = tab.node.parentElement;
-    const singleRow = parent && !getComputedStyle(parent).gridTemplateRows.trim().includes(' ');
-    const axis = this.horizontal && singleRow ? 'x' : 'y';
-    const before = axis === 'x' ? x < box.left + box.width / 2 : y < box.top + box.height / 2;
-    return { anchor: tab.id, axis, side: edge ?? (before ? 'before' : 'after') };
-  }
-
-  #lane(source: Item) {
-    return [...this.viewport.querySelectorAll(row)].flatMap((node) => {
-      const tab = item(node);
-      return tab?.lane === source.lane ? [tab] : [];
-    });
-  }
-
-  #nearest({ source, point: { x, y } }: Extract<Gesture, { kind: 'reorder' }>, viewport: DOMRect) {
-    const lane = this.#lane(source);
-    let target: Item | undefined;
-    let distance = Infinity;
-    for (const tab of lane) {
-      const box = tab.node.getBoundingClientRect();
-      const left = Math.max(box.left, viewport.left);
-      const right = Math.min(box.right, viewport.right);
-      const top = Math.max(box.top, viewport.top);
-      const bottom = Math.min(box.bottom, viewport.bottom);
-      if (right <= left || bottom <= top) {
-        continue;
-      }
-      if (this.horizontal && tab === lane[0] && x < left) {
-        return this.#insertion(tab, { x, y }, 'before');
-      }
-      if (this.horizontal && tab === lane.at(-1) && x >= right) {
-        return this.#insertion(tab, { x, y }, 'after');
-      }
-      const dx = Math.max(0, left - x, x - right);
-      const dy = Math.max(0, top - y, y - bottom);
-      const gap = dx ** 2 + dy ** 2;
-      if (gap < distance) {
-        target = tab;
-        distance = gap;
-      }
-    }
-    return target && this.#insertion(target, { x, y });
   }
 
   #edgeScroll = () => {

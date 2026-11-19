@@ -163,9 +163,6 @@
     }
     const dx = action.kind === 'move' ? action.dx : 0;
     const dy = action.kind === 'move' ? action.dy : 0;
-    if (![dx, dy].every((delta) => Number.isInteger(delta) && Math.abs(delta) <= 2048)) {
-      return false;
-    }
     const target = position(dx, dy);
     hover(target);
     if (!target) {

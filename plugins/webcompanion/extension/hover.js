@@ -6,7 +6,9 @@
   const selectors = /("(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*'|\\.)|:hover(?![\w-])/gi;
   const processed = new WeakMap();
   const roots = new Set();
+  let active = false;
   let scheduled = false;
+  let again = false;
 
   function* rules(container) {
     let children;
@@ -37,16 +39,22 @@
   }
 
   function prepare() {
+    active = true;
     if (scheduled) {
+      again = true;
       return;
     }
     scheduled = true;
+    again = false;
     const pending = sheets();
     function scan(deadline) {
       do {
         const next = pending.next();
         if (next.done) {
           scheduled = false;
+          if (again) {
+            prepare();
+          }
           return;
         }
         const rule = next.value;
@@ -90,12 +98,11 @@
   document.addEventListener(
     'load',
     (event) => {
-      if (event.target instanceof HTMLLinkElement && event.target.rel === 'stylesheet') {
+      if (active && event.target instanceof HTMLLinkElement && event.target.rel === 'stylesheet') {
         prepare();
       }
     },
     true,
   );
-  prepare();
   globalThis.webcompanionHover = { apply, prepare };
 })();

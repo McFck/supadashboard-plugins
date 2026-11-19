@@ -54,7 +54,8 @@
     frame = 0;
     lastTick = 0;
     lastInput = -Infinity;
-    pointerScroll = false;
+    // Frames count only after a touch's hold; a hidden page drops the rest of that touch.
+    held = false;
 
     reset(anchor) {
       this.target = scrollTarget(anchor);
@@ -69,17 +70,16 @@
       const dx = clamp(frame.dx, 32768);
       const dy = clamp(frame.dy, 32768);
       const now = performance.now();
-      const scoped = frame.tab != null;
       if (frame.hold === true) {
-        this.pointerScroll = scoped;
-      } else if (scoped !== this.pointerScroll) {
+        this.held = true;
+      } else if (!this.held) {
         return;
       }
       if (
         frame.hold === true ||
         ((dx || dy) && (!this.target?.isConnected || now - this.lastInput > IDLE_MS))
       ) {
-        this.reset(scoped ? pointer.anchor() : undefined);
+        this.reset(pointer.anchor());
       }
       if (frame.hold === true || dx || dy) {
         this.lastInput = now;
@@ -164,9 +164,9 @@
 
   const scroller = new Scroller();
   document.addEventListener('visibilitychange', () => {
-    if (document.hidden && scroller.pointerScroll) {
+    if (document.hidden && scroller.held) {
       scroller.reset();
-      scroller.pointerScroll = false;
+      scroller.held = false;
       scroller.lastInput = -Infinity;
     }
   });
@@ -174,7 +174,12 @@
   let reconnectDelay = 250;
 
   function connect() {
+    // After an extension reload or update this copy is orphaned; the new one takes over.
     if (!chrome.runtime?.id) {
+      observer.disconnect();
+      for (const event of mediaEvents) {
+        document.removeEventListener(event, changed, true);
+      }
       return;
     }
     port = chrome.runtime.connect(chrome.runtime.id, { name: 'webcompanion-page' });
@@ -272,7 +277,8 @@
       // A disconnected port will reconnect and send the current status.
     }
   }
-  for (const event of ['play', 'pause', 'ended', 'ratechange', 'loadedmetadata']) {
+  const mediaEvents = ['play', 'pause', 'ended', 'ratechange', 'loadedmetadata'];
+  for (const event of mediaEvents) {
     document.addEventListener(event, changed, true);
   }
   const observer = new MutationObserver((records) => {

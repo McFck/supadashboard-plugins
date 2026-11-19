@@ -44,7 +44,7 @@
   const shown = $derived(
     grid.overflow ? voice.members.slice(0, grid.cols * grid.rows - 1) : voice.members,
   );
-  // Avatars smaller than this (px) get no status badge: it would be an unreadable dot. The name still says it.
+  // Avatars smaller than this (px) get no status badge, which would be an unreadable dot. The name still says it.
   const BADGE_MIN = 34;
 </script>
 
@@ -220,7 +220,6 @@
     color: #a1a4ad;
     font-size: calc(var(--size) * 0.3);
   }
-  /* Discord's muted/deafened mark: red on a dark disc cut out of the avatar's corner, above the ring. */
   .badge {
     position: absolute;
     right: 0;

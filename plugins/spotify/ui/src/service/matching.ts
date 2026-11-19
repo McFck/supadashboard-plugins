@@ -3,7 +3,6 @@ import { MAX_PLAIN_LENGTH, type LyricLine, type LyricsView } from '../lyrics';
 import { parseLrc } from './lrc';
 import type { Track } from './track';
 
-/** An LRCLIB result. */
 export interface LrclibRecord {
   trackName: string;
   artistName: string;

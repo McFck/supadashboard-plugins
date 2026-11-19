@@ -1,4 +1,4 @@
-// Discord RPC payloads reduced to the views the dashboard shows. Everything from the pipe is validated here.
+// Every Discord RPC payload from the pipe is validated here.
 import { isRecord } from '@supadashboard/kit';
 
 export type Channel = {

@@ -1,4 +1,3 @@
-// The plugin's own settings: a store file of its own, so settings.json is untouched.
 import { load, type Store } from '@tauri-apps/plugin-store';
 import { isRecord, storeIsReadable } from '@supadashboard/kit';
 import { STRENGTHS, type HapticsConfig, type Strength } from './haptics';

@@ -1,5 +1,5 @@
-// The signed-in account: the host keeps the tokens in `plugin-data/discord/discord.json` (secret `discord`, the
-// file the native plugin wrote); the plugin reads and writes only the client id and the last guild channel.
+// The host keeps the tokens in `plugin-data/discord/discord.json` (secret `discord`), the file existing installs
+// already have. The plugin reads and writes only the client id and the last guild channel.
 import { isRecord, pluginOAuth, pluginSecrets } from '@supadashboard/kit';
 import { validChannel, validId, type Channel } from './model';
 

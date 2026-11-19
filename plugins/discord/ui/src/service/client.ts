@@ -1,5 +1,4 @@
-// One Discord connection, run as a serialized actor: operations, dispatches and the 50 ms tick never interleave,
-// so two toggles cannot read the same state.
+// Operations, dispatches and the 50 ms tick run one at a time, so two toggles cannot read the same state.
 import { executeVoice, type VoiceCommand } from './actions';
 import { connect, readAccess, refresh, refreshRejected } from './connection';
 import { Rpc } from './rpc';

@@ -9,7 +9,6 @@ import {
   type HapticsSettings,
 } from '../settings';
 
-/** The Android section's settings file, tablet status and plugin event listeners. */
 export class HapticsSectionController {
   settings = $state<HapticsSettings>({ ...DEFAULTS });
   loaded = $state(false);

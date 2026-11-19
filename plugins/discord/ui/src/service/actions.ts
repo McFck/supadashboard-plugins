@@ -1,4 +1,4 @@
-// The voice controls. They run inside the client's serialized actor.
+// These run inside the client's serialized queue.
 import type { Client } from './client';
 import { validChannel } from './model';
 import { applyEvent } from './voice';
@@ -41,7 +41,7 @@ export async function executeVoice(client: Client, command: VoiceCommand) {
     return;
   }
   if (command === 'leave') {
-    // Already out of voice: the action's goal is met, so it is not an error.
+    // Already out of voice, so the goal is met and it is not an error.
     if (!client.voice.channel) {
       return;
     }

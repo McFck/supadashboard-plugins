@@ -22,7 +22,6 @@ function needsSignIn(error: unknown) {
   return text === 'Sign in again' || text === 'Not signed in';
 }
 
-/** The Web API session: the stored sign-in, the host's OAuth token and the rate-limit cooldown. */
 export class WebApi {
   session: Session = { kind: 'signedOut' };
   private retryAt = 0;

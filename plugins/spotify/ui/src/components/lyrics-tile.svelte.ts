@@ -1,4 +1,3 @@
-// One lyrics tile: Spotify's session, its lyrics, the sung line and the follow scroll that keeps it in view.
 import { untrack } from 'svelte';
 import { prefersReducedMotion } from 'svelte/motion';
 import { type NowPlayingSession, nativeSessions, KineticScroll } from '@supadashboard/kit';

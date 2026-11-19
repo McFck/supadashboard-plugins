@@ -2,7 +2,6 @@ import { SvelteSet } from 'svelte/reactivity';
 import { avatarUrl, subscribeVoice, type VoiceView } from '../discord';
 import type { Member } from '../service/model';
 
-/** Live voice view for one tile, plus the avatar URLs that failed to load in it. */
 export class VoiceTileController {
   view = $state<VoiceView>({ state: 'absent' });
   members = $derived(this.view.state === 'inVoice' ? this.view.members : []);

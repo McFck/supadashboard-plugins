@@ -1,6 +1,6 @@
-Brings Spotify to the dashboard: synced lyrics, the current song in media widgets, and buttons to like songs, shuffle and repeat. Lyrics come from [LRCLIB](https://lrclib.net), a free lyrics library.
+Adds synced lyrics, Spotify as a media widget source, and buttons to like songs, shuffle and repeat. Lyrics come from [LRCLIB](https://lrclib.net), a free lyrics library.
 
-Connecting needs a free Spotify developer app of your own. It takes about five minutes, once. Playback control needs Spotify Premium.
+Connecting needs a free Spotify developer app of your own. Playback control needs Spotify Premium.
 
 ## 1. Create a Spotify app
 

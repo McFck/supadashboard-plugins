@@ -18,7 +18,6 @@ function unwrap({ result }: Entry): LyricsView {
   return result.view;
 }
 
-/** Lyrics lookups for both windows: one queue, a short memory of results, and the disk cache. */
 export class LyricsHub {
   private entries: Entry[] = [];
   private queue: Promise<unknown> = Promise.resolve();

@@ -20,7 +20,7 @@ import guide from '../../guide.md?raw';
 import market from '../../market.json';
 import './plugin.css';
 
-/** Mirrors the Web API and the media session into variables; the last error toast is kept across owners. */
+/** The last error toast is kept across owners. */
 function followSpotify(api: PluginApi) {
   let lastError: string | undefined;
   const set = (values: Record<string, boolean | string>) => {
@@ -157,7 +157,7 @@ const spotifyPlugin: Plugin = {
     api.registerMediaSource({
       id: 'spotify',
       title: 'Spotify',
-      // The native side matches Windows media sessions by app id; "spotify" picks the desktop app.
+      // The app matches Windows media sessions by app id; "spotify" picks the desktop app.
       command: (command, sessionId) =>
         invoke('media_command', { target: 'spotify', command, sessionId }),
     });

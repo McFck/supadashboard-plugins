@@ -20,9 +20,8 @@ function track(params: unknown) {
 }
 
 /**
- * The Spotify service of the dashboard owner: the Web API client runs while some window is subscribed, and the
- * lyrics and their offsets answer any call. Unsubscribes are counted, not attributed: the shared realm gives no
- * window identity.
+ * The Web API client runs while some window is subscribed; lyrics and offsets answer any call. Subscriptions are
+ * counted, not attributed, because the shared realm gives no window identity.
  */
 export function provideSpotify(): () => void {
   const lyrics = new LyricsHub();

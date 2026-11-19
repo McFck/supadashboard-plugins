@@ -1,5 +1,3 @@
-// The haptics service, run by the dashboard owner: one persistent `adb shell` to the tablet, reconnected while
-// enabled, with tablet lock on sleep and Artemis launch on resume or reconnect.
 import {
   emitPluginEvent,
   isRecord,
@@ -21,7 +19,7 @@ const sameDevice = (a: HapticsConfig, b: HapticsConfig) =>
 const optionalText = (value: unknown): value is string | undefined =>
   value === undefined || (typeof value === 'string' && value.length <= 1024);
 
-/** The settings a window sends; anything else is rejected before it reaches adb. */
+/** Rejects anything but these settings before it reaches adb. */
 function readConfig(raw: unknown): HapticsConfig {
   const strength = isRecord(raw) ? STRENGTHS.find((known) => known === raw.strength) : undefined;
   if (
@@ -53,7 +51,6 @@ function readConfig(raw: unknown): HapticsConfig {
   };
 }
 
-/** The tablet found over ADB, and the interactive vibration shell that belongs to it. */
 type Link =
   | { kind: 'none' }
   | { kind: 'found'; tablet: Tablet }
@@ -179,7 +176,7 @@ export class HapticsService {
     this.transportLost = false;
     if (this.link.kind !== 'open' || resumed) {
       const found = await this.findTablet(config);
-      // A shell belongs to one tablet; it goes before the tablet changes.
+      // A shell belongs to one tablet; drop it before the tablet changes.
       if (!sameTablet(found, oldTablet)) {
         await this.drop();
       }
@@ -188,7 +185,7 @@ export class HapticsService {
     if (this.disposed) {
       return;
     }
-    // Locking only needs an ADB transport. The interactive vibration shell can fail independently.
+    // Locking needs only an ADB transport. The vibration shell can fail on its own.
     await this.armPowerOff();
     const tablet = linkedTablet(this.link);
     if (!tablet || this.disposed) {
@@ -282,7 +279,7 @@ export class HapticsService {
     }
   }
 
-  /** The lock runs as its own adb call: it returns only once the tablet ran the key. */
+  /** The lock runs as its own adb call, which returns only once the tablet ran the key. */
   private async armPowerOff() {
     const tablet = linkedTablet(this.link);
     const args = powerOffArgs(this.config?.lockWithPc === true, tablet?.serial);

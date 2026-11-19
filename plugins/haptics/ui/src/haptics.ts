@@ -6,7 +6,6 @@ export type PulseKind = (typeof PULSE_KINDS)[number];
 export const isPulseKind = (value: unknown): value is PulseKind =>
   PULSE_KINDS.some((kind) => kind === value);
 
-/** Scales pulse lengths natively; the tablet's motor has no amplitude control. */
 export const STRENGTHS = ['light', 'medium', 'strong'] as const;
 export type Strength = (typeof STRENGTHS)[number];
 
@@ -23,7 +22,7 @@ export type HapticsConfig = {
   usbTethering: boolean;
 };
 
-/** Applies the settings natively; true when a tablet is connected. */
+/** True when a tablet is connected. */
 export async function configureHaptics(config: HapticsConfig) {
   return isTauri() && (await callPlugin('haptics', 'configure', config)) === true;
 }

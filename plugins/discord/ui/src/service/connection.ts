@@ -1,4 +1,3 @@
-// Connecting a Client: handshake, sign-in over the pipe, AUTHENTICATE, and the first state snapshot.
 import { isRecord, pluginOAuth } from '@supadashboard/kit';
 import type { Client } from './client';
 import { readChannelAccess, readUser, type Channel } from './model';
@@ -9,7 +8,7 @@ export const SCOPES = ['rpc', 'rpc.voice.read', 'rpc.voice.write'];
 /** The host swaps this for the access token, so it never reaches the plugin. */
 const TOKEN = `{{secret:${SECRET}}}`;
 
-// The host fails a refresh with exactly this text, and signs out, when Discord rejected the refresh token. Any other
+// The host fails a refresh with exactly this text, and signs out, when Discord rejects the refresh token. Any other
 // failure (network, 5xx, timeout) keeps the account so the connection retries.
 const SIGN_IN_AGAIN = 'Sign in again';
 export const refreshRejected = (error: unknown) =>

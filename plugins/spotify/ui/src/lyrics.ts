@@ -1,4 +1,3 @@
-// Song lyrics from the plugin service's LRCLIB client and its cache, validated where they reach the tile.
 import { callPlugin, isRecord } from '@supadashboard/kit';
 
 export type LyricLine = { atMs: number; text: string };
@@ -66,7 +65,7 @@ export async function getLyrics(track: LyricsTrack): Promise<LyricsView> {
   try {
     return readLyricsView(await callPlugin('spotify', 'lyrics-get', track)) ?? { kind: 'none' };
   } catch {
-    // LRCLIB being down or the network being gone only means no lyrics this time; nothing is lost.
+    // LRCLIB or the network being down only means no lyrics this time; nothing is lost.
     return { kind: 'none' };
   }
 }
@@ -81,7 +80,6 @@ export function readSongOffset(raw: unknown) {
     : 0;
 }
 
-/** The offset the user saved for this song. */
 export async function getSongOffset(track: LyricsTrack) {
   try {
     return readSongOffset(await callPlugin('spotify', 'lyrics-offset-get', track));

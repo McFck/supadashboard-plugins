@@ -1,5 +1,5 @@
-// The Discord service the dashboard owner provides: `subscribe`/`unsubscribe` start and stop the connection and
-// `plugin://discord/state` events follow it, `authorize`, `logout` and `voice` act on it.
+// `subscribe`/`unsubscribe` start and stop the connection, `plugin://discord/state` events follow it, and
+// `authorize`, `logout` and `voice` act on it.
 import { emitPluginEvent, isRecord, type PluginService } from '@supadashboard/kit';
 import type { VoiceCommand } from './actions';
 import { Client } from './client';

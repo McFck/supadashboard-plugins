@@ -55,14 +55,32 @@
         wide
       >
         {@const code = webCompanion.pairing.code}
-        <div class="flex items-start gap-2">
+        <div class="flex items-center gap-2">
           {#key webCompanion.pairing}
             <output
-              class="code"
+              class="otp"
               aria-label={code.replace(/(.{3})/, '$1 ')}
             >
-              {#each code as digit, index (index)}
-                <span aria-hidden="true">{digit}</span>
+              {#each [code.slice(0, 3), code.slice(3)] as group, index (index)}
+                {#if index}
+                  <span
+                    class="separator"
+                    aria-hidden="true"
+                  >
+                    <Icon
+                      name="Minus"
+                      size={16}
+                    />
+                  </span>
+                {/if}
+                <span
+                  class="group"
+                  aria-hidden="true"
+                >
+                  {#each group as digit, slot (slot)}
+                    <span class="slot">{digit}</span>
+                  {/each}
+                </span>
               {/each}
               <i
                 class="expiry"
@@ -74,7 +92,6 @@
           <Button
             variant="ghost"
             size="icon"
-            class="mt-2.5"
             aria-label="Copy pairing code"
             onclick={() => copy(code)}
           >
@@ -106,29 +123,40 @@
     background: var(--destructive);
     opacity: 1;
   }
-  .code {
+  /* The slot look of shadcn's InputOTP: joined slots, outer corners rounded, a separator between groups. */
+  .otp {
     position: relative;
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    gap: 6px;
-    flex: 1;
-    max-width: 22rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
     padding-bottom: 8px;
     user-select: all;
   }
-  .code span {
+  .group {
+    display: flex;
+  }
+  .slot {
     display: grid;
     place-items: center;
-    height: 52px;
+    width: 44px;
+    height: 48px;
     border: 1px solid var(--input);
-    border-radius: var(--radius-md);
-    background: var(--muted);
-    font: 600 26px/1 var(--font-display);
+    border-left-width: 0;
+    background: color-mix(in oklab, var(--input) 30%, transparent);
+    font: 500 20px/1 var(--font-mono);
     font-variant-numeric: tabular-nums;
     color: var(--foreground);
   }
-  .code span:nth-child(3) {
-    margin-right: 8px;
+  .slot:first-child {
+    border-left-width: 1px;
+    border-radius: var(--radius-md) 0 0 var(--radius-md);
+  }
+  .slot:last-child {
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  }
+  .separator {
+    display: grid;
+    color: var(--muted-foreground);
   }
   .expiry {
     position: absolute;

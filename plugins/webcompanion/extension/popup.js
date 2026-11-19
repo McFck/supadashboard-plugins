@@ -4,6 +4,7 @@ const form = document.querySelector('form');
 const code = document.querySelector('#code');
 const button = document.querySelector('button');
 const status = document.querySelector('[role="status"]');
+const slots = [...document.querySelectorAll('.slots i')];
 const labels = {
   paired: 'Paired',
   offline: 'Dashboard offline',
@@ -16,6 +17,16 @@ const labels = {
 };
 let busy = false;
 
+/** Mirrors the input into the slots; the focused slot is the next one to fill, or the last when full. */
+function render() {
+  const focused = document.activeElement === code;
+  const next = Math.min(code.value.length, slots.length - 1);
+  slots.forEach((slot, index) => {
+    slot.textContent = code.value[index] ?? '';
+    slot.classList.toggle('active', focused && index === next);
+  });
+}
+
 function show(state) {
   status.textContent = labels[state] ?? labels.offline;
   status.dataset.state = state;
@@ -24,6 +35,7 @@ function show(state) {
 
 function changed() {
   code.value = code.value.replace(/[^0-9]/g, '').slice(0, 6);
+  render();
   button.disabled = busy || !isCode(code.value);
   if (!button.disabled) {
     form.requestSubmit();
@@ -31,6 +43,8 @@ function changed() {
 }
 
 code.addEventListener('input', changed);
+code.addEventListener('focus', render);
+code.addEventListener('blur', render);
 code.addEventListener('paste', (event) => {
   event.preventDefault();
   code.value = event.clipboardData?.getData('text') ?? '';

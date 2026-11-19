@@ -93,59 +93,128 @@ label {
   text-transform: uppercase;
 }
 
-.field {
+/* shadcn InputOTP: two groups of joined slots; the real input lies transparent on top of them. */
+.otp {
   position: relative;
 }
 
-.cells {
+.slots {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.group {
+  display: flex;
+  flex: 1;
+}
+
+.separator {
+  width: 8px;
+  height: 2px;
+  border-radius: 1px;
+  background: #a39a91;
+}
+
+.slots i {
+  position: relative;
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 5px;
-}
-
-.cells i {
-  height: 44px;
+  flex: 1;
+  place-items: center;
+  height: 40px;
   border: 1px solid rgb(255 236 220 / 11%);
-  border-radius: 10px;
-  background: #26211e;
+  border-left-width: 0;
+  background: rgb(255 236 220 / 3%);
+  font:
+    500 18px/1 'Cascadia Mono',
+    Consolas,
+    ui-monospace,
+    monospace;
+  font-style: normal;
+  font-variant-numeric: tabular-nums;
+  transition:
+    border-color 150ms,
+    box-shadow 150ms;
 }
 
-.field:focus-within .cells i {
-  border-color: rgb(239 74 67 / 55%);
+.slots i:first-child {
+  border-left-width: 1px;
+  border-radius: 10px 0 0 10px;
+}
+
+.slots i:last-child {
+  border-radius: 0 10px 10px 0;
+}
+
+.slots i.active {
+  z-index: 1;
+  border-color: #ef4a43;
+  box-shadow: 0 0 0 3px rgb(239 74 67 / 50%);
+}
+
+.slots i.active:empty::after {
+  content: '';
+  width: 1px;
+  height: 16px;
+  background: #f2ece6;
+  animation: caret 1s step-end infinite;
+}
+
+@keyframes caret {
+  50% {
+    opacity: 0;
+  }
 }
 
 input {
   position: absolute;
   inset: 0;
-  box-sizing: border-box;
   width: 100%;
   border: 0;
-  padding-left: 10px;
+  padding: 0;
   background: transparent;
-  color: inherit;
-  font:
-    600 20px Consolas,
-    ui-monospace,
-    monospace;
-  letter-spacing: 24.5px;
+  color: transparent;
+  caret-color: transparent;
+  font-size: 16px;
   outline: none;
 }
 
+input::selection {
+  background: transparent;
+}
+
+/* The app's primary button at its large size, full width as the one action. */
 button {
-  min-height: 40px;
-  border: 0;
-  border-radius: 10px;
+  height: 36px;
+  border: 1px solid transparent;
+  border-radius: 12px;
   background: #d42c26;
   color: #fff;
   font: inherit;
-  font-weight: 600;
+  font-weight: 500;
+  transition: background-color 150ms;
+}
+
+button:hover:not(:disabled) {
+  background: rgb(212 44 38 / 80%);
+}
+
+button:active:not(:disabled) {
+  translate: 0 1px;
 }
 
 button:disabled {
-  opacity: 0.4;
+  opacity: 0.5;
 }
 
-:focus-visible {
-  outline: 2px solid #ef4a43;
-  outline-offset: 2px;
+button:focus-visible {
+  outline: none;
+  border-color: #ef4a43;
+  box-shadow: 0 0 0 3px rgb(239 74 67 / 50%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slots i.active:empty::after {
+    animation: none;
+  }
 }

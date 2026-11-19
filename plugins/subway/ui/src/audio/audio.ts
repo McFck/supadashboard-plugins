@@ -30,15 +30,11 @@ function clamp(value: number): number {
   return Number.isFinite(value) ? Math.max(0, Math.min(1, value)) : 0;
 }
 
-/**
- * Immersion audio: one AudioContext, open while immersion is on and the applet eligible, carrying the line's
- * train sound and the run's cues. Hidden, the context is suspended rather than closed so sources resume.
- */
+/** Hidden, the context is suspended rather than closed so sources resume. */
 export function createSubwayAudio(options: SubwayAudioOptions = {}): SubwayAudioController {
   const makeContext = options.contextFactory ?? (() => new AudioContext());
   const fetchAsset = options.fetch ?? globalThis.fetch.bind(globalThis);
   let graph: AudioGraph | undefined;
-  /** The line whose train plays; until the first snapshot, the default line's train loads ahead. */
   let currentLine: string = SUBWAY_DEFAULT_CONFIG.line;
   let currentSnapshot: RunSnapshot | undefined;
   let enabled = false;

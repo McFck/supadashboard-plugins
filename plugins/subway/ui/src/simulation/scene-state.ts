@@ -13,11 +13,6 @@ export interface SubwaySceneState {
 const sceneState = writable<SubwaySceneState | undefined>(undefined);
 export const subwaySceneState = readonly(sceneState);
 
-/**
- * Publishes the scene the display draws: at most every 250 ms unless something discrete changed, and while
- * hidden only the first one, so a page parked beside the shown one slides in already drawn. It also holds the
- * passenger's car, drawn again for each run and lap unless the settings fix one.
- */
 export class ScenePublisher {
   private lastKey = '';
   private lastAt = Number.NEGATIVE_INFINITY;
@@ -27,7 +22,6 @@ export class ScenePublisher {
   publish(scene: {
     line: LineDefinition;
     snapshot: RunSnapshot;
-    /** Run generation and completed laps: a new pair means a new ride. */
     ride: string;
     config: Readonly<Record<string, unknown>>;
     shown: boolean;

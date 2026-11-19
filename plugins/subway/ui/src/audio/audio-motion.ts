@@ -15,7 +15,6 @@ type MotionState =
   | { kind: 'loading'; line: string; promise: Promise<void> }
   | { kind: 'ready'; line: string; sound: TrainSound };
 
-/** The train sound of the shown line; every line has its own train, loaded on demand. */
 export class TrainMotion {
   private state: MotionState = { kind: 'idle' };
   private pack: Promise<LoadedSubwayMotion> | undefined;
@@ -36,7 +35,6 @@ export class TrainMotion {
     return promise;
   }
 
-  /** Drops the train sound; `dropPack` also forgets the motion manifest, as a closing context does. */
   reset(dropPack = true): void {
     if (this.state.kind === 'ready') {
       this.state.sound.dispose();

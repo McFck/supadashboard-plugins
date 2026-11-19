@@ -3,29 +3,23 @@ import { discreteKey, eventFor, project, projectionKeys } from './projection';
 import type { RunSnapshot } from './run';
 import type { RunEffect } from './run-state';
 
-/** Numeric state (speed, progress) is written at most this often, in ms, unless something discrete changed. */
+/** In ms. */
 const NUMERIC_INTERVAL_MS = 250;
 
 type CueEffect = Extract<RunEffect, { type: 'play-cue' }>;
 
 export interface ProjectionBatch {
-  /** The run generation the batch describes. */
   generation: number;
-  /** The run came to rest: its values are written even inside the numeric interval. */
   settled: boolean;
   effects: readonly RunEffect[];
   ancestry?: EventAncestry;
   now(): number;
   snapshot(now: number): RunSnapshot;
-  /** False once the batch is stale: the runtime was disposed, hidden, or a newer generation runs. */
   current(generation: number): boolean;
   playCue(effect: CueEffect): void;
 }
 
-/**
- * Writes the run to the applet state and emits its events one batch after another, so writes of two batches
- * never interleave. A batch stops at the first step where it is no longer current.
- */
+/** Batches run one after another so their writes never interleave; each stops once it is no longer current. */
 export class ProjectionQueue {
   private chain = Promise.resolve();
   private lastDiscrete = '';
@@ -89,7 +83,7 @@ export class ProjectionQueue {
   }
 
   private enqueue(step: () => Promise<void>): void {
-    // A failed write must not block the batches behind it; the next batch writes the state again.
+    // A failed write must not block later batches; the next batch writes the state again.
     this.chain = this.chain
       .then(step)
       .catch((error: unknown) => console.warn('Subway state projection failed', error));

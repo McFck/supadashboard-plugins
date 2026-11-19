@@ -3,7 +3,6 @@ import { SUBWAY_VIEWS } from '../settings';
 import { createSubwayRuntime, type SubwayRuntimeHandle } from './runtime';
 import type { RunCommand } from './run-state';
 
-/** The host runs one Subway runtime at a time; the plugin's actions reach it here. */
 let active: { handle: SubwayRuntimeHandle; context: AppletRuntimeContext } | undefined;
 
 export function runtime(context: AppletRuntimeContext): () => void {

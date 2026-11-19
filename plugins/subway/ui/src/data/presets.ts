@@ -1,6 +1,5 @@
 type Preset = { readonly languages: readonly string[]; readonly label: string };
 
-/** Display presets a line file may list, in picker order. */
 export const DISPLAY_PRESETS: Readonly<Record<string, Preset>> = Object.freeze({
   'ja-en': { languages: ['ja', 'en'], label: 'Japanese / English' },
   'ja-kana': { languages: ['ja', 'kana'], label: 'Japanese / kana' },

@@ -1,7 +1,3 @@
-/**
- * Short scheduled sounds (wheel hits, releases, rattles, thumps). Every source is tracked until it ends, so a
- * snap or disposal silences everything still queued on the audio clock.
- */
 export class OneShots {
   private readonly live = new Set<AudioBufferSourceNode>();
 
@@ -30,7 +26,6 @@ export class OneShots {
     source.start(when);
   }
 
-  /** A low noise thump: the body settling at a stop, or the pressure wave at a tunnel portal. */
   thump(destination: AudioNode, when: number, gain: number, cutoff: number, seconds: number) {
     const source = this.context.createBufferSource();
     const filter = this.context.createBiquadFilter();

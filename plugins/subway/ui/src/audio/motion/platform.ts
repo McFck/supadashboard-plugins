@@ -2,11 +2,6 @@ import { BedShuffler } from './bed';
 import type { Section } from './manifest';
 import type { Random } from './random';
 
-/**
- * Station air heard through the open doors. Only the current station's kind (surface or underground) is
- * decoded, and the other is released, so a train holds one platform bed at a time; a line that never meets
- * the other kind never loads it.
- */
 export class PlatformAir {
   private loaded: { section: Section; buffer: Promise<AudioBuffer | undefined> } | undefined;
   private bed: BedShuffler | undefined;

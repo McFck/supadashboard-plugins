@@ -1,6 +1,5 @@
 import type { LocalizedNames } from './lines';
 
-/** Checks of raw line and sound-pack JSON shared by the line normalizers; each throws naming `label`. */
 export const CODE_PATTERN = /^[A-Z]{1,3}\d{2}$/;
 
 export type RawRecord = Record<string, unknown>;

@@ -30,7 +30,6 @@ export function project(snapshot: RunSnapshot): Record<ProjectionKey, string | n
   };
 }
 
-/** The snapshot fields whose change must be published at once; the numeric ones are throttled. */
 export function discreteKey(snapshot: RunSnapshot): string {
   return [
     snapshot.station,

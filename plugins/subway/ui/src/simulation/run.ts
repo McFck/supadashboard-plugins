@@ -16,9 +16,7 @@ import {
 } from './run-state';
 
 export interface RunSnapshot {
-  /** True before the first departure, distinct from a later visit to the same stop. */
   initialStop?: boolean;
-  /** Actual departure + cruise budget, so the LCD cycle also fits a shortened simulation. */
   screenRunDurationMs?: number;
   station: string;
   next: string;

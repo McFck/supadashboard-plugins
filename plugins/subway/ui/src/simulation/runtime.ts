@@ -63,9 +63,7 @@ export function createSubwayRuntime(
   const assetBase = options.assetBase ?? SUBWAY_ASSET_BASE;
   const loadAssets = options.loadAssets ?? (() => loadSubwayAssets(assetBase));
   let phase: Phase = { kind: 'loading' };
-  /** Some surface of the applet is on screen. */
   let shown = false;
-  /** The run ticks and plays: while shown, or behind another page while immersion is on. */
   let eligible = false;
   let timer: unknown;
   let autoStarted = false;
@@ -95,10 +93,6 @@ export function createSubwayRuntime(
     return phase.kind === 'running' ? phase : undefined;
   }
 
-  /**
-   * The one place deciding whether the run goes on. Hidden with immersion on, it keeps its wall-clock schedule
-   * and its sound and only skips rendering; hidden without immersion, it pauses and catches up on return.
-   */
   function updateEligible(): void {
     const next = shown || (running()?.state.immersion ?? false);
     if (eligible === next) {
@@ -192,7 +186,6 @@ export function createSubwayRuntime(
   }
 
   function dispatch(command: RunCommand, ancestry?: EventAncestry, audioGesture = false): boolean {
-    // Pausing and switching immersion are what change eligibility, so they also apply while not eligible.
     const always = command.type === 'pause' || command.type === 'set-immersion';
     const run = running();
     if (!run || (!eligible && !always)) {
@@ -302,7 +295,6 @@ export function createSubwayRuntime(
     const config = normalizeSubwayConfig(currentConfig, run.lines);
     const previous = run.applied;
     if (!eligible) {
-      // Paused behind another page: only switching immersion on wakes the run; the rest applies once it runs.
       if (config.immersion && !previous.immersion) {
         overrides.immersion = false;
         dispatch({ type: 'set-immersion', enabled: true });

@@ -2,7 +2,6 @@ import { describe, expect, it } from 'vitest';
 import shipped from '../../../../assets/motion/motion.json';
 import { parseMotionManifest } from './manifest';
 
-/** A copy of the shipped manifest with one value replaced at `path`. */
 function withValue(path: readonly (string | number)[], value: unknown): unknown {
   const manifest: unknown = structuredClone(shipped);
   let target = manifest;

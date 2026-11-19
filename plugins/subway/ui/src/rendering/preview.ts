@@ -64,8 +64,6 @@ export async function loadSubwayEditorPreview(
   });
 }
 
-// Nothing runs in the editor, so each view is previewed in the phase that shows it: Display at the platform,
-// Map at rest on the route map, Run in motion.
 const VIEW_STATES: Readonly<Record<string, RunSnapshot['state']>> = {
   display: 'approaching',
   map: 'stopped',

@@ -13,18 +13,12 @@ import { e235Images } from '../display/e235/images';
 
 export interface SubwayFrameHost {
   mode(): 'runtime' | 'editor' | undefined;
-  /** Runtime only: a page showing the applet is live, so the display keeps waking itself. */
   active(): boolean;
   view(): string;
   screen(): SubwayScreen;
-  /** The settings the editor preview shows. */
   previewConfig(): Readonly<Record<string, unknown>>;
 }
 
-/**
- * The frame the display draws: the editor preview, or the runtime scene at its visible elapsed time. It wakes
- * itself when the screen's next page or the clock is due, and repaints once late images arrive.
- */
 export class SubwayFrame {
   #pulse = $state(0);
   #preview = $state.raw<SubwayEditorPreview>();

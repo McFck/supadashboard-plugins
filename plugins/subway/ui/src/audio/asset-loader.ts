@@ -50,7 +50,6 @@ export function resolveAssetUrl(file: string, base: string): string {
 
 const cueIndexes = new WeakMap<RuntimeCueManifest, ReadonlyMap<string, RuntimeCue>>();
 
-/** The validated cues of a catalogue by file, built once per catalogue object. */
 export function cueIndex(manifest: RuntimeCueManifest): ReadonlyMap<string, RuntimeCue> {
   const known = cueIndexes.get(manifest);
   if (known) {

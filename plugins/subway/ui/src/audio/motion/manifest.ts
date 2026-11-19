@@ -242,7 +242,6 @@ function readTrain(value: unknown, at: string, clips: Readonly<Record<string, Mo
   } satisfies TrainProfile;
 }
 
-/** Validates the motion manifest at the asset boundary: clip paths, hashes, references and every number. */
 export function parseMotionManifest(value: unknown): MotionManifest {
   const manifest = object(value, 'root');
   if (manifest.version !== 1) fail('version');

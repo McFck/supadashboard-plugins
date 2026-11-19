@@ -21,7 +21,6 @@ import './plugin.css';
 
 type ActionRun = Parameters<PluginApi['registerAction']>[0]['run'];
 
-/** Runs an action unless its control already cancelled it. */
 function unlessAborted(
   run: (args: Record<string, unknown>, ancestry?: EventAncestry) => boolean | Promise<boolean>,
 ): ActionRun {

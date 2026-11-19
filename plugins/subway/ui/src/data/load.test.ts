@@ -12,7 +12,6 @@ async function loadWith(edit: (line: Record<string, unknown>) => Record<string, 
   return import('./load');
 }
 
-// Guards the bundled line catalogue: a bad line file must fail at import, not draw a broken display.
 test.each([
   [
     'a loop map placing a station twice',

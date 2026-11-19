@@ -6,12 +6,6 @@ type VvvfProfile = Extract<MotorProfile, { kind: 'vvvf' }>;
 /** Sideband depth of the PWM approximation: the carrier swings by this many motor frequencies. */
 const MODULATION_INDEX = 2.2;
 
-/**
- * The inverter and motor tone, synthesised because no free recording of these trains exists. A sine carrier
- * frequency-modulated at the motor frequency gives the `fc ± k·fo` sidebands of a PWM inverter; synchronous
- * modes tie the carrier to the motor frequency, so a mode change is an audible pitch step. A low sawtooth adds
- * the motor's magnetic hum. Five native nodes; JS only sets their targets.
- */
 export class VvvfMotor {
   private readonly carrier: OscillatorNode;
   private readonly modulator: OscillatorNode;
@@ -55,7 +49,6 @@ export class VvvfMotor {
     const fo = this.motorHz(speedKmh);
     const pulses = this.profile.sync.findLast(([from]) => speedKmh >= from)?.[1] ?? 0;
     const fc = pulses > 0 ? pulses * fo : curve(this.profile.carrier, speedKmh);
-    // Regeneration fades out at low speed, where the air brake takes over.
     const drive =
       effort.power > 0
         ? effort.power * clamp(0.35 + speedKmh / 2, 0, 1)

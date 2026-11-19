@@ -147,7 +147,6 @@ function startClosing(
     phaseDeadline: at + Math.max(closeMs, close.end * 1000) + RELEASE_MS,
     segment,
     pendingCues: [...state.pendingCues, ...closeCues].sort((a, b) => a.at - b.at),
-    // A loop line starts its next lap when it leaves the station that completed the last one.
     ...(line.loop && state.loopArrivalsRemaining <= 0
       ? { loopArrivalsRemaining: line.stations.length, laps: state.laps + 1 }
       : {}),
@@ -259,7 +258,6 @@ export function advanceOne(
     };
   }
   if (phase === 'arriving') {
-    // Service never ends: at a terminus the train turns back and runs the line the other way.
     const terminus = !stepStation(line, state.stationCode, state.direction);
     const direction = terminus
       ? (line.directions.find((item) => item.id !== state.direction)?.id ?? state.direction)
@@ -353,8 +351,7 @@ export function advance(
   return current;
 }
 
-/** Replays every deadline up to `now`, as if the run had never paused. Cues and events that fell due
- * meanwhile are history, so they are dropped instead of played or emitted in a burst. */
+/** Cues and events that fell due while paused are dropped, not played or emitted in a burst. */
 export function catchUp(
   state: SubwayRunState,
   now: number,
@@ -363,7 +360,7 @@ export function catchUp(
 ): SubwayRunState {
   let current: SubwayRunState = { ...state, pausedAt: null };
   for (let pass = 0; pass < MAX_CATCH_UP_PASSES; pass++) {
-    // lastTickAt = now skips the long-gap freeze in `advance`; the gap here is meant to be replayed.
+    // lastTickAt = now skips the long-gap freeze in `advance`; this gap is replayed.
     current = advance({ ...current, lastTickAt: now }, now, lines, plans, []);
     const deadline = dueDeadline(current);
     if (deadline === null || deadline > now) {

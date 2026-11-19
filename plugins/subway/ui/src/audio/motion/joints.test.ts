@@ -4,7 +4,6 @@ import { createJointScheduler, type TrackLayout } from './joints';
 const car = { length: 20, bogieCentres: 13.8, wheelbase: 2.1 };
 const layout = (points: number[] = []): TrackLayout => ({ seed: 7, spacing: 90, car, points });
 
-/** Drives the scheduler like the engine does: an odometer advanced by speed, one call per tick. */
 function drive(
   scheduler: ReturnType<typeof createJointScheduler>,
   speedKmh: number,
@@ -28,7 +27,6 @@ describe('rail joint scheduling', () => {
     const gaps = hits.slice(1).map((time, index) => time - hits[index]);
     // 2.1 m wheelbase at 16.7 m/s: 126 ms between the two axles of a bogie.
     expect(gaps.some((gap) => Math.abs(gap - 0.126) < 0.002)).toBe(true);
-    // No hit is handed out twice across ticks, and none is scheduled in the past.
     expect(gaps.every((gap) => gap > 0.001)).toBe(true);
     // Eight axles per joint (this car and both neighbours' near bogies); about 5.5 joints in 30 s at 90 m.
     expect(hits.length / 8).toBeGreaterThan(3);

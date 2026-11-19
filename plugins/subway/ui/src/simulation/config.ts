@@ -19,7 +19,7 @@ export type NormalizedSubwayConfig = Readonly<
     direction: string;
     startStation: string;
     speed: 0.5 | 1 | 2;
-    /** The car the passenger rides in; `null` picks one at random for each run. */
+    /** `null` picks a random car for each run. */
     carNumber: number | null;
     displayLanguages: string;
     announcementLanguages: string;
@@ -28,7 +28,6 @@ export type NormalizedSubwayConfig = Readonly<
   }
 >;
 
-/** A car of the line's formation chosen in the settings (a number or its select string), else `null`. */
 export function carNumber(value: unknown, carCount: number): number | null {
   const number = typeof value === 'string' && value.trim() ? Number(value) : value;
   if (typeof number === 'number' && Number.isInteger(number) && number >= 1 && number <= carCount) {
@@ -63,7 +62,6 @@ export function firstStationForDirection(line: LineDefinition, directionId: stri
     : line.stations[0].code;
 }
 
-/** Validate dependent settings at the runtime boundary while retaining unrelated saved keys. */
 export function normalizeSubwayConfig(
   stored: Readonly<Record<string, unknown>>,
   lines: readonly LineDefinition[],

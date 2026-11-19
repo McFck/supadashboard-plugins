@@ -9,10 +9,9 @@ export interface LineRequest {
   stationCode: string;
 }
 
-/** Route settings the run chose itself (a line action) and that saved settings must not undo until edited. */
+/** Route settings the run chose itself; saved settings must not undo them until edited. */
 export type RouteOverrides = Record<'line' | 'direction' | 'startStation' | 'immersion', boolean>;
 
-/** The route settings a request saves, so the choice survives a restart and a page change. */
 export function requestedRoute({ line, direction, stationCode }: LineRequest) {
   return { line: line.id, direction, startStation: stationCode };
 }
@@ -21,7 +20,6 @@ function text(value: unknown): string | undefined {
   return typeof value === 'string' && value.trim() ? value : undefined;
 }
 
-/** Resolves an action's line/direction/startStation arguments against the current run; undefined if invalid. */
 export function resolveLineRequest(
   lines: readonly LineDefinition[],
   state: SubwayRunState,
@@ -58,7 +56,6 @@ export function resolveLineRequest(
   return { line, direction, stationCode };
 }
 
-/** The route the saved settings ask for, keeping each part the run overrides. */
 export function routeFromConfig(
   lines: readonly LineDefinition[],
   state: SubwayRunState,

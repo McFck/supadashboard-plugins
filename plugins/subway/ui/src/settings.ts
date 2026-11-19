@@ -52,7 +52,7 @@ function carOptions(line: unknown): Option[] {
 
 const chosen = (options: Option[]) => options.filter((option) => option.value);
 
-/** The parameters of the line action; empty values keep the current run's choice. */
+/** Empty values keep the current run's choice. */
 export const lineActionParams: Param[] = [
   { key: 'line', label: 'Line', type: 'select', default: '', suggestions: lineOptions },
   {
@@ -121,7 +121,6 @@ export const subwaySettings: SettingsGroup[] = [
           { value: 'left', label: 'Left' },
           { value: 'right', label: 'Right' },
         ],
-        // Only Hibiya has two physical screens.
         visible: (args) => args.line === 'hibiya',
       },
       {

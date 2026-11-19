@@ -18,7 +18,6 @@ export function buildCuePlans(
     for (const station of line.stations) {
       for (const direction of line.directions) {
         const next = stepStation(line, station.code, direction.id);
-        // The plan from a station to itself serves a train standing there, such as an emergency stop.
         for (const target of next ? [next, station] : [station]) {
           plans[segmentPlanKey(line.id, station.code, target.code, direction.id)] =
             buildSegmentCuePlan(

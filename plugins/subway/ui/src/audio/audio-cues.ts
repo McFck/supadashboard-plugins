@@ -5,7 +5,6 @@ import { effectGain } from './audio-level';
 import { playCueSource } from './cue-source';
 import type { ResolvedCue } from './sound-types';
 
-/** The context and the two buses cues play through; voices sit on their own bus under the cue bus. */
 export interface AudioGraph {
   context: AudioContext;
   cueBus: GainNode;
@@ -17,17 +16,15 @@ export interface CuePlayerHost {
   graph(): AudioGraph | undefined;
   disposed(): boolean;
   warnOnce(key: string, error: unknown): void;
-  /** A voice starts: the train sound ducks under it. */
   duck(when: number, seconds: number): void;
 }
 
 type CueEffect = Extract<RunEffect, { type: 'play-cue' }>;
 
-/** Decodes and plays the run's recorded cues and its synthetic alert; one `stop()` silences all of them. */
 export class CuePlayer {
   private readonly sources = new Map<AudioScheduledSourceNode, string | undefined>();
   private readonly buffers;
-  /** The run generation whose emergency alert already sounded; generations only grow. */
+  /** Generations only grow. */
   private alerted = -1;
 
   constructor(private readonly host: CuePlayerHost) {
@@ -45,7 +42,7 @@ export class CuePlayer {
     }
   }
 
-  /** Plays `effect` once decoded, skipping what elapsed meanwhile, unless `current()` turned false. */
+  /** Skips what elapsed during the decode; drops the effect once `current()` is false. */
   async play(effect: CueEffect, current: () => boolean): Promise<void> {
     const graph = this.host.graph();
     if (!graph) {
@@ -101,7 +98,6 @@ export class CuePlayer {
     }
   }
 
-  /** Sounds the emergency alert of `generation` once, after silencing every cue. */
   alert(generation: number, muted: boolean): void {
     if (this.alerted === generation) {
       return;
@@ -120,7 +116,7 @@ export class CuePlayer {
       try {
         source.stop();
       } catch {
-        // The source already ended; stopping it again is the only failure and is harmless.
+        // The source already ended; a second stop is the only failure and is harmless.
       }
       source.disconnect();
       this.sources.delete(source);
@@ -128,7 +124,6 @@ export class CuePlayer {
     }
   }
 
-  /** Drops the decoded buffers; they belong to a context that is closing. */
   clear(): void {
     this.buffers.clear();
   }

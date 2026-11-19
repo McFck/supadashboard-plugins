@@ -45,7 +45,6 @@ export interface RunTimeline {
   segment: RunSegment | null;
   pendingCues: readonly ScheduledCue[];
   loopArrivalsRemaining: number;
-  /** Completed laps (loop line) and terminus turn-backs (other lines) since the run started. */
   laps: number;
 }
 

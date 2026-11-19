@@ -26,8 +26,7 @@ function sideEvidenceFor(value: unknown, validDirections: ReadonlySet<string>): 
       return;
     }
     const source = record(item, 'Pack entry');
-    // `directions` means a clip may be reused there; only its explicit `direction`
-    // ties the side evidence to one platform direction.
+    // `directions` only allows reuse; an explicit `direction` ties the side evidence to one platform.
     if (
       typeof source.direction === 'string' &&
       validDirections.has(source.direction) &&
@@ -100,7 +99,6 @@ function stationTransfers(
       addCode(transferCode, supplement.source, supplement.revision);
     }
   }
-  // Operator text (such as JR lines) follows the subway lines.
   const rawText = rawTransfers?.[code];
   if (rawText !== undefined) {
     addText(rawText, 'line.json');
@@ -137,14 +135,12 @@ function stationCoordinates(
   return Object.freeze({ lat, lon });
 }
 
-/** One station of a line file with its sound-pack record, checked against the catalogue's station order. */
 export function normalizeStation(
   rawItem: unknown,
   rawPackItem: unknown,
   order: number,
   line: {
     facts: LineFacts;
-    /** Codes of the stations before this one; this station's code is added. */
     seenCodes: Set<string>;
     rawTransfers: RawRecord | undefined;
   },

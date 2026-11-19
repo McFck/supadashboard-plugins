@@ -1,5 +1,3 @@
-// Wall-clock time since the screen first saw the current run phase, so its cycle keeps running while the
-// applet is hidden or paused. A new key (a new run phase) restarts it.
 export class PhaseClock {
   private key = '';
   private startedAt = 0;

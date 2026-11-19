@@ -62,7 +62,6 @@ export function applyIncident(
   return withDueCues(incidentState, now, effects);
 }
 
-/** Only valid once the brake has finished; returns the state unchanged otherwise. */
 export function resumeService(
   state: SubwayRunState,
   now: number,

@@ -42,11 +42,6 @@ function segmentSpeed(segment: RunSegment, at: number): number {
 
 const CRUISE_POWER = 0.35;
 
-/**
- * Traction effort while cruising: the driver alternates coasting and notching, as real trains do, instead of
- * one constant notch. Only the effort changes; speed and progress keep their curve. Starts with a coast after
- * the acceleration, and the pattern is fixed per departure.
- */
 export function cruisePower(segment: RunSegment, at: number): number {
   const intoCruise = at - segment.startedAt - segment.departureMs;
   if (intoCruise < 0 || intoCruise >= segment.cruiseMs) {
@@ -54,7 +49,6 @@ export function cruisePower(segment: RunSegment, at: number): number {
   }
   const random = seeded(hashSeed(`${segment.planKey}|${segment.startedAt}`));
   const scale = 1000 / segment.multiplier;
-  // A short hop still gets one notch: the opening coast takes at most 30 % of the cruise.
   let edge = Math.min(between(random, 8, 16) * scale, segment.cruiseMs * 0.3);
   if (intoCruise < edge) {
     return 0;

@@ -1,4 +1,3 @@
-/** Two-tone emergency alert; every oscillator registers in `sources` so a stop silences it. */
 export function playEmergencyAlert(
   context: AudioContext,
   destination: AudioNode,

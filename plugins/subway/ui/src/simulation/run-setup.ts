@@ -9,13 +9,11 @@ import { normalizeSubwayLines, type LineDefinition } from './lines';
 import { createRunState } from './run';
 import type { SubwayCuePlans, SubwayRunState } from './run-state';
 
-/** A run built from the loaded assets and the saved settings, before the runtime starts driving it. */
 export interface RunSetup {
   assets: LoadedSubwayAssets;
   lines: readonly LineDefinition[];
   state: SubwayRunState;
   plans: SubwayCuePlans;
-  /** The settings last applied while the run was eligible. */
   applied: NormalizedSubwayConfig;
 }
 
@@ -32,7 +30,6 @@ export function cuePlansFor(
   );
 }
 
-/** Throws when the assets hold no usable line; the runtime then reports itself unavailable. */
 export function setUpRun(
   assets: LoadedSubwayAssets,
   stored: Readonly<Record<string, unknown>>,

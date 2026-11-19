@@ -15,7 +15,6 @@ function seamless(buffer: AudioBuffer) {
   return true;
 }
 
-/** A loop with a jump at its wrap gets its tail crossfaded into its head; the result still loops. */
 function blendLoop(context: BaseAudioContext, buffer: AudioBuffer, seconds: number) {
   if (seamless(buffer)) return buffer;
   const overlap = Math.min(Math.floor(buffer.length / 4), Math.round(buffer.sampleRate * seconds));
@@ -39,10 +38,6 @@ interface Layer {
   gain: GainNode;
 }
 
-/**
- * The Tokyo Metro 13000's own motor: 21854F's BVE samples and speed tables, kept as the exact-train sound.
- * Each layer loops; its level and pitch follow the power or brake table for the current speed.
- */
 export class BveMotor {
   private readonly layers: Layer[];
   private readonly rub: Layer;

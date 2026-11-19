@@ -111,7 +111,6 @@ function lineFacts(id: string, value: unknown): LineFacts {
   });
 }
 
-/** Catalogue lines in display order. Throws at import when the data is inconsistent. */
 export const LINE_CATALOGUE: readonly LineFacts[] = Object.freeze(
   catalogue.lines.map((id) => {
     const file = files[`./lines/${id}.json`];
@@ -122,7 +121,6 @@ export const LINE_CATALOGUE: readonly LineFacts[] = Object.freeze(
   }),
 );
 
-/** Lines kept loadable but hidden from every picker and from "next line" until their displays are redrawn. */
 export const PAUSED_LINES: ReadonlySet<string> = new Set(['hibiya', 'sakaisuji']);
 
 export function lineFactsFor(id: unknown): LineFacts | undefined {

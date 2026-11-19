@@ -5,7 +5,7 @@
   import { displayAspect, subwayComposition } from '../rendering/composition';
   import { SubwayFrame } from './subway-frame.svelte';
 
-  // The applet contract passes the page; this applet reads everything from its host context instead.
+  // The applet contract passes `page`; this applet reads its host context instead.
   let { page: _page }: { page: unknown } = $props();
   const host = getAppletHostContext();
   const view = $derived(host?.viewId ?? 'display');
@@ -60,12 +60,10 @@
 </div>
 
 <style>
-  /* The strip continues the display's own background, so the page reads as one screen. */
   .subway-panel {
     background: #10171b;
   }
 
-  /* Before its first frame the display is blank; it fades in instead of popping in once the run is ready. */
   .subway-panel :global(.subway-scene) {
     opacity: 0;
     transition: opacity 220ms ease-out;

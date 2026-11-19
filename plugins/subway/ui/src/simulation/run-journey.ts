@@ -107,7 +107,6 @@ export function remainingJourneyMs(
   if (timeline.phase !== 'stopped' || !timeline.active) {
     return remaining;
   }
-  // A loop line at the end of a lap is about to start the next one.
   const limit = line.loop
     ? state.loopArrivalsRemaining || line.stations.length
     : Number.POSITIVE_INFINITY;

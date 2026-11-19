@@ -6,13 +6,12 @@ type CachedBuffer = { buffer: AudioBuffer; bytes: number };
 
 export interface CueBufferCacheHost {
   fetch: typeof fetch;
-  /** The context buffers must be decoded for; a decode finishing for another one is dropped. */
+  /** A decode that finishes for another context is dropped. */
   context(): AudioContext | undefined;
   disposed(): boolean;
   warnOnce(key: string, error: unknown): void;
 }
 
-/** Decoded cue buffers, LRU-pruned to a byte budget; buffers of playing sources are pinned. */
 export function createCueBufferCache(host: CueBufferCacheHost) {
   let bytesUsed = 0;
   const cache = new Map<string, CachedBuffer>();

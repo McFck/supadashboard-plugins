@@ -3,7 +3,6 @@ import { drawFittedCentered } from './text';
 const RING_FONT = 'Arial, Helvetica, sans-serif';
 const SIGN_FONT = 'Arial, sans-serif';
 
-/** Circular badge: line letters over the station number (Hibiya, line letters of `round` icons). */
 export function drawRingBadge(
   ctx: CanvasRenderingContext2D,
   code: string,
@@ -48,7 +47,6 @@ export function drawRingBadge(
   }
 }
 
-/** Sakaisuji station sign: round for a lettered number, square for `JY` and anything else. */
 export function drawSignBadge(
   ctx: CanvasRenderingContext2D,
   code: string,

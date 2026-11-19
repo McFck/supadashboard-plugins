@@ -27,7 +27,6 @@ vi.mock('@supadashboard/app/app/runtime/state', async () => {
   return { runtimeView };
 });
 vi.mock('@supadashboard/app/app/runtime/client', () => ({ requestRuntime: runtimeMock.request }));
-// Only what the bridge imports: loading the whole kit takes seconds.
 vi.mock('@supadashboard/kit', async () => ({
   ...(await import('@supadashboard/app/app/runtime/state')),
   ...(await import('@supadashboard/app/app/runtime/client')),
@@ -56,7 +55,6 @@ function snapshot(owner: boolean, volume: number, muted: boolean) {
   };
 }
 
-// Every test stops its registration, so the modules are shared.
 function loadBridge(owner: boolean, volume = 0.75, muted = false) {
   runtimeMock.snapshot = snapshot(owner, volume, muted);
   runtimeMock.request.mockReset();

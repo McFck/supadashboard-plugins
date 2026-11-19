@@ -280,7 +280,6 @@ export function scheduleScreen(
     page = item.page;
     pageDeadline = visibleElapsed + item.duration - (position - cursor);
   }
-  // Only a rotating E235 icon set depends on the phase, so only then does it end a frame early.
   const iconsRotate = !!native?.iconsRotate && page === native.page;
   const iconPhase = Math.floor(visibleElapsed / E235_ICON_DWELL_MS);
   const iconDeadline = iconsRotate ? (iconPhase + 1) * E235_ICON_DWELL_MS : null;
@@ -367,7 +366,6 @@ export function scheduleScreen(
   });
 }
 
-// Approximate individual stop times from the controller's remaining journey estimate.
 export function stationMinutes(model: ScreenSchedule, code: string): number | null {
   const index = model.route.findIndex((station) => station.code === code);
   return index < 0

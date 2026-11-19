@@ -1,35 +1,20 @@
 <script lang="ts">
+  import { onDestroy } from 'svelte';
   import { AppletQuickActions, CanvasScene, getAppletHostContext, Slot } from '@supadashboard/kit';
-  import type { PreparedFrame, SubwayScreen } from '../rendering/contracts';
-  import { createSubwayScene, prepareFrame, sceneLanguages } from '../rendering/scene';
+  import { createSubwayScene } from '../rendering/scene';
   import { displayAspect, subwayComposition } from '../rendering/composition';
-  import { subwaySceneState } from '../simulation/scene-state';
-  import {
-    loadSubwayEditorPreview,
-    previewForView,
-    type SubwayEditorPreview,
-  } from '../rendering/preview';
-  import { sessionKey } from '../rendering/screens';
-  import { PhaseClock } from '../rendering/engine/phase-clock';
-  import { e235Images } from '../display/e235/images';
+  import { SubwayFrame } from './subway-frame.svelte';
 
-  // The host passes the page; this applet reads everything from its host context.
+  // The applet contract passes the page; this applet reads everything from its host context instead.
   let { page: _page }: { page: unknown } = $props();
   const host = getAppletHostContext();
-  let screenPulse = $state(0);
-  let frame = $state.raw<PreparedFrame>();
-  let editorPreview = $state<SubwayEditorPreview>();
-  const clock = new PhaseClock();
   const view = $derived(host?.viewId ?? 'display');
-  const screen = $derived<SubwayScreen>(host?.config.screen === 'right' ? 'right' : 'left');
-  const composition = $derived(
-    subwayComposition(
-      host?.mode === 'runtime' ? host.viewport : undefined,
-      displayAspect(frame?.line.id ?? host?.config.line),
-    ),
-  );
-  const previewConfig = $derived(
-    JSON.stringify({
+  const subway = new SubwayFrame({
+    mode: () => host?.mode,
+    active: () => host?.active ?? false,
+    view: () => view,
+    screen: () => (host?.config.screen === 'right' ? 'right' : 'left'),
+    previewConfig: () => ({
       line: host?.config.line,
       direction: host?.config.direction,
       startStation: host?.config.startStation,
@@ -37,65 +22,17 @@
       carNumber: host?.config.carNumber,
       fillScreen: host?.config.fillScreen,
     }),
-  );
-  $effect(() =>
-    e235Images.subscribe(() => {
-      screenPulse++;
-    }),
+  });
+  onDestroy(() => subway.destroy());
+  const frame = $derived(subway.frame);
+  const composition = $derived(
+    subwayComposition(
+      host?.mode === 'runtime' ? host.viewport : undefined,
+      displayAspect(frame?.line.id ?? host?.config.line),
+    ),
   );
   $effect(() => {
     host?.setDesignHeight?.(composition.height);
-  });
-
-  $effect(() => {
-    const mode = host?.mode;
-    const config = JSON.parse(previewConfig);
-    if (mode !== 'editor') {
-      editorPreview = undefined;
-      return;
-    }
-    const controller = new AbortController();
-    let current = true;
-    void loadSubwayEditorPreview(config, controller.signal)
-      .then((preview) => {
-        if (current) editorPreview = preview;
-      })
-      .catch(() => {
-        if (current) editorPreview = undefined;
-      });
-    return () => {
-      current = false;
-      controller.abort();
-    };
-  });
-
-  $effect(() => {
-    if (host?.mode === 'editor') {
-      const preview = editorPreview;
-      frame = preview
-        ? prepareFrame({ ...previewForView(preview, view), visibleElapsed: 0 }, view, screen)
-        : undefined;
-      return;
-    }
-    const source = $subwaySceneState;
-    void screenPulse;
-    if (!source) {
-      frame = undefined;
-      return;
-    }
-    const active = host?.active ?? false;
-    const wallMs = Date.now();
-    const visibleElapsed = clock.elapsed(
-      sessionKey(source.snapshot, { line: source.line, languages: sceneLanguages(source) }),
-      wallMs,
-    );
-    const prepared = prepareFrame({ ...source, visibleElapsed, wallMs }, view, screen);
-    frame = prepared;
-    if (!active || prepared.wakeInMs === null) return;
-    const timeout = window.setTimeout(() => {
-      screenPulse++;
-    }, prepared.wakeInMs);
-    return () => window.clearTimeout(timeout);
   });
 </script>
 

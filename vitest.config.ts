@@ -15,5 +15,7 @@ export default defineConfig({
       $lib: path.join(app, 'lib'),
     },
   },
-  test: { include: ['plugins/*/ui/src/**/*.test.ts', 'scripts/*.test.mjs'] },
+  test: {
+    include: ['plugins/*/ui/src/**/*.test.ts', 'plugins/*/*.test.mjs', 'scripts/*.test.mjs'],
+  },
 });

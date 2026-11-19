@@ -1,7 +1,7 @@
 // The signed-in account: the host keeps the tokens in `plugin-data/discord/discord.json` (secret `discord`, the
 // file the native plugin wrote); the plugin reads and writes only the client id and the last guild channel.
-import { pluginOAuth, pluginSecrets } from '@supadashboard/kit';
-import { isRecord, validChannel, validId, type Channel } from './model';
+import { isRecord, pluginOAuth, pluginSecrets } from '@supadashboard/kit';
+import { validChannel, validId, type Channel } from './model';
 
 export const PLUGIN = 'discord';
 export const SECRET = 'discord';
@@ -44,6 +44,5 @@ export async function signOut() {
   await pluginSecrets.write(PLUGIN, SECRET, { clientId: null, lastChannel: null });
 }
 
-/** Refresh a minute before the token expires. */
 export const needsRefresh = (credentials: Credentials) =>
   credentials.expiresAt <= Date.now() + 60_000;

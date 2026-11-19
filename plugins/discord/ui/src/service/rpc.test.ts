@@ -5,6 +5,8 @@ const pipe = vi.hoisted(() => ({
   emit: (() => {}) as (event: unknown) => void,
 }));
 vi.mock('@supadashboard/kit', () => ({
+  isRecord: (value: unknown) =>
+    typeof value === 'object' && value !== null && !Array.isArray(value),
   pluginPipe: {
     open: async (_plugin: string, _name: string, onEvent: (event: unknown) => void) => {
       pipe.emit = onEvent;

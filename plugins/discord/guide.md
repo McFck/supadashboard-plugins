@@ -1,6 +1,6 @@
 Shows who is in your Discord voice channel and lets dashboard buttons mute, deafen, leave and rejoin. It talks to the **Discord desktop app** on this PC, so Discord has to be running here; the browser version does not work.
 
-Connecting needs a free Discord application of your own. It takes about five minutes, once, and only links SupaDashboard to your own Discord.
+Connecting needs a free Discord application of your own.
 
 ## 1. Create a Discord application
 

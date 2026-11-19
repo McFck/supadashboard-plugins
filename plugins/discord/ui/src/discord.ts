@@ -1,17 +1,17 @@
 import { isTauri } from '@tauri-apps/api/core';
 import { callPlugin, pluginStateHub, isRecord } from '@supadashboard/kit';
-import type { Channel as VoiceChannel } from './service/model';
+import type { VoiceCommand } from './service/actions';
+import {
+  validAvatar,
+  validDiscriminator,
+  validId,
+  type Channel as VoiceChannel,
+  type Member as VoiceMember,
+  type User,
+} from './service/model';
 
-type VoiceUser = { id: string; name: string };
-export type VoiceMember = VoiceUser & {
-  avatar: string | null;
-  discriminator: string;
-  speaking: boolean;
-  muted: boolean;
-  deafened: boolean;
-};
 type Connected = {
-  user: VoiceUser;
+  user: User;
   muted: boolean;
   deafened: boolean;
   lastChannel?: VoiceChannel;
@@ -20,15 +20,8 @@ export type VoiceView =
   | { state: 'absent' | 'needsAuth' | 'authorizing' | 'connecting' }
   | (Connected & { state: 'idle' })
   | (Connected & { state: 'inVoice'; channel: VoiceChannel; members: VoiceMember[] });
-type VoiceCommand = 'toggleMute' | 'toggleDeaf' | 'leave' | 'rejoin';
 
-const validId = (id: unknown): id is string => typeof id === 'string' && /^[0-9]{17,20}$/.test(id);
-const validAvatar = (hash: unknown): hash is string =>
-  typeof hash === 'string' && /^(a_)?[0-9a-f]{32}$/.test(hash);
-const validDiscriminator = (value: unknown): value is string =>
-  typeof value === 'string' && /^[0-9]{1,4}$/.test(value);
-
-function readUser(raw: unknown): VoiceUser | undefined {
+function readUser(raw: unknown): User | undefined {
   if (
     !isRecord(raw) ||
     !validId(raw.id) ||
@@ -183,20 +176,4 @@ export async function authorize(clientId: string) {
 
 export const logout = () => command('logout');
 
-export async function voiceCommand(voice: VoiceCommand) {
-  const { latest } = await hub.settled();
-  if (latest.state === 'absent') {
-    throw new Error("Discord isn't running");
-  }
-  if (latest.state !== 'idle' && latest.state !== 'inVoice') {
-    throw new Error('Connect Discord first');
-  }
-  // Leaving while out of voice already meets the action's goal.
-  if (voice === 'leave' && latest.state !== 'inVoice') {
-    return;
-  }
-  if (voice === 'rejoin' && !latest.lastChannel) {
-    throw new Error('No channel to rejoin');
-  }
-  await command('voice', { command: voice });
-}
+export const voiceCommand = (voice: VoiceCommand) => command('voice', { command: voice });

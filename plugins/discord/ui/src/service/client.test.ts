@@ -12,6 +12,8 @@ const pipe = vi.hoisted(() => ({
 }));
 
 vi.mock('@supadashboard/kit', () => ({
+  isRecord: (value: unknown) =>
+    typeof value === 'object' && value !== null && !Array.isArray(value),
   pluginSecrets: {
     read: async () => ({ signedIn: false, fields: {}, expiresAt: null }),
     write: async () => {},

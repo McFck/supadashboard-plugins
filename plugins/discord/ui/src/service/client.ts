@@ -1,8 +1,7 @@
 // One Discord connection, run as a serialized actor: operations, dispatches and the 50 ms tick never interleave,
 // so two toggles cannot read the same state.
 import { executeVoice, type VoiceCommand } from './actions';
-import { connect, refresh } from './connection';
-import { isRecord, readChannelAccess } from './model';
+import { connect, readAccess, refresh, refreshRejected } from './connection';
 import { Rpc } from './rpc';
 import { needsRefresh, readCredentials, saveLastChannel, signOut, type Credentials } from './store';
 import {
@@ -30,7 +29,6 @@ export class Client {
   rpc?: Rpc;
   credentials: Credentials | null = null;
   voice: VoiceState = emptyVoice();
-  /** The mute from before deafening, to restore like Discord does. */
   muteBeforeDeaf?: boolean;
   private subscribed?: VoiceState['channel'];
   private retry = 0;
@@ -110,12 +108,15 @@ export class Client {
           await refresh(this);
           this.phase = 'absent';
           this.nextRetry = Date.now();
+          // Re-authenticate the new token on a fresh RPC session without reopening consent.
+          this.closeRpc();
         } catch (error) {
-          console.error('Discord refresh failed', error);
-          this.phase = 'needsAuth';
+          console.error('Discord refresh failed', message(error));
+          if (refreshRejected(error)) {
+            this.phase = 'needsAuth';
+          }
+          this.disconnected();
         }
-        // Re-authenticate the new token on a fresh RPC session without reopening consent.
-        this.closeRpc();
       }
       if (this.phase === 'ready' && Date.now() >= this.nextChannelRefresh) {
         try {
@@ -264,20 +265,9 @@ export class Client {
     const channel = next.channel;
     if (moves.length && channel?.guildId && channel.access === undefined) {
       this.publish();
-      try {
-        const data = await this.request('GET_CHANNELS', { guild_id: channel.guildId });
-        if (isRecord(data) && Array.isArray(data.channels)) {
-          const entry = data.channels.find((item) => isRecord(item) && item.id === channel.id);
-          const access = readChannelAccess(entry, channel.guildId);
-          if (access !== undefined) {
-            this.voice = { ...next, channel: { ...channel, access } };
-          }
-        }
-      } catch (error) {
-        // The guild listing is optional. Some Discord clients reject it with these voice scopes.
-        if (message(error) !== 'Discord rejected GET_CHANNELS') {
-          throw error;
-        }
+      const access = await readAccess(this, channel.guildId, channel.id);
+      if (access !== undefined) {
+        this.voice = { ...next, channel: { ...channel, access } };
       }
     }
   }

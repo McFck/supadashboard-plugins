@@ -164,7 +164,7 @@
     height: 2px;
     border-radius: 1px;
     background: var(--primary);
-    transform-origin: left;
+    transform-origin: center;
     animation: expire linear forwards;
   }
   @keyframes expire {

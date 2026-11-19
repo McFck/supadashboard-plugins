@@ -26,13 +26,8 @@ header {
 
 .mark {
   grid-row: span 2;
-  width: 32px;
-  height: 32px;
-  fill: none;
-  stroke: url(#sd);
-  stroke-width: 1.75;
-  stroke-linecap: round;
-  stroke-linejoin: round;
+  width: 36px;
+  height: 36px;
 }
 
 h1 {

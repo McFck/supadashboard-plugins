@@ -1,9 +1,18 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { Button, Row, Section } from '@supadashboard/kit';
+  import { Button, Icon, Row, Section, toast } from '@supadashboard/kit';
   import { webCompanion } from './webcompanion.svelte';
 
   onMount(() => webCompanion.mount());
+
+  async function copy(code: string) {
+    try {
+      await navigator.clipboard.writeText(code);
+      toast.success('Code copied');
+    } catch {
+      toast.error('Could not copy code');
+    }
+  }
   const connected = $derived(webCompanion.snapshot.kind === 'connected');
   const status = $derived.by(() => {
     if (webCompanion.snapshot.kind === 'repair') {
@@ -45,21 +54,36 @@
         label="Pairing code"
         wide
       >
-        {#key webCompanion.pairing}
-          <output
-            class="code"
-            aria-label={webCompanion.pairing.code.replace(/(.{3})/, '$1 ')}
+        {@const code = webCompanion.pairing.code}
+        <div class="flex items-start gap-2">
+          {#key webCompanion.pairing}
+            <output
+              class="code"
+              aria-label={code.replace(/(.{3})/, '$1 ')}
+            >
+              {#each code as digit, index (index)}
+                <span aria-hidden="true">{digit}</span>
+              {/each}
+              <i
+                class="expiry"
+                style:animation-duration={`${webCompanion.pairing.expiresInMs}ms`}
+                aria-hidden="true"
+              ></i>
+            </output>
+          {/key}
+          <Button
+            variant="ghost"
+            size="icon"
+            class="mt-2.5"
+            aria-label="Copy pairing code"
+            onclick={() => copy(code)}
           >
-            {#each webCompanion.pairing.code as digit, index (index)}
-              <span aria-hidden="true">{digit}</span>
-            {/each}
-            <i
-              class="expiry"
-              style:animation-duration={`${webCompanion.pairing.expiresInMs}ms`}
-              aria-hidden="true"
-            ></i>
-          </output>
-        {/key}
+            <Icon
+              name="Copy"
+              size={16}
+            />
+          </Button>
+        </div>
       </Row>
     {/if}
   {/if}
@@ -87,6 +111,7 @@
     display: grid;
     grid-template-columns: repeat(6, 1fr);
     gap: 6px;
+    flex: 1;
     max-width: 22rem;
     padding-bottom: 8px;
     user-select: all;

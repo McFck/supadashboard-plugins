@@ -126,12 +126,12 @@
     <div
       class="empty"
       role="status"
-      aria-label={browser ? 'No tabs' : 'Offline'}
     >
       <Icon
         name={browser ? 'AppWindow' : 'Unplug'}
-        size={32}
+        size={20}
       />
+      <span class="text-center">{browser ? 'No tabs' : 'WebCompanion not connected'}</span>
     </div>
   {/if}
   <div
@@ -428,11 +428,17 @@
   .empty {
     position: absolute;
     inset: 0;
-    display: grid;
-    place-items: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding-inline: 16px;
     color: var(--muted-foreground);
-    opacity: 0.4;
+    font-size: 14px;
     pointer-events: none;
+  }
+  .empty > :global(svg) {
+    flex: none;
   }
   @media (prefers-reduced-motion: reduce) {
     .tab {

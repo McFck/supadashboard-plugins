@@ -2,6 +2,7 @@ import './plugin.css';
 import { emptyScenario, whileOwner, type Plugin } from '@supadashboard/kit';
 import guide from '../../guide.md?raw';
 import market from '../../market.json';
+import mark from './sd-mark.svg?raw';
 import PairingSection from './PairingSection.svelte';
 import BrowserTouchpad from './BrowserTouchpad.svelte';
 import BrowserTabs from './BrowserTabs.svelte';
@@ -16,10 +17,8 @@ const plugin: Plugin = {
   guide,
   settingsSection: PairingSection,
   setup(api) {
-    api.registerIcon(
-      'webcompanion',
-      'M9.5 7H5Q1.5 7 3.5 9.5L7.5 14.5Q9.5 17 6 17H1.5M12.5 7h5a5 5 0 0 1 0 10h-5z',
-    );
+    // The wordmark's Plaster "SD" in its own colours, so it is an image rather than an outline path.
+    api.registerIcon('webcompanion', `data:image/svg+xml,${encodeURIComponent(mark)}`);
     api.registerIcon('webcompanion-touchpad', 'M3 4h18v16H3zM7 8l7 3-3 1-1 3z');
     api.registerIcon('webcompanion-tabs', 'M3 7h6l2-3h7l3 3v13H3zM3 9h18M7 13h10m-10 3h7');
     api.registerControl({

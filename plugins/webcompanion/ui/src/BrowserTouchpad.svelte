@@ -56,10 +56,20 @@
   onkeydown={(event) => touch?.key(event)}
   onclick={click}
 >
-  <Icon
-    name={tab === null ? 'Unplug' : 'webcompanion-touchpad'}
-    size={32}
-  />
+  {#if tab === null}
+    <span class="offline">
+      <Icon
+        name="Unplug"
+        size={20}
+      />
+      <span class="text-center">WebCompanion not connected</span>
+    </span>
+  {:else}
+    <Icon
+      name="webcompanion-touchpad"
+      size={32}
+    />
+  {/if}
 </button>
 
 <style>
@@ -88,6 +98,19 @@
   .browser-touchpad > :global(svg) {
     opacity: 0.3;
     pointer-events: none;
+  }
+  .offline {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+    max-width: 100%;
+    padding-inline: 16px;
+    box-sizing: border-box;
+    font-size: 14px;
+  }
+  .offline > :global(svg) {
+    flex: none;
   }
   .browser-touchpad:active:not(:disabled) {
     box-shadow: inset 0 0 0 999px color-mix(in oklab, var(--foreground) 3%, transparent);

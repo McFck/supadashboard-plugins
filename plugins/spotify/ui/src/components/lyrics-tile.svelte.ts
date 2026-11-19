@@ -103,7 +103,7 @@ export class LyricsTileController {
       return;
     }
     const { artist, title, album } = session;
-    // The native side takes whole milliseconds.
+    // The lyrics service takes whole milliseconds.
     const track = { artist, title, album, durationMs: Math.round(durationMs) };
     void Promise.all([getLyrics(track), getSongOffset(track)]).then(([view, offsetMs]) => {
       if (mine === this.#epoch) {

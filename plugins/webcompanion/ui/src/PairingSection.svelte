@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { Button, Input, Row, Section } from '@supadashboard/kit';
+  import { Button, Row, Section } from '@supadashboard/kit';
   import { webCompanion } from './webcompanion.svelte';
 
   onMount(() => webCompanion.mount());
@@ -16,12 +16,12 @@
 <Section title="Connection">
   <Row label="Status">
     <span
-      class="flex items-center gap-2"
+      class="flex items-center gap-2 text-sm"
       role="status"
     >
       <span
-        class="status-dot"
-        class:connected
+        class="dot"
+        data-state={webCompanion.snapshot.kind}
         aria-hidden="true"
       ></span>
       {status}
@@ -43,22 +43,22 @@
     {#if webCompanion.pairing}
       <Row
         label="Pairing code"
-        for="browser-code"
+        wide
       >
         {#key webCompanion.pairing}
-          <div class="code">
-            <Input
-              id="browser-code"
-              readonly
-              class="font-mono text-center text-xl tabular-nums"
-              value={webCompanion.pairing.code.replace(/(.{3})/, '$1 ')}
-            />
-            <div
+          <output
+            class="code"
+            aria-label={webCompanion.pairing.code.replace(/(.{3})/, '$1 ')}
+          >
+            {#each webCompanion.pairing.code as digit, index (index)}
+              <span aria-hidden="true">{digit}</span>
+            {/each}
+            <i
               class="expiry"
               style:animation-duration={`${webCompanion.pairing.expiresInMs}ms`}
               aria-hidden="true"
-            ></div>
-          </div>
+            ></i>
+          </output>
         {/key}
       </Row>
     {/if}
@@ -66,29 +66,62 @@
 </Section>
 
 <style>
-  .status-dot {
-    width: 0.5rem;
-    height: 0.5rem;
+  .dot {
+    width: 8px;
+    height: 8px;
     border-radius: 50%;
-    background: currentColor;
-    opacity: 0.35;
+    background: var(--muted-foreground);
+    opacity: 0.5;
   }
-  .status-dot.connected {
+  .dot[data-state='connected'] {
+    background: var(--info);
+    opacity: 1;
+    box-shadow: 0 0 6px var(--info);
+  }
+  .dot[data-state='repair'] {
+    background: var(--destructive);
     opacity: 1;
   }
   .code {
-    overflow: hidden;
-    border-radius: 0.375rem;
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 6px;
+    max-width: 22rem;
+    padding-bottom: 8px;
+    user-select: all;
+  }
+  .code span {
+    display: grid;
+    place-items: center;
+    height: 52px;
+    border: 1px solid var(--input);
+    border-radius: var(--radius-md);
+    background: var(--muted);
+    font: 600 26px/1 var(--font-display);
+    font-variant-numeric: tabular-nums;
+    color: var(--foreground);
+  }
+  .code span:nth-child(3) {
+    margin-right: 8px;
   }
   .expiry {
+    position: absolute;
+    inset: auto 0 0;
     height: 2px;
-    background: currentColor;
+    border-radius: 1px;
+    background: var(--primary);
     transform-origin: left;
     animation: expire linear forwards;
   }
   @keyframes expire {
     to {
       transform: scaleX(0);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .expiry {
+      animation: none;
     }
   }
 </style>

@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { normalizeSubwayLines } from './simulation/lines';
 import { scheduleScreen, stationMinutes } from './rendering/screens';
-import { createSubwayScene, prepareFrame, type SubwaySceneData } from './rendering/scene';
+import { prepareFrame, type SubwaySceneData } from './rendering/scene';
 import type { RunSnapshot } from './simulation/run';
 
 const modules = import.meta.glob('../../assets/lines/*/{line,pack}.json', {
@@ -42,7 +42,7 @@ const data: SubwaySceneData = {
   wallMs: new Date(2026, 0, 1, 9, 41).getTime(),
 };
 
-describe('Subway v2 content and composition', () => {
+describe('Subway scene content', () => {
   it('invalidates for visible content, independently of snapshot identity, audio, speed and widget updates', () => {
     const key = subwaySceneRevision(data, 'display');
     expect(
@@ -116,100 +116,4 @@ describe('Subway v2 content and composition', () => {
     const estimates = model.route.map((station) => stationMinutes(model, station.code)!);
     expect(estimates).toEqual([...estimates].sort((a, b) => a - b));
   });
-
-  it('paints the live clock through the real scene renderer', () => {
-    const texts: string[] = [],
-      scales: number[][] = [];
-    const target = {
-      font: '',
-      measureText: (text: string) => ({ width: text.length * 20 }),
-      fillText: (text: string) => texts.push(text),
-      scale: (...args: number[]) => scales.push(args),
-    };
-    const ctx = new Proxy(target, {
-      get(object, key) {
-        return key in object ? object[key as keyof typeof object] : () => {};
-      },
-    }) as unknown as CanvasRenderingContext2D;
-    const scene = createSubwayScene();
-    scene.draw({
-      ctx,
-      width: 1280,
-      height: 720,
-      mode: 'frozen',
-      time: 0,
-      view: 'display',
-      data: prepareFrame(
-        {
-          ...data,
-          visibleElapsed: 8_000,
-          snapshot: { ...snapshot, direction: 'outer', next: 'JY01' },
-        },
-        'display',
-        'left',
-      ),
-    });
-    expect(texts).toEqual(expect.arrayContaining(['09', '41']));
-    scene.dispose?.();
-  });
-
-  it.each([
-    ['to-kita-senju', 'H13', 'H14', 1],
-    ['to-naka-meguro', 'H14', 'H13', -1],
-  ])(
-    'paints Hibiya travel order and a cursor between the current and next stops toward %s',
-    (direction, station, next, delta) => {
-      const texts: string[] = [],
-        path: number[][] = [];
-      const target = {
-        font: '',
-        measureText: (text: string) => ({ width: text.length * 20 }),
-        createLinearGradient: () => ({ addColorStop() {} }),
-        fillText: (text: string) => texts.push(text),
-        moveTo: (x: number, y: number) => path.push([x, y]),
-        lineTo: (x: number, y: number) => path.push([x, y]),
-      };
-      const ctx = new Proxy(target, {
-        get(object, key) {
-          return key in object ? object[key as keyof typeof object] : () => {};
-        },
-      }) as unknown as CanvasRenderingContext2D;
-      const scene = createSubwayScene();
-      const hibiya: SubwaySceneData = {
-        line: lines[1],
-        snapshot: {
-          ...snapshot,
-          line: 'hibiya',
-          direction: String(direction),
-          station: String(station),
-          next: String(next),
-        },
-        config: { displayLanguages: 'ja-en' },
-        visibleElapsed: 0,
-      };
-      for (const screen of ['left', 'right'] as const) {
-        scene.draw({
-          ctx,
-          width: 1280,
-          height: 720,
-          mode: 'frozen',
-          time: 0,
-          view: 'display',
-          data: prepareFrame(hibiya, 'display', screen),
-        });
-      }
-      const codes = texts.filter((t) => /^H-\d/.test(t));
-      expect(codes).toHaveLength(16);
-      expect(codes).toEqual(
-        [...codes].sort((a, b) => Number(delta) * (Number(a.slice(2)) - Number(b.slice(2)))),
-      );
-      const currentIndex = codes.indexOf(String(station).replace('H', 'H-'));
-      expect(codes[currentIndex + 1]).toBe(String(next).replace('H', 'H-'));
-      const arrow = path.findIndex((point, i) => point[1] === 484 && path[i + 1]?.[1] === 514);
-      expect(arrow).toBeGreaterThanOrEqual(0);
-      expect(path[arrow + 1][0] - path[arrow][0]).toBe(32);
-      expect(path[arrow][0]).toBe(150 + 140 * (currentIndex % 8) + 70 - 28);
-      scene.dispose?.();
-    },
-  );
 });

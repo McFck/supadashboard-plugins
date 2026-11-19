@@ -79,7 +79,6 @@ function makeAudioHarness() {
     update: vi.fn(),
     duck: vi.fn(),
     resync: vi.fn(),
-    stats: vi.fn(),
     dispose: vi.fn(),
   };
   vi.mocked(TrainSound.load).mockImplementation(async () => motion as unknown as TrainSound);
@@ -200,7 +199,6 @@ describe('Subway immersion audio', () => {
     expect(harness.motion.duck).toHaveBeenCalledWith(5.05, harness.played[0].cue.duration);
     await harness.audio.playCue(effect);
     expect(harness.fetch).toHaveBeenCalledOnce();
-    expect(harness.audio.getStats().cacheHits).toBeGreaterThan(0);
   });
 
   it('keeps simulation state updates independent from mixer mute and preserves sources while hidden', async () => {
@@ -216,7 +214,6 @@ describe('Subway immersion audio', () => {
     harness.audio.setVisible(false);
     expect(harness.context.suspend).toHaveBeenCalledOnce();
     expect(harness.sources[0].stop).not.toHaveBeenCalled();
-    expect(harness.audio.getStats().activeSources).toBe(1);
     harness.audio.setVisible(true);
     expect(harness.context.resume).toHaveBeenCalledTimes(2);
     harness.audio.setEnabled(false);

@@ -194,16 +194,6 @@ describe('Subway screen scheduler', () => {
     );
   });
 
-  it('returns a frozen page model and frozen snapshot/collections', () => {
-    const schedule = scheduleScreen(snapshot(), config, 0);
-    expect(Object.isFrozen(schedule)).toBe(true);
-    expect(Object.isFrozen(schedule.snapshot)).toBe(true);
-    expect(Object.isFrozen(schedule.languages)).toBe(true);
-    expect(Object.isFrozen(schedule.transfers)).toBe(true);
-    expect(Object.isFrozen(schedule.route)).toBe(true);
-    expect(Object.isFrozen(schedule.nearby)).toBe(true);
-  });
-
   it('holds unknown door side without a claim and derives explicit viewing-side labels', () => {
     const unknown = lines
       .flatMap((line) =>

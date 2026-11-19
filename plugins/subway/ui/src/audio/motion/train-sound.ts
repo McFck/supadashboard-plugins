@@ -312,21 +312,6 @@ export class TrainSound {
     }
   }
 
-  stats() {
-    const value = (param: AudioParam) => Math.round(param.value * 1000) / 1000;
-    return {
-      train: this.profile.id,
-      section: this.previous?.section,
-      oneShots: this.shots.count,
-      rolling: value(this.graph.rollingGain.gain),
-      body: value(this.graph.body.gain),
-      hvac: value(this.graph.hvac.gain),
-      platform: value(this.graph.platform.gain),
-      duck: value(this.graph.duck.gain),
-      effort: { ...this.effort },
-    };
-  }
-
   dispose() {
     this.shots.cancel();
     this.platform.dispose();

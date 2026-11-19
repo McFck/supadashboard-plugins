@@ -12,22 +12,31 @@ function segmentProgress(segment: RunSegment, at: number): number {
   const approach = segment.approachMs;
   const totalArea = (dep + approach) * 0.5 + cruise;
   let area: number;
-  if (elapsed < dep) area = (0.5 * elapsed * elapsed) / dep;
-  else if (elapsed < dep + cruise) area = dep * 0.5 + elapsed - dep;
-  else if (elapsed < dep + cruise + approach) {
+  if (elapsed < dep) {
+    area = (0.5 * elapsed * elapsed) / dep;
+  } else if (elapsed < dep + cruise) {
+    area = dep * 0.5 + elapsed - dep;
+  } else if (elapsed < dep + cruise + approach) {
     const intoApproach = elapsed - dep - cruise;
     area = dep * 0.5 + cruise + intoApproach - (0.5 * intoApproach * intoApproach) / approach;
-  } else area = totalArea;
+  } else {
+    area = totalArea;
+  }
   return clamp(segment.baseProgress + ((1 - segment.baseProgress) * area) / totalArea, 0, 1);
 }
 
 function segmentSpeed(segment: RunSegment, at: number): number {
   const elapsed = Math.max(0, at - segment.startedAt);
   const maxSpeed = 60;
-  if (elapsed < segment.departureMs) return (maxSpeed * elapsed) / segment.departureMs;
-  if (elapsed < segment.departureMs + segment.cruiseMs) return maxSpeed;
-  if (elapsed < segment.departureMs + segment.cruiseMs + segment.approachMs)
+  if (elapsed < segment.departureMs) {
+    return (maxSpeed * elapsed) / segment.departureMs;
+  }
+  if (elapsed < segment.departureMs + segment.cruiseMs) {
+    return maxSpeed;
+  }
+  if (elapsed < segment.departureMs + segment.cruiseMs + segment.approachMs) {
     return maxSpeed * (1 - (elapsed - segment.departureMs - segment.cruiseMs) / segment.approachMs);
+  }
   return 0;
 }
 
@@ -40,15 +49,21 @@ const CRUISE_POWER = 0.35;
  */
 export function cruisePower(segment: RunSegment, at: number): number {
   const intoCruise = at - segment.startedAt - segment.departureMs;
-  if (intoCruise < 0 || intoCruise >= segment.cruiseMs) return 0;
+  if (intoCruise < 0 || intoCruise >= segment.cruiseMs) {
+    return 0;
+  }
   const random = seeded(hashSeed(`${segment.planKey}|${segment.startedAt}`));
   const scale = 1000 / segment.multiplier;
   // A short hop still gets one notch: the opening coast takes at most 30 % of the cruise.
   let edge = Math.min(between(random, 8, 16) * scale, segment.cruiseMs * 0.3);
-  if (intoCruise < edge) return 0;
+  if (intoCruise < edge) {
+    return 0;
+  }
   for (let powered = true; ; powered = !powered) {
     edge += (powered ? between(random, 5, 10) : between(random, 8, 16)) * scale;
-    if (intoCruise < edge) return powered ? CRUISE_POWER : 0;
+    if (intoCruise < edge) {
+      return powered ? CRUISE_POWER : 0;
+    }
   }
 }
 
@@ -78,7 +93,8 @@ export function snapshotMotion(
       : 0;
     return { speed, progress };
   }
-  if (!state.segment || !['departing', 'cruising', 'approaching'].includes(state.phase))
+  if (!state.segment || !['departing', 'cruising', 'approaching'].includes(state.phase)) {
     return { speed: 0, progress: state.segment?.baseProgress ?? 0 };
+  }
   return { speed: segmentSpeed(state.segment, at), progress: segmentProgress(state.segment, at) };
 }

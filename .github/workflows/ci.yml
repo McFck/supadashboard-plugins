@@ -3,26 +3,30 @@ name: CI
 on:
   pull_request:
 
-permissions:
-  contents: read
+permissions: {}
 
 jobs:
   check:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
-      - uses: actions/checkout@v4
-      # The submodule is private while SupaDashboard is; SUPADASHBOARD_READ is a read-only token for it alone.
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+      # The submodule is private while SupaDashboard is; SUPADASHBOARD_READ is a read-only token for it alone,
+      # given to this one git command so no later step can read it from the git config.
       - name: Check out SupaDashboard
         shell: bash
         env:
           TOKEN: ${{ secrets.SUPADASHBOARD_READ }}
-        run: |
-          git config --global url."https://x-access-token:${TOKEN}@github.com/McFck/SupaDashboard".insteadOf https://github.com/McFck/SupaDashboard
-          git submodule update --init
-      - uses: pnpm/action-setup@v4
+        run: >-
+          git -c url."https://x-access-token:${TOKEN}@github.com/McFck/SupaDashboard".insteadOf=https://github.com/McFck/SupaDashboard
+          submodule update --init
+      - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v4.4.0
         with:
           version: 9
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: 24
           cache: pnpm

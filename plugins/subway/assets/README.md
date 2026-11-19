@@ -1,8 +1,7 @@
 # Subway sound pack
 
-Japanese-train audio, motion data and line manifests for the dashboard's Subway applet. The app stages what it
-needs from here at build time (`app/scripts/stage-subway-assets.mjs`). Credits for the original recordings and sound
-materials are in [sources.json](sources.json).
+Japanese-train audio, motion data and line manifests for the Subway plugin; its package serves them under
+`assets/`. Credits for the original recordings and sound materials are in [sources.json](sources.json).
 
 | Line          | Kept content                                                                                                                                                                                                      |
 | ------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

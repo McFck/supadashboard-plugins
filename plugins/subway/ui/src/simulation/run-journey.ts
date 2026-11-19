@@ -24,10 +24,14 @@ function routeSegments(
   let current = stationCode;
   while (result.length < limit) {
     const next = stepStation(line, current, direction);
-    if (!next) break;
+    if (!next) {
+      break;
+    }
     result.push({ from: current, to: next.code });
     current = next.code;
-    if (line.loop && current === stationCode) break;
+    if (line.loop && current === stationCode) {
+      break;
+    }
   }
   return result;
 }
@@ -100,7 +104,9 @@ export function remainingJourneyMs(
     return remaining;
   }
 
-  if (timeline.phase !== 'stopped' || !timeline.active) return remaining;
+  if (timeline.phase !== 'stopped' || !timeline.active) {
+    return remaining;
+  }
   // A loop line at the end of a lap is about to start the next one.
   const limit = line.loop
     ? state.loopArrivalsRemaining || line.stations.length

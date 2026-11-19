@@ -23,6 +23,7 @@ const json = (file) => JSON.parse(fs.readFileSync(file, 'utf8'));
 const tag = (id, version) => `${id}-v${version}`;
 const gh = (...args) => execFileSync('gh', [...args, '-R', REPO], { encoding: 'utf8' });
 
+/** The catalogue entry of a packed plugin; its listing text (market.json, guide.md) is the current tree's. */
 function entry(id, published, file) {
   const bytes = fs.readFileSync(file);
   const { version, api, permissions } = JSON.parse(
@@ -86,7 +87,7 @@ function tagged(name) {
     gh('release', 'view', name, '--json', 'tagName');
     return true;
   } catch {
-    // `gh release view` fails exactly when the release does not exist.
+    // Read as missing; when gh failed for another reason, the `release create` that follows fails loudly.
     return false;
   }
 }
@@ -145,7 +146,7 @@ function publish() {
       '--paginate',
       `repos/${REPO}/releases`,
       '--jq',
-      '.[] | {tagName: .tag_name, publishedAt: .published_at}',
+      '.[] | {tagName: .tag_name, publishedAt: .published_at, draft: .draft}',
     ],
     { encoding: 'utf8' },
   )

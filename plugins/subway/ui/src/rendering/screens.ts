@@ -1,7 +1,7 @@
 import { localizedName, type LineDefinition, type StationDefinition } from '../simulation/lines';
 import type { RunSnapshot } from '../simulation/run';
 import { E235_ICON_DWELL_MS, e235Routine } from '../display/e235/schedule';
-import { normalizeCarNumber } from '../simulation/config';
+import { carNumber } from '../simulation/config';
 import { hankyuCycle, hankyuLanguages } from '../display/hankyu-1300/schedule';
 
 export type ScreenPage =
@@ -124,11 +124,14 @@ function routeFrom(
 ): StationDefinition[] {
   const currentIndex = line.stations.findIndex((station) => station.code === stationCode);
   const routeDirection = line.directions.find((item) => item.id === direction);
-  if (currentIndex < 0 || !routeDirection) return [];
-  if (!line.loop)
+  if (currentIndex < 0 || !routeDirection) {
+    return [];
+  }
+  if (!line.loop) {
     return routeDirection.delta > 0
       ? line.stations.slice(currentIndex)
       : line.stations.slice(0, currentIndex + 1).reverse();
+  }
   return Array.from(
     { length: line.stations.length },
     (_, index) =>
@@ -146,11 +149,14 @@ function nearbyFrom(
 ): StationDefinition[] {
   const currentIndex = line.stations.findIndex((station) => station.code === stationCode);
   const routeDirection = line.directions.find((item) => item.id === direction);
-  if (currentIndex < 0 || !routeDirection) return [];
+  if (currentIndex < 0 || !routeDirection) {
+    return [];
+  }
   return [-1, 0, 1, 2, 3].flatMap((offset) => {
     const index = currentIndex + routeDirection.delta * offset;
-    if (line.loop)
+    if (line.loop) {
       return [line.stations[(index + line.stations.length * 2) % line.stations.length]];
+    }
     return line.stations[index] ? [line.stations[index]] : [];
   });
 }
@@ -161,8 +167,12 @@ function sideLabel(
   viewingSide: 'left' | 'right',
 ): ScreenSchedule['sideLabel'] {
   const side = station.doorByDirection[snapshot.direction]?.side ?? 'unknown';
-  if (side === 'both') return 'both sides';
-  if (side === 'unknown') return null;
+  if (side === 'both') {
+    return 'both sides';
+  }
+  if (side === 'unknown') {
+    return null;
+  }
   return side === viewingSide ? 'this side' : 'opposite side';
 }
 
@@ -207,13 +217,17 @@ export function scheduleScreen(
   config: ScreenConfig,
   visibleElapsed: number,
 ): ScreenSchedule {
-  if (!Number.isFinite(visibleElapsed) || visibleElapsed < 0)
+  if (!Number.isFinite(visibleElapsed) || visibleElapsed < 0) {
     throw new Error('Visible screen time must be finite and non-negative');
+  }
   const line = config.line;
-  if (snapshot.line !== line.id)
+  if (snapshot.line !== line.id) {
     throw new Error(`Screen line mismatch: ${snapshot.line} / ${line.id}`);
+  }
   const station = line.stations.find((item) => item.code === snapshot.station);
-  if (!station) throw new Error(`Unknown Subway screen station: ${snapshot.station}`);
+  if (!station) {
+    throw new Error(`Unknown Subway screen station: ${snapshot.station}`);
+  }
   const nextStation = line.stations.find((item) => item.code === snapshot.next);
   const languages = supportedLanguages(config);
   const abnormal = snapshot.state === 'emergency' || snapshot.state === 'suspended';
@@ -230,9 +244,11 @@ export function scheduleScreen(
       : null;
   let page: ScreenPage;
   let pageDeadline: number | null = null;
-  if (snapshot.state === 'emergency') page = 'emergency';
-  else if (snapshot.state === 'suspended') page = 'suspension';
-  else if (native) {
+  if (snapshot.state === 'emergency') {
+    page = 'emergency';
+  } else if (snapshot.state === 'suspended') {
+    page = 'suspension';
+  } else if (native) {
     page =
       config.manualView === 'map' &&
       !['approaching', 'arriving', 'doorsClosing'].includes(snapshot.state)
@@ -241,17 +257,23 @@ export function scheduleScreen(
     language = native.language;
     headerLanguage = native.headerLanguage;
     pageDeadline = config.manualView === 'map' ? null : native.pageDeadline;
-  } else if (snapshot.state === 'doorsClosing') page = 'closing';
-  else if (snapshot.state === 'approaching' || snapshot.state === 'arriving') page = 'platform';
-  else if (snapshot.state === 'departing') page = 'nearby';
-  else if (config.manualView === 'map') page = 'broad';
-  else {
+  } else if (snapshot.state === 'doorsClosing') {
+    page = 'closing';
+  } else if (snapshot.state === 'approaching' || snapshot.state === 'arriving') {
+    page = 'platform';
+  } else if (snapshot.state === 'departing') {
+    page = 'nearby';
+  } else if (config.manualView === 'map') {
+    page = 'broad';
+  } else {
     const cycle = cycleFor(snapshot, config);
     const position = visibleElapsed % cycle.period;
     let cursor = 0;
     const item =
       cycle.pages.find((entry) => {
-        if (position < cursor + entry.duration) return true;
+        if (position < cursor + entry.duration) {
+          return true;
+        }
         cursor += entry.duration;
         return false;
       }) ?? cycle.pages[0];
@@ -298,7 +320,7 @@ export function scheduleScreen(
       .join(',') ?? '';
   const side = guidanceStation.doorByDirection[snapshot.direction]?.side ?? 'unknown';
   const clock = config.clock ?? '12:00';
-  const currentCar = normalizeCarNumber(config.currentCar, line.carCount);
+  const currentCar = carNumber(config.currentCar, line.carCount) ?? 1;
   const invalidationKey = [
     snapshot.line,
     snapshot.direction,

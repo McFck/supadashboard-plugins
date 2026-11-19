@@ -7,6 +7,9 @@ import { pluginConfig } from '../supadashboard/app/plugin-tools/vite-plugin.mjs'
 
 const root = path.resolve(import.meta.dirname, '..');
 const dist = path.join(root, 'dist');
+// Authoring files kept beside the assets that nothing loads at runtime: notes, and the cue measurement table the
+// local sound-pack scripts verify runtime-cues.json against (4 MB).
+const AUTHORING_ONLY = new Set(['README.md', 'cues.js']);
 
 fs.rmSync(dist, { recursive: true, force: true });
 for (const id of fs.readdirSync(path.join(root, 'plugins'))) {
@@ -22,7 +25,10 @@ for (const id of fs.readdirSync(path.join(root, 'plugins'))) {
   });
   fs.copyFileSync(path.join(source, 'plugin.json'), path.join(folder, 'plugin.json'));
   if (fs.existsSync(path.join(source, 'assets'))) {
-    fs.cpSync(path.join(source, 'assets'), path.join(folder, 'assets'), { recursive: true });
+    fs.cpSync(path.join(source, 'assets'), path.join(folder, 'assets'), {
+      recursive: true,
+      filter: (file) => !AUTHORING_ONLY.has(path.basename(file)),
+    });
   }
   console.log(`dist/${id}`);
 }

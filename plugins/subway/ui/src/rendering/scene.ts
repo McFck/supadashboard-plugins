@@ -5,7 +5,8 @@ import { createHankyu1300Renderer } from '../display/hankyu-1300/renderer';
 import { createYamanoteRenderer } from '../display/e235/renderer';
 import { e235Images } from '../display/e235/images';
 import { e235WallClock } from '../display/e235/schedule';
-import { displayLanguages, normalizeCarNumber } from '../simulation/config';
+import { carNumber, displayLanguages } from '../simulation/config';
+import { lineFactsFor } from '../data/load';
 import { scheduleScreen, type ScreenConfig } from './screens';
 import type { SubwaySceneState } from '../simulation/scene-state';
 import type { PreparedFrame, SubwayScreen } from './contracts';
@@ -61,13 +62,9 @@ function extendEdges(ctx: CanvasRenderingContext2D, width: number, height: numbe
   ctx.restore();
 }
 
-export function sceneLanguages(source: SubwaySceneState): string[] {
-  const raw = source.config.displayLanguages ?? source.config.languages;
-  if (Array.isArray(raw)) {
-    return raw.filter((item): item is string => typeof item === 'string');
-  }
+export function sceneLanguages(source: SubwaySceneState): readonly string[] {
   return displayLanguages(
-    typeof raw === 'string' ? raw : source.line.id === 'sakaisuji' ? 'ja-kana' : 'ja-en',
+    source.config.displayLanguages ?? lineFactsFor(source.line.id)?.displayLanguages[0],
   );
 }
 
@@ -83,7 +80,7 @@ export function prepareFrame(
   const config: ScreenConfig = {
     line,
     languages: sceneLanguages(data),
-    currentCar: normalizeCarNumber(data.config.carNumber, line.carCount),
+    currentCar: carNumber(data.config.carNumber, line.carCount) ?? 1,
     clock: wall?.label,
     manualView: view === 'map' || view === 'cab' ? 'map' : 'display',
   };

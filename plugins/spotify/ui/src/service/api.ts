@@ -23,7 +23,8 @@ export class ApiError extends Error {
 
 function premiumRequired(body: string) {
   try {
-    const error: unknown = (JSON.parse(body) as { error?: unknown })?.error;
+    const parsed: unknown = JSON.parse(body);
+    const error = isRecord(parsed) ? parsed.error : undefined;
     return (
       isRecord(error) &&
       (error.reason === 'PREMIUM_REQUIRED' || error.message === 'Premium required')
@@ -57,8 +58,15 @@ export function check(response: PluginHttpResponse) {
 
 export const validUri = (uri: string) => /^spotify:track:[a-zA-Z0-9]{22}$/.test(uri);
 export const validClientId = (id: string) => /^[0-9a-fA-F]{32}$/.test(id);
-/** A name or id that fits the UI: bounded and without control characters. */
-export const validText = (text: string, max: number) => text.length <= max && !/\p{Cc}/u.test(text);
+/** A name or id that fits the UI: at most `max` code points and without control characters. */
+export const validText = (text: string, max: number) =>
+  [...text].length <= max && !/\p{Cc}/u.test(text);
+
+/** The error's message when it fits a toast title, else `fallback`; host errors can carry long multi-line causes. */
+export function errorTitle(error: unknown, fallback = 'Spotify request failed') {
+  const text = error instanceof Error ? error.message : error;
+  return typeof text === 'string' && text.trim() && validText(text, 80) ? text : fallback;
+}
 
 export interface Player {
   uri: string | null;

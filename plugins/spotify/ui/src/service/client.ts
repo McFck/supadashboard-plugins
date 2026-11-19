@@ -1,13 +1,8 @@
 import { invoke } from '@tauri-apps/api/core';
-import {
-  emitPluginEvent,
-  pluginHttp,
-  pluginOAuth,
-  pluginSecrets,
-  type PluginHttpResponse,
-} from '@supadashboard/kit';
+import { emitPluginEvent } from '@supadashboard/kit';
 import * as api from './api';
 import { query, sleep } from './query';
+import { STORE_FAILED, WebApi } from './web-api';
 
 export type ShuffleMode = 'on' | 'off' | 'toggle';
 export type LikeOp = 'like' | 'unlike' | 'dislike';
@@ -16,39 +11,23 @@ type Operation =
   | { kind: 'logout' }
   | { kind: 'command'; op: LikeOp }
   | { kind: 'shuffle'; mode: ShuffleMode };
-type Method = 'GET' | 'PUT' | 'DELETE';
 
-const SECRET = 'spotify';
-const BASE = 'https://api.spotify.com/v1';
-const AUTHORIZATION = { Authorization: `Bearer {{secret:${SECRET}}}` };
 /** Seconds between reads of the player while a song plays and while it does not. */
 const PLAYING_POLL = 5;
 const IDLE_POLL = 30;
-const SIGNED_OUT = 'Connect Spotify first';
-
-function messageOf(error: unknown) {
-  if (error instanceof Error) {
-    return error.message;
-  }
-  return typeof error === 'string' ? error : 'Spotify request failed';
-}
-
-/** The host's refresh failing for good leaves the user signed out. */
-const needsSignIn = (error: unknown) =>
-  ['Sign in again', 'Not signed in'].includes(messageOf(error));
 
 const mediaCommand = (command: string) =>
   invoke<boolean>('media_command', { target: 'spotify', command });
 
 /** Mirrors the Web API: signed-in state, liked and shuffle, published as `plugin://spotify/state` until stopped. */
 export class SpotifyClient {
-  private signedIn = false;
-  private userName = '';
+  private readonly web = new WebApi(() => {
+    this.player = api.NO_PLAYER;
+    this.liked = null;
+  });
   private player = api.NO_PLAYER;
   private liked: boolean | null = null;
-  private retryAt = 0;
   private latest = JSON.stringify({ state: 'connecting' });
-  private storeError: string | undefined;
   private stopped = false;
   private round = 0;
   private timer: ReturnType<typeof setTimeout> | undefined;
@@ -62,10 +41,9 @@ export class SpotifyClient {
   start() {
     void this.enqueue(async () => {
       try {
-        await this.load();
-      } catch {
-        this.storeError = 'Could not read Spotify store';
-        this.publish(this.storeError);
+        await this.web.load();
+      } catch (error) {
+        this.publish(api.errorTitle(error));
       }
     }).then(() => this.poll());
   }
@@ -82,35 +60,24 @@ export class SpotifyClient {
     return run;
   }
 
-  private async load() {
-    const { fields, signedIn } = await pluginSecrets.read('spotify', SECRET);
-    const { clientId, userName } = fields;
-    const name = typeof userName === 'string' ? userName : '';
-    if (
-      (clientId !== undefined && !(typeof clientId === 'string' && api.validClientId(clientId))) ||
-      !api.validText(name, 512)
-    ) {
-      throw new Error('Invalid Spotify credentials');
-    }
-    this.signedIn = signedIn;
-    this.userName = name;
-  }
-
+  /** `error` must already be a short title: the view's reader rejects control characters and long text. */
   private publish(error?: string) {
     if (this.stopped) {
       return;
     }
-    const view = this.signedIn
-      ? {
-          state: 'ready',
-          user: this.userName,
-          trackUri: this.player.uri,
-          liked: this.liked,
-          smartShuffle: this.player.smartShuffle,
-          shuffle: this.player.shuffle,
-          error,
-        }
-      : { state: 'needsAuth', error };
+    const session = this.web.session;
+    const view =
+      session.kind === 'signedIn'
+        ? {
+            state: 'ready',
+            user: session.user,
+            trackUri: this.player.uri,
+            liked: this.liked,
+            smartShuffle: this.player.smartShuffle,
+            shuffle: this.player.shuffle,
+            error,
+          }
+        : { state: 'needsAuth', error };
     this.emit(view);
   }
 
@@ -131,7 +98,7 @@ export class SpotifyClient {
       try {
         await this.read();
       } catch (failure) {
-        error = messageOf(failure);
+        error = api.errorTitle(failure);
       }
       this.publish(error);
     }).then(() => {
@@ -143,13 +110,13 @@ export class SpotifyClient {
   }
 
   private async read() {
-    if (!this.signedIn) {
+    if (this.web.session.kind !== 'signedIn') {
       return;
     }
     await this.readPlayer();
     this.liked = null;
     if (this.player.uri) {
-      const response = await this.request(
+      const response = await this.web.request(
         'GET',
         `/me/library/contains?${query([['uris', this.player.uri]])}`,
       );
@@ -159,8 +126,8 @@ export class SpotifyClient {
 
   /** Runs a user operation between polls, then reads the player again. */
   operation(operation: Operation): Promise<void> {
-    if (this.storeError) {
-      return Promise.reject(new Error(this.storeError));
+    if (this.web.session.kind === 'storeFailed') {
+      return Promise.reject(new Error(STORE_FAILED));
     }
     const result = this.enqueue(async () => {
       try {
@@ -174,74 +141,9 @@ export class SpotifyClient {
     return result;
   }
 
-  private async signOut() {
-    this.signedIn = false;
-    this.userName = '';
-    this.player = api.NO_PLAYER;
-    this.liked = null;
-    await pluginOAuth.signOut('spotify', SECRET);
-    await pluginSecrets.write('spotify', SECRET, { userName: '' });
-  }
-
-  private async send(method: Method, path: string): Promise<PluginHttpResponse> {
-    try {
-      return await pluginHttp('spotify', { method, url: `${BASE}${path}`, headers: AUTHORIZATION });
-    } catch (error) {
-      if (needsSignIn(error)) {
-        await this.signOut();
-        throw new Error(SIGNED_OUT);
-      }
-      throw error;
-    }
-  }
-
-  /** The host refreshes an expiring token before sending; a 401 refreshes once more and retries. */
-  private async request(method: Method, path: string) {
-    if (Date.now() < this.retryAt) {
-      throw new Error('Spotify rate limited');
-    }
-    if (!this.signedIn) {
-      throw new Error(SIGNED_OUT);
-    }
-    for (let attempt = 0; attempt < 2; attempt++) {
-      const response = await this.send(method, path);
-      try {
-        api.check(response);
-        return response;
-      } catch (error) {
-        if (!(error instanceof api.ApiError)) {
-          throw error;
-        }
-        if (error.failure === 'unauthorized' && attempt === 0) {
-          await this.refresh();
-          continue;
-        }
-        if (error.failure === 'unauthorized') {
-          await this.signOut();
-        } else if (error.failure === 'rateLimited') {
-          this.retryAt = Date.now() + error.retryAfter * 1000;
-        }
-        throw error;
-      }
-    }
-    throw new Error(SIGNED_OUT);
-  }
-
-  private async refresh() {
-    try {
-      await pluginOAuth.refresh('spotify', SECRET);
-    } catch (error) {
-      if (needsSignIn(error)) {
-        await this.signOut();
-        throw new Error(SIGNED_OUT);
-      }
-      throw error;
-    }
-  }
-
   /** Reads the player; resolves with its shuffle state, or `null` when nothing is active. */
   private async readPlayer(): Promise<boolean | null> {
-    const response = await this.request('GET', '/me/player');
+    const response = await this.web.request('GET', '/me/player');
     const active = response.status === 204 ? null : api.shuffle(response.body);
     const next = response.status === 204 ? api.NO_PLAYER : api.player(response.body);
     if (next.uri !== this.player.uri) {
@@ -270,40 +172,24 @@ export class SpotifyClient {
   private async perform(operation: Operation) {
     switch (operation.kind) {
       case 'authorize':
-        return this.authorize(operation.clientId);
+        this.emit({ state: 'connecting' });
+        return this.web.authorize(operation.clientId);
       case 'logout':
-        return this.signOut();
+        return this.web.signOut();
       case 'command':
         return this.like(operation.op);
       case 'shuffle':
         try {
           return await this.shuffle(operation.mode);
         } catch (error) {
-          console.warn(`Spotify shuffle failed: ${messageOf(error)}`);
+          console.warn('Spotify shuffle failed', error);
           throw error;
         }
     }
   }
 
-  private async authorize(clientId: string) {
-    this.emit({ state: 'connecting' });
-    await pluginOAuth.signIn('spotify', SECRET, clientId);
-    try {
-      const response = await this.send('GET', '/me');
-      api.check(response);
-      const userName = api.user(response.body);
-      await pluginSecrets.write('spotify', SECRET, { userName });
-      this.userName = userName;
-    } catch (error) {
-      await pluginOAuth.signOut('spotify', SECRET);
-      throw error;
-    }
-    this.signedIn = true;
-    this.retryAt = 0;
-  }
-
   private async shuffle(mode: ShuffleMode) {
-    if (!this.signedIn) {
+    if (this.web.session.kind !== 'signedIn') {
       return this.playerCommand(`shuffle:${mode}`);
     }
     const current = await this.readPlayer();
@@ -320,14 +206,15 @@ export class SpotifyClient {
     }
   }
 
+  /** The media session first; when it fails or is ignored, the Web API. */
   private async setShuffle(enabled: boolean) {
     const deviceId = this.player.deviceId;
     try {
       await this.playerCommand(enabled ? 'shuffle:on' : 'shuffle:off');
       await this.confirmShuffle(enabled);
       return;
-    } catch (error) {
-      console.warn(`${messageOf(error)}; using Spotify Web API shuffle`);
+    } catch {
+      // The Web API below is the fallback; its own failure is what the user sees.
     }
     // An HTTP success only acknowledges the command; publish observations, never its target.
     const fields: [string, string][] = [['state', String(enabled)]];
@@ -336,7 +223,7 @@ export class SpotifyClient {
     }
     let writeFailure: unknown;
     try {
-      await this.request('PUT', `/me/player/shuffle?${query(fields)}`);
+      await this.web.request('PUT', `/me/player/shuffle?${query(fields)}`);
     } catch (error) {
       writeFailure = error;
     }
@@ -355,7 +242,7 @@ export class SpotifyClient {
   }
 
   private async like(op: LikeOp) {
-    const response = await this.request('GET', '/me/player/currently-playing');
+    const response = await this.web.request('GET', '/me/player/currently-playing');
     if (response.status === 204) {
       throw new Error("Spotify isn't playing");
     }
@@ -363,7 +250,10 @@ export class SpotifyClient {
     if (!uri) {
       throw new Error("Spotify isn't playing");
     }
-    await this.request(op === 'like' ? 'PUT' : 'DELETE', `/me/library?${query([['uris', uri]])}`);
+    await this.web.request(
+      op === 'like' ? 'PUT' : 'DELETE',
+      `/me/library?${query([['uris', uri]])}`,
+    );
     this.player = { ...this.player, uri };
     this.liked = op === 'like';
     if (op === 'dislike') {

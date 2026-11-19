@@ -1,5 +1,6 @@
 import { invoke, isTauri } from '@tauri-apps/api/core';
 import { callPlugin, pluginStateHub, isRecord, ActionFailure } from '@supadashboard/kit';
+import { errorTitle, validClientId, validText, validUri } from './service/api';
 
 export type SpotifyView =
   | { state: 'needsAuth' | 'connecting'; error?: string }
@@ -13,15 +14,11 @@ export type SpotifyView =
       error?: string;
     };
 type SpotifyCommand = 'like' | 'unlike' | 'dislike';
-const validId = (id: string) => /^[a-fA-F0-9]{32}$/.test(id);
-const validText = (text: unknown): text is string =>
-  typeof text === 'string' &&
-  text.trim().length > 0 &&
-  text.length <= 512 &&
-  !/[\u0000-\u001f\u007f-\u009f]/.test(text);
+const shownText = (text: unknown): text is string =>
+  typeof text === 'string' && text.trim().length > 0 && validText(text, 512);
 
 export function readSpotifyView(raw: unknown): SpotifyView | undefined {
-  if (!isRecord(raw) || (raw.error != null && !validText(raw.error))) {
+  if (!isRecord(raw) || (raw.error != null && !shownText(raw.error))) {
     return undefined;
   }
   const error = typeof raw.error === 'string' ? { error: raw.error } : {};
@@ -30,10 +27,8 @@ export function readSpotifyView(raw: unknown): SpotifyView | undefined {
   }
   if (
     raw.state !== 'ready' ||
-    !validText(raw.user) ||
-    (raw.trackUri !== null &&
-      (typeof raw.trackUri !== 'string' ||
-        !/^spotify:track:[a-zA-Z0-9]{22}$/.test(raw.trackUri))) ||
+    !shownText(raw.user) ||
+    (raw.trackUri !== null && (typeof raw.trackUri !== 'string' || !validUri(raw.trackUri))) ||
     (raw.liked !== null && typeof raw.liked !== 'boolean') ||
     typeof raw.smartShuffle !== 'boolean' ||
     (raw.shuffle !== undefined && typeof raw.shuffle !== 'boolean') ||
@@ -73,7 +68,7 @@ async function command(method: string, params?: Record<string, unknown>) {
 
 export async function spotifyAuthorize(clientId: string) {
   const id = clientId.trim();
-  if (!validId(id)) {
+  if (!validClientId(id)) {
     throw new Error('Invalid Spotify client ID');
   }
   await command('authorize', { clientId: id });
@@ -93,12 +88,7 @@ export async function spotifyTransport(command: string) {
     try {
       await callPlugin('spotify', 'shuffle', { mode: command.slice('shuffle:'.length) });
     } catch (error) {
-      const reason = error instanceof Error ? error.message : error;
-      const title =
-        typeof reason === 'string' && reason.length <= 80 && validText(reason)
-          ? reason
-          : 'Spotify shuffle failed';
-      throw new ActionFailure(title);
+      throw new ActionFailure(errorTitle(error, 'Spotify shuffle failed'));
     }
     return;
   }

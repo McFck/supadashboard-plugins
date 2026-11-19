@@ -1,7 +1,4 @@
-import type { LyricLine } from '../lyrics';
-
-const MAX_LINES = 2000;
-const MAX_TEXT = 500;
+import { MAX_LINE_LENGTH, MAX_LINES, type LyricLine } from '../lyrics';
 
 /** `mm:ss` or `mm:ss.f{1,3}` in ms, or null. */
 function timestamp(tag: string): number | null {
@@ -46,7 +43,7 @@ export function parseLrc(text: string): LyricLine[] {
       if (lines.length >= MAX_LINES) {
         break;
       }
-      lines.push({ atMs, text: [...rest.trim()].slice(0, MAX_TEXT).join('') });
+      lines.push({ atMs, text: [...rest.trim()].slice(0, MAX_LINE_LENGTH).join('') });
     }
   }
   for (const line of lines) {

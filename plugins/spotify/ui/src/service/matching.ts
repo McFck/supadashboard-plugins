@@ -1,5 +1,5 @@
 import { isRecord } from '@supadashboard/kit';
-import type { LyricLine, LyricsView } from '../lyrics';
+import { MAX_PLAIN_LENGTH, type LyricLine, type LyricsView } from '../lyrics';
 import { parseLrc } from './lrc';
 import type { Track } from './track';
 
@@ -71,7 +71,7 @@ function view(record: LrclibRecord, durationMs: number): LyricsView {
     }
   }
   if (record.plainLyrics?.trim()) {
-    return { kind: 'plain', text: [...record.plainLyrics].slice(0, 100_000).join('') };
+    return { kind: 'plain', text: [...record.plainLyrics].slice(0, MAX_PLAIN_LENGTH).join('') };
   }
   return { kind: 'none' };
 }

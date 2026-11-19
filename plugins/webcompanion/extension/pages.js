@@ -13,6 +13,18 @@ export function pagePort(id) {
   return pages.get(id)?.port;
 }
 
+export function preparePointer(id) {
+  const page = pages.get(id);
+  if (page && !page.pointerPrepared) {
+    try {
+      page.port.postMessage({ kind: 'pointer_prepare' });
+      page.pointerPrepared = true;
+    } catch {
+      // The page may have disconnected before the active-tab update arrived.
+    }
+  }
+}
+
 export function pageMedia(id) {
   return pages.get(id)?.media;
 }

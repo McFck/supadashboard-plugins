@@ -60,8 +60,7 @@
     const nodes = [];
     for (let node = target; node;) {
       nodes.push(node);
-      const root = node.getRootNode();
-      node = node.parentElement ?? (root instanceof ShadowRoot ? root.host : null);
+      node = node.parentElement ?? node.getRootNode().host ?? null;
     }
     return nodes;
   }
@@ -104,14 +103,18 @@
     }
     const x = clamp((last?.x ?? innerWidth / 2) + dx, innerWidth);
     const y = clamp((last?.y ?? innerHeight / 2) + dy, innerHeight);
+    // Hit-test before changing the overlay so the cursor's transform cannot force a style flush.
+    const target = targetAt(x, y);
+    if (!host.isConnected || last?.x !== x || last?.y !== y) {
+      cursor.style.transform = `translate(${x}px, ${y}px)`;
+    }
     last = { x, y };
-    cursor.style.transform = `translate(${x}px, ${y}px)`;
     if (!host.isConnected) {
       document.documentElement.append(host);
     }
     clearTimeout(hide);
     hide = setTimeout(cancel, 3000);
-    return targetAt(x, y);
+    return target;
   }
 
   function down(target) {
@@ -166,7 +169,7 @@
     const target = position(dx, dy);
     hover(target);
     if (!target) {
-      return false;
+      return action.kind === 'move';
     }
     switch (action.kind) {
       case 'begin':

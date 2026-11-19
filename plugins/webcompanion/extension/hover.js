@@ -5,22 +5,25 @@
   const attribute = 'data-supadashboard-hover';
   const selectors = /("(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*'|\\.)|:hover(?![\w-])/gi;
   const processed = new WeakMap();
+  const versions = new WeakMap();
   const roots = new Set();
   let active = false;
   let scheduled = false;
   let again = false;
 
-  function* rules(container) {
-    let children;
+  function cssRules(container) {
     try {
-      children = container.cssRules;
+      return container.cssRules;
     } catch {
       // The browser protects stylesheets loaded without cross-origin access.
-      return;
+      return undefined;
     }
+  }
+
+  function* rules(children) {
     for (const rule of children ?? []) {
       yield rule;
-      yield* rules(rule.styleSheet ?? rule);
+      yield* rules(cssRules(rule.styleSheet ?? rule));
     }
   }
 
@@ -31,9 +34,22 @@
         continue;
       }
       for (const sheet of [...root.styleSheets, ...root.adoptedStyleSheets]) {
-        if (!sheet.disabled) {
-          yield* rules(sheet);
+        if (sheet.disabled) {
+          continue;
         }
+        const children = cssRules(sheet);
+        if (!children) {
+          continue;
+        }
+        const version = versions.get(sheet);
+        const length = children.length;
+        const first = children[0];
+        const last = children[length - 1];
+        if (version?.length === length && version.first === first && version.last === last) {
+          continue;
+        }
+        yield* rules(children);
+        versions.set(sheet, { length, first, last });
       }
     }
   }
@@ -83,12 +99,12 @@
       }
     }
     for (const node of current) {
-      const root = node.getRootNode();
-      if (root instanceof ShadowRoot && !roots.has(root)) {
-        roots.add(root);
-        prepare();
-      }
       if (!previous.includes(node)) {
+        const root = node.getRootNode();
+        if (root instanceof ShadowRoot && !roots.has(root)) {
+          roots.add(root);
+          prepare();
+        }
         node.setAttribute(attribute, '');
       }
     }
@@ -99,6 +115,9 @@
     'load',
     (event) => {
       if (active && event.target instanceof HTMLLinkElement && event.target.rel === 'stylesheet') {
+        if (event.target.sheet) {
+          versions.delete(event.target.sheet);
+        }
         prepare();
       }
     },

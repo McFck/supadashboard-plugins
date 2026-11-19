@@ -7,6 +7,7 @@ import {
   onPagesChanged,
   pageMedia,
   pagePort,
+  preparePointer,
 } from './pages.js';
 import { forgetSuspendedTab, mediaSuspended } from './suspend.js';
 
@@ -81,6 +82,7 @@ async function snapshot() {
   if (active && !tabs.includes(active)) {
     tabs[255] = active;
   }
+  preparePointer(active?.id);
   for (const tab of tabs) {
     if (tab.id === active?.id || tab.audible) {
       void ensure(tab).catch(() => {

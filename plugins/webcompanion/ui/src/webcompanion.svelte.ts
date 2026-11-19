@@ -13,6 +13,7 @@ class WebCompanion {
   snapshot = $state<PluginBrowserSnapshot>({ kind: 'offline' });
   pairing = $state<{ code: string; expiresInMs: number } | null>(null);
   pairingPending = $state(false);
+  unpairing = $state(false);
   private watch = $state<number | null>(null);
   readonly ready = $derived(this.watch !== null);
   private users = 0;
@@ -107,6 +108,21 @@ class WebCompanion {
       this.error(error, 'Could not create pairing code');
     } finally {
       this.pairingPending = false;
+    }
+  }
+
+  async unpair() {
+    if (this.watch === null || this.unpairing) {
+      return;
+    }
+    this.unpairing = true;
+    try {
+      await pluginBrowser.unpair(plugin, this.watch);
+      this.clearCode();
+    } catch (error) {
+      this.error(error, 'Could not unpair browser');
+    } finally {
+      this.unpairing = false;
     }
   }
 

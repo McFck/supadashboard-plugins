@@ -1,4 +1,4 @@
-import { answer, credentialId, fields, hello, isCode, isHex } from './protocol.js';
+import { answer, credentialId, fields, hello, isCode, isHex, isUnpairFrame } from './protocol.js';
 import { observe, scroll } from './browser.js';
 import { BrowserPointer } from './pointer-worker.js';
 import { isCommand, reply } from './commands.js';
@@ -6,18 +6,58 @@ import { isCommand, reply } from './commands.js';
 const endpoint = 'ws://127.0.0.1:43822/browser';
 const wake = 'webcompanion-reconnect';
 const credentialKey = 'webcompanionCredential';
+const unpairKey = 'webcompanionUnpairPending';
 const MAX_PENDING = 32;
 const encoder = new TextEncoder();
 let socket;
 let retry;
 let backoff = 500;
 let status = 'offline';
+let sendUnpair;
+let clearing;
+let requesting;
 const errors = new Set(['code', 'expired', 'auth', 'update', 'dashboard_update', 'storage']);
 // Retrying these fast cannot help; the one-minute alarm still retries in case the other side changes.
 const lasting = new Set(['auth', 'update', 'dashboard_update']);
 
 function report(error) {
   console.error('WebCompanion:', error);
+}
+
+async function popupState() {
+  const values = await chrome.storage.local.get([credentialKey, unpairKey]);
+  const saved = isHex(values[credentialKey], 64);
+  return {
+    status: status === 'offline' && !saved ? 'unpaired' : status,
+    saved,
+    pending: saved && values[unpairKey] === true,
+  };
+}
+
+function setStatus(value) {
+  status = value;
+  popupState().then((state) => {
+    void chrome.runtime.sendMessage(state).catch(() => {
+      // The popup is usually closed.
+    });
+  }, report);
+}
+
+function forgetCredential(current) {
+  clearing ??= Promise.resolve(requesting)
+    .catch(report)
+    .then(() => chrome.storage.local.remove([credentialKey, unpairKey]))
+    .then(async () => {
+      clearTimeout(retry);
+      retry = undefined;
+      setStatus('unpaired');
+      current.close();
+      await chrome.alarms.clear(wake).catch(report);
+    })
+    .finally(() => {
+      clearing = undefined;
+    });
+  return clearing;
 }
 
 function schedule() {
@@ -89,18 +129,19 @@ function connect(mode, secret) {
       }
       reject(new Error('WebCompanion connection closed'));
       if (socket === current) {
+        sendUnpair = undefined;
         if (status === 'paired') {
-          status = 'offline';
+          setStatus('offline');
         }
         socket = undefined;
-        if (!lasting.has(status)) {
+        if (!clearing && status !== 'unpaired' && !lasting.has(status)) {
           schedule();
         }
       }
     };
     function fail(error) {
-      if (errors.has(error.message)) {
-        status = error.message;
+      if (socket === current && errors.has(error.message)) {
+        setStatus(error.message);
       }
       reject(error);
       current.close();
@@ -116,6 +157,12 @@ function connect(mode, secret) {
         return;
       }
       const credential = await step.confirm(message);
+      if (credential === null) {
+        if (socket === current || !socket) {
+          await forgetCredential(current);
+        }
+        return;
+      }
       if (!isOpen()) {
         return;
       }
@@ -142,7 +189,11 @@ function connect(mode, secret) {
         ),
       };
       backoff = 500;
-      status = 'paired';
+      sendUnpair = () => send({ kind: 'unpair' });
+      setStatus('paired');
+      if ((await chrome.storage.local.get(unpairKey))[unpairKey] === true) {
+        send({ kind: 'unpair' });
+      }
       resolve();
     }
     current.onmessage = ({ data }) => {
@@ -157,7 +208,13 @@ function connect(mode, secret) {
       try {
         const message = JSON.parse(data);
         if (phase.kind === 'connected') {
-          serve(message, phase, send, fail);
+          if (isUnpairFrame(message, 'unpaired')) {
+            void forgetCredential(current).catch(() => fail(new Error('storage')));
+          } else if (isUnpairFrame(message, 'unpairfailed')) {
+            void chrome.storage.local.remove(unpairKey).then(() => setStatus('storage'), report);
+          } else if (!clearing) {
+            serve(message, phase, send, fail);
+          }
         } else if (phase.kind === 'verifying') {
           throw new Error('Unexpected authentication frame');
         } else {
@@ -173,7 +230,7 @@ function connect(mode, secret) {
 }
 
 async function reconnect() {
-  if (socket || retry !== undefined) {
+  if (socket || retry !== undefined || clearing) {
     return;
   }
   const { [credentialKey]: credential } = await chrome.storage.local.get(credentialKey);
@@ -190,6 +247,26 @@ async function reconnect() {
   }
 }
 
+async function pair(code) {
+  const { pending } = await popupState();
+  if (pending || requesting || clearing) {
+    return popupState();
+  }
+  clearTimeout(retry);
+  retry = undefined;
+  const previous = socket;
+  socket = undefined;
+  sendUnpair = undefined;
+  previous?.close();
+  setStatus('offline');
+  try {
+    await connect('pair', code);
+  } catch {
+    // The connection reports the pairing error in the popup state.
+  }
+  return popupState();
+}
+
 chrome.alarms.onAlarm.addListener(({ name }) => {
   if (name === wake) {
     reconnect().catch(report);
@@ -201,22 +278,35 @@ chrome.runtime.onMessage.addListener((message, sender, respond) => {
     return false;
   }
   if (fields(message, 'status') && message.status === true) {
-    respond({ status });
-    return false;
+    popupState().then(respond, () => respond({ status: 'storage' }));
+    return true;
+  }
+  if (isUnpairFrame(message, 'unpair')) {
+    if (!requesting && !clearing) {
+      requesting = popupState()
+        .then(async ({ saved }) => {
+          if (saved && !clearing) {
+            await chrome.storage.local.set({ [unpairKey]: true });
+            if (!sendUnpair?.()) {
+              clearTimeout(retry);
+              retry = undefined;
+              void reconnect().catch(report);
+            }
+          }
+        })
+        .finally(() => {
+          requesting = undefined;
+        });
+    }
+    Promise.resolve(requesting ?? clearing)
+      .then(popupState)
+      .then(respond, () => respond({ status: 'storage', saved: true, pending: false }));
+    return true;
   }
   if (!fields(message, 'code') || !isCode(message.code)) {
     return false;
   }
-  clearTimeout(retry);
-  retry = undefined;
-  const previous = socket;
-  socket = undefined;
-  previous?.close();
-  status = 'offline';
-  connect('pair', message.code).then(
-    () => respond({ status: 'paired' }),
-    () => respond({ status }),
-  );
+  pair(message.code).then(respond, () => respond({ status: 'storage' }));
   return true;
 });
 

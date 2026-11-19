@@ -1,7 +1,7 @@
 // Guards the extension's trust boundaries: the pairing proof the Rust bridge checks, page media reports and website URLs.
 import { createHmac } from 'node:crypto';
 import { expect, it } from 'vitest';
-import { answer, isMedia, website } from './extension/protocol.js';
+import { answer, isMedia, isPointerDone, isUnpairFrame, website } from './extension/protocol.js';
 
 const extension = 'cnojhdmglpjodgblffallbibdifemkop';
 globalThis.chrome = { runtime: { id: extension } };
@@ -31,6 +31,24 @@ it('accepts only bounded media reports from pages', () => {
   }
 });
 
+it('forgets a disconnected credential only for a signed revocation of this login', async () => {
+  const secret = 'd'.repeat(64);
+  const greeting = { v: 3, mode: 'auth', nonce: 'a'.repeat(32) };
+  const challenge = { nonce: 'b'.repeat(32) };
+  const transcript = `supadashboard-browser-v3:auth:${extension}:${greeting.nonce}:${challenge.nonce}`;
+  const key = createHmac('sha256', secret).update('revocation').digest('hex');
+  const proof = createHmac('sha256', key).update(`revoked:${transcript}`).digest('hex');
+  const revoked = { kind: 'revoked', proof };
+  const { confirm } = await answer(greeting, challenge, secret);
+  await expect(confirm(revoked)).resolves.toBeNull();
+  await expect(confirm({ ...revoked, proof: '0'.repeat(64) })).rejects.toThrow();
+  await expect(confirm({ ...revoked, extra: true })).rejects.toThrow();
+  const next = await answer(greeting, { nonce: 'c'.repeat(32) }, secret);
+  await expect(next.confirm(revoked)).rejects.toThrow();
+  expect(isUnpairFrame({ kind: 'unpaired' }, 'unpaired')).toBe(true);
+  expect(isUnpairFrame({ kind: 'unpaired', extra: true }, 'unpaired')).toBe(false);
+});
+
 it('passes only plain http and https websites', () => {
   expect(website('https://example.org/a')).toBe('https://example.org/a');
   for (const url of [
@@ -41,4 +59,12 @@ it('passes only plain http and https websites', () => {
   ]) {
     expect(website(url)).toBeNull();
   }
+});
+
+it('a malformed or stale page acknowledgement cannot complete pointer motion', () => {
+  const done = { kind: 'pointer_done', id: 4, ok: true };
+  expect(isPointerDone(done, 4)).toBe(true);
+  expect(isPointerDone(done, 5)).toBe(false);
+  expect(isPointerDone({ ...done, ok: 'true' }, 4)).toBe(false);
+  expect(isPointerDone({ ...done, extra: true }, 4)).toBe(false);
 });

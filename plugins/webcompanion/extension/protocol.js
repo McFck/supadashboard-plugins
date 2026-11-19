@@ -45,23 +45,52 @@ export async function answer(greeting, challenge, secret) {
     ['sign', 'verify'],
   );
   const transcript = `supadashboard-browser-v${greeting.v}:${greeting.mode}:${chrome.runtime.id}:${greeting.nonce}:${challenge.nonce}`;
-  const sign = async (role) =>
-    encodeHex(
-      new Uint8Array(await crypto.subtle.sign('HMAC', key, utf8.encode(`${role}:${transcript}`))),
-    );
+  const sign = async (text) =>
+    encodeHex(new Uint8Array(await crypto.subtle.sign('HMAC', key, utf8.encode(text))));
   return {
-    proof: await sign('client'),
+    proof: await sign(`client:${transcript}`),
     async confirm(ready) {
-      if (!fields(ready, 'kind', 'proof') || ready.kind !== 'ready' || !isHex(ready.proof, 64)) {
+      if (!fields(ready, 'kind', 'proof') || !isHex(ready.proof, 64)) {
         throw new Error('Invalid bridge confirmation');
       }
       const proof = Uint8Array.from(ready.proof.match(/../g), (byte) => Number.parseInt(byte, 16));
+      if (greeting.mode === 'auth' && ready.kind === 'revoked') {
+        const revokeKey = await crypto.subtle.importKey(
+          'raw',
+          utf8.encode(await sign('revocation')),
+          { name: 'HMAC', hash: 'SHA-256' },
+          false,
+          ['verify'],
+        );
+        if (
+          await crypto.subtle.verify('HMAC', revokeKey, proof, utf8.encode(`revoked:${transcript}`))
+        ) {
+          return null;
+        }
+        throw new Error('Invalid bridge revocation');
+      }
+      if (ready.kind !== 'ready') {
+        throw new Error('Invalid bridge confirmation');
+      }
       if (!(await crypto.subtle.verify('HMAC', key, proof, utf8.encode(`server:${transcript}`)))) {
         throw new Error('Bridge authentication failed');
       }
-      return greeting.mode === 'pair' ? sign('credential') : secret;
+      return greeting.mode === 'pair' ? sign(`credential:${transcript}`) : secret;
     },
   };
+}
+
+export function isUnpairFrame(value, kind) {
+  return fields(value, 'kind') && value.kind === kind;
+}
+
+export function isPointerDone(value, id) {
+  return (
+    fields(value, 'kind', 'id', 'ok') &&
+    value.kind === 'pointer_done' &&
+    value.id === id &&
+    typeof value.ok === 'boolean'
+  );
 }
 
 export function title(value) {

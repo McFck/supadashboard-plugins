@@ -172,6 +172,46 @@
   });
   let port;
   let reconnectDelay = 250;
+  let moveFrame = 0;
+  let pendingMove;
+
+  function replyMove(frame, source, apply) {
+    const ok = apply && pointer.input(frame.input);
+    try {
+      source.postMessage({ kind: 'pointer_done', id: frame.id, ok });
+    } catch {
+      // The worker cancels the gesture if the document port closes.
+    }
+  }
+
+  function flushMove(apply) {
+    if (pendingMove) {
+      const { frame, source } = pendingMove;
+      pendingMove = undefined;
+      replyMove(frame, source, apply);
+    }
+  }
+
+  function nextMove() {
+    moveFrame = 0;
+    if (pendingMove) {
+      moveFrame = requestAnimationFrame(nextMove);
+      flushMove(!document.hidden);
+    }
+  }
+
+  function receiveMove(frame, source) {
+    if (document.hidden) {
+      replyMove(frame, source, false);
+    } else if (moveFrame) {
+      flushMove(false);
+      pendingMove = { frame, source };
+    } else {
+      // The first move after idle can paint on the upcoming frame without waiting for its callback.
+      moveFrame = requestAnimationFrame(nextMove);
+      replyMove(frame, source, true);
+    }
+  }
 
   function connect() {
     // After an extension reload or update this copy is orphaned; the new one takes over.
@@ -182,16 +222,27 @@
       }
       return;
     }
-    port = chrome.runtime.connect(chrome.runtime.id, { name: 'webcompanion-page' });
-    port.onMessage.addListener((frame) => {
+    const source = chrome.runtime.connect(chrome.runtime.id, { name: 'webcompanion-page' });
+    port = source;
+    source.onMessage.addListener((frame) => {
       reconnectDelay = 250;
-      if (frame?.kind === 'pointer_input') {
-        pointer.input(frame.input);
+      if (frame?.kind === 'pointer_prepare') {
+        globalThis.webcompanionHover.prepare();
+      } else if (frame?.kind === 'pointer_input') {
+        if (frame.input?.kind === 'move' && Number.isSafeInteger(frame.id)) {
+          receiveMove(frame, source);
+        } else {
+          flushMove(frame.input?.kind !== 'cancel');
+          pointer.input(frame.input);
+        }
       } else {
         scroller.apply(frame);
       }
     });
-    port.onDisconnect.addListener(() => {
+    source.onDisconnect.addListener(() => {
+      cancelAnimationFrame(moveFrame);
+      moveFrame = 0;
+      pendingMove = undefined;
       pointer.input({ kind: 'cancel' });
       port = undefined;
       setTimeout(connect, reconnectDelay);
@@ -199,6 +250,14 @@
     });
     changed();
   }
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      cancelAnimationFrame(moveFrame);
+      moveFrame = 0;
+      flushMove(false);
+    }
+  });
 
   let selectedMedia;
 

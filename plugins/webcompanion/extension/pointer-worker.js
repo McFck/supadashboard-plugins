@@ -1,6 +1,6 @@
 import { isSelected } from './browser.js';
 import { ensure, pagePort } from './pages.js';
-import { fields, idInRange, MAX_TAB_ID } from './protocol.js';
+import { fields, idInRange, isPointerDone, MAX_TAB_ID } from './protocol.js';
 
 function valid(action) {
   if (!fields(action, 'kind', 'tab', 'input') || !idInRange(action.tab, MAX_TAB_ID)) {
@@ -16,9 +16,11 @@ function valid(action) {
   return fields(input, 'kind') && ['begin', 'click', 'down', 'up', 'cancel'].includes(input.kind);
 }
 
-function send(port, input) {
+let nextMove = 0;
+
+function send(port, input, id) {
   try {
-    port.postMessage({ kind: 'pointer_input', input });
+    port.postMessage({ kind: 'pointer_input', input, id });
     return true;
   } catch {
     // The previous document can disconnect while a tab change is being delivered.
@@ -30,6 +32,7 @@ export class BrowserPointer {
   #session;
   #stopped = false;
   #tail = Promise.resolve();
+  #abortMove;
 
   constructor() {
     chrome.tabs.onActivated.addListener(this.#activeChanged);
@@ -69,9 +72,41 @@ export class BrowserPointer {
   #cancel() {
     const session = this.#session;
     this.#session = undefined;
+    this.#abortMove?.();
     if (session) {
       send(session.port, { kind: 'cancel' });
     }
+  }
+
+  #move(port, input) {
+    const id = ++nextMove;
+    return new Promise((resolve) => {
+      const fail = () => finish(false);
+      const timer = setTimeout(fail, 750);
+      const finish = (ok) => {
+        clearTimeout(timer);
+        port.onMessage.removeListener(receive);
+        port.onDisconnect.removeListener(fail);
+        this.#abortMove = undefined;
+        resolve(ok);
+      };
+      const receive = (message) => {
+        if (isPointerDone(message, id)) {
+          finish(message.ok);
+        }
+      };
+      this.#abortMove = fail;
+      port.onMessage.addListener(receive);
+      port.onDisconnect.addListener(fail);
+      if (!send(port, input, id)) {
+        fail();
+      }
+    }).then((ok) => {
+      if (!ok && this.#session?.port === port) {
+        this.#cancel();
+      }
+      return ok;
+    });
   }
 
   async #begin(tab, input) {
@@ -111,6 +146,6 @@ export class BrowserPointer {
     if (session?.tab !== tab || session.port !== pagePort(tab)) {
       return false;
     }
-    return send(session.port, input);
+    return input.kind === 'move' ? this.#move(session.port, input) : send(session.port, input);
   }
 }

@@ -14,6 +14,7 @@
     }
   }
   const connected = $derived(webCompanion.snapshot.kind === 'connected');
+  const paired = $derived(connected || webCompanion.snapshot.kind === 'paired');
   const status = $derived.by(() => {
     if (webCompanion.snapshot.kind === 'repair') {
       return 'Pair the browser again';
@@ -36,7 +37,20 @@
       {status}
     </span>
   </Row>
-  {#if !connected}
+  {#if paired}
+    <Row
+      label="Pairing"
+      for="browser-unpair"
+    >
+      <Button
+        id="browser-unpair"
+        disabled={!webCompanion.ready || webCompanion.unpairing}
+        onclick={() => webCompanion.unpair()}
+      >
+        Unpair
+      </Button>
+    </Row>
+  {:else}
     <Row
       label="Pairing"
       for="browser-pair"

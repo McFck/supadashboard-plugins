@@ -1,5 +1,5 @@
 import { expect, it } from 'vitest';
-import { check, contains, player, shuffle, validUri } from './api';
+import { check, contains, errorTitle, player, shuffle, validUri } from './api';
 
 it('rejects malformed device ids before targeting playback', () => {
   const body = (id: unknown) => JSON.stringify({ item: null, is_playing: false, device: { id } });
@@ -50,4 +50,14 @@ it('maps auth, device, premium and retry errors', () => {
       expect.objectContaining({ failure, retryAfter: seconds }),
     );
   }
+});
+
+it('never publishes a host error title the state reader would reject as a whole view', () => {
+  for (const error of [
+    new Error('error sending request\ncaused by: dns'),
+    new Error('x'.repeat(81)),
+  ]) {
+    expect(errorTitle(error)).toBe('Spotify request failed');
+  }
+  expect(errorTitle(new Error('Spotify rate limited'))).toBe('Spotify rate limited');
 });

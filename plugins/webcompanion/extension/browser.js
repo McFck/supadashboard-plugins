@@ -1,12 +1,19 @@
-import { fields, idInRange, title, website } from './protocol.js';
+import { idInRange, MAX_TAB_ID, title, website } from './protocol.js';
+import {
+  ensure,
+  forgetInjection,
+  forgetPage,
+  mediaTab,
+  onPagesChanged,
+  pageMedia,
+  pagePort,
+} from './pages.js';
 import { forgetSuspendedTab, mediaSuspended } from './suspend.js';
 
-const pages = new Map();
-const injections = new Map();
 const activeTabs = new Map();
 let selectedWindow;
-let lastMediaTab;
 let refresh = () => {};
+onPagesChanged(() => refresh());
 
 export function isSelected(id) {
   return activeTabs.get(selectedWindow) === id;
@@ -16,10 +23,6 @@ export function selectTab({ id, windowId }) {
   activeTabs.set(windowId, id);
   selectedWindow = windowId;
   refresh();
-}
-
-export function pagePort(id) {
-  return pages.get(id)?.port;
 }
 
 export const tabOrder = (a, b) => a.windowId - b.windowId || a.index - b.index;
@@ -36,94 +39,27 @@ export async function activeTab(tabs) {
 }
 
 export function scroll(frame) {
-  const tab = activeTabs.get(selectedWindow);
-  if (frame.tab != null && frame.tab !== tab) {
+  if (frame.tab !== activeTabs.get(selectedWindow)) {
     return;
   }
-  const page = pages.get(tab);
-  if (page) {
-    try {
-      page.port.postMessage(frame);
-    } catch {
-      // The document may have navigated before onDisconnect is delivered.
-    }
+  try {
+    pagePort(frame.tab)?.postMessage(frame);
+  } catch {
+    // The document may have navigated before onDisconnect is delivered.
   }
 }
 
-export async function ensure(tab) {
-  if (pages.has(tab.id) || tab.status !== 'complete' || !tab.url || !website(tab.url)) {
-    return;
-  }
-  let attempt = injections.get(tab.id);
-  if (!attempt) {
-    // Tabs already open at install time do not get the declared content script.
-    attempt = chrome.scripting.executeScript({
-      target: { tabId: tab.id },
-      files: ['hover.js', 'pointer.js', 'page.js'],
-    });
-    injections.set(tab.id, attempt);
-  }
-  await attempt;
-}
-
-chrome.runtime.onConnect.addListener((port) => {
-  const sender = port.sender;
-  const id = sender?.tab?.id;
-  if (
-    port.name !== 'webcompanion-page' ||
-    sender?.id !== chrome.runtime.id ||
-    sender.frameId !== 0 ||
-    !idInRange(id, 0x7fffffff) ||
-    !sender.url ||
-    !website(sender.url)
-  ) {
-    port.disconnect();
-    return;
-  }
-  const page = { port, media: null };
-  pages.set(id, page);
-  refresh();
-  port.onMessage.addListener((message) => {
-    if (pages.get(id) !== page) {
-      return;
-    }
-    if (!fields(message, 'kind', 'media') || message.kind !== 'media_changed') {
-      return;
-    }
-    const media = message.media;
-    if (
-      media !== null &&
-      (!fields(media, 'paused', 'rate') ||
-        typeof media.paused !== 'boolean' ||
-        typeof media.rate !== 'number' ||
-        !(media.rate === 0 || (media.rate >= 0.0625 && media.rate <= 16)))
-    ) {
-      return;
-    }
-    page.media = media;
-    if (media?.paused === false) {
-      lastMediaTab = id;
-    }
-    refresh();
-  });
-  port.onDisconnect.addListener(() => {
-    if (pages.get(id) === page) {
-      pages.delete(id);
-      refresh();
-    }
-  });
-});
-
-export function mediaTab(tabs, active) {
-  if (pages.get(active?.id)?.media) {
-    return active;
-  }
-  return (
-    tabs.find((tab) => tab.audible && pages.get(tab.id)?.media?.paused === false) ??
-    tabs.find((tab) => pages.get(tab.id)?.media?.paused === false) ??
-    tabs.find((tab) => tab.id === lastMediaTab && pages.get(tab.id)?.media) ??
-    tabs.find((tab) => pages.get(tab.id)?.media)
-  );
+function describeTab(tab, groupWindows) {
+  const icon = tab.favIconUrl && website(tab.favIconUrl);
+  return {
+    id: tab.id,
+    title: title(tab.title),
+    active: tab.active,
+    favicon: icon && icon.length <= 512 && !icon.includes('\\') ? icon : null,
+    window: tab.windowId,
+    group: !tab.pinned && groupWindows.get(tab.groupId) === tab.windowId ? tab.groupId : null,
+    pinned: tab.pinned,
+  };
 }
 
 async function snapshot() {
@@ -131,7 +67,7 @@ async function snapshot() {
     chrome.tabs.query({ windowType: 'normal' }),
     chrome.tabGroups.query({}),
   ]);
-  const all = open.filter((tab) => idInRange(tab.id, 0x7fffffff)).sort(tabOrder);
+  const all = open.filter((tab) => idInRange(tab.id, MAX_TAB_ID)).sort(tabOrder);
   for (const tab of all) {
     if (tab.active && !activeTabs.has(tab.windowId)) {
       activeTabs.set(tab.windowId, tab.id);
@@ -153,7 +89,7 @@ async function snapshot() {
     }
   }
   const player = mediaTab(tabs, active);
-  const status = pages.get(player?.id)?.media;
+  const status = pageMedia(player?.id);
   const window =
     player && status ? await chrome.windows.get(player.windowId).catch(() => null) : null;
   const used = new Set(tabs.map((tab) => tab.groupId));
@@ -162,18 +98,7 @@ async function snapshot() {
   return {
     kind: 'state',
     state: {
-      tabs: tabs.map((tab) => {
-        const icon = tab.favIconUrl && website(tab.favIconUrl);
-        return {
-          id: tab.id,
-          title: title(tab.title),
-          active: tab.active,
-          favicon: icon && icon.length <= 512 && !icon.includes('\\') ? icon : null,
-          window: tab.windowId,
-          group: !tab.pinned && groupWindows.get(tab.groupId) === tab.windowId ? tab.groupId : null,
-          pinned: tab.pinned,
-        };
-      }),
+      tabs: tabs.map((tab) => describeTab(tab, groupWindows)),
       activeTab: active?.id ?? null,
       groups: groups.map(({ id, windowId, title: name, color, collapsed }) => ({
         id,
@@ -209,7 +134,7 @@ chrome.windows.onRemoved.addListener((id) => {
 });
 chrome.tabs.onUpdated.addListener((id, change) => {
   if (change.status === 'loading') {
-    injections.delete(id);
+    forgetInjection(id);
     void forgetSuspendedTab(id, true).then(refresh, console.error);
   }
   refresh();
@@ -220,23 +145,20 @@ chrome.tabs.onDetached.addListener((id, { oldWindowId }) => {
   }
   refresh();
 });
-function removeTab(id) {
-  pages.delete(id);
-  injections.delete(id);
+function removeClosedTab(id) {
+  forgetPage(id);
   for (const [window, active] of activeTabs) {
     if (active === id) {
       activeTabs.delete(window);
     }
   }
   refresh();
-}
-function removeClosedTab(id) {
-  removeTab(id);
   void forgetSuspendedTab(id).then(refresh, console.error);
 }
 chrome.tabs.onRemoved.addListener(removeClosedTab);
 chrome.tabs.onReplaced.addListener((_added, removed) => removeClosedTab(removed));
 
+/** Publishes the browser state after changes settle, and at least every 15 s. */
 export function observe(send, onError) {
   const events = [
     chrome.tabs.onCreated,
@@ -248,39 +170,37 @@ export function observe(send, onError) {
     chrome.tabGroups.onMoved,
     chrome.tabGroups.onRemoved,
   ];
-  let timer;
-  let running = false;
-  let pending = false;
-  let stopped = false;
+  let phase = { kind: 'idle' };
+  let dirty = false;
   let heartbeatDue = false;
   let lastState;
   function schedule() {
-    pending = true;
-    if (!running && timer === undefined && !stopped) {
-      timer = setTimeout(publish, 35);
+    dirty = true;
+    if (phase.kind === 'idle') {
+      phase = { kind: 'waiting', timer: setTimeout(publish, 35) };
     }
   }
   async function publish() {
-    timer = undefined;
-    running = true;
-    pending = false;
+    phase = { kind: 'publishing' };
+    dirty = false;
     const heartbeat = heartbeatDue;
     heartbeatDue = false;
     try {
-      const update = await snapshot();
-      const state = JSON.stringify(update);
-      if (!stopped && (heartbeat || state !== lastState)) {
+      const state = JSON.stringify(await snapshot());
+      if (phase.kind !== 'stopped' && (heartbeat || state !== lastState)) {
         send(state);
         lastState = state;
       }
     } catch (error) {
-      if (!stopped) {
+      if (phase.kind !== 'stopped') {
         onError(error);
       }
     } finally {
-      running = false;
-      if (pending) {
-        schedule();
+      if (phase.kind === 'publishing') {
+        phase = { kind: 'idle' };
+        if (dirty) {
+          schedule();
+        }
       }
     }
   }
@@ -297,11 +217,13 @@ export function observe(send, onError) {
   return {
     refresh: schedule,
     stop() {
-      stopped = true;
+      if (phase.kind === 'waiting') {
+        clearTimeout(phase.timer);
+      }
+      phase = { kind: 'stopped' };
       if (refresh === schedule) {
         refresh = () => {};
       }
-      clearTimeout(timer);
       clearInterval(heartbeat);
       for (const event of events) {
         event.removeListener(schedule);

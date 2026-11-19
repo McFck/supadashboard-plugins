@@ -1,4 +1,5 @@
-import { activeTab, ensure, mediaTab, selectTab, tabOrder } from './browser.js';
+import { activeTab, selectTab, tabOrder } from './browser.js';
+import { ensure, mediaTab } from './pages.js';
 import { fields, idInRange, website } from './protocol.js';
 import { suspendMedia } from './suspend.js';
 
@@ -135,6 +136,24 @@ async function pageCommand(action) {
   return true;
 }
 
+async function tabAction(action, pointer) {
+  switch (action.kind) {
+    case 'select_tab':
+      return select(action.tab, pointer);
+    case 'close_tab':
+      await existingTab(action.tab);
+      await chrome.tabs.remove(action.tab);
+      return true;
+    case 'move_tab':
+      return moveTab(action);
+    case 'group':
+      await chrome.tabGroups.update(action.group, { collapsed: action.collapsed });
+      return true;
+    default:
+      return tabCommand(action.input, pointer);
+  }
+}
+
 async function run(action, pointer) {
   switch (action.kind) {
     case 'pointer':
@@ -144,23 +163,8 @@ async function run(action, pointer) {
     case 'close_tab':
     case 'move_tab':
     case 'group': {
-      const command = tabCommands.then(async () => {
-        switch (action.kind) {
-          case 'select_tab':
-            return select(action.tab, pointer);
-          case 'close_tab':
-            await existingTab(action.tab);
-            await chrome.tabs.remove(action.tab);
-            return true;
-          case 'move_tab':
-            return moveTab(action);
-          case 'group':
-            await chrome.tabGroups.update(action.group, { collapsed: action.collapsed });
-            return true;
-          default:
-            return tabCommand(action.input, pointer);
-        }
-      });
+      const command = tabCommands.then(() => tabAction(action, pointer));
+      // A failed tab command is reported by its own reply and must not block the next one.
       tabCommands = command.catch(() => {});
       return command;
     }

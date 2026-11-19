@@ -13,6 +13,8 @@ let retry;
 let backoff = 500;
 let status = 'offline';
 const errors = new Set(['code', 'expired', 'auth', 'update', 'dashboard_update', 'storage']);
+// Retrying these fast cannot help; the one-minute alarm still retries in case the other side changes.
+const lasting = new Set(['auth', 'update', 'dashboard_update']);
 
 function report(error) {
   console.error('WebCompanion:', error);
@@ -26,24 +28,54 @@ function schedule() {
   backoff = Math.min(backoff * 2, 30_000);
 }
 
+async function saveCredential(credential) {
+  await chrome.alarms.create(wake, { periodInMinutes: 1 });
+  await chrome.storage.local.set({ [credentialKey]: credential }).catch(() => {
+    throw new Error('storage');
+  });
+}
+
+function serve(message, session, send, fail) {
+  if (message?.kind === 'scroll') {
+    scroll(message);
+  } else if (!isCommand(message)) {
+    throw new Error('Invalid browser request');
+  } else if (session.pending >= MAX_PENDING) {
+    send({ kind: 'done', id: message.id, ok: false });
+  } else {
+    session.pending++;
+    void reply(message, session.pointer)
+      .then((result) => {
+        if (send(result) && message.action?.kind !== 'pointer') {
+          session.observer.refresh();
+        }
+      })
+      .catch(fail)
+      .finally(() => {
+        session.pending--;
+      });
+  }
+}
+
 function connect(mode, secret) {
   return new Promise((resolve, reject) => {
     const current = new WebSocket(endpoint);
     socket = current;
     const greeting = hello(mode);
     let phase = { kind: 'challenge' };
-    let authenticating = false;
-    let pending = 0;
     const deadline = setTimeout(() => current.close(), 4000);
-    const send = (value) => current.send(JSON.stringify(value));
+    const isOpen = () => socket === current && current.readyState === WebSocket.OPEN;
+    function send(value) {
+      if (!isOpen()) {
+        return false;
+      }
+      current.send(JSON.stringify(value));
+      return true;
+    }
 
     current.onopen = async () => {
       try {
-        if (mode === 'auth') {
-          send({ ...greeting, keyId: await credentialId(secret) });
-        } else {
-          send(greeting);
-        }
+        send(mode === 'auth' ? { ...greeting, keyId: await credentialId(secret) } : greeting);
       } catch (error) {
         reject(error);
         current.close();
@@ -61,10 +93,11 @@ function connect(mode, secret) {
           status = 'offline';
         }
         socket = undefined;
-        schedule();
+        if (!lasting.has(status)) {
+          schedule();
+        }
       }
     };
-    const isOpen = () => socket === current && current.readyState === WebSocket.OPEN;
     function fail(error) {
       if (errors.has(error.message)) {
         status = error.message;
@@ -72,26 +105,23 @@ function connect(mode, secret) {
       reject(error);
       current.close();
     }
-    async function login(message) {
+    async function login(message, step) {
       if (fields(message, 'kind', 'code') && message.kind === 'error' && errors.has(message.code)) {
         throw new Error(message.code);
       }
-      if (phase.kind === 'challenge') {
+      if (step.kind === 'challenge') {
         const { proof, confirm } = await answer(greeting, message, secret);
-        if (isOpen()) {
-          phase = { kind: 'ready', confirm };
-          send({ proof });
-        }
+        phase = { kind: 'ready', confirm };
+        send({ proof });
         return;
       }
-      const credential = await phase.confirm(message);
+      const credential = await step.confirm(message);
       if (!isOpen()) {
         return;
       }
       clearTimeout(deadline);
       if (mode === 'pair') {
-        await chrome.alarms.create(wake, { periodInMinutes: 1 });
-        await chrome.storage.local.set({ [credentialKey]: credential });
+        await saveCredential(credential);
         if (isOpen()) {
           current.onclose = null;
           current.close();
@@ -101,6 +131,7 @@ function connect(mode, secret) {
       }
       phase = {
         kind: 'connected',
+        pending: 0,
         pointer: new BrowserPointer(),
         observer: observe(
           (state) => current.send(state),
@@ -125,38 +156,14 @@ function connect(mode, secret) {
       }
       try {
         const message = JSON.parse(data);
-        if (phase.kind !== 'connected') {
-          if (authenticating) {
-            throw new Error('Unexpected authentication frame');
-          }
-          authenticating = true;
-          void login(message)
-            .catch(fail)
-            .finally(() => {
-              authenticating = false;
-            });
-        } else if (message?.kind === 'scroll') {
-          scroll(message);
-        } else if (!isCommand(message)) {
-          throw new Error('Invalid browser request');
-        } else if (pending >= MAX_PENDING) {
-          send({ kind: 'done', id: message.id, ok: false });
+        if (phase.kind === 'connected') {
+          serve(message, phase, send, fail);
+        } else if (phase.kind === 'verifying') {
+          throw new Error('Unexpected authentication frame');
         } else {
-          const { observer, pointer } = phase;
-          pending++;
-          void reply(message, pointer)
-            .then((result) => {
-              if (isOpen()) {
-                send(result);
-                if (message.action?.kind !== 'pointer') {
-                  observer.refresh();
-                }
-              }
-            })
-            .catch(fail)
-            .finally(() => {
-              pending--;
-            });
+          const step = phase;
+          phase = { kind: 'verifying' };
+          void login(message, step).catch(fail);
         }
       } catch (error) {
         fail(error);

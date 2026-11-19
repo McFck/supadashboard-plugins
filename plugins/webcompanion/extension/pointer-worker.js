@@ -1,8 +1,9 @@
-import { ensure, isSelected, pagePort } from './browser.js';
-import { fields, idInRange } from './protocol.js';
+import { isSelected } from './browser.js';
+import { ensure, pagePort } from './pages.js';
+import { fields, idInRange, MAX_TAB_ID } from './protocol.js';
 
 function valid(action) {
-  if (!fields(action, 'kind', 'tab', 'input') || !idInRange(action.tab, 0x7fffffff)) {
+  if (!fields(action, 'kind', 'tab', 'input') || !idInRange(action.tab, MAX_TAB_ID)) {
     return false;
   }
   const { input } = action;

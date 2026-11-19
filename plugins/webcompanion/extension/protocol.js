@@ -1,4 +1,5 @@
 const utf8 = new TextEncoder();
+export const MAX_TAB_ID = 0x7fffffff;
 const hex = /^[0-9a-f]+$/;
 
 export function isHex(value, length) {
@@ -79,6 +80,17 @@ export function title(value) {
 
 export function idInRange(value, max) {
   return Number.isInteger(value) && value >= 0 && value <= max;
+}
+
+/** A page's media status: null, or paused plus a rate the bridge accepts (0 or 1/16 to 16). */
+export function isMedia(value) {
+  return (
+    value === null ||
+    (fields(value, 'paused', 'rate') &&
+      typeof value.paused === 'boolean' &&
+      typeof value.rate === 'number' &&
+      (value.rate === 0 || (value.rate >= 0.0625 && value.rate <= 16)))
+  );
 }
 
 export function website(value) {

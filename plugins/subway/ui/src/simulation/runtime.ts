@@ -1,15 +1,10 @@
 import { get } from 'svelte/store';
 import type { AppletRuntimeContext, EventAncestry } from '@supadashboard/kit';
-import { normalizeSubwayLines, stepStation, type LineDefinition } from './lines';
-import {
-  announcementLanguages,
-  normalizeSubwayConfig,
-  type NormalizedSubwayConfig,
-} from './config';
+import { stepStation } from './lines';
+import { normalizeSubwayConfig } from './config';
 import { createSubwayAudio, type SubwayAudioController } from '../audio/audio';
 import { loadSubwayAssets, loadSubwayMotion, SUBWAY_ASSET_BASE } from '../audio/asset-loader';
 import type { LoadedSubwayAssets } from '../audio/sound-types';
-import { buildCuePlans } from './cue-plans';
 import {
   requestedRoute,
   resolveLineRequest,
@@ -18,14 +13,9 @@ import {
   type RouteOverrides,
 } from './line-request';
 import { ProjectionQueue } from './projection-queue';
-import { createRunState, nextRunWake, reduceRun, snapshotRun, type RunSnapshot } from './run';
-import {
-  lineFor,
-  type RunCommand,
-  type RunEffect,
-  type SubwayCuePlans,
-  type SubwayRunState,
-} from './run-state';
+import { nextRunWake, reduceRun, snapshotRun, type RunSnapshot } from './run';
+import { lineFor, type RunCommand, type RunEffect } from './run-state';
+import { cuePlansFor, setUpRun, type RunSetup } from './run-setup';
 import { ScenePublisher } from './scene-state';
 
 export interface SubwayRuntimeClock {
@@ -52,15 +42,7 @@ export interface SubwayRuntimeHandle {
   dispose(): void;
 }
 
-type Running = {
-  kind: 'running';
-  assets: LoadedSubwayAssets;
-  lines: readonly LineDefinition[];
-  state: SubwayRunState;
-  plans: SubwayCuePlans;
-  /** The settings last applied while the run was eligible. */
-  applied: NormalizedSubwayConfig;
-};
+type Running = RunSetup & { kind: 'running' };
 type Phase = { kind: 'loading' } | { kind: 'unavailable' } | Running | { kind: 'disposed' };
 
 const browserClock: SubwayRuntimeClock = {
@@ -355,43 +337,18 @@ export function createSubwayRuntime(
       dispatch({ type: 'set-immersion', enabled: config.immersion });
     }
     if (previous.announcementLanguages !== config.announcementLanguages) {
-      run.plans = cuePlans(run.lines, run.assets, config);
+      run.plans = cuePlansFor(run, assetBase, config);
     }
     publishScene(true);
   }
 
-  function cuePlans(
-    lines: readonly LineDefinition[],
-    assets: LoadedSubwayAssets,
-    config: NormalizedSubwayConfig,
-  ): SubwayCuePlans {
-    return buildCuePlans(
-      lines,
-      assets,
-      assetBase,
-      announcementLanguages(config.announcementLanguages),
-    );
-  }
-
   function start(assets: LoadedSubwayAssets): void {
-    const lines = normalizeSubwayLines(assets.lines);
-    const config = normalizeSubwayConfig(currentConfig, lines);
-    currentConfig = config;
     const run: Running = {
       kind: 'running',
-      assets,
-      lines,
-      applied: config,
-      plans: cuePlans(lines, assets, config),
-      state: createRunState(lines, {
-        lineId: config.line,
-        stationCode: config.startStation,
-        direction: config.direction,
-        multiplier: config.speed,
-        immersion: config.immersion,
-        now: clock.now(),
-      }),
+      ...setUpRun(assets, currentConfig, assetBase, clock.now()),
     };
+    const { applied: config, lines } = run;
+    currentConfig = config;
     phase = run;
     publishScene(true);
     audio.setAnnouncementVolume(config.announcementVolume);

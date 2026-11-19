@@ -17,7 +17,6 @@ const labels = {
 };
 let busy = false;
 
-/** Mirrors the input into the slots; the focused slot is the next one to fill, or the last when full. */
 function render() {
   const focused = document.activeElement === code;
   const next = Math.min(code.value.length, slots.length - 1);

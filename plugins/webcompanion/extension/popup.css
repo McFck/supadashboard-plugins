@@ -93,7 +93,7 @@ label {
   text-transform: uppercase;
 }
 
-/* shadcn InputOTP: two groups of joined slots; the real input lies transparent on top of them. */
+/* The real input lies transparent on top of the slots. */
 .otp {
   position: relative;
 }
@@ -183,7 +183,6 @@ input::selection {
   background: transparent;
 }
 
-/* The app's primary button at its large size, full width as the one action. */
 button {
   height: 36px;
   border: 1px solid transparent;

@@ -34,13 +34,14 @@ function compare(a, b) {
 }
 
 /**
- * The newest release of `id` (tag `<id>-v<semver>`) that has the asset `<id>-<version>.sdplugin`, as
- * {release, version, asset}; releases without it (v1 loose assets) are skipped. `assets(tagName)` lists asset names.
+ * The newest published release of `id` (tag `<id>-v<semver>`) that has the asset `<id>-<version>.sdplugin`, as
+ * {release, version, asset}. Drafts (not downloadable publicly) and releases without the asset (v1 loose assets)
+ * are skipped. `assets(tagName)` lists asset names.
  */
 export function newest(id, releases, assets) {
   const prefix = `${id}-v`;
   return releases
-    .filter((r) => r.tagName.startsWith(prefix))
+    .filter((r) => !r.draft && r.tagName.startsWith(prefix))
     .map((release) => {
       const version = release.tagName.slice(prefix.length);
       const m = SEMVER.exec(version);

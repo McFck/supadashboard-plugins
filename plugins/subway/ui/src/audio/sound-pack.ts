@@ -56,7 +56,9 @@ export function resolveCue(
     entry = cueIndex(manifest).get(file);
     gain = entry?.gainByRole[role];
   }
-  if (!entry || gain === undefined) throw new Error(`Missing ${role} catalogue entry: ${file}`);
+  if (!entry || gain === undefined) {
+    throw new Error(`Missing ${role} catalogue entry: ${file}`);
+  }
   return { ...entry, gain, role, url: resolveAssetUrl(file, base) };
 }
 
@@ -64,7 +66,9 @@ export function selectDirectionalEntries(
   entries: readonly PackCueRecord[] | undefined,
   direction: string,
 ): PackCueRecord[] {
-  if (!entries?.length) return [];
+  if (!entries?.length) {
+    return [];
+  }
   const exact = entries.filter((entry) => entry.direction === direction);
   const compatible = entries.filter(
     (entry) => !entry.direction && entry.directions?.includes(direction),
@@ -73,7 +77,9 @@ export function selectDirectionalEntries(
   const selected = exact.length ? exact : compatible.length ? compatible : neutral;
   const seen = new Set<string>();
   return selected.filter((entry) => {
-    if (seen.has(entry.file)) return false;
+    if (seen.has(entry.file)) {
+      return false;
+    }
     seen.add(entry.file);
     return true;
   });
@@ -139,7 +145,9 @@ function queueStationCues(
       group,
       direction,
     )[0];
-    if (!selected) continue;
+    if (!selected) {
+      continue;
+    }
     const cue = resolveCue(selected, 'voice', catalogue, base);
     result.push({ part: `${group}:${language}`, at, cue });
     at += cue.duration + 0.3;
@@ -185,7 +193,9 @@ function planContainsDepartureMelody(sequence: unknown): boolean {
 }
 
 function withoutDepartureMelodyAnchor(value: unknown): unknown {
-  if (typeof value !== 'string') return value;
+  if (typeof value !== 'string') {
+    return value;
+  }
   const match = /^departure_melody_end([+-]\d+(?:\.\d+)?)?$/.exec(value);
   return match ? Number(match[1] ?? 0) : value;
 }
@@ -198,7 +208,9 @@ function resolveDoorPlanLine(
   melody?: ResolvedCue,
 ): { sequence: unknown; cues: Record<string, ResolvedCue> } {
   const doors = line.pack.doors as { sequence?: unknown; [key: string]: unknown } | undefined;
-  if (!doors?.sequence) throw new Error(`Door sequence missing for ${String(line.pack.id)}`);
+  if (!doors?.sequence) {
+    throw new Error(`Door sequence missing for ${String(line.pack.id)}`);
+  }
   const sequenceRecord = asRecord(doors.sequence);
   const closeSteps = sequenceRecord?.close;
   const filteredSequence =
@@ -209,7 +221,9 @@ function resolveDoorPlanLine(
             .filter((step) => asRecord(step)?.part !== 'departure_melody')
             .map((step) => {
               const record = asRecord(step);
-              if (!record) return step;
+              if (!record) {
+                return step;
+              }
               return {
                 ...record,
                 ...(Object.hasOwn(record, 'at')
@@ -223,16 +237,21 @@ function resolveDoorPlanLine(
         }
       : doors.sequence;
   const cues: Record<string, ResolvedCue> = {};
-  if (melody) cues.departure_melody = melody;
+  if (melody) {
+    cues.departure_melody = melody;
+  }
   for (const [part, value] of Object.entries(doors)) {
     if (
       part === 'sequence' ||
       !asRecord(value) ||
       typeof (value as PackCueRecord).file !== 'string'
-    )
+    ) {
       continue;
+    }
     const role = doorRoles[part];
-    if (!role) throw new Error(`Unknown Subway door cue role: ${part}`);
+    if (!role) {
+      throw new Error(`Unknown Subway door cue role: ${part}`);
+    }
     const cue = resolveCue(value as PackCueRecord, role, catalogue, base, stationCode);
     cues[part] = doorTrimDb[part] === undefined ? cue : { ...cue, trimDb: doorTrimDb[part] };
   }
@@ -268,7 +287,9 @@ export function buildSegmentCuePlan(
 ): SegmentCuePlan {
   const source = packStation(line, from);
   const target = packStation(line, to);
-  if (!source || !target) throw new Error(`Missing Subway pack station for ${from} → ${to}`);
+  if (!source || !target) {
+    throw new Error(`Missing Subway pack station for ${from} → ${to}`);
+  }
   const languageOrder = [...new Set(languages)].filter((language) =>
     ['ja', 'en', 'zh', 'ko'].includes(language),
   );
@@ -306,7 +327,9 @@ export function buildSegmentCuePlan(
       emergencyRecords.filter((entry) => entry.lang === language),
       direction,
     )[0];
-    if (!selected) continue;
+    if (!selected) {
+      continue;
+    }
     const cue = resolveCue(selected, 'voice', catalogue, base);
     emergency.push({ part: `emergency:${language}`, at, cue });
     at += cue.duration + 0.3;

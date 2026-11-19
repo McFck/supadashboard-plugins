@@ -58,7 +58,9 @@ function supportedDisplay(line: LineDefinition, preset: string): boolean {
 
 export function firstStationForDirection(line: LineDefinition, directionId: string): string {
   const direction = line.directions.find((item) => item.id === directionId) ?? line.directions[0];
-  return direction.delta === -1 ? line.stations[line.stations.length - 1].code : line.stations[0].code;
+  return direction.delta === -1
+    ? line.stations[line.stations.length - 1].code
+    : line.stations[0].code;
 }
 
 /** Validate dependent settings at the runtime boundary while retaining unrelated saved keys. */

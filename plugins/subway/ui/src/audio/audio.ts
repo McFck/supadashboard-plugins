@@ -75,20 +75,26 @@ export function createSubwayAudio(options: SubwayAudioOptions = {}): SubwayAudio
   const alerts = new Set<number>();
 
   function setAvailability(available: boolean) {
-    if (availabilityKnown === available) return;
+    if (availabilityKnown === available) {
+      return;
+    }
     availabilityKnown = available;
     options.onAvailability?.(available);
   }
 
   function smooth(param: AudioParam, value: number) {
-    if (!context) return;
+    if (!context) {
+      return;
+    }
     const now = context.currentTime;
     param.cancelScheduledValues(now);
     param.setTargetAtTime(value, now, 0.015);
   }
 
   function applyGains(immediate = false) {
-    if (!context || !cueBus || !voiceBus) return;
+    if (!context || !cueBus || !voiceBus) {
+      return;
+    }
     const now = context.currentTime;
     const cue = visible && enabled && !mixMuted ? mixVolume : 0;
     const voice = cue * announcementVolume;
@@ -104,8 +110,12 @@ export function createSubwayAudio(options: SubwayAudioOptions = {}): SubwayAudio
   }
 
   function ensureContext(): AudioContext | undefined {
-    if (context || disposed || !enabled || !visible) return context;
-    if (!options.contextFactory && typeof AudioContext === 'undefined') return undefined;
+    if (context || disposed || !enabled || !visible) {
+      return context;
+    }
+    if (!options.contextFactory && typeof AudioContext === 'undefined') {
+      return undefined;
+    }
     try {
       context = makeContext();
       cueBus = context.createGain();
@@ -125,7 +135,9 @@ export function createSubwayAudio(options: SubwayAudioOptions = {}): SubwayAudio
   }
 
   function warnOnce(key: string, error: unknown) {
-    if (failed.has(key)) return;
+    if (failed.has(key)) {
+      return;
+    }
     failed.add(key);
     console.warn(`Subway audio unavailable (${key})`, error);
   }
@@ -144,22 +156,29 @@ export function createSubwayAudio(options: SubwayAudioOptions = {}): SubwayAudio
   }
 
   function ensurePack(): Promise<LoadedSubwayMotion> {
-    if (!packPromise)
+    if (!packPromise) {
       packPromise = loadMotion().catch((error) => {
         packPromise = undefined;
         warnOnce('motion', error);
         throw error;
       });
+    }
     return packPromise;
   }
 
   async function ensureMotion(line: string) {
     const audioContext = ensureContext();
-    if (!audioContext || disposed) return;
+    if (!audioContext || disposed) {
+      return;
+    }
     currentLine = line;
     const wanted = line;
-    if (motion && profileId === wanted) return;
-    if (profilePromise && profileId === wanted) return profilePromise;
+    if (motion && profileId === wanted) {
+      return;
+    }
+    if (profilePromise && profileId === wanted) {
+      return profilePromise;
+    }
     const thisProfileEpoch = ++profileEpoch;
     const thisEpoch = epoch;
     motion?.dispose();
@@ -173,10 +192,13 @@ export function createSubwayAudio(options: SubwayAudioOptions = {}): SubwayAudio
           thisEpoch !== epoch ||
           thisProfileEpoch !== profileEpoch ||
           audioContext !== context
-        )
+        ) {
           return;
+        }
         const profile = pack.manifest.trains.find((train) => train.lines.includes(wanted));
-        if (!profile || !cueBus) throw new Error(`Missing ${wanted} train sound`);
+        if (!profile || !cueBus) {
+          throw new Error(`Missing ${wanted} train sound`);
+        }
         const instance = await TrainSound.load(
           audioContext,
           cueBus,
@@ -194,7 +216,9 @@ export function createSubwayAudio(options: SubwayAudioOptions = {}): SubwayAudio
           return;
         }
         motion = instance;
-        if (currentSnapshot) motion.update(currentSnapshot);
+        if (currentSnapshot) {
+          motion.update(currentSnapshot);
+        }
         setAvailability(audioContext.state === 'running');
       } catch (error) {
         if (thisEpoch === epoch && thisProfileEpoch === profileEpoch) {
@@ -202,22 +226,30 @@ export function createSubwayAudio(options: SubwayAudioOptions = {}): SubwayAudio
           warnOnce(`profile:${wanted}`, error);
         }
       } finally {
-        if (thisProfileEpoch === profileEpoch) profilePromise = undefined;
+        if (thisProfileEpoch === profileEpoch) {
+          profilePromise = undefined;
+        }
       }
     })();
     return profilePromise;
   }
 
   function resumeContext(fromGesture: boolean) {
-    if (!context || !visible || !enabled) return;
-    if (context.state === 'running') return;
+    if (!context || !visible || !enabled) {
+      return;
+    }
+    if (context.state === 'running') {
+      return;
+    }
     try {
       const resumed = context.resume();
       void resumed
         .then(() => {
           if (context && enabled && visible) {
             applyGains(true);
-            if (motion) setAvailability(true);
+            if (motion) {
+              setAvailability(true);
+            }
           }
         })
         .catch((error) => {
@@ -231,7 +263,9 @@ export function createSubwayAudio(options: SubwayAudioOptions = {}): SubwayAudio
   }
 
   function setEnabled(value: boolean, fromGesture = false) {
-    if (disposed) return;
+    if (disposed) {
+      return;
+    }
     if (enabled === value) {
       if (value && fromGesture && visible) {
         ensureContext();
@@ -257,37 +291,49 @@ export function createSubwayAudio(options: SubwayAudioOptions = {}): SubwayAudio
       cueBus = undefined;
       voiceBus = undefined;
       buffers.clear();
-      if (audioContext && audioContext.state !== 'closed')
+      if (audioContext && audioContext.state !== 'closed') {
         void audioContext.close().catch(() => {});
+      }
       setAvailability(false);
       return;
     }
-    if (!visible) return;
+    if (!visible) {
+      return;
+    }
     ensureContext();
     resumeContext(fromGesture);
     void ensureMotion(currentLine);
   }
 
   function resetLine(fromGesture = false) {
-    if (!enabled) return;
+    if (!enabled) {
+      return;
+    }
     setEnabled(false);
     setEnabled(true, fromGesture);
   }
 
   function setVisible(value: boolean) {
-    if (disposed || visible === value) return;
+    if (disposed || visible === value) {
+      return;
+    }
     visible = value;
     const request = ++visibilityEpoch;
-    if (!enabled) return;
+    if (!enabled) {
+      return;
+    }
     if (!value) {
-      if (!context) return;
+      if (!context) {
+        return;
+      }
       applyGains(true);
       const suspendedContext = context;
       void suspendedContext
         .suspend()
         .then(() => {
-          if (visibilityEpoch !== request && visible && enabled && context === suspendedContext)
+          if (visibilityEpoch !== request && visible && enabled && context === suspendedContext) {
             resumeContext(false);
+          }
         })
         .catch((error) => warnOnce('suspend', error));
     } else {
@@ -295,7 +341,9 @@ export function createSubwayAudio(options: SubwayAudioOptions = {}): SubwayAudio
       resumeContext(false);
       applyGains(true);
       motion?.resync();
-      if (currentSnapshot) transition(currentSnapshot, []);
+      if (currentSnapshot) {
+        transition(currentSnapshot, []);
+      }
       void ensureMotion(currentLine);
     }
   }
@@ -312,12 +360,18 @@ export function createSubwayAudio(options: SubwayAudioOptions = {}): SubwayAudio
   }
 
   function preload(cues: readonly ResolvedCue[]) {
-    if (!enabled || !visible || !context) return;
-    for (const cue of cues) void buffers.decode(cue);
+    if (!enabled || !visible || !context) {
+      return;
+    }
+    for (const cue of cues) {
+      void buffers.decode(cue);
+    }
   }
 
   function playAlert(generation: number) {
-    if (!context || !cueBus || !enabled || !visible || mixMuted || alerts.has(generation)) return;
+    if (!context || !cueBus || !enabled || !visible || mixMuted || alerts.has(generation)) {
+      return;
+    }
     alerts.add(generation);
     playEmergencyAlert(context, cueBus, activeSources);
   }
@@ -329,9 +383,13 @@ export function createSubwayAudio(options: SubwayAudioOptions = {}): SubwayAudio
       stopSources();
     }
     currentLine = snapshot.line;
-    if (snapshot.immersion !== enabled) setEnabled(snapshot.immersion);
+    if (snapshot.immersion !== enabled) {
+      setEnabled(snapshot.immersion);
+    }
     if (enabled && visible) {
-      if (!snapshot.paused) void ensureMotion(snapshot.line);
+      if (!snapshot.paused) {
+        void ensureMotion(snapshot.line);
+      }
       motion?.update(snapshot);
     }
     if (effects.some((effect) => effect.type === 'emergency') && !alerts.has(snapshot.generation)) {
@@ -349,8 +407,9 @@ export function createSubwayAudio(options: SubwayAudioOptions = {}): SubwayAudio
       !audioContext ||
       !cueBusNode ||
       effect.generation !== audioGeneration
-    )
+    ) {
       return;
+    }
     const requestEpoch = epoch;
     const scheduledAt = audioContext.currentTime;
     const buffer = await buffers.decode(effect.cue);
@@ -362,10 +421,13 @@ export function createSubwayAudio(options: SubwayAudioOptions = {}): SubwayAudio
       requestEpoch !== epoch ||
       effect.generation !== audioGeneration ||
       audioContext !== context
-    )
+    ) {
       return;
+    }
     const elapsed = Math.max(0, audioContext.currentTime - scheduledAt);
-    if (elapsed >= effect.cue.duration) return;
+    if (elapsed >= effect.cue.duration) {
+      return;
+    }
     const { role, offset, duration, gain } = effect.cue;
     const cue: ResolvedCue = {
       ...effect.cue,
@@ -377,11 +439,15 @@ export function createSubwayAudio(options: SubwayAudioOptions = {}): SubwayAudio
       duration: effect.cue.duration - elapsed,
     };
     const destination = cue.role === 'voice' ? voiceBus : cueBusNode;
-    if (!destination) return;
+    if (!destination) {
+      return;
+    }
     try {
       const now = audioContext.currentTime;
       const source = playCueSource(audioContext, destination, buffer, cue, now);
-      if (cue.role === 'voice') motion?.duck(now, cue.duration);
+      if (cue.role === 'voice') {
+        motion?.duck(now, cue.duration);
+      }
       activeSources.set(source, cue.url);
       buffers.pin(cue.url, 1);
       source.addEventListener(
@@ -408,7 +474,9 @@ export function createSubwayAudio(options: SubwayAudioOptions = {}): SubwayAudio
   }
 
   function dispose() {
-    if (disposed) return;
+    if (disposed) {
+      return;
+    }
     setEnabled(false);
     disposed = true;
     stopSources();

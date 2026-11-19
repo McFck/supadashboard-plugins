@@ -24,8 +24,9 @@ const MAX_GAP_MS = 5_000;
 const MAX_CATCH_UP_PASSES = 1_000;
 
 export function pushPhase(effects: RunEffect[], state: SubwayRunState, phase: RunPhase): void {
-  if (state.phase !== phase)
+  if (state.phase !== phase) {
     effects.push({ type: 'state-changed', state: phase, generation: state.generation });
+  }
 }
 
 export function copyTimeline(state: SubwayRunState): RunTimeline {
@@ -77,7 +78,9 @@ export function prepareDwell(
   plans: SubwayCuePlans,
 ): Pick<SubwayRunState, 'stopDeadline' | 'pendingCues'> {
   const target = stepStation(line, state.stationCode, state.direction);
-  if (!state.active || !target) return { stopDeadline: null, pendingCues: [] };
+  if (!state.active || !target) {
+    return { stopDeadline: null, pendingCues: [] };
+  }
   const planKey = segmentPlanKey(line.id, state.stationCode, target.code, state.direction);
   const preClose = (plans[planKey] ?? EMPTY_CUE_PLAN).preClose ?? [];
   const queued = scheduleCues(preClose, at, `${planKey}:pre-close`);
@@ -97,7 +100,9 @@ function startClosing(
   effects: RunEffect[],
 ): SubwayRunState {
   const target = stepStation(line, state.stationCode, state.direction);
-  if (!target) return { ...state, active: false, stopDeadline: null, phaseDeadline: null };
+  if (!target) {
+    return { ...state, active: false, stopDeadline: null, phaseDeadline: null };
+  }
   const planKey = segmentPlanKey(line.id, state.stationCode, target.code, state.direction);
   const cuePlan = plans[planKey] ?? EMPTY_CUE_PLAN;
   validateDoorPlan(doorPlan(cuePlan, 'close'), 'close');
@@ -158,13 +163,16 @@ export function advanceOne(
 ): SubwayRunState {
   const phase = state.phase;
   if (phase === 'stopped') {
-    if (!state.active || state.stopDeadline === null) return state;
+    if (!state.active || state.stopDeadline === null) {
+      return state;
+    }
     return startClosing({ ...state, stopDeadline: null }, at, line, plans, effects);
   }
   if (phase === 'doorsClosing') {
     const segment = state.segment;
-    if (!segment)
+    if (!segment) {
       return { ...state, active: false, phase: 'stopped', doors: 'open', phaseDeadline: null };
+    }
     const cuePlan = plans[segment.planKey] ?? EMPTY_CUE_PLAN;
     const nextSegment = { ...segment, startedAt: at, departed: true };
     pushPhase(effects, state, 'departing');
@@ -191,7 +199,9 @@ export function advanceOne(
   }
   if (phase === 'departing') {
     const segment = state.segment;
-    if (!segment) return state;
+    if (!segment) {
+      return state;
+    }
     pushPhase(effects, state, 'cruising');
     return {
       ...state,
@@ -203,7 +213,9 @@ export function advanceOne(
   }
   if (phase === 'cruising') {
     const segment = state.segment;
-    if (!segment) return state;
+    if (!segment) {
+      return state;
+    }
     const cuePlan = plans[segment.planKey] ?? EMPTY_CUE_PLAN;
     pushPhase(effects, state, 'approaching');
     return {
@@ -220,7 +232,9 @@ export function advanceOne(
   }
   if (phase === 'approaching') {
     const segment = state.segment;
-    if (!segment) return state;
+    if (!segment) {
+      return state;
+    }
     const cuePlan = plans[segment.planKey] ?? EMPTY_CUE_PLAN;
     const open = doorPlan(cuePlan, 'open');
     const openEnd = (open.open_end ?? open.end) * 1000;
@@ -270,14 +284,18 @@ export function advanceOne(
 }
 
 export function dueDeadline(state: SubwayRunState): number | null {
-  if (state.phase === 'stopped' && state.active) return state.stopDeadline;
+  if (state.phase === 'stopped' && state.active) {
+    return state.stopDeadline;
+  }
   if (
     state.phaseDeadline !== null &&
     ['doorsClosing', 'departing', 'cruising', 'approaching', 'arriving'].includes(state.phase)
-  )
+  ) {
     return state.phaseDeadline;
-  if (state.incident && state.incident.brakeMs > 0 && state.phaseStartedAt !== null)
+  }
+  if (state.incident && state.incident.brakeMs > 0 && state.phaseStartedAt !== null) {
     return state.incident.startedAt + state.incident.brakeMs;
+  }
   return null;
 }
 
@@ -289,17 +307,20 @@ export function advance(
   effects: RunEffect[],
 ): SubwayRunState {
   let current = state;
-  if (current.pausedAt !== null) return current;
+  if (current.pausedAt !== null) {
+    return current;
+  }
   const pollingPhase =
     ['departing', 'cruising', 'approaching'].includes(current.phase) || !!current.incident?.brakeMs;
   if (pollingPhase && now - current.lastTickAt > MAX_GAP_MS) {
     const gap = now - current.lastTickAt;
     current = shiftStateTimes(current, gap);
-    if (current.incident)
+    if (current.incident) {
       current = {
         ...current,
         incident: { ...current.incident, startedAt: current.incident.startedAt + gap },
       };
+    }
     return { ...current, lastTickAt: now };
   }
   current = { ...current, lastTickAt: now };
@@ -322,7 +343,9 @@ export function advance(
   const line = lineFor(lines, current.lineId);
   for (let transitions = 0; transitions < 8; transitions++) {
     const deadline = dueDeadline(current);
-    if (deadline === null || deadline > now) break;
+    if (deadline === null || deadline > now) {
+      break;
+    }
     const at = deadline;
     current = withDueCues(current, at, effects);
     current = advanceOne(current, at, line, plans, effects);

@@ -32,7 +32,10 @@ export function setSubwayImmersion(enabled?: boolean, ancestry?: EventAncestry):
   return active?.handle.setImmersion(enabled, ancestry) ?? false;
 }
 
-export async function requestSubwayView(viewId: string, ancestry?: EventAncestry): Promise<boolean> {
+export async function requestSubwayView(
+  viewId: string,
+  ancestry?: EventAncestry,
+): Promise<boolean> {
   if (!active || !SUBWAY_VIEWS.some((view) => view.id === viewId)) {
     return false;
   }

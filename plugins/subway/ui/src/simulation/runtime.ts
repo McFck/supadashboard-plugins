@@ -226,9 +226,7 @@ export function createSubwayRuntime(
     const pending = run.state.pendingCues;
     if (pending.length) {
       const group = pending[0].id.split(':').slice(0, -1).join(':');
-      audio.preload(
-        pending.filter((cue) => cue.id.startsWith(`${group}:`)).map((cue) => cue.cue),
-      );
+      audio.preload(pending.filter((cue) => cue.id.startsWith(`${group}:`)).map((cue) => cue.cue));
     }
     scheduleWake();
     project(run, transition.effects, command.type === 'pause', ancestry);
@@ -367,7 +365,12 @@ export function createSubwayRuntime(
     assets: LoadedSubwayAssets,
     config: NormalizedSubwayConfig,
   ): SubwayCuePlans {
-    return buildCuePlans(lines, assets, assetBase, announcementLanguages(config.announcementLanguages));
+    return buildCuePlans(
+      lines,
+      assets,
+      assetBase,
+      announcementLanguages(config.announcementLanguages),
+    );
   }
 
   function start(assets: LoadedSubwayAssets): void {

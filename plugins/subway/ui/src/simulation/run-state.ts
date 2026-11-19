@@ -122,10 +122,14 @@ export function segmentPlanKey(
 
 export function lineFor(lines: readonly LineDefinition[], id: string): LineDefinition {
   const line = lines.find((item) => item.id === id);
-  if (!line) throw new Error(`Unknown Subway line: ${id}`);
+  if (!line) {
+    throw new Error(`Unknown Subway line: ${id}`);
+  }
   return line;
 }
 
 export function finiteTime(now: number): void {
-  if (!Number.isFinite(now)) throw new Error('Subway clock must return a finite time');
+  if (!Number.isFinite(now)) {
+    throw new Error('Subway clock must return a finite time');
+  }
 }

@@ -10,10 +10,6 @@ export class OneShots {
     private readonly noise: AudioBuffer,
   ) {}
 
-  get count() {
-    return this.live.size;
-  }
-
   private track(source: AudioBufferSourceNode, ...nodes: AudioNode[]) {
     this.live.add(source);
     source.onended = () => {

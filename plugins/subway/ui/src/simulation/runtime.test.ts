@@ -44,7 +44,6 @@ function stubAudio(): SubwayAudioController {
     transition: vi.fn(),
     preload: vi.fn(),
     playCue: vi.fn(async () => {}),
-    getStats: () => ({ activeSources: 0, cacheHits: 0, motion: undefined }),
     dispose: vi.fn(),
   };
 }

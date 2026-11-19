@@ -15,7 +15,6 @@ export interface CueBufferCacheHost {
 /** Decoded cue buffers, LRU-pruned to a byte budget; buffers of playing sources are pinned. */
 export function createCueBufferCache(host: CueBufferCacheHost) {
   let bytesUsed = 0;
-  let hits = 0;
   const cache = new Map<string, CachedBuffer>();
   const pending = new Map<string, Promise<AudioBuffer | undefined>>();
   const pinned = new Map<string, number>();
@@ -57,7 +56,6 @@ export function createCueBufferCache(host: CueBufferCacheHost) {
     if (existing) {
       cache.delete(cue.url);
       cache.set(cue.url, existing);
-      hits++;
       return existing.buffer;
     }
     const underway = pending.get(cue.url);
@@ -102,6 +100,5 @@ export function createCueBufferCache(host: CueBufferCacheHost) {
     pin,
     prune,
     clear,
-    hits: () => hits,
   };
 }

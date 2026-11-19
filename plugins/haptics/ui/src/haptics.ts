@@ -3,6 +3,8 @@ import { callPlugin } from '@supadashboard/kit';
 
 export const PULSE_KINDS = ['tick', 'tap', 'confirm'] as const;
 export type PulseKind = (typeof PULSE_KINDS)[number];
+export const isPulseKind = (value: unknown): value is PulseKind =>
+  PULSE_KINDS.some((kind) => kind === value);
 
 /** Scales pulse lengths natively; the tablet's motor has no amplitude control. */
 export const STRENGTHS = ['light', 'medium', 'strong'] as const;

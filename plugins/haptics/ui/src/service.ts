@@ -1,9 +1,15 @@
 // The haptics service, run by the dashboard owner: one persistent `adb shell` to the tablet, reconnected while
 // enabled, with tablet lock on sleep and Artemis launch on resume or reconnect.
-import { emitPluginEvent, pluginProcess, toast, type PluginProcessEvent } from '@supadashboard/kit';
+import {
+  emitPluginEvent,
+  isRecord,
+  pluginProcess,
+  toast,
+  type PluginProcessEvent,
+} from '@supadashboard/kit';
 import { adbCandidates, parseDevices, pickDevice, powerOffArgs, validSerial } from './adb';
 import { enableUsbTethering, openArtemis, type Tablet } from './artemis';
-import type { HapticsConfig, PulseKind } from './haptics';
+import { isPulseKind, STRENGTHS, type HapticsConfig } from './haptics';
 import { Limiter, pulseMillis } from './pulse';
 
 const PLUGIN = 'haptics';
@@ -12,8 +18,40 @@ const LAUNCH_DEBOUNCE_MS = 8000;
 const sameDevice = (a: HapticsConfig, b: HapticsConfig) =>
   a.enabled === b.enabled && a.adbPath === b.adbPath && a.serial === b.serial;
 
-const valid = (config: HapticsConfig) =>
-  (config.adbPath?.length ?? 0) <= 1024 && (!config.serial || validSerial(config.serial));
+const optionalText = (value: unknown): value is string | undefined =>
+  value === undefined || (typeof value === 'string' && value.length <= 1024);
+
+/** The settings a window sends; anything else is rejected before it reaches adb. */
+function readConfig(raw: unknown): HapticsConfig {
+  const strength = isRecord(raw) ? STRENGTHS.find((known) => known === raw.strength) : undefined;
+  if (
+    !isRecord(raw) ||
+    !strength ||
+    !optionalText(raw.adbPath) ||
+    !optionalText(raw.serial) ||
+    (raw.serial !== undefined && !validSerial(raw.serial)) ||
+    typeof raw.artemisHost !== 'string' ||
+    typeof raw.artemisApp !== 'string' ||
+    raw.artemisHost.length > 1024 ||
+    raw.artemisApp.length > 1024 ||
+    ![raw.enabled, raw.lockWithPc, raw.artemis, raw.usbTethering].every(
+      (flag) => typeof flag === 'boolean',
+    )
+  ) {
+    throw new Error('Invalid haptics settings');
+  }
+  return {
+    enabled: raw.enabled === true,
+    adbPath: raw.adbPath,
+    serial: raw.serial,
+    strength,
+    lockWithPc: raw.lockWithPc === true,
+    artemis: raw.artemis === true,
+    artemisHost: raw.artemisHost,
+    artemisApp: raw.artemisApp,
+    usbTethering: raw.usbTethering === true,
+  };
+}
 
 export class HapticsService {
   private config: HapticsConfig | undefined;
@@ -31,10 +69,7 @@ export class HapticsService {
 
   /** Applies the settings; true when a tablet is connected. */
   configure = (params: unknown) => {
-    const next = params as HapticsConfig;
-    if (!valid(next)) {
-      throw new Error('Invalid haptics settings');
-    }
+    const next = readConfig(params);
     return this.enqueue(async () => {
       const previous = this.config;
       if (previous && !sameDevice(previous, next)) {
@@ -71,7 +106,10 @@ export class HapticsService {
   resume = () => this.enqueue(() => this.connectAndArm(this.config, true));
 
   pulse = (params: unknown) => {
-    const { kind } = params as { kind: PulseKind };
+    const kind = isRecord(params) ? params.kind : undefined;
+    if (!isPulseKind(kind)) {
+      return;
+    }
     const shell = this.shell;
     const ms = pulseMillis(kind, this.config?.strength ?? 'medium');
     if (shell === undefined || !this.limiter.admit(Date.now(), ms)) {

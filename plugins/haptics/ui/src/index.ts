@@ -1,15 +1,13 @@
 import { isTauri } from '@tauri-apps/api/core';
 import { listen } from '@tauri-apps/api/event';
 import { currentRuntime, providePlugin, whileOwner, type Plugin } from '@supadashboard/kit';
-import { launchArtemis, pulse, PULSE_KINDS, type PulseKind } from './haptics';
+import { isPulseKind, launchArtemis, pulse, PULSE_KINDS } from './haptics';
 import { HapticsService } from './service';
 import HapticsSection from './components/HapticsSection.svelte';
 import { DEFAULTS, loadSettings, toConfig, watchSettings, type HapticsSettings } from './settings';
 import guide from '../../guide.md?raw';
 import market from '../../market.json';
 import './plugin.css';
-
-const isKind = (value: unknown): value is PulseKind => PULSE_KINDS.includes(value as PulseKind);
 
 const hapticsPlugin: Plugin = {
   id: 'haptics',
@@ -37,7 +35,7 @@ const hapticsPlugin: Plugin = {
         },
       ],
       run: ({ kind }) => {
-        if (!isKind(kind)) {
+        if (!isPulseKind(kind)) {
           throw new Error('Unknown vibration');
         }
         pulse(kind);

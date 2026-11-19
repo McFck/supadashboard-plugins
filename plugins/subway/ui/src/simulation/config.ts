@@ -1,8 +1,7 @@
 import { LINE_CATALOGUE, lineFactsFor } from '../data/load';
+import { ANNOUNCEMENT_PRESETS, DISPLAY_PRESETS, presetOf } from '../data/presets';
 import type { LineDefinition } from './lines';
 
-export const DISPLAY_LANGUAGE_PRESETS = ['ja-en', 'ja-kana', 'ja-zh', 'ja-ko'] as const;
-export const ANNOUNCEMENT_LANGUAGE_PRESETS = ['ja', 'en', 'ja-en'] as const;
 const [firstLine] = LINE_CATALOGUE;
 export const SUBWAY_DEFAULT_CONFIG = Object.freeze({
   line: firstLine.id,
@@ -29,49 +28,37 @@ export type NormalizedSubwayConfig = Readonly<
   }
 >;
 
-const displayPresets = new Set<string>(DISPLAY_LANGUAGE_PRESETS);
-const announcementPresets = new Set<string>(ANNOUNCEMENT_LANGUAGE_PRESETS);
-/** A car chosen in the settings, or `null` when none is (the run then picks one). */
-export function explicitCarNumber(value: unknown, carCount: number): number | null {
+/** A car of the line's formation chosen in the settings (a number or its select string), else `null`. */
+export function carNumber(value: unknown, carCount: number): number | null {
   const number = typeof value === 'string' && value.trim() ? Number(value) : value;
-  return typeof number === 'number' && Number.isInteger(number) && number >= 1 && number <= carCount
-    ? number
-    : null;
+  if (typeof number === 'number' && Number.isInteger(number) && number >= 1 && number <= carCount) {
+    return number;
+  }
+  return null;
 }
 
-export function normalizeCarNumber(value: unknown, carCount: number): number {
-  return explicitCarNumber(value, carCount) ?? 1;
+export function displayLanguages(preset: unknown): readonly string[] {
+  return presetOf(DISPLAY_PRESETS, preset)?.languages ?? [];
 }
-const supportedDisplay = (line: LineDefinition, preset: string) => {
-  if (!lineFactsFor(line.id)?.displayLanguages.includes(preset)) return false;
+
+export function announcementLanguages(preset: unknown): readonly string[] {
+  return presetOf(ANNOUNCEMENT_PRESETS, preset)?.languages ?? [];
+}
+
+function supportedDisplay(line: LineDefinition, preset: string): boolean {
+  if (!lineFactsFor(line.id)?.displayLanguages.includes(preset)) {
+    return false;
+  }
   const languages = displayLanguages(preset);
   return (
     languages.length > 0 &&
     languages.every((language) => line.stations.some((station) => station.names[language]))
   );
-};
-
-export function displayLanguages(preset: string): string[] {
-  if (preset === 'ja-en') return ['ja', 'en'];
-  if (preset === 'ja-kana') return ['ja', 'kana'];
-  if (preset === 'ja-zh') return ['ja', 'zh'];
-  if (preset === 'ja-ko') return ['ja', 'ko'];
-  return [];
-}
-
-export function announcementLanguages(preset: string): string[] {
-  return preset === 'ja'
-    ? ['ja']
-    : preset === 'en'
-      ? ['en']
-      : preset === 'ja-en'
-        ? ['ja', 'en']
-        : [];
 }
 
 export function firstStationForDirection(line: LineDefinition, directionId: string): string {
   const direction = line.directions.find((item) => item.id === directionId) ?? line.directions[0];
-  return direction.delta === -1 ? line.stations.at(-1)!.code : line.stations[0].code;
+  return direction.delta === -1 ? line.stations[line.stations.length - 1].code : line.stations[0].code;
 }
 
 /** Validate dependent settings at the runtime boundary while retaining unrelated saved keys. */
@@ -80,15 +67,17 @@ export function normalizeSubwayConfig(
   lines: readonly LineDefinition[],
 ): NormalizedSubwayConfig {
   const fallbackLine = lines.find((line) => line.id === SUBWAY_DEFAULT_CONFIG.line) ?? lines[0];
-  if (!fallbackLine) throw new Error('Subway has no normalized line data');
-  const requestedLine = stored.line;
-  const line = lines.find((item) => item.id === requestedLine) ?? fallbackLine;
+  if (!fallbackLine) {
+    throw new Error('Subway has no normalized line data');
+  }
+  const line = lines.find((item) => item.id === stored.line) ?? fallbackLine;
   const requestedDirection = stored.direction;
   const direction =
     typeof requestedDirection === 'string' &&
     line.directions.some((item) => item.id === requestedDirection)
       ? requestedDirection
       : line.directions[0].id;
+  // Older settings saved the start station as `station`.
   const requestedStation =
     typeof stored.startStation === 'string' ? stored.startStation : stored.station;
   const startStation =
@@ -100,14 +89,14 @@ export function normalizeSubwayConfig(
     typeof stored.speed === 'string' && stored.speed.trim() ? Number(stored.speed) : stored.speed;
   const speed: 0.5 | 1 | 2 = requestedSpeed === 0.5 || requestedSpeed === 2 ? requestedSpeed : 1;
   const defaultDisplay = lineFactsFor(line.id)?.displayLanguages[0] ?? 'ja-en';
-  const displayCandidate =
-    typeof stored.displayLanguages === 'string' && displayPresets.has(stored.displayLanguages)
-      ? stored.displayLanguages
+  const requestedDisplay = stored.displayLanguages;
+  const display =
+    typeof requestedDisplay === 'string' && supportedDisplay(line, requestedDisplay)
+      ? requestedDisplay
       : defaultDisplay;
-  const display = supportedDisplay(line, displayCandidate) ? displayCandidate : defaultDisplay;
-  const announcementCandidate =
+  const announcements =
     typeof stored.announcementLanguages === 'string' &&
-    announcementPresets.has(stored.announcementLanguages)
+    presetOf(ANNOUNCEMENT_PRESETS, stored.announcementLanguages)
       ? stored.announcementLanguages
       : 'ja-en';
   const volume =
@@ -120,10 +109,10 @@ export function normalizeSubwayConfig(
     direction,
     startStation,
     speed,
-    carNumber: explicitCarNumber(stored.carNumber, line.carCount),
+    carNumber: carNumber(stored.carNumber, line.carCount),
     displayLanguages: display,
-    announcementLanguages: announcementCandidate,
+    announcementLanguages: announcements,
     immersion: typeof stored.immersion === 'boolean' ? stored.immersion : false,
     announcementVolume: volume,
-  }) as NormalizedSubwayConfig;
+  });
 }

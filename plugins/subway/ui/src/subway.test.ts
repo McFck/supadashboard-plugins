@@ -24,7 +24,7 @@ function collect() {
 }
 
 describe('Subway applet registration', () => {
-  it('declares persistent settings, owner projections, events and required quick actions', () => {
+  it('keeps the setting keys, state, event and action ids that saved pages and scenarios reference', () => {
     const { actions, applet } = collect();
     validateAppletDefinition(applet);
     expect(settingParams(applet.settings).map((param) => param.key)).toEqual([

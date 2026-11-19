@@ -97,7 +97,6 @@ function makeContext(onEvent?: (id: string) => void, immersion = true) {
     station: 'JY30',
     speed: 1,
     immersion,
-    dwellSeconds: 0,
   });
   const active = writable(false);
   const values = new Map<string, unknown>();
@@ -179,7 +178,6 @@ describe('Subway owner runtime', () => {
   it('starts automatically on the first eligible runtime surface and publishes the owner projection', async () => {
     const clock = new FakeClock();
     const fixture = makeContext(undefined, false);
-    fixture.config.update((config) => ({ ...config, dwellSeconds: 15 }));
     const handle = createSubwayRuntime(fixture.context, {
       clock,
       loadAssets: async () => assets,
@@ -210,7 +208,7 @@ describe('Subway owner runtime', () => {
   it('auto-starts after an editor-only period and preserves the progressed station across hide/show', async () => {
     const clock = new FakeClock();
     const fixture = makeContext(undefined, false);
-    fixture.config.update((config) => ({ ...config, startStation: 'JY01', dwellSeconds: 0 }));
+    fixture.config.update((config) => ({ ...config, startStation: 'JY01' }));
     const surface = driveActive(fixture, false);
     disposers.push(() => surface.dispose());
     const handle = createSubwayRuntime(fixture.context, {
@@ -374,7 +372,6 @@ describe('Subway owner runtime', () => {
       line: 'hibiya',
       direction: 'to-naka-meguro',
       station: 'H02',
-      dwellSeconds: 0,
     }));
     const surface = driveActive(fixture, true);
     disposers.push(() => surface.dispose());

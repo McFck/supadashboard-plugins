@@ -1,7 +1,7 @@
 import { localizedName, type LineDefinition, type StationDefinition } from '../simulation/lines';
 import type { RunSnapshot } from '../simulation/run';
 import { E235_ICON_DWELL_MS, e235Routine } from '../display/e235/schedule';
-import { normalizeCarNumber } from '../simulation/config';
+import { carNumber } from '../simulation/config';
 import { hankyuCycle, hankyuLanguages } from '../display/hankyu-1300/schedule';
 
 export type ScreenPage =
@@ -298,7 +298,7 @@ export function scheduleScreen(
       .join(',') ?? '';
   const side = guidanceStation.doorByDirection[snapshot.direction]?.side ?? 'unknown';
   const clock = config.clock ?? '12:00';
-  const currentCar = normalizeCarNumber(config.currentCar, line.carCount);
+  const currentCar = carNumber(config.currentCar, line.carCount) ?? 1;
   const invalidationKey = [
     snapshot.line,
     snapshot.direction,

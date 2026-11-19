@@ -8,17 +8,14 @@ import type {
 } from './sound-types';
 import { parseMotionManifest, type MotionManifest } from './motion/manifest';
 
-type SubwayGlobals = typeof globalThis & {
-  DoorSequence?: DoorSequenceApi;
-};
+declare global {
+  /** Set by the pack's door-sequence.js when it loads. */
+  var DoorSequence: DoorSequenceApi | undefined;
+}
 
 const bundlePromises = new Map<string, Promise<LoadedSubwayAssets>>();
 const scriptPromises = new Map<string, Promise<void>>();
 const lineIds = LINE_CATALOGUE.map((line) => line.id);
-
-function globals(): SubwayGlobals {
-  return globalThis as SubwayGlobals;
-}
 
 /** The plugin scheme serves `assets/**` of the installed subway.sdplugin here. */
 export const SUBWAY_ASSET_BASE = 'http://plugin.localhost/subway/assets/';
@@ -92,13 +89,30 @@ export function cueIndex(manifest: RuntimeCueManifest): ReadonlyMap<string, Runt
   return result;
 }
 
-function fetchJson<T>(url: string): Promise<T> {
-  return fetch(url).then((response) => {
-    if (!response.ok) {
-      throw new Error(`Subway asset request failed (${response.status}): ${url}`);
-    }
-    return response.json() as Promise<T>;
-  });
+async function fetchJson(url: string): Promise<unknown> {
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error(`Subway asset request failed (${response.status}): ${url}`);
+  }
+  return response.json();
+}
+
+async function fetchObject(url: string): Promise<Record<string, unknown>> {
+  const value = await fetchJson(url);
+  if (!value || typeof value !== 'object' || Array.isArray(value)) {
+    throw new Error(`Subway asset is not a JSON object: ${url}`);
+  }
+  return Object.fromEntries(Object.entries(value));
+}
+
+function cueCatalogue(value: Record<string, unknown>): RuntimeCueManifest {
+  if (value.version !== 1 || !Array.isArray(value.cues)) {
+    throw new Error('Unsupported Subway cue catalogue');
+  }
+  // The shape is checked above; cueIndex checks every cue's fields before anything reads them.
+  const manifest = value as unknown as RuntimeCueManifest;
+  cueIndex(manifest);
+  return manifest;
 }
 
 function loadScript(url: string, available: () => boolean): Promise<void> {
@@ -152,21 +166,21 @@ export async function loadSubwayAssets(base?: string): Promise<LoadedSubwayAsset
     pending = (async () => {
       await loadScript(
         resolveAssetUrl('motion/door-sequence.js', key),
-        () => !!globals().DoorSequence,
+        () => !!globalThis.DoorSequence,
       );
-      const [catalogue, ...lineFiles] = await Promise.all([
-        fetchJson<RuntimeCueManifest>(resolveAssetUrl('motion/runtime-cues.json', key)),
+      const [rawCatalogue, ...lineFiles] = await Promise.all([
+        fetchObject(resolveAssetUrl('motion/runtime-cues.json', key)),
         ...lineIds.flatMap((id) => [
-          fetchJson<Record<string, unknown>>(resolveAssetUrl(`lines/${id}/line.json`, key)),
-          fetchJson<Record<string, unknown>>(resolveAssetUrl(`lines/${id}/pack.json`, key)),
+          fetchObject(resolveAssetUrl(`lines/${id}/line.json`, key)),
+          fetchObject(resolveAssetUrl(`lines/${id}/pack.json`, key)),
         ]),
       ]);
-      cueIndex(catalogue);
+      const catalogue = cueCatalogue(rawCatalogue);
       const lines: Record<string, LoadedSubwayLine> = {};
       lineIds.forEach((id, index) => {
         lines[id] = { line: lineFiles[index * 2], pack: lineFiles[index * 2 + 1] };
       });
-      const doorSequence = globals().DoorSequence;
+      const doorSequence = globalThis.DoorSequence;
       if (!doorSequence) {
         throw new Error('Subway door planner is unavailable');
       }
@@ -188,7 +202,7 @@ export interface LoadedSubwayMotion {
 export async function loadSubwayMotion(base?: string): Promise<LoadedSubwayMotion> {
   const root = normalizedBase(base).href;
   const manifest = parseMotionManifest(
-    await fetchJson<unknown>(resolveAssetUrl('motion/motion.json', root)),
+    await fetchJson(resolveAssetUrl('motion/motion.json', root)),
   );
   return {
     manifest,

@@ -16,7 +16,7 @@ async function readJson(url: string, signal: AbortSignal): Promise<unknown> {
   if (!response.ok) {
     throw new Error(`Subway preview asset unavailable (${response.status}): ${url}`);
   }
-  return response.json() as Promise<unknown>;
+  return response.json();
 }
 
 function selectedLine(config: Readonly<Record<string, unknown>>): string {

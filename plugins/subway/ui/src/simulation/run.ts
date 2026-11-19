@@ -208,8 +208,8 @@ export function snapshotRun(
   const line = lineFor(lines, state.lineId);
   const at = activeNow(state, now);
   const motion = snapshotMotion(state, at);
-  const station = line.stations.find((item) => item.code === state.stationCode)!;
-  const side = station.doorByDirection[state.direction]?.side ?? 'unknown';
+  const station = line.stations.find((item) => item.code === state.stationCode);
+  const side = station?.doorByDirection[state.direction]?.side ?? 'unknown';
   const hasCommittedArrival =
     state.phase === 'arriving' || state.incident?.resume.phase === 'arriving';
   const next = hasCommittedArrival

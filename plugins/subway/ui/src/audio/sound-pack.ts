@@ -33,9 +33,7 @@ export function resolveCue(
   base: string,
   stationCode?: string,
 ): ResolvedCue {
-  const variants = Array.isArray(record.variants)
-    ? (record.variants as { stations?: unknown; file?: unknown }[])
-    : [];
+  const variants = Array.isArray(record.variants) ? record.variants.filter(isRecord) : [];
   const variant = stationCode
     ? variants.find(
         (item) =>
@@ -44,7 +42,7 @@ export function resolveCue(
           typeof item.file === 'string',
       )
     : undefined;
-  let file = (variant?.file as string | undefined) ?? record.file;
+  let file = typeof variant?.file === 'string' ? variant.file : record.file;
   let entry = cueIndex(manifest).get(file);
   let gain = entry?.gainByRole[role];
   if (variant && (!entry || gain === undefined)) {
@@ -97,20 +95,24 @@ export function selectStationEntries(
   );
 }
 
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return !!value && typeof value === 'object' && !Array.isArray(value);
+}
+
 function asRecord(value: unknown): Record<string, unknown> | undefined {
-  return value && typeof value === 'object' && !Array.isArray(value)
-    ? (value as Record<string, unknown>)
-    : undefined;
+  return isRecord(value) ? value : undefined;
+}
+
+function isPackCue(value: unknown): value is PackCueRecord {
+  return isRecord(value) && typeof value.file === 'string';
 }
 
 function packStations(line: LoadedSubwayLine): Record<string, unknown>[] {
   const stations = line.pack.stations;
-  const values = Array.isArray(stations)
-    ? stations
-    : stations && typeof stations === 'object'
-      ? Object.values(stations as Record<string, unknown>)
-      : [];
-  return values.map(asRecord).filter((item): item is Record<string, unknown> => !!item);
+  if (Array.isArray(stations)) {
+    return stations.filter(isRecord);
+  }
+  return isRecord(stations) ? Object.values(stations).filter(isRecord) : [];
 }
 
 function packStation(line: LoadedSubwayLine, code: string): Record<string, unknown> | undefined {
@@ -119,12 +121,7 @@ function packStation(line: LoadedSubwayLine, code: string): Record<string, unkno
 
 function cueEntries(value: unknown, language: string): PackCueRecord[] {
   const localized = asRecord(value)?.[language];
-  return Array.isArray(localized)
-    ? localized.filter(
-        (entry): entry is PackCueRecord =>
-          !!asRecord(entry) && typeof (entry as PackCueRecord).file === 'string',
-      )
-    : [];
+  return Array.isArray(localized) ? localized.filter(isPackCue) : [];
 }
 
 function queueStationCues(
@@ -177,11 +174,8 @@ function departureMelody(
   base: string,
 ): ResolvedCue | undefined {
   const byDirection = asRecord(station.departure_melody);
-  const stationMelody = asRecord(byDirection?.[direction]) as PackCueRecord | undefined;
-  const melody =
-    stationMelody && typeof stationMelody.file === 'string'
-      ? stationMelody
-      : packDepartureMelody(line);
+  const stationMelody = byDirection?.[direction];
+  const melody = isPackCue(stationMelody) ? stationMelody : packDepartureMelody(line);
   return melody && typeof melody.file === 'string'
     ? resolveCue(melody, 'melody', catalogue, base, stationCode)
     : undefined;
@@ -207,7 +201,7 @@ function resolveDoorPlanLine(
   stationCode?: string,
   melody?: ResolvedCue,
 ): { sequence: unknown; cues: Record<string, ResolvedCue> } {
-  const doors = line.pack.doors as { sequence?: unknown; [key: string]: unknown } | undefined;
+  const doors = asRecord(line.pack.doors);
   if (!doors?.sequence) {
     throw new Error(`Door sequence missing for ${String(line.pack.id)}`);
   }
@@ -241,18 +235,14 @@ function resolveDoorPlanLine(
     cues.departure_melody = melody;
   }
   for (const [part, value] of Object.entries(doors)) {
-    if (
-      part === 'sequence' ||
-      !asRecord(value) ||
-      typeof (value as PackCueRecord).file !== 'string'
-    ) {
+    if (part === 'sequence' || !isPackCue(value)) {
       continue;
     }
     const role = doorRoles[part];
     if (!role) {
       throw new Error(`Unknown Subway door cue role: ${part}`);
     }
-    const cue = resolveCue(value as PackCueRecord, role, catalogue, base, stationCode);
+    const cue = resolveCue(value, role, catalogue, base, stationCode);
     cues[part] = doorTrimDb[part] === undefined ? cue : { ...cue, trimDb: doorTrimDb[part] };
   }
   return { sequence: filteredSequence, cues };
@@ -270,7 +260,7 @@ function freezePlan(plan: DoorSequencePlan): DoorSequencePlan {
   );
   return Object.freeze({
     ...plan,
-    events: Object.freeze(events) as unknown as DoorSequencePlan['events'],
+    events: Object.freeze(events),
   });
 }
 
@@ -317,9 +307,7 @@ export function buildSegmentCuePlan(
   const emergency: TimedCue[] = [];
   const emergencyRecords = (Array.isArray(line.pack.emergency) ? line.pack.emergency : []).filter(
     (entry): entry is PackCueRecord =>
-      !!asRecord(entry) &&
-      (entry as PackCueRecord).kind === 'emergency' &&
-      (entry as PackCueRecord).scenario === 'emergency stop',
+      isPackCue(entry) && entry.kind === 'emergency' && entry.scenario === 'emergency stop',
   );
   let at = 0;
   for (const language of languageOrder) {

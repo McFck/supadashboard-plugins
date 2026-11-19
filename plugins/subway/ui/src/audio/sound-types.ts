@@ -46,7 +46,7 @@ export interface TimedCue {
 }
 
 export interface DoorSequencePlan {
-  events: Array<{ part: string; at: number; cue: ResolvedCue }>;
+  events: ReadonlyArray<{ part: string; at: number; cue: ResolvedCue }>;
   end: number;
   open_end?: number;
   close_end?: number;

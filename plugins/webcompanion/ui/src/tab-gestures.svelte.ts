@@ -9,8 +9,7 @@ type Gesture =
   | { kind: 'press'; id: number; source: Item; origin: Point }
   | { kind: 'reorder'; id: number; source: Item; point: Point };
 
-// Small touch movements during a hold must leave the tab press in place.
-const pressSlop = 16;
+const holdSlopPx = 16;
 const row = '[data-tab-id]';
 const point = ({ clientX, clientY }: PointerEvent) => ({ x: clientX, y: clientY });
 
@@ -48,7 +47,7 @@ export class TabGestures {
           this.#position = value;
         },
       },
-      { axis: horizontal ? 'x' : 'y', dragThreshold: pressSlop },
+      { axis: horizontal ? 'x' : 'y', dragThreshold: holdSlopPx },
     );
     this.#scroll.scrollTo(0, false);
     const options = { capture: true, signal: this.#lifetime.signal };
@@ -135,7 +134,7 @@ export class TabGestures {
         Math.max(
           Math.abs(position.x - gesture.origin.x),
           Math.abs(position.y - gesture.origin.y),
-        ) >= pressSlop
+        ) >= holdSlopPx
       ) {
         this.#reset();
       }

@@ -194,7 +194,6 @@
     --pad: 6px;
     --row: 52px;
     --gap: 4px;
-    /* Inner corners follow the tile's so rows sit concentric in it. */
     --inner: max(8px, calc(var(--tile-radius, 22px) - var(--pad)));
     width: 100%;
     height: 100%;
@@ -364,7 +363,6 @@
       0 0 0 1px color-mix(in oklab, var(--ring) 60%, transparent),
       0 12px 28px rgb(0 0 0 / 0.5);
   }
-  /* The drop bar sits centred in the gap beside the anchor tab. */
   .tab[data-drop]::after {
     content: '';
     position: absolute;
@@ -387,7 +385,6 @@
   .tab[data-drop-axis='x'][data-drop='after']::after {
     inset: 6px calc(var(--gap) / -2 - 1.5px) 6px auto;
   }
-  /* Horizontal: windows, pinned strips and groups are column-flowing grids sharing the track's row lines. */
   .horizontal .track {
     display: grid;
     grid-auto-flow: column;

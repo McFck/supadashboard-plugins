@@ -174,7 +174,6 @@
   let reconnectDelay = 250;
 
   function connect() {
-    // This port can only connect to our extension, whose worker checks the sender and frame.
     if (!chrome.runtime?.id) {
       return;
     }

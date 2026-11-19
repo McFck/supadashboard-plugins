@@ -246,7 +246,6 @@ export class TouchpadController {
     } else {
       this.queue.push({ kind: 'pointer', tab: this.tab, input });
     }
-    // The remote cursor can move immediately. Only coalesce while a command is in flight.
     void this.flush();
   }
 

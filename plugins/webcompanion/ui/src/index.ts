@@ -17,7 +17,6 @@ const plugin: Plugin = {
   guide,
   settingsSection: PairingSection,
   setup(api) {
-    // The wordmark's Plaster "SD" in its own colours, so it is an image rather than an outline path.
     api.registerIcon('webcompanion', `data:image/svg+xml,${encodeURIComponent(mark)}`);
     api.registerIcon('webcompanion-touchpad', 'M3 4h18v16H3zM7 8l7 3-3 1-1 3z');
     api.registerIcon('webcompanion-tabs', 'M3 7h6l2-3h7l3 3v13H3zM3 9h18M7 13h10m-10 3h7');

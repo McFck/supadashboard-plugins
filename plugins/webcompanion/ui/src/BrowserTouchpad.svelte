@@ -84,7 +84,6 @@
     touch-action: none;
     user-select: none;
     color: var(--muted-foreground);
-    /* The option colour (transparent by default) tints the tile surface instead of replacing it. */
     background:
       radial-gradient(
           circle,

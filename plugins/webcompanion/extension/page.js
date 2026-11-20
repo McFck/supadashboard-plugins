@@ -173,10 +173,10 @@
   let port;
   let reconnectDelay = 250;
   let moveFrame = 0;
+  let moveTask = 0;
   let pendingMove;
 
-  function replyMove(frame, source, apply) {
-    const ok = apply && pointer.input(frame.input);
+  function replyMove(frame, source, ok) {
     try {
       source.postMessage({ kind: 'pointer_done', id: frame.id, ok });
     } catch {
@@ -186,31 +186,28 @@
 
   function flushMove(apply) {
     if (pendingMove) {
+      cancelAnimationFrame(moveFrame);
+      clearTimeout(moveTask);
       const { frame, source } = pendingMove;
       pendingMove = undefined;
-      replyMove(frame, source, apply);
-    }
-  }
-
-  function nextMove() {
-    moveFrame = 0;
-    if (pendingMove) {
-      moveFrame = requestAnimationFrame(nextMove);
-      flushMove(!document.hidden);
+      const ok = apply && !document.hidden;
+      if (ok) {
+        pointer.moveTarget();
+      }
+      replyMove(frame, source, ok);
     }
   }
 
   function receiveMove(frame, source) {
-    if (document.hidden) {
+    if (document.hidden || pendingMove || !pointer.moveCursor(frame.input)) {
       replyMove(frame, source, false);
-    } else if (moveFrame) {
-      flushMove(false);
-      pendingMove = { frame, source };
-    } else {
-      // The first move after idle can paint on the upcoming frame without waiting for its callback.
-      moveFrame = requestAnimationFrame(nextMove);
-      replyMove(frame, source, true);
+      return;
     }
+    pendingMove = { frame, source };
+    // Render the cursor and let the browser update layout before hit-testing or running site handlers.
+    moveFrame = requestAnimationFrame(() => {
+      moveTask = setTimeout(flushMove, 0, true);
+    });
   }
 
   function connect() {
@@ -240,9 +237,7 @@
       }
     });
     source.onDisconnect.addListener(() => {
-      cancelAnimationFrame(moveFrame);
-      moveFrame = 0;
-      pendingMove = undefined;
+      flushMove(false);
       pointer.input({ kind: 'cancel' });
       port = undefined;
       setTimeout(connect, reconnectDelay);
@@ -253,11 +248,10 @@
 
   document.addEventListener('visibilitychange', () => {
     if (document.hidden) {
-      cancelAnimationFrame(moveFrame);
-      moveFrame = 0;
       flushMove(false);
     }
   });
+  window.addEventListener('pagehide', () => flushMove(false));
 
   let selectedMedia;
 

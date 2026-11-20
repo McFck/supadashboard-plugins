@@ -5,10 +5,10 @@
   const host = document.createElement('div');
   host.setAttribute('aria-hidden', 'true');
   host.style.cssText =
-    'all:initial!important;position:fixed!important;inset:0!important;pointer-events:none!important;z-index:2147483647!important';
+    'all:initial!important;position:fixed!important;inset:0!important;contain:strict!important;pointer-events:none!important;z-index:2147483647!important';
   const cursor = document.createElement('div');
   cursor.style.cssText =
-    'position:absolute;width:14px;height:14px;translate:-50% -50%;border:2px solid white;border-radius:50%;box-shadow:0 0 0 2px #111,0 0 0 4px #2563eb;pointer-events:none';
+    'position:absolute;width:14px;height:14px;translate:-50% -50%;will-change:transform;border:2px solid white;border-radius:50%;box-shadow:0 0 0 2px #111,0 0 0 4px #2563eb;pointer-events:none';
   host.attachShadow({ mode: 'closed' }).append(cursor);
   let last;
   let pressed;
@@ -99,22 +99,43 @@
 
   function position(dx, dy) {
     if (innerWidth < 1 || innerHeight < 1) {
-      return null;
+      return;
     }
     const x = clamp((last?.x ?? innerWidth / 2) + dx, innerWidth);
     const y = clamp((last?.y ?? innerHeight / 2) + dy, innerHeight);
-    // Hit-test before changing the overlay so the cursor's transform cannot force a style flush.
-    const target = targetAt(x, y);
+    return { x, y };
+  }
+
+  function show(point) {
+    const { x, y } = point;
     if (!host.isConnected || last?.x !== x || last?.y !== y) {
       cursor.style.transform = `translate(${x}px, ${y}px)`;
     }
-    last = { x, y };
+    last = point;
     if (!host.isConnected) {
       document.documentElement.append(host);
     }
     clearTimeout(hide);
     hide = setTimeout(cancel, 3000);
-    return target;
+  }
+
+  function moveCursor({ dx, dy }) {
+    const point = position(dx, dy);
+    if (!point) {
+      return false;
+    }
+    show(point);
+    return true;
+  }
+
+  function moveTarget() {
+    const target = targetAt(last.x, last.y);
+    hover(target);
+    if (target) {
+      const receiver = pressed?.isConnected ? pressed : target;
+      event(receiver, 'pointermove', pressed ? 1 : 0);
+      event(receiver, 'mousemove', pressed ? 1 : 0);
+    }
   }
 
   function down(target) {
@@ -161,27 +182,24 @@
       cancel();
       return true;
     }
-    if (document.hidden || !['begin', 'move', 'down', 'up', 'click'].includes(action.kind)) {
+    if (document.hidden || !['begin', 'down', 'up', 'click'].includes(action.kind)) {
       return false;
     }
-    const dx = action.kind === 'move' ? action.dx : 0;
-    const dy = action.kind === 'move' ? action.dy : 0;
-    const target = position(dx, dy);
+    const point = position(0, 0);
+    if (!point) {
+      return false;
+    }
+    const target = targetAt(point.x, point.y);
+    show(point);
     hover(target);
     if (!target) {
-      return action.kind === 'move';
+      return false;
     }
     switch (action.kind) {
       case 'begin':
         globalThis.webcompanionHover.prepare();
         event(target, 'mousemove', 0);
         return true;
-      case 'move': {
-        const receiver = pressed?.isConnected ? pressed : target;
-        event(receiver, 'pointermove', pressed ? 1 : 0);
-        event(receiver, 'mousemove', pressed ? 1 : 0);
-        return true;
-      }
       case 'down':
         down(target);
         return true;
@@ -198,5 +216,10 @@
     }
   }
 
-  globalThis.webcompanionPointer = { input, anchor: () => last && [last.x, last.y] };
+  globalThis.webcompanionPointer = {
+    input,
+    moveCursor,
+    moveTarget,
+    anchor: () => last && [last.x, last.y],
+  };
 })();

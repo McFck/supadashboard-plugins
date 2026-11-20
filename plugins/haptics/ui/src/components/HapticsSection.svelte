@@ -26,7 +26,7 @@
 
 <Section title="Android">
   <Row
-    label="Tablet"
+    label="Connect"
     for="haptics-enabled"
     ><Switch
       id="haptics-enabled"

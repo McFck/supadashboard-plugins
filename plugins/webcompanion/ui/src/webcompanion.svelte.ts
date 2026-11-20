@@ -1,6 +1,7 @@
 import {
   ActionFailure,
   pluginBrowser,
+  pluginDisplays,
   toast,
   type PluginBrowserAction,
   type PluginBrowserScrollFrame,
@@ -9,6 +10,15 @@ import {
 import { reuseTabs } from './tabs';
 
 const plugin = 'webcompanion';
+
+export async function displayNames() {
+  try {
+    return await pluginDisplays(plugin);
+  } catch {
+    // The extension's own labels keep the menu usable when the host cannot enumerate monitors.
+    return [];
+  }
+}
 
 class WebCompanion {
   // Raw: each update replaces the snapshot; a deep proxy cost more than rendering it.

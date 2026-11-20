@@ -80,10 +80,13 @@ async function displays() {
       .filter((screen) => screen.isEnabled && /^[0-9A-Za-z-]{1,32}$/.test(screen.id))
       .sort((a, b) => a.bounds.left - b.bounds.left || a.bounds.top - b.bounds.top)
       .slice(0, 16)
-      .map(({ id, name, bounds }) => ({
+      .map(({ id, name, bounds: { left, top, width, height } }) => ({
         id,
         name: title(name),
-        windows: windows.filter((window) => on(bounds, window)).map((window) => window.id),
+        bounds: { left, top, width, height },
+        windows: windows
+          .filter((window) => on({ left, top, width, height }, window))
+          .map((window) => window.id),
       }))
   );
 }

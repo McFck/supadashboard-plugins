@@ -2,9 +2,10 @@
   import { onMount } from 'svelte';
   import { Icon, type ControlConfig, type PluginBrowserAction } from '@supadashboard/kit';
   import DisplayMenu from './DisplayMenu.svelte';
-  import { displayTargets, tabOrientation, tabWindows, type BrowserTab } from './tabs';
+  import { displayTargets } from './display-targets';
+  import { tabOrientation, tabWindows, type BrowserTab } from './tabs';
   import { TabGestures } from './tab-gestures.svelte';
-  import { webCompanion } from './webcompanion.svelte';
+  import { displayNames, webCompanion } from './webcompanion.svelte';
 
   const colors = {
     grey: '#a2a9b5',
@@ -29,7 +30,7 @@
   let pending = $state<number | null>(null);
   const active = $derived(pending ?? browser?.activeTab);
   const multiDisplay = $derived((browser?.displays.length ?? 0) > 1);
-  let menu = $state<{
+  let menu = $state.raw<{
     tab: BrowserTab;
     anchor: DOMRect;
     displays: ReturnType<typeof displayTargets>;
@@ -52,12 +53,22 @@
   }
 
   function openMenu(id: number, icon: HTMLElement) {
-    const tab = browser?.tabs.find((entry) => entry.id === id);
-    const displays = browser && tab ? displayTargets(browser, tab) : [];
-    if (!tab || displays.length === 0) {
+    const snapshot = browser;
+    const tab = snapshot?.tabs.find((entry) => entry.id === id);
+    if (!snapshot || !tab) {
       return false;
     }
-    menu = { tab, anchor: icon.getBoundingClientRect(), displays };
+    const displays = displayTargets(snapshot, tab);
+    if (displays.length === 0) {
+      return false;
+    }
+    const opened = { tab, anchor: icon.getBoundingClientRect(), displays };
+    menu = opened;
+    void displayNames().then((monitors) => {
+      if (menu === opened && monitors.length > 0) {
+        menu = { ...opened, displays: displayTargets(snapshot, tab, monitors) };
+      }
+    });
     return true;
   }
 

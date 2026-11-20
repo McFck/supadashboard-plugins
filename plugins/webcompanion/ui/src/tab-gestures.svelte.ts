@@ -6,8 +6,12 @@ type Move = Extract<PluginBrowserAction, { kind: 'move_tab' }>;
 type Point = { x: number; y: number };
 type Gesture =
   | { kind: 'idle' }
-  | { kind: 'press'; id: number; source: Item; origin: Point }
-  | { kind: 'reorder'; id: number; source: Item; point: Point };
+  | { kind: 'press'; id: number; source: Item; origin: Point; icon: HTMLElement | null }
+  | { kind: 'reorder'; id: number; source: Item; point: Point }
+  /** A hold on the icon opened the display menu; the finger is still down. */
+  | { kind: 'menu'; id: number };
+/** Opens the tab's display menu at `icon`; false when there is nowhere to send the tab. */
+type IconHold = (tab: number, icon: HTMLElement) => boolean;
 
 const holdSlopPx = 16;
 
@@ -27,6 +31,7 @@ export class TabGestures {
     track: HTMLElement,
     private horizontal: boolean,
     private send: (action: Move) => void,
+    private iconHold: IconHold,
   ) {
     this.#scroll = new KineticScroll(
       viewport,
@@ -60,7 +65,18 @@ export class TabGestures {
   }
 
   key(event: KeyboardEvent) {
-    if (!event.altKey || !(event.target instanceof Element)) {
+    if (!(event.target instanceof Element)) {
+      return;
+    }
+    if (event.key === 'ContextMenu' || (event.shiftKey && event.key === 'F10')) {
+      const source = item(event.target);
+      const icon = source?.node.querySelector('[data-tab-icon]');
+      if (source && icon instanceof HTMLElement && this.iconHold(source.id, icon)) {
+        event.preventDefault();
+      }
+      return;
+    }
+    if (!event.altKey) {
       return;
     }
     const previous = this.horizontal ? 'ArrowLeft' : 'ArrowUp';
@@ -101,22 +117,28 @@ export class TabGestures {
       id: event.pointerId,
       source,
       origin: point(event),
+      icon: event.target.closest<HTMLElement>('[data-tab-icon]'),
     };
     this.#gesture = press;
     this.#hold = setTimeout(() => {
-      if (this.#gesture === press && source.node.isConnected) {
-        this.#scroll.scrollTo(this.#position, false);
+      if (this.#gesture !== press || !source.node.isConnected) {
+        return;
+      }
+      this.#scroll.scrollTo(this.#position, false);
+      this.#suppressClick = true;
+      if (press.icon?.isConnected && this.iconHold(source.id, press.icon)) {
+        this.#gesture = { kind: 'menu', id: press.id };
+      } else {
         this.viewport.setPointerCapture(event.pointerId);
         this.#gesture = { kind: 'reorder', id: press.id, source, point: press.origin };
         this.dragging = source.id;
-        this.#suppressClick = true;
       }
     }, HOLD_MS);
   };
 
   #move = (event: PointerEvent) => {
     const gesture = this.#gesture;
-    if (gesture.kind === 'idle' || gesture.id !== event.pointerId) {
+    if (gesture.kind === 'idle' || gesture.kind === 'menu' || gesture.id !== event.pointerId) {
       return;
     }
     const position = point(event);

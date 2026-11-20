@@ -1,7 +1,8 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import { Icon, type ControlConfig, type PluginBrowserAction } from '@supadashboard/kit';
-  import { tabOrientation, tabWindows, type BrowserTab } from './tabs';
+  import DisplayMenu from './DisplayMenu.svelte';
+  import { displayTargets, tabOrientation, tabWindows, type BrowserTab } from './tabs';
   import { TabGestures } from './tab-gestures.svelte';
   import { webCompanion } from './webcompanion.svelte';
 
@@ -27,10 +28,16 @@
   let gestures = $state<TabGestures>();
   let pending = $state<number | null>(null);
   const active = $derived(pending ?? browser?.activeTab);
+  const multiDisplay = $derived((browser?.displays.length ?? 0) > 1);
+  let menu = $state<{
+    tab: BrowserTab;
+    anchor: DOMRect;
+    displays: ReturnType<typeof displayTargets>;
+  } | null>(null);
   onMount(() => webCompanion.mount());
   $effect(() => {
     if (viewport && track) {
-      const actions = new TabGestures(viewport, track, horizontal, send);
+      const actions = new TabGestures(viewport, track, horizontal, send, openMenu);
       gestures = actions;
       return () => actions.destroy();
     }
@@ -44,6 +51,16 @@
     }
   }
 
+  function openMenu(id: number, icon: HTMLElement) {
+    const tab = browser?.tabs.find((entry) => entry.id === id);
+    const displays = browser && tab ? displayTargets(browser, tab) : [];
+    if (!tab || displays.length === 0) {
+      return false;
+    }
+    menu = { tab, anchor: icon.getBoundingClientRect(), displays };
+    return true;
+  }
+
   function send(action: PluginBrowserAction) {
     void webCompanion.action(action);
   }
@@ -53,6 +70,7 @@
   <span
     class="favicon"
     aria-hidden="true"
+    data-tab-icon
   >
     {tab.title.trim().charAt(0).toUpperCase() || '·'}
     {#key tab.favicon}
@@ -90,7 +108,7 @@
       aria-label={tab.pinned ? tab.title || 'New tab' : undefined}
       title={tab.title}
       aria-pressed={tab.id === active}
-      aria-keyshortcuts={horizontal ? 'Alt+ArrowLeft Alt+ArrowRight' : 'Alt+ArrowUp Alt+ArrowDown'}
+      aria-keyshortcuts={`${horizontal ? 'Alt+ArrowLeft Alt+ArrowRight' : 'Alt+ArrowUp Alt+ArrowDown'}${multiDisplay ? ' Shift+F10' : ''}`}
       onkeydown={(event) => gestures?.key(event)}
       onclick={() => select(tab.id)}
     >
@@ -172,6 +190,10 @@
                 onclick={() =>
                   send({ kind: 'group', group: row.group.id, collapsed: !row.group.collapsed })}
               >
+                <span
+                  class="swatch"
+                  aria-hidden="true"
+                ></span>
                 <span class="title">{row.group.title || 'Tab group'}</span>
                 <Icon
                   name={row.group.collapsed ? 'ChevronRight' : 'ChevronDown'}
@@ -188,6 +210,16 @@
     {/each}
   </div>
 </div>
+{#if menu && browser}
+  {@const { tab } = menu}
+  <DisplayMenu
+    title={tab.title}
+    anchor={menu.anchor}
+    displays={menu.displays}
+    onchoose={(display) => send({ kind: 'move_tab_to_display', tab: tab.id, display })}
+    onclose={() => (menu = null)}
+  />
+{/if}
 
 <style>
   .browser-tabs {
@@ -293,15 +325,18 @@
     object-fit: contain;
     background: var(--tile-surface);
   }
+  /* A long press on the icon's whole corner of the row opens the display menu, not just on the 28 px glyph. */
+  .tab:not(.pinned) .favicon::before {
+    content: '';
+    position: absolute;
+    inset: -12px -5px -12px -12px;
+  }
   .tab.current {
     color: var(--foreground);
-    background: color-mix(in oklab, var(--foreground) 9%, var(--tile-surface));
+    background: color-mix(in oklab, var(--foreground) 8%, var(--tile-surface));
     box-shadow:
-      inset 3px 0 0 var(--primary),
-      0 1px 3px rgb(0 0 0 / 0.3);
-  }
-  .tab.current .title {
-    font-weight: 600;
+      0 1px 2px rgb(0 0 0 / 0.3),
+      0 2px 6px rgb(0 0 0 / 0.2);
   }
   .tab.current .close {
     opacity: 0.9;
@@ -313,55 +348,51 @@
   }
   .tab.pinned {
     width: var(--row);
+  }
+  .tab.pinned:not(.current) {
     background: color-mix(in oklab, var(--foreground) 5%, transparent);
   }
   .tab.pinned .select {
     justify-content: center;
     padding: 0;
   }
-  .tab.pinned.current {
-    box-shadow:
-      inset 0 -3px 0 var(--primary),
-      0 1px 3px rgb(0 0 0 / 0.3);
-  }
   .group {
     display: grid;
     gap: var(--gap);
     padding: var(--gap);
     border-radius: calc(var(--inner) + var(--gap));
-    background: color-mix(in oklab, var(--group) 9%, transparent);
-    box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--group) 22%, transparent);
+    background: color-mix(in oklab, var(--group) 7%, transparent);
   }
   .group-header {
-    justify-content: space-between;
-    gap: 8px;
+    gap: 10px;
     min-height: 48px;
-    padding-inline: 12px 14px;
+    padding-inline: 16px 14px;
     border-radius: var(--inner);
-    color: var(--group);
-    font: 600 13px/16px var(--font-display);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
+    color: var(--muted-foreground);
+    font: 600 14px/20px var(--font-sans);
   }
   .group-header .title {
+    flex: 1;
     font: inherit;
+  }
+  .swatch {
+    flex: none;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--group);
   }
   .group-header:active {
     background: color-mix(in oklab, var(--group) 12%, transparent);
-  }
-  .group .tab.current {
-    box-shadow:
-      inset 3px 0 0 var(--group),
-      0 1px 3px rgb(0 0 0 / 0.3);
   }
   .tab.dragging {
     z-index: 2;
     transform: scale(1.03);
     color: var(--foreground);
-    background: color-mix(in oklab, var(--foreground) 14%, var(--tile-surface));
+    background: color-mix(in oklab, var(--foreground) 12%, var(--tile-surface));
     box-shadow:
-      0 0 0 1px color-mix(in oklab, var(--ring) 60%, transparent),
-      0 12px 28px rgb(0 0 0 / 0.5);
+      0 2px 4px rgb(0 0 0 / 0.3),
+      0 12px 28px rgb(0 0 0 / 0.45);
   }
   .tab[data-drop]::after {
     content: '';
@@ -371,7 +402,6 @@
     height: 3px;
     border-radius: 2px;
     background: var(--ring);
-    box-shadow: 0 0 8px color-mix(in oklab, var(--ring) 70%, transparent);
     pointer-events: none;
   }
   .tab[data-drop='after']::after {

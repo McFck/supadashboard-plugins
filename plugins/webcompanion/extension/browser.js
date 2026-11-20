@@ -63,10 +63,36 @@ function describeTab(tab, groupWindows) {
   };
 }
 
+/** Displays left to right, each with the browser windows whose centre lies on it. */
+async function displays() {
+  const [screens, windows] = await Promise.all([
+    chrome.system.display.getInfo(),
+    chrome.windows.getAll({ windowTypes: ['normal'] }),
+  ]);
+  const on = ({ left, top, width, height }, window) => {
+    const x = window.left + window.width / 2;
+    const y = window.top + window.height / 2;
+    return x >= left && x < left + width && y >= top && y < top + height;
+  };
+  return (
+    screens
+      // The bridge rejects the whole state over one id it cannot validate.
+      .filter((screen) => screen.isEnabled && /^[0-9A-Za-z-]{1,32}$/.test(screen.id))
+      .sort((a, b) => a.bounds.left - b.bounds.left || a.bounds.top - b.bounds.top)
+      .slice(0, 16)
+      .map(({ id, name, bounds }) => ({
+        id,
+        name: title(name),
+        windows: windows.filter((window) => on(bounds, window)).map((window) => window.id),
+      }))
+  );
+}
+
 async function snapshot() {
-  const [open, tabGroups] = await Promise.all([
+  const [open, tabGroups, screens] = await Promise.all([
     chrome.tabs.query({ windowType: 'normal' }),
     chrome.tabGroups.query({}),
+    displays(),
   ]);
   const all = open.filter((tab) => idInRange(tab.id, MAX_TAB_ID)).sort(tabOrder);
   for (const tab of all) {
@@ -113,6 +139,7 @@ async function snapshot() {
         ? { tab: player.id, ...status, fullscreen: window.state === 'fullscreen' }
         : null,
       suspended: await mediaSuspended(),
+      displays: screens,
     },
   };
 }
@@ -167,6 +194,7 @@ export function observe(send, onError) {
     chrome.tabs.onMoved,
     chrome.tabs.onAttached,
     chrome.windows.onBoundsChanged,
+    chrome.system.display.onDisplayChanged,
     chrome.tabGroups.onCreated,
     chrome.tabGroups.onUpdated,
     chrome.tabGroups.onMoved,

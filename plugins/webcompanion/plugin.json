@@ -3,6 +3,7 @@
   "version": "0.9.0",
   "api": 2,
   "permissions": {
-    "browser": "cnojhdmglpjodgblffallbibdifemkop"
+    "browser": "cnojhdmglpjodgblffallbibdifemkop",
+    "displays": true
   }
 }

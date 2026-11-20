@@ -23,10 +23,12 @@
   // Modal, so a tap outside only closes it and Escape and focus work natively; top layer, so the tile's clip
   // cannot cut it. Placed below the icon, or above it when the screen ends first.
   $effect(() => {
-    if (!dialog || !panel) {
+    if (!dialog || !panel || displays.length === 0) {
       return;
     }
-    dialog.showModal();
+    if (!dialog.open) {
+      dialog.showModal();
+    }
     const { width, height } = panel.getBoundingClientRect();
     const below = anchor.bottom + margin;
     const top =

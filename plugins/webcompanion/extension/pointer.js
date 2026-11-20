@@ -67,12 +67,13 @@
 
   function hover(target) {
     if (target === hovered) {
+      globalThis.webcompanionHover.settle(hoverPath);
       return;
     }
     const buttons = pressed ? 1 : 0;
     const previous = hoverPath;
     hoverPath = path(target);
-    globalThis.webcompanionHover.apply(previous, hoverPath);
+    globalThis.webcompanionHover.settle(hoverPath);
     if (hovered?.isConnected) {
       event(hovered, 'pointerout', buttons, target);
       event(hovered, 'mouseout', buttons, target);

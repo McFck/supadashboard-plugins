@@ -29,6 +29,7 @@ it('folds a collapsed group to its active tab and keeps pinned tabs out of group
     ],
     media: null,
     suspended: false,
+    displays: [],
   });
   expect(windows).toHaveLength(1);
   expect(windows[0].pinned.map(({ id }) => id)).toEqual([1]);

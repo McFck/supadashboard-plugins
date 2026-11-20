@@ -6,11 +6,13 @@ import {
   type PluginBrowserScrollFrame,
   type PluginBrowserSnapshot,
 } from '@supadashboard/kit';
+import { reuseTabs } from './tabs';
 
 const plugin = 'webcompanion';
 
 class WebCompanion {
-  snapshot = $state<PluginBrowserSnapshot>({ kind: 'offline' });
+  // Raw: each update replaces the snapshot; a deep proxy cost more than rendering it.
+  snapshot = $state.raw<PluginBrowserSnapshot>({ kind: 'offline' });
   pairing = $state<{ code: string; expiresInMs: number } | null>(null);
   pairingPending = $state(false);
   private watch = $state<number | null>(null);
@@ -43,7 +45,7 @@ class WebCompanion {
       .then(() =>
         pluginBrowser.watch(plugin, (snapshot) => {
           if (this.handle === handle) {
-            this.snapshot = snapshot;
+            this.snapshot = reuseTabs(this.snapshot, snapshot);
             this.publish?.(snapshot);
             if (snapshot.kind === 'connected') {
               this.clearCode();

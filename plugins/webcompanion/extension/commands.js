@@ -84,6 +84,20 @@ async function moveTab({ tab, anchor, side }) {
   return true;
 }
 
+/** Moves one tab into a new window maximized on `display`, then puts the touchpad on it. */
+async function moveToDisplay({ tab, display }, pointer) {
+  const [, screens] = await Promise.all([existingTab(tab), chrome.system.display.getInfo()]);
+  const screen = screens.find((entry) => entry.id === display && entry.isEnabled);
+  if (!screen) {
+    return false;
+  }
+  // A maximized window cannot be created with bounds; it is placed on the display first.
+  const { left, top, width, height } = screen.workArea;
+  const window = await chrome.windows.create({ tabId: tab, left, top, width, height });
+  await chrome.windows.update(window.id, { state: 'maximized' });
+  return select(tab, pointer);
+}
+
 async function tabCommand(input, pointer) {
   const tab = await currentTab();
   switch (input) {
@@ -149,6 +163,8 @@ async function tabAction(action, pointer) {
     case 'group':
       await chrome.tabGroups.update(action.group, { collapsed: action.collapsed });
       return true;
+    case 'move_tab_to_display':
+      return moveToDisplay(action, pointer);
     default:
       return tabCommand(action.input, pointer);
   }
@@ -162,6 +178,7 @@ async function run(action, pointer) {
     case 'select_tab':
     case 'close_tab':
     case 'move_tab':
+    case 'move_tab_to_display':
     case 'group': {
       const command = tabCommands.then(() => tabAction(action, pointer));
       // A failed tab command is reported by its own reply and must not block the next one.

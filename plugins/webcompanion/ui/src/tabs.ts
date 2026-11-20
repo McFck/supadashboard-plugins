@@ -47,3 +47,33 @@ export function tabWindows(browser: Browser | null): Window[] {
   }
   return [...windows.values()];
 }
+
+/** `next` with each unchanged tab kept as its previous object, so a title or icon update rerenders one row. */
+export function reuseTabs(previous: PluginBrowserSnapshot, next: PluginBrowserSnapshot) {
+  if (previous.kind !== 'connected' || next.kind !== 'connected') {
+    return next;
+  }
+  const old = new Map(previous.tabs.map((tab) => [tab.id, tab]));
+  const same = (a: BrowserTab, b: BrowserTab) =>
+    (Object.keys(b) as (keyof BrowserTab)[]).every((key) => a[key] === b[key]);
+  return {
+    ...next,
+    tabs: next.tabs.map((tab) => {
+      const before = old.get(tab.id);
+      return before && same(before, tab) ? before : tab;
+    }),
+  };
+}
+
+/** The displays `tab` can be sent to: every display but the one its window is on, when there are several. */
+export function displayTargets(browser: Browser, tab: BrowserTab) {
+  const { displays } = browser;
+  if (displays.length < 2) {
+    return [];
+  }
+  return displays.flatMap(({ id, name, windows }, index) => {
+    const repeated = displays.filter((other) => other.name === name).length > 1;
+    const label = name && !repeated ? name : `${name || 'Display'} ${index + 1}`;
+    return windows.includes(tab.window) ? [] : [{ id, label }];
+  });
+}
